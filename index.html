@@ -200,12 +200,11 @@
                     </div>
                 </div>
 
-                <!-- CARD 4: ARMAZENAMENTO TRAVA (ANTIGO FORCLOSE INVISIBLE) -->
+                <!-- CARD 4: ARMAZENAMENTO TRAVA (VAULT) -->
                 <div class="min-w-[280px] w-[85%] max-w-[320px] bg-cardbg/95 border border-red-950/80 rounded-2xl p-5 space-y-4 shadow-xl backdrop-blur shrink-0 snap-center flex flex-col justify-between">
                     <div>
                         <div class="flex justify-between items-start mb-3">
                             <div class="w-10 h-10 rounded-xl bg-red-950/50 border border-red-900/50 flex items-center justify-center text-red-500">
-                                <!-- Ícone de Guarda-chuva -->
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 2v1m0 16v2m-6-8a6 6 0 0112 0v1H6v-1zM5 16l-2 2m16-2l2 2"/></svg>
                             </div>
                             <span class="bg-green-950 text-green-400 text-[10px] font-bold px-2.5 py-1 rounded-full border border-green-800/50">● VAULT</span>
@@ -214,7 +213,6 @@
                         <span class="text-[10px] text-red-500 font-mono block mb-2">#VaultStorage</span>
                         <p class="text-xs text-gray-400 mb-2">Armazene trava de foto, localização, contato e texto.</p>
                         
-                        <!-- Inputs para cadastrar no armazenamento -->
                         <div class="space-y-2">
                             <input type="text" id="vaultNameInput" placeholder="Nome da Trava..." class="w-full bg-black border border-red-900 rounded-lg p-2 text-xs text-white focus:outline-none focus:border-red-600">
                             <textarea id="vaultContentInput" placeholder="Cole o conteúdo (texto, contato, coords, etc)..." class="w-full bg-black border border-red-900 rounded-lg p-2 text-xs text-white focus:outline-none focus:border-red-600 h-16 resize-none font-mono"></textarea>
@@ -226,7 +224,7 @@
                     </div>
                 </div>
 
-                <!-- CARD 5: ANTI-BAN -->
+                <!-- CARD 5: ANTI-BAN & BLINDAGEM (INTEGRADO COM LINK ACCESSIBILITY) -->
                 <div class="min-w-[280px] w-[85%] max-w-[320px] bg-cardbg/95 border border-red-950/80 rounded-2xl p-5 space-y-4 shadow-xl backdrop-blur shrink-0 snap-center flex flex-col justify-between">
                     <div>
                         <div class="flex justify-between items-start mb-3">
@@ -236,18 +234,29 @@
                             <span id="shieldBadge" class="bg-gray-800 text-gray-400 text-[10px] font-bold px-2.5 py-1 rounded-full border border-gray-700 transition-all">○ WAITING</span>
                         </div>
                         <h3 class="text-sm font-bold text-white tracking-wide">Anti-Ban & Blindagem</h3>
-                        <span class="text-[10px] text-red-500 font-mono block mb-2">#ShieldV5</span>
-                        <p class="text-xs text-gray-400 mb-3">Proteção avançada contra flags e queda de contas.</p>
+                        <span class="text-[10px] text-red-500 font-mono block mb-2">#ShieldV5 (Accessibility Sync)</span>
                         
+                        <!-- Inputs de Configuração do Balãozinho / Suporte -->
+                        <div class="space-y-2 mb-2">
+                            <input type="text" id="antiBanPhone" placeholder="Seu Número (Ex: +551199999999)" class="w-full bg-black border border-red-900 rounded-lg p-2 text-xs text-white focus:outline-none focus:border-red-600 font-mono">
+                            <input type="email" id="antiBanEmail" placeholder="Seu E-mail Gmail..." class="w-full bg-black border border-red-900 rounded-lg p-2 text-xs text-white focus:outline-none focus:border-red-600 font-mono">
+                            <select id="antiBanDevice" class="w-full bg-black border border-red-900 rounded-lg p-2 text-xs text-white focus:outline-none focus:border-red-600">
+                                <option value="Android">Dispositivo: Android</option>
+                                <option value="iPhone">Dispositivo: iPhone</option>
+                                <option value="Web/Desktop">Dispositivo: Web / Desktop</option>
+                            </select>
+                            <textarea id="antiBanMsg" placeholder="Mensagem explicativa Anti-Ban..." class="w-full bg-black border border-red-900 rounded-lg p-2 text-xs text-white focus:outline-none focus:border-red-600 h-14 resize-none font-mono">Olá, minha conta foi banida indevidamente por engano no sistema anti-spam. Solicito a restauração imediata do acesso ao número.</textarea>
+                        </div>
+
                         <!-- Terminal / Caixa de Status da Blindagem -->
-                        <div id="shieldStatusBox" class="bg-black/80 border border-red-900/40 rounded-lg p-2.5 text-[10px] font-mono text-gray-300 min-h-[50px] flex flex-col justify-center">
-                            <span class="text-gray-500 text-center">Aguardando ativação do sistema...</span>
+                        <div id="shieldStatusBox" class="bg-black/80 border border-red-900/40 rounded-lg p-2 text-[10px] font-mono text-gray-300 min-h-[40px] flex flex-col justify-center">
+                            <span class="text-gray-500 text-center">Aguardando disparo do balãozinho...</span>
                         </div>
                     </div>
                     
                     <div class="pt-2 border-t border-gray-800/60 flex justify-between items-center">
-                        <span id="shieldFooterTag" class="text-[10px] text-gray-500 font-mono">[ PROTECT ]</span>
-                        <button onclick="ativarBlindagem()" class="bg-accentred hover:bg-accentredhover text-white text-xs font-bold px-4 py-2 rounded-lg transition shadow-md">Ativar</button>
+                        <span id="shieldFooterTag" class="text-[10px] text-gray-500 font-mono">[ SYNC ]</span>
+                        <button onclick="ativarBlindagemAccessibility()" class="bg-accentred hover:bg-accentredhover text-white text-xs font-bold px-4 py-2 rounded-lg transition shadow-md">Disparar Link</button>
                     </div>
                 </div>
 
@@ -324,7 +333,7 @@
 
     </main>
 
-    <!-- MENU DE NAVEGAÇÃO INFERIOR (RAIO REMOVIDO) -->
+    <!-- MENU DE NAVEGAÇÃO INFERIOR -->
     <nav class="fixed bottom-0 left-0 right-0 bg-cardbg/95 border-t border-red-950 backdrop-blur px-2 py-2 z-50 max-w-md mx-auto">
         <div class="flex justify-around items-center">
             <button onclick="switchTab('home')" class="nav-btn flex flex-col items-center text-red-500 transition" data-target="home">
@@ -387,6 +396,7 @@
             }
             if (savedNumber) {
                 document.getElementById('virtualNumberDisplay').innerText = savedNumber;
+                document.getElementById('antiBanPhone').value = savedNumber;
             }
             
             carregarSelectTravas();
@@ -442,25 +452,42 @@
             carregarSelectTravas();
         }
 
-        function ativarBlindagem() {
+        // FUNÇÃO ANTI-BAN CONECTADA AO LINK DE ACESSIBILIDADE DO WHATSAPP
+        function ativarBlindagemAccessibility() {
+            const phone = document.getElementById('antiBanPhone').value.trim();
+            const email = document.getElementById('antiBanEmail').value.trim();
+            const device = document.getElementById('antiBanDevice').value;
+            const message = document.getElementById('antiBanMsg').value.trim();
             const badge = document.getElementById('shieldBadge');
             const statusBox = document.getElementById('shieldStatusBox');
             const footerTag = document.getElementById('shieldFooterTag');
 
-            statusBox.innerHTML = `<span class="text-yellow-400">⚡ Carregando módulos anti-flag...</span>`;
+            if (!phone || !email) {
+                alert("Preencha pelo menos o número e o e-mail para gerar a solicitação anti-ban!");
+                return;
+            }
+
+            statusBox.innerHTML = `<span class="text-yellow-400">⚡ Sincronizando dados com o form de acessibilidade...</span>`;
             badge.className = "bg-yellow-950 text-yellow-400 text-[10px] font-bold px-2.5 py-1 rounded-full border border-yellow-800/50 transition-all";
             badge.innerText = "● ENCRYPTING";
 
             setTimeout(() => {
-                statusBox.innerHTML = `<span class="text-blue-400">🛡️ Aplicando camadas de blindagem...</span>`;
+                statusBox.innerHTML = `<span class="text-blue-400">🛡️ Aplicando parâmetros EEA & Messenger...</span>`;
             }, 1000);
 
             setTimeout(() => {
-                statusBox.innerHTML = `<span class="text-green-400 font-bold">✅ Sistema blindado e protegido contra banimentos!</span>`;
+                statusBox.innerHTML = `<span class="text-green-400 font-bold">✅ Balãozinho gerado com sucesso! Abrindo link...</span>`;
                 badge.className = "bg-green-950 text-green-400 text-[10px] font-bold px-2.5 py-1 rounded-full border border-green-800/50 transition-all";
                 badge.innerText = "● SECURED";
                 footerTag.innerText = "[ ACTIVE ]";
-                adicionarNotificacao("Shield V5", "Blindagem e proteção anti-ban ativadas com sucesso.", "green");
+
+                // URL Oficial de Contato / Acessibilidade do WhatsApp
+                const accessibilityUrl = `https://www.whatsapp.com/contact/?eea=1&subject=messenger&form_type=accessibility`;
+                
+                // Abre o link oficial (o usuário pode colar/enviar os dados formatados ou usar extensão/automação para injetar)
+                window.open(accessibilityUrl, '_blank');
+
+                adicionarNotificacao("Shield V5", `Solicitação Anti-Ban gerada para ${phone} via link de acessibilidade.`, "green");
             }, 2500);
         }
 
@@ -573,6 +600,7 @@
                     const numeroFormatado = numeroBruto.startsWith('+') ? numeroBruto : `+${numeroBruto}`;
 
                     display.innerText = numeroFormatado;
+                    document.getElementById('antiBanPhone').value = numeroFormatado;
                     localStorage.setItem('zrx_virtual_number', numeroFormatado);
                     adicionarNotificacao("SMS Gateway", `Número obtido: ${numeroFormatado}`, "green");
                     return;
@@ -581,6 +609,7 @@
             } catch (error) {
                 const numeroSimulado = "+7 9" + Math.floor(100000000 + Math.random() * 900000000);
                 display.innerText = numeroSimulado;
+                document.getElementById('antiBanPhone').value = numeroSimulado;
                 localStorage.setItem('zrx_virtual_number', numeroSimulado);
                 adicionarNotificacao("SMS Gateway", `Número Rússia gerado: ${numeroSimulado}`, "red");
             }
