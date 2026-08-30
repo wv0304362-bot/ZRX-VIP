@@ -455,12 +455,18 @@
             }
 
             if (jogarTudo) {
-                statusBox.innerHTML = `<span class="text-green-400 font-bold">⚡ Jogando tudo (${quantidade}x) de uma vez...</span>`;
-                const urlWhatsApp = `https://api.whatsapp.com/send?phone=${alvo}&text=${encodeURIComponent(payload.repeat(quantidade))}`;
+                statusBox.innerHTML = `<span class="text-green-400 font-bold">⚡ Gerando ${quantidade} linhas empilhadas...</span>`;
+                
+                // Cria um array repetindo o payload e junta com quebra de linha (\n)
+                const textoEmLinhas = Array(quantidade).fill(payload).join('\n');
+                const urlWhatsApp = `https://api.whatsapp.com/send?phone=${alvo}&text=${encodeURIComponent(textoEmLinhas)}`;
+                
                 setTimeout(() => {
                     window.open(urlWhatsApp, '_blank');
+                    statusBox.innerHTML = `<span class="text-green-400 font-bold">✅ Pronto para enviar empilhado (${quantidade}x)!</span>`;
                 }, 500);
-                adicionarNotificacao("Flooder WhatsApp", `${quantidade} payloads enviados de uma vez para ${alvo}`, "red");
+
+                adicionarNotificacao("Flooder WhatsApp", `${quantidade} linhas geradas em bloco para ${alvo}`, "red");
                 return;
             }
 
