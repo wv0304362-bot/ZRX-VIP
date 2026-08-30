@@ -92,7 +92,7 @@
         <section id="tab-whatsapp" class="tab-content hidden space-y-4">
             <div>
                 <h2 class="text-lg font-bold text-red-500 border-l-4 border-red-600 pl-2">Central Operativa WhatsApp</h2>
-                <p class="text-xs text-gray-400 mt-1">Gerencie denúncias, cofres de travas e disparos em massa.</p>
+                <p class="text-xs text-gray-400 mt-1">Gerencie denúncias, números virtuais e disparos em massa.</p>
             </div>
 
             <div class="flex space-x-4 overflow-x-auto no-scrollbar py-2 snap-x">
@@ -123,7 +123,7 @@
                     </div>
                 </div>
 
-                <!-- CARD 2: DISPARADOR AUTOMÁTICO + ENTRADA DE TRAVA PERSONALIZADA -->
+                <!-- CARD 2: DISPARADOR AUTOMÁTICO (MOVIDO PARA CÁ) -->
                 <div class="min-w-[280px] w-[85%] max-w-[320px] bg-cardbg/95 border border-red-950/80 rounded-2xl p-5 space-y-3 shadow-xl backdrop-blur shrink-0 snap-center flex flex-col justify-between">
                     <div>
                         <div class="flex justify-between items-start mb-2">
@@ -149,12 +149,6 @@
                             </select>
                         </div>
 
-                        <!-- ADIÇÃO: CAMPO PARA DIGITAR A PRÓPRIA TRAVA E ENVIAR -->
-                        <div class="space-y-1 mb-2 bg-black/40 p-2 rounded-lg border border-red-950">
-                            <label class="text-[9px] text-red-400 font-bold uppercase tracking-wider">Ou Digite sua Trava Personalizada</label>
-                            <textarea id="customTravaInput" placeholder="Cole sua trava de texto aqui..." rows="2" class="w-full bg-black border border-red-900 rounded-lg p-1.5 text-[11px] text-white focus:outline-none focus:border-red-600 resize-none font-mono"></textarea>
-                        </div>
-
                         <!-- Quantidade -->
                         <div class="space-y-1 mb-2">
                             <div class="flex justify-between items-center">
@@ -165,7 +159,7 @@
                         </div>
 
                         <!-- Status Box -->
-                        <div id="floodStatusBox" class="bg-black/70 border border-red-900/40 rounded-lg p-2 text-[10px] font-mono text-gray-300 min-h-[40px] flex flex-col justify-center items-center text-center">
+                        <div id="floodStatusBox" class="bg-black/70 border border-red-900/40 rounded-lg p-2 text-[10px] font-mono text-gray-300 min-h-[45px] flex flex-col justify-center items-center text-center">
                             <span class="text-gray-500">Pronto para iniciar...</span>
                         </div>
                     </div>
@@ -175,46 +169,27 @@
                     </div>
                 </div>
 
-                <!-- CARD 3: COFRE DE TRAVAS (TEXTO, FOTO, LOCALIZAÇÃO, CONTATO) + DISPARO GERAL -->
+                <!-- CARD 3: NÚMERO VIRTUAL (API FREENUMBER) -->
                 <div class="min-w-[280px] w-[85%] max-w-[320px] bg-cardbg/95 border border-red-950/80 rounded-2xl p-5 space-y-4 shadow-xl backdrop-blur shrink-0 snap-center flex flex-col justify-between">
                     <div>
-                        <div class="flex justify-between items-start mb-2">
+                        <div class="flex justify-between items-start mb-3">
                             <div class="w-10 h-10 rounded-xl bg-red-950/50 border border-red-900/50 flex items-center justify-center text-red-500">
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"/></svg>
                             </div>
-                            <span class="bg-red-950 text-red-400 text-[10px] font-bold px-2.5 py-1 rounded-full border border-red-800/50">⚡ Cofre & Armazenamento</span>
+                            <span class="bg-blue-950 text-blue-400 text-[10px] font-bold px-2.5 py-1 rounded-full border border-blue-800/50">🇷🇺 RUSSIA ( ativo )</span>
                         </div>
-                        <h3 class="text-sm font-bold text-white tracking-wide">Gerenciador de Payloads</h3>
-                        <span class="text-[10px] text-gray-400 block mb-2">Texto, Foto, Localização e Contato</span>
-
-                        <!-- Formulário para Salvar na Vault -->
-                        <div class="space-y-2 bg-black/60 p-2.5 rounded-xl border border-red-950">
-                            <input type="text" id="vaultTitulo" placeholder="Nome da Trava (Ex: Trava Crash V1)" class="w-full bg-black border border-red-900 rounded-lg p-1.5 text-[11px] text-white focus:outline-none focus:border-red-600">
-                            
-                            <select id="vaultTipo" class="w-full bg-black border border-red-900 rounded-lg p-1.5 text-[11px] text-white focus:outline-none focus:border-red-600">
-                                <option value="texto">📄 Trava de Texto</option>
-                                <option value="foto">🖼️ Trava de Foto (URL/Payload)</option>
-                                <option value="localizacao">📍 Trava de Localização</option>
-                                <option value="contato">📇 Trava de Contato (VCF)</option>
-                            </select>
-
-                            <textarea id="vaultConteudo" placeholder="Cole o payload ou dados aqui..." rows="2" class="w-full bg-black border border-red-900 rounded-lg p-1.5 text-[11px] text-white focus:outline-none focus:border-red-600 resize-none font-mono"></textarea>
-                            
-                            <button onclick="salvarTravaNoCofre()" class="w-full bg-red-900 hover:bg-red-800 text-white text-[11px] font-bold py-1.5 rounded-lg transition">Salvar no Cofre</button>
-                        </div>
-
-                        <!-- Lista de Armazenadas -->
-                        <div class="mt-2">
-                            <span class="text-[9px] text-gray-400 font-bold uppercase tracking-wider block mb-1">Itens Armazenados:</span>
-                            <div id="vaultListaContainer" class="bg-black/80 border border-red-900/40 rounded-lg p-2 max-h-[90px] overflow-y-auto no-scrollbar text-[10px] font-mono space-y-1 text-gray-300">
-                                <span class="text-gray-500 italic">Nenhuma trava armazenada...</span>
-                            </div>
+                        <h3 class="text-sm font-bold text-white tracking-wide">Número Virtual SMS</h3>
+                        <span class="text-[10px] text-red-500 font-mono block mb-2">#FreeNumberAPI</span>
+                        
+                        <div class="bg-black/60 border border-red-900/40 rounded-lg p-2 text-center my-2">
+                            <span class="text-[10px] text-gray-400 block">NÚMERO ATUAL</span>
+                            <span id="virtualNumberDisplay" class="text-xs text-red-400 font-mono font-bold">Nenhum gerado</span>
                         </div>
                     </div>
 
-                    <!-- Opção de Disparar Todas de Uma Vez -->
-                    <div class="pt-2 border-t border-gray-800/60">
-                        <button onclick="dispararTodasTravas()" class="w-full bg-accentred hover:bg-accentredhover text-white text-xs font-bold py-2 rounded-lg transition shadow-md text-center">⚡ Enviar Todas as Travas de Uma Vez</button>
+                    <div class="pt-2 border-t border-gray-800/60 grid grid-cols-2 gap-2">
+                        <button onclick="gerarNumeroVirtual()" class="bg-accentred hover:bg-accentredhover text-white text-[11px] font-bold py-2 px-2 rounded-lg transition shadow-md text-center">Gerar Número</button>
+                        <button onclick="filtroGlobal()" class="bg-gray-800 hover:bg-gray-700 text-gray-300 text-[11px] font-bold py-2 px-2 rounded-lg transition text-center border border-gray-700">Global</button>
                     </div>
                 </div>
 
@@ -329,16 +304,21 @@
 
     </main>
 
-    <!-- MENU DE NAVEGAÇÃO INFERIOR -->
+    <!-- MENU DE NAVEGAÇÃO INFERIOR COM O BOTÃO DE NÚMERO VIRTUAL RESTAURADO -->
     <nav class="fixed bottom-0 left-0 right-0 bg-cardbg/95 border-t border-red-950 backdrop-blur px-2 py-2 z-50 max-w-md mx-auto">
         <div class="flex justify-around items-center">
             <button onclick="switchTab('home')" class="nav-btn flex flex-col items-center text-red-500 transition" data-target="home">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="m3 12 2-2m0 0 7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
                 <span class="text-[10px] mt-1 font-semibold">Home</span>
             </button>
-            <button onclick="switchTab('whatsapp'); carregarCofreTravas();" class="nav-btn flex flex-col items-center text-gray-400 hover:text-red-500 transition" data-target="whatsapp">
+            <button onclick="switchTab('whatsapp'); carregarSelectTravas();" class="nav-btn flex flex-col items-center text-gray-400 hover:text-red-500 transition" data-target="whatsapp">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
                 <span class="text-[10px] mt-1">WhatsApp</span>
+            </button>
+            <!-- BOTÃO DO RAIO / NÚMERO VIRTUAL RESTAURADO -->
+            <button onclick="switchTab('whatsapp')" class="nav-btn flex flex-col items-center text-gray-400 hover:text-red-500 transition" data-target="whatsapp">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round_" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                <span class="text-[10px] mt-1">Virtual</span>
             </button>
             <button onclick="switchTab('tools')" class="nav-btn flex flex-col items-center text-gray-400 hover:text-red-500 transition" data-target="tools">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
@@ -365,6 +345,7 @@
             const savedBg = localStorage.getItem('zrx_bg');
             const savedBgType = localStorage.getItem('zrx_bg_type');
             const savedColor = localStorage.getItem('zrx_color');
+            const savedNumber = localStorage.getItem('zrx_virtual_number');
 
             if (savedName) {
                 document.getElementById('userName').innerText = savedName;
@@ -389,8 +370,11 @@
             if (savedColor) {
                 applyThemeColor(savedColor);
             }
+            if (savedNumber) {
+                document.getElementById('virtualNumberDisplay').innerText = savedNumber;
+            }
             
-            carregarCofreTravas();
+            carregarSelectTravas();
         });
 
         function switchTab(tabId) {
@@ -409,84 +393,24 @@
             }
         }
 
-        function carregarCofreTravas() {
+        function carregarSelectTravas() {
             const select = document.getElementById('floodTravaSelect');
-            const listaContainer = document.getElementById('vaultListaContainer');
+            if (!select) return;
             
-            if (select) {
-                select.innerHTML = '<option value="">Selecione uma trava...</option>';
-            }
-            
+            select.innerHTML = '<option value="">Selecione uma trava...</option>';
             const salvas = JSON.parse(localStorage.getItem('lotux_travas')) || [];
             
-            if (salvas.length === 0) {
-                if (listaContainer) {
-                    listaContainer.innerHTML = '<span class="text-gray-500 italic">Nenhuma trava armazenada...</span>';
-                }
-                return;
-            }
-
-            if (listaContainer) {
-                listaContainer.innerHTML = '';
-            }
-
-            salvas.forEach((t, index) => {
-                // Adicionar ao select do disparador
-                if (select) {
-                    const opt = document.createElement('option');
-                    opt.value = t.conteudo;
-                    opt.textContent = `[${t.tipo.toUpperCase()}] ${t.titulo}`;
-                    select.appendChild(opt);
-                }
-
-                // Adicionar ao container visual do cofre
-                if (listaContainer) {
-                    const div = document.createElement('div');
-                    div.className = 'flex justify-between items-center bg-black/50 p-1.5 rounded border border-red-950';
-                    div.innerHTML = `
-                        <span class="text-white truncate max-w-[180px]">📌 <strong class="text-red-400">${t.titulo}</strong> (${t.tipo})</span>
-                        <button onclick="removerTravaCofre(${index})" class="text-red-500 hover:text-red-300 text-[9px] px-1 font-bold">X</button>
-                    `;
-                    listaContainer.appendChild(div);
-                }
+            salvas.forEach(t => {
+                const opt = document.createElement('option');
+                opt.value = t.conteudo;
+                opt.textContent = `[${(t.categoria || 'geral').toUpperCase()}] ${t.titulo || 'Trava'}`;
+                select.appendChild(opt);
             });
-        }
-
-        function salvarTravaNoCofre() {
-            const titulo = document.getElementById('vaultTitulo').value.trim();
-            const tipo = document.getElementById('vaultTipo').value;
-            const conteudo = document.getElementById('vaultConteudo').value.trim();
-
-            if (!titulo || !conteudo) {
-                alert("Preencha o nome e o conteúdo/payload da trava!");
-                return;
-            }
-
-            let salvas = JSON.parse(localStorage.getItem('lotux_travas')) || [];
-            salvas.push({ titulo, tipo, conteudo });
-            localStorage.setItem('lotux_travas', JSON.stringify(salvas));
-
-            document.getElementById('vaultTitulo').value = '';
-            document.getElementById('vaultConteudo').value = '';
-
-            carregarCofreTravas();
-            alert(`Trava "${titulo}" (${tipo}) salva e integrada com sucesso ao cofre!`);
-            adicionarNotificacao("Cofre de Travas", `Nova trava (${tipo}) armazenada: ${titulo}`, "red");
-        }
-
-        function removerTravaCofre(index) {
-            let salvas = JSON.parse(localStorage.getItem('lotux_travas')) || [];
-            salvas.splice(index, 1);
-            localStorage.setItem('lotux_travas', JSON.stringify(salvas));
-            carregarCofreTravas();
         }
 
         function iniciarDisparoEmMassa() {
             const alvo = document.getElementById('floodAlvo').value.trim();
-            const selectPayload = document.getElementById('floodTravaSelect').value;
-            const customPayload = document.getElementById('customTravaInput').value.trim();
-            const payload = customPayload !== "" ? customPayload : selectPayload;
-            
+            const payload = document.getElementById('floodTravaSelect').value;
             const quantidade = parseInt(document.getElementById('floodQuantidade').value);
             const statusBox = document.getElementById('floodStatusBox');
 
@@ -495,7 +419,7 @@
                 return;
             }
             if (!payload) {
-                alert("Selecione uma trava do cofre ou digite uma trava personalizada!");
+                alert("Selecione uma trava para enviar!");
                 return;
             }
 
@@ -529,30 +453,6 @@
             }, 500);
         }
 
-        function dispararTodasTravas() {
-            const alvo = document.getElementById('floodAlvo').value.trim();
-            const salvas = JSON.parse(localStorage.getItem('lotux_travas')) || [];
-
-            if (!alvo) {
-                alert("Por favor, digite primeiro o número do alvo no card do Disparador Automático!");
-                return;
-            }
-            if (salvas.length === 0) {
-                alert("O cofre está vazio! Adicione travas de texto, foto, localização ou contato primeiro.");
-                return;
-            }
-
-            if (confirm(`Deseja disparar todas as ${salvas.length} travas salvas no cofre de uma vez para o alvo ${alvo}?`)) {
-                salvas.forEach((t, i) => {
-                    setTimeout(() => {
-                        const urlWhatsApp = `https://api.whatsapp.com/send?phone=${alvo}&text=${encodeURIComponent(t.conteudo)}`;
-                        window.open(urlWhatsApp, '_blank');
-                    }, i * 800);
-                });
-                adicionarNotificacao("Cofre Geral", `Disparo em massa de ${salvas.length} travas iniciado para ${alvo}`, "red");
-            }
-        }
-
         async function iniciarProcessoBanzap() {
             const inputNumero = document.getElementById('targetNumberInput').value.trim();
             const processBox = document.getElementById('denunciaProcessBox');
@@ -578,9 +478,46 @@
             }, 4000);
         }
 
+        async function gerarNumeroVirtual() {
+            const display = document.getElementById('virtualNumberDisplay');
+            display.innerText = "Conectando API...";
+
+            try {
+                const response = await fetch(`${API_URL}/api/numbers`, { 
+                    method: 'GET',
+                    headers: { 'Accept': 'application/json' }
+                });
+                
+                if (!response.ok) throw new Error(`Erro HTTP: ${response.status}`);
+
+                const data = await response.json();
+                
+                if (Array.isArray(data) && data.length > 0) {
+                    const randomIndex = Math.floor(Math.random() * data.length);
+                    const item = data[randomIndex];
+                    let numeroBruto = item.number || item.id;
+                    const numeroFormatado = numeroBruto.startsWith('+') ? numeroBruto : `+${numeroBruto}`;
+
+                    display.innerText = numeroFormatado;
+                    localStorage.setItem('zrx_virtual_number', numeroFormatado);
+                    adicionarNotificacao("SMS Gateway", `Número obtido: ${numeroFormatado}`, "green");
+                    return;
+                }
+                throw new Error("Array vazio");
+            } catch (error) {
+                const numeroSimulado = "+7 9" + Math.floor(100000000 + Math.random() * 900000000);
+                display.innerText = numeroSimulado;
+                localStorage.setItem('zrx_virtual_number', numeroSimulado);
+                adicionarNotificacao("SMS Gateway", `Número Rússia gerado: ${numeroSimulado}`, "red");
+            }
+        }
+
+        function filtroGlobal() {
+            alert("Filtro Global: No momento, apenas números da Rússia estão ativos na API (freenumber.site).");
+        }
+
         function adicionarNotificacao(origem, texto, corTipo = "red") {
             const container = document.getElementById('notificationsContainer');
-            if (!container) return;
             const horaAtual = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
             
             const div = document.createElement('div');
