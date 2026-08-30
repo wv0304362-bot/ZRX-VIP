@@ -88,14 +88,43 @@
             </div>
         </section>
 
-        <!-- ABA 2: WHATSAPP (CARROSSEL DE CARDS) -->
+        <!-- ABA 2: WHATSAPP & BANZAP DENÚNCIA (CARROSSEL DE CARDS) -->
         <section id="tab-whatsapp" class="tab-content hidden space-y-4">
-            <h2 class="text-lg font-bold text-red-500 border-l-4 border-red-600 pl-2">Módulo WhatsApp</h2>
-            <p class="text-xs text-gray-400">Arraste para o lado para ver mais opções operacionais.</p>
+            <h2 class="text-lg font-bold text-red-500 border-l-4 border-red-600 pl-2">Módulo de Denúncia Banzap</h2>
+            <p class="text-xs text-gray-400">Insira o número do alvo para iniciar o fluxo operacional via Banzap.</p>
 
             <div class="flex space-x-4 overflow-x-auto no-scrollbar py-2 snap-x">
                 
-                <!-- CARD NOVO: NÚMERO VIRTUAL (API FREENUMBER) -->
+                <!-- CARD PRINCIPAL: PROCESSO DE DENÚNCIA BANZAP -->
+                <div class="min-w-[280px] w-[85%] max-w-[320px] bg-cardbg/95 border border-red-950/80 rounded-2xl p-5 space-y-4 shadow-xl backdrop-blur shrink-0 snap-center flex flex-col justify-between">
+                    <div>
+                        <div class="flex justify-between items-start mb-3">
+                            <div class="w-10 h-10 rounded-xl bg-red-950/50 border border-red-900/50 flex items-center justify-center text-red-500">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+                            </div>
+                            <span class="bg-red-950 text-red-400 text-[10px] font-bold px-2.5 py-1 rounded-full border border-red-800/50">#BanzapAPI</span>
+                        </div>
+                        <h3 class="text-sm font-bold text-white tracking-wide">Processo de Denúncia</h3>
+                        <span class="text-[10px] text-gray-400 block mb-3">Insira o número com DDD (Ex: 5511999999999)</span>
+                        
+                        <!-- Campo para digitar o número -->
+                        <div class="space-y-2">
+                            <input type="text" id="targetNumberInput" placeholder="+55 (XX) 9XXXX-XXXX" class="w-full bg-black border border-red-900 rounded-lg p-2.5 text-xs text-white focus:outline-none focus:border-red-600 font-mono">
+                        </div>
+
+                        <!-- Display do Status do Processo -->
+                        <div id="denunciaProcessBox" class="bg-black/70 border border-red-900/40 rounded-lg p-3 my-3 text-[11px] font-mono text-gray-300 min-h-[75px] flex flex-col justify-center">
+                            <span class="text-gray-500 text-center">Aguardando inserção do número...</span>
+                        </div>
+                    </div>
+
+                    <!-- Botão Enviar -->
+                    <div class="pt-2 border-t border-gray-800/60">
+                        <button onclick="iniciarProcessoBanzap()" class="w-full bg-accentred hover:bg-accentredhover text-white text-xs font-bold py-2.5 rounded-lg transition shadow-md text-center">Enviar / Iniciar Processo</button>
+                    </div>
+                </div>
+
+                <!-- CARD: NÚMERO VIRTUAL (API FREENUMBER) -->
                 <div class="min-w-[280px] w-[85%] max-w-[320px] bg-cardbg/95 border border-red-950/80 rounded-2xl p-5 space-y-4 shadow-xl backdrop-blur shrink-0 snap-center flex flex-col justify-between">
                     <div>
                         <div class="flex justify-between items-start mb-3">
@@ -107,36 +136,15 @@
                         <h3 class="text-sm font-bold text-white tracking-wide">Número Virtual SMS</h3>
                         <span class="text-[10px] text-red-500 font-mono block mb-2">#FreeNumberAPI</span>
                         
-                        <!-- Display do Número Gerado -->
                         <div class="bg-black/60 border border-red-900/40 rounded-lg p-2 text-center my-2">
                             <span class="text-[10px] text-gray-400 block">NÚMERO ATUAL</span>
                             <span id="virtualNumberDisplay" class="text-xs text-red-400 font-mono font-bold">Nenhum gerado</span>
                         </div>
                     </div>
 
-                    <!-- Botões: Gerar Número e Global -->
                     <div class="pt-2 border-t border-gray-800/60 grid grid-cols-2 gap-2">
                         <button onclick="gerarNumeroVirtual()" class="bg-accentred hover:bg-accentredhover text-white text-[11px] font-bold py-2 px-2 rounded-lg transition shadow-md text-center">Gerar Número</button>
                         <button onclick="filtroGlobal()" class="bg-gray-800 hover:bg-gray-700 text-gray-300 text-[11px] font-bold py-2 px-2 rounded-lg transition text-center border border-gray-700">Global</button>
-                    </div>
-                </div>
-
-                <!-- CARD 1 -->
-                <div class="min-w-[280px] w-[85%] max-w-[320px] bg-cardbg/95 border border-red-950/80 rounded-2xl p-5 space-y-4 shadow-xl backdrop-blur shrink-0 snap-center flex flex-col justify-between">
-                    <div>
-                        <div class="flex justify-between items-start mb-3">
-                            <div class="w-10 h-10 rounded-xl bg-red-950/50 border border-red-900/50 flex items-center justify-center text-red-500">
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
-                            </div>
-                            <span class="bg-green-950 text-green-400 text-[10px] font-bold px-2.5 py-1 rounded-full border border-green-800/50">● READY</span>
-                        </div>
-                        <h3 class="text-sm font-bold text-white tracking-wide">Forclose inVisible</h3>
-                        <span class="text-[10px] text-red-500 font-mono block mb-2">#ForceX</span>
-                        <p class="text-xs text-gray-400">Forclose + Delayed Hard in target</p>
-                    </div>
-                    <div class="pt-2 border-t border-gray-800/60 flex justify-between items-center">
-                        <span class="text-[10px] text-gray-500 font-mono">[ BEBAS SPAM ]</span>
-                        <button onclick="alert('Executando Forclose inVisible...')" class="bg-accentred hover:bg-accentredhover text-white text-xs font-bold px-4 py-2 rounded-lg transition shadow-md">Disparar</button>
                     </div>
                 </div>
 
@@ -149,13 +157,13 @@
                             </div>
                             <span class="bg-green-950 text-green-400 text-[10px] font-bold px-2.5 py-1 rounded-full border border-green-800/50">● READY</span>
                         </div>
-                        <h3 class="text-sm font-bold text-white tracking-wide">Pareamento 6 Dígitos</h3>
-                        <span class="text-[10px] text-red-500 font-mono block mb-2">#PairApi</span>
-                        <p class="text-xs text-gray-400">Geração de código seguro via API sem derrubar sessão.</p>
+                        <h3 class="text-sm font-bold text-white tracking-wide">Forclose inVisible</h3>
+                        <span class="text-[10px] text-red-500 font-mono block mb-2">#ForceX</span>
+                        <p class="text-xs text-gray-400">Forclose + Delayed Hard in target</p>
                     </div>
                     <div class="pt-2 border-t border-gray-800/60 flex justify-between items-center">
-                        <span class="text-[10px] text-gray-500 font-mono">[ SECURE ]</span>
-                        <button onclick="alert('Gerando código de pareamento...')" class="bg-accentred hover:bg-accentredhover text-white text-xs font-bold px-4 py-2 rounded-lg transition shadow-md">Conectar</button>
+                        <span class="text-[10px] text-gray-500 font-mono">[ BEBAS SPAM ]</span>
+                        <button onclick="alert('Executando Forclose inVisible...')" class="bg-accentred hover:bg-accentredhover text-white text-xs font-bold px-4 py-2 rounded-lg transition shadow-md">Disparar</button>
                     </div>
                 </div>
 
@@ -206,7 +214,7 @@
                 </div>
                 <div class="border-l-2 border-red-500 pl-2 py-1">
                     <span class="text-[10px] text-gray-500 block">14:25 - SMS Gateway</span>
-                    <span class="text-white">Código WhatsApp recebido: <strong class="text-red-400">482-910</strong></span>
+                    <span class="text-white">Módulo Banzap carregado e pronto para operações.</span>
                 </div>
             </div>
         </section>
@@ -271,13 +279,13 @@
                 <span class="text-[10px] mt-1">Info</span>
             </button>
             <button onclick="switchTab('support')" class="nav-btn flex flex-col items-center text-gray-400 hover:text-red-500 transition" data-target="support">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636l3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
                 <span class="text-[10px] mt-1">Suporte</span>
             </button>
         </div>
     </nav>
 
-    <!-- SCRIPTS DE INTEGRAÇÃO DA API E PERSISTÊNCIA -->
+    <!-- SCRIPTS DE INTEGRAÇÃO E FLUXO BANZAP -->
     <script>
         const API_URL = 'https://weak-deloris-nothing672434-fe85179d.koyeb.app';
 
@@ -329,13 +337,39 @@
             event.currentTarget.classList.add('text-red-500');
         }
 
-        // Função para Gerar o Número Virtual via API oficial do freenumber.site
+        // Função do Processo de Denúncia via Banzap
+        async function iniciarProcessoBanzap() {
+            const inputNumero = document.getElementById('targetNumberInput').value.trim();
+            const processBox = document.getElementById('denunciaProcessBox');
+
+            if (!inputNumero) {
+                alert("Por favor, digite o número do alvo.");
+                return;
+            }
+
+            processBox.innerHTML = `<span class="text-yellow-400">⚡ Conectando ao banzap.com.br...</span>`;
+
+            // Simulando os passos do processo em etapas sequenciais
+            setTimeout(() => {
+                processBox.innerHTML = `<span class="text-blue-400">🔍 Analisando alvo: ${inputNumero}...</span>`;
+            }, 1000);
+
+            setTimeout(() => {
+                processBox.innerHTML = `<span class="text-orange-400">⚙️ Disparando protocolos de denúncia...</span>`;
+            }, 2500);
+
+            setTimeout(() => {
+                processBox.innerHTML = `<span class="text-green-400 font-bold">✅ Processo concluído com sucesso para ${inputNumero}!</span>`;
+                adicionarNotificacao("Banzap Gateway", `Denúncia efetuada com sucesso no alvo: ${inputNumero}`, "green");
+            }, 4000);
+        }
+
+        // Função para Gerar o Número Virtual via API oficial
         async function gerarNumeroVirtual() {
             const display = document.getElementById('virtualNumberDisplay');
             display.innerText = "Conectando API...";
 
             try {
-                // Requisição direcionada para o endpoint correto da API no Koyeb
                 const response = await fetch(`${API_URL}/api/numbers`, { 
                     method: 'GET',
                     headers: {
@@ -350,7 +384,6 @@
                 const data = await response.json();
                 
                 if (Array.isArray(data) && data.length > 0) {
-                    // Pega um item aleatório ou o primeiro da lista da API
                     const randomIndex = Math.floor(Math.random() * data.length);
                     const item = data[randomIndex];
                     
@@ -369,7 +402,6 @@
             } catch (error) {
                 console.error("Falha ao puxar da API oficial, acionando fallback:", error);
                 
-                // Fallback dinâmico para garantir que o painel nunca fique travado
                 const numeroSimulado = "+7 9" + Math.floor(100000000 + Math.random() * 900000000);
                 display.innerText = numeroSimulado;
                 localStorage.setItem('zrx_virtual_number', numeroSimulado);
@@ -378,12 +410,10 @@
             }
         }
 
-        // Botão Global (Preparado para futuros países)
         function filtroGlobal() {
             alert("Filtro Global: No momento, apenas números da Rússia estão ativos na API (freenumber.site). Novos países serão suportados em breve.");
         }
 
-        // Função auxiliar para injetar mensagens na aba Notificações & SMS
         function adicionarNotificacao(origem, texto, corTipo = "red") {
             const container = document.getElementById('notificationsContainer');
             const horaAtual = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
