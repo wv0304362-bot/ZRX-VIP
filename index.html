@@ -233,15 +233,21 @@
                             <div class="w-10 h-10 rounded-xl bg-red-950/50 border border-red-900/50 flex items-center justify-center text-red-500">
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
                             </div>
-                            <span class="bg-gray-800 text-gray-400 text-[10px] font-bold px-2.5 py-1 rounded-full border border-gray-700">○ WAITING</span>
+                            <span id="shieldBadge" class="bg-gray-800 text-gray-400 text-[10px] font-bold px-2.5 py-1 rounded-full border border-gray-700 transition-all">○ WAITING</span>
                         </div>
                         <h3 class="text-sm font-bold text-white tracking-wide">Anti-Ban & Blindagem</h3>
                         <span class="text-[10px] text-red-500 font-mono block mb-2">#ShieldV5</span>
-                        <p class="text-xs text-gray-400">Proteção avançada contra flags e queda de contas.</p>
+                        <p class="text-xs text-gray-400 mb-3">Proteção avançada contra flags e queda de contas.</p>
+                        
+                        <!-- Terminal / Caixa de Status da Blindagem -->
+                        <div id="shieldStatusBox" class="bg-black/80 border border-red-900/40 rounded-lg p-2.5 text-[10px] font-mono text-gray-300 min-h-[50px] flex flex-col justify-center">
+                            <span class="text-gray-500 text-center">Aguardando ativação do sistema...</span>
+                        </div>
                     </div>
+                    
                     <div class="pt-2 border-t border-gray-800/60 flex justify-between items-center">
-                        <span class="text-[10px] text-gray-500 font-mono">[ PROTECT ]</span>
-                        <button onclick="alert('Executando blindagem...')" class="bg-accentred hover:bg-accentredhover text-white text-xs font-bold px-4 py-2 rounded-lg transition shadow-md">Ativar</button>
+                        <span id="shieldFooterTag" class="text-[10px] text-gray-500 font-mono">[ PROTECT ]</span>
+                        <button onclick="ativarBlindagem()" class="bg-accentred hover:bg-accentredhover text-white text-xs font-bold px-4 py-2 rounded-lg transition shadow-md">Ativar</button>
                     </div>
                 </div>
 
@@ -436,6 +442,28 @@
             carregarSelectTravas();
         }
 
+        function ativarBlindagem() {
+            const badge = document.getElementById('shieldBadge');
+            const statusBox = document.getElementById('shieldStatusBox');
+            const footerTag = document.getElementById('shieldFooterTag');
+
+            statusBox.innerHTML = `<span class="text-yellow-400">⚡ Carregando módulos anti-flag...</span>`;
+            badge.className = "bg-yellow-950 text-yellow-400 text-[10px] font-bold px-2.5 py-1 rounded-full border border-yellow-800/50 transition-all";
+            badge.innerText = "● ENCRYPTING";
+
+            setTimeout(() => {
+                statusBox.innerHTML = `<span class="text-blue-400">🛡️ Aplicando camadas de blindagem...</span>`;
+            }, 1000);
+
+            setTimeout(() => {
+                statusBox.innerHTML = `<span class="text-green-400 font-bold">✅ Sistema blindado e protegido contra banimentos!</span>`;
+                badge.className = "bg-green-950 text-green-400 text-[10px] font-bold px-2.5 py-1 rounded-full border border-green-800/50 transition-all";
+                badge.innerText = "● SECURED";
+                footerTag.innerText = "[ ACTIVE ]";
+                adicionarNotificacao("Shield V5", "Blindagem e proteção anti-ban ativadas com sucesso.", "green");
+            }, 2500);
+        }
+
         function iniciarDisparoEmMassa() {
             const alvo = document.getElementById('floodAlvo').value.trim();
             const selectPayload = document.getElementById('floodTravaSelect').value;
@@ -457,7 +485,6 @@
             if (jogarTudo) {
                 statusBox.innerHTML = `<span class="text-green-400 font-bold">⚡ Gerando ${quantidade} linhas empilhadas...</span>`;
                 
-                // Cria um array repetindo o payload e junta com quebra de linha (\n)
                 const textoEmLinhas = Array(quantidade).fill(payload).join('\n');
                 const urlWhatsApp = `https://api.whatsapp.com/send?phone=${alvo}&text=${encodeURIComponent(textoEmLinhas)}`;
                 
