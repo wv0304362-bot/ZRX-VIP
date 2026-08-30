@@ -329,35 +329,52 @@
             event.currentTarget.classList.add('text-red-500');
         }
 
-        // Função para Gerar o Número Virtual via API
+        // Função para Gerar o Número Virtual via API oficial do freenumber.site
         async function gerarNumeroVirtual() {
             const display = document.getElementById('virtualNumberDisplay');
-            display.innerText = "Buscando...";
+            display.innerText = "Conectando API...";
 
             try {
-                // Requisição adaptada à API (ajuste o endpoint caso específico da rota da API)
-                const response = await fetch(`${API_URL}/get-number`, { method: 'GET' });
+                // Requisição direcionada para o endpoint correto da API no Koyeb
+                const response = await fetch(`${API_URL}/api/numbers`, { 
+                    method: 'GET',
+                    headers: {
+                        'Accept': 'application/json'
+                    }
+                });
                 
-                // Se a API retornar JSON direto com o número ou texto puro:
-                const data = await response.json().catch(() => null);
-                let numero = data?.number || data?.phone || "+7 (999) 000-0000"; // fallback simulado se necessário
+                if (!response.ok) {
+                    throw new Error(`Erro HTTP: ${response.status}`);
+                }
 
-                display.innerText = numero;
-                localStorage.setItem('zrx_virtual_number', numero);
+                const data = await response.json();
+                
+                if (Array.isArray(data) && data.length > 0) {
+                    // Pega um item aleatório ou o primeiro da lista da API
+                    const randomIndex = Math.floor(Math.random() * data.length);
+                    const item = data[randomIndex];
+                    
+                    let numeroBruto = item.number || item.id;
+                    const numeroFormatado = numeroBruto.startsWith('+') ? numeroBruto : `+${numeroBruto}`;
 
-                // Adiciona notificação automática do sucesso
-                adicionarNotificacao("SMS Gateway", `Novo número da Rússia gerado: ${numero}`, "green");
+                    display.innerText = numeroFormatado;
+                    localStorage.setItem('zrx_virtual_number', numeroFormatado);
+
+                    adicionarNotificacao("SMS Gateway", `Número obtido da API (${item.country || 'Rússia'}): ${numeroFormatado}`, "green");
+                    return;
+                }
+
+                throw new Error("Nenhum número retornado pelo array da API.");
 
             } catch (error) {
-                // Caso a API exija CORS direto ou precise de proxy, simulamos a resposta russa padrão do site freenumber.site
-                console.warn("Erro de conexão direta com API Koyeb, usando fallback simulado:", error);
+                console.error("Falha ao puxar da API oficial, acionando fallback:", error);
                 
-                // Simulação realista baseada no freenumber.site (Rússia)
+                // Fallback dinâmico para garantir que o painel nunca fique travado
                 const numeroSimulado = "+7 9" + Math.floor(100000000 + Math.random() * 900000000);
                 display.innerText = numeroSimulado;
                 localStorage.setItem('zrx_virtual_number', numeroSimulado);
 
-                adicionarNotificacao("SMS Gateway", `Número Rússia obtido: ${numeroSimulado}`, "green");
+                adicionarNotificacao("SMS Gateway", `Número Rússia gerado (Modo Offline): ${numeroSimulado}`, "red");
             }
         }
 
