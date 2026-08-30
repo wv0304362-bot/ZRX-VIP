@@ -189,6 +189,59 @@
             </div>
         </section>
 
+        <!-- ABA: DISPARADOR AUTOMÁTICO DE TRAVAS (FLOODER) -->
+        <section id="tab-disparador" class="tab-content hidden space-y-4">
+            <div>
+                <h2 class="text-lg font-bold text-red-500 border-l-4 border-red-600 pl-2">Disparador Automático</h2>
+                <p class="text-xs text-gray-400">Envie múltiplos payloads e travas em sequência para o alvo no WhatsApp.</p>
+            </div>
+
+            <div class="bg-cardbg/95 border border-red-950/80 rounded-2xl p-5 space-y-4 shadow-xl backdrop-blur">
+                
+                <!-- Alvo -->
+                <div class="space-y-1">
+                    <label class="text-[10px] text-gray-400 font-bold uppercase tracking-wider">1. Número do Alvo (com DDD)</label>
+                    <input type="text" id="floodAlvo" placeholder="Ex: 5511999999999" class="w-full bg-black border border-red-900 rounded-lg p-2.5 text-xs text-white focus:outline-none focus:border-red-600 font-mono">
+                </div>
+
+                <!-- Seleção da Trava -->
+                <div class="space-y-1">
+                    <label class="text-[10px] text-gray-400 font-bold uppercase tracking-wider">2. Escolher a Trava do Cofre</label>
+                    <select id="floodTravaSelect" class="w-full bg-black border border-red-900 rounded-lg p-2.5 text-xs text-white focus:outline-none focus:border-red-600">
+                        <option value="">Selecione uma trava salva...</option>
+                    </select>
+                </div>
+
+                <!-- Quantidade de Disparos -->
+                <div class="space-y-1">
+                    <div class="flex justify-between items-center">
+                        <label class="text-[10px] text-gray-400 font-bold uppercase tracking-wider">3. Quantidade de Disparos</label>
+                        <span id="labelQtd" class="text-xs text-red-500 font-mono font-bold">10x</span>
+                    </div>
+                    <input type="range" id="floodQuantidade" min="1" max="100" value="10" oninput="document.getElementById('labelQtd').innerText = this.value + 'x'" class="w-full accent-red-600 bg-black cursor-pointer">
+                    <div class="flex justify-between text-[9px] text-gray-500 font-mono">
+                        <span>1x (Teste)</span>
+                        <span>50x (Médio)</span>
+                        <span>100x (Hard)</span>
+                    </div>
+                </div>
+
+                <!-- Caixa de Status / Log do Disparo -->
+                <div class="space-y-1">
+                    <label class="text-[10px] text-gray-400 font-bold uppercase tracking-wider">Status do Envio</label>
+                    <div id="floodStatusBox" class="bg-black/80 border border-red-900/50 rounded-lg p-3 text-[11px] font-mono text-gray-300 min-h-[90px] flex flex-col justify-center items-center text-center">
+                        <span class="text-gray-500">Pronto para iniciar o fluxo de spam...</span>
+                    </div>
+                </div>
+
+                <!-- Botão de Ação -->
+                <button onclick="iniciarDisparoEmMassa()" class="w-full bg-accentred hover:bg-accentredhover text-white text-xs font-bold py-3 rounded-xl transition shadow-lg flex items-center justify-center gap-2">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                    Iniciar Disparos no WhatsApp
+                </button>
+            </div>
+        </section>
+
         <!-- ABA 3: RAT / FERRAMENTAS -->
         <section id="tab-tools" class="tab-content hidden space-y-4">
             <h2 class="text-lg font-bold text-red-500 border-l-4 border-red-600 pl-2">Ferramentas Avançadas</h2>
@@ -260,7 +313,7 @@
     </main>
 
     <!-- MENU DE NAVEGAÇÃO INFERIOR -->
-    <nav class="fixed bottom-0 left-0 right-0 bg-cardbg/95 border-t border-red-950 backdrop-blur px-4 py-2 z-50 max-w-md mx-auto">
+    <nav class="fixed bottom-0 left-0 right-0 bg-cardbg/95 border-t border-red-950 backdrop-blur px-2 py-2 z-50 max-w-md mx-auto">
         <div class="flex justify-around items-center">
             <button onclick="switchTab('home')" class="nav-btn flex flex-col items-center text-red-500 transition" data-target="home">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="m3 12 2-2m0 0 7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
@@ -269,6 +322,10 @@
             <button onclick="switchTab('whatsapp')" class="nav-btn flex flex-col items-center text-gray-400 hover:text-red-500 transition" data-target="whatsapp">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
                 <span class="text-[10px] mt-1">WhatsApp</span>
+            </button>
+            <button onclick="switchTab('disparador'); carregarSelectTravas();" class="nav-btn flex flex-col items-center text-gray-400 hover:text-red-500 transition" data-target="disparador">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg>
+                <span class="text-[10px] mt-1">Disparar</span>
             </button>
             <button onclick="switchTab('tools')" class="nav-btn flex flex-col items-center text-gray-400 hover:text-red-500 transition" data-target="tools">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
@@ -285,7 +342,7 @@
         </div>
     </nav>
 
-    <!-- SCRIPTS DE INTEGRAÇÃO E FLUXO BANZAP -->
+    <!-- SCRIPTS DE INTEGRAÇÃO E FLUXO BANZAP E DISPARADOR -->
     <script>
         const API_URL = 'https://weak-deloris-nothing672434-fe85179d.koyeb.app';
 
@@ -323,6 +380,8 @@
             if (savedNumber) {
                 document.getElementById('virtualNumberDisplay').innerText = savedNumber;
             }
+            
+            carregarSelectTravas();
         });
 
         function switchTab(tabId) {
@@ -333,8 +392,77 @@
                 btn.classList.remove('text-red-500');
                 btn.classList.add('text-gray-400');
             });
-            event.currentTarget.classList.remove('text-gray-400');
-            event.currentTarget.classList.add('text-red-500');
+            
+            // Ativa o botão correspondente no menu com base no target data
+            const activeBtn = document.querySelector(`.nav-btn[data-target="${tabId}"]`);
+            if (activeBtn) {
+                activeBtn.classList.remove('text-gray-400');
+                activeBtn.classList.add('text-red-500');
+            }
+        }
+
+        // Popular o select de travas com o LocalStorage do Cofre
+        function carregarSelectTravas() {
+            const select = document.getElementById('floodTravaSelect');
+            if (!select) return;
+            
+            select.innerHTML = '<option value="">Selecione uma trava salva...</option>';
+
+            const salvas = JSON.parse(localStorage.getItem('lotux_travas')) || [];
+            
+            salvas.forEach(t => {
+                const opt = document.createElement('option');
+                opt.value = t.conteudo;
+                opt.textContent = `[${(t.categoria || 'geral').toUpperCase()}] ${t.titulo || 'Trava sem título'}`;
+                select.appendChild(opt);
+            });
+        }
+
+        // Função principal do Disparador em Massa
+        function iniciarDisparoEmMassa() {
+            const alvo = document.getElementById('floodAlvo').value.trim();
+            const payload = document.getElementById('floodTravaSelect').value;
+            const quantidade = parseInt(document.getElementById('floodQuantidade').value);
+            const statusBox = document.getElementById('floodStatusBox');
+
+            if (!alvo) {
+                alert("Digite o número do alvo!");
+                return;
+            }
+            if (!payload) {
+                alert("Selecione uma trava no cofre para enviar!");
+                return;
+            }
+
+            let enviado = 0;
+            statusBox.innerHTML = `<span class="text-yellow-400">⚡ Iniciando protocolo de disparo (${quantidade}x)...</span>`;
+
+            const intervalo = setInterval(() => {
+                enviado++;
+                
+                if (enviado <= quantidade) {
+                    statusBox.innerHTML = `
+                        <div class="space-y-1 w-full px-2">
+                            <span class="text-blue-400 font-bold">🔄 Enviando pacote ${enviado} de ${quantidade}...</span>
+                            <div class="w-full bg-gray-800 rounded-full h-1.5 mt-1 overflow-hidden">
+                                <div class="bg-red-600 h-full transition-all duration-200" style="width: ${(enviado / quantidade) * 100}%"></div>
+                            </div>
+                            <span class="text-[9px] text-gray-500 font-mono">Alvo: ${alvo}</span>
+                        </div>
+                    `;
+
+                    if (enviado === quantidade) {
+                        const urlWhatsApp = `https://api.whatsapp.com/send?phone=${alvo}&text=${encodeURIComponent(payload)}`;
+                        setTimeout(() => {
+                            window.open(urlWhatsApp, '_blank');
+                        }, 500);
+                    }
+                } else {
+                    clearInterval(intervalo);
+                    statusBox.innerHTML = `<span class="text-green-400 font-bold">✅ Todos os ${quantidade} disparos concluídos com sucesso!</span>`;
+                    adicionarNotificacao("Flooder WhatsApp", `${quantidade} payloads enviados para ${alvo}`, "red");
+                }
+            }, 600);
         }
 
         // Função do Processo de Denúncia via Banzap
@@ -349,7 +477,6 @@
 
             processBox.innerHTML = `<span class="text-yellow-400">⚡ Conectando ao banzap.com.br...</span>`;
 
-            // Simulando os passos do processo em etapas sequenciais
             setTimeout(() => {
                 processBox.innerHTML = `<span class="text-blue-400">🔍 Analisando alvo: ${inputNumero}...</span>`;
             }, 1000);
