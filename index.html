@@ -119,7 +119,7 @@
                                 </div>
                                 <span class="bg-purple-950 text-purple-400 text-[10px] font-bold px-2.5 py-1 rounded-full border border-purple-800/50">🟣 INSTAGRAM GRID</span>
                             </div>
-                            <h3 class="text-sm font-bold text-white tracking-wide">Menu Balãozinho Instagram</h3>
+                            <h3 class="text-sm font-bold text-white tracking-wide">INSTAGRAM</h3>
                             <span class="text-[10px] text-purple-400 font-mono block mb-2">#Grid2x2Tools</span>
                             <p class="text-xs text-gray-400">Acesse o painel 2x2 com métodos, travas, multiplicadores e gerador de e-mail.</p>
                         </div>
@@ -410,14 +410,13 @@
         <div class="flex justify-between items-center border-b border-purple-500/30 pb-4">
             <div class="flex items-center space-x-2">
                 <span class="w-3 h-3 rounded-full bg-purple-500 animate-pulse"></span>
-                <h2 class="text-sm font-bold text-purple-400 tracking-wider">ZRX INSTAGRAM BALÃOZINHO</h2>
+                <h2 class="text-sm font-bold text-purple-400 tracking-wider">INSTAGRAM</h2>
             </div>
             <button onclick="fecharModalInstagramGrid()" class="text-gray-400 hover:text-white text-xl font-bold px-3 py-1 bg-gray-900 border border-purple-500/30 rounded-lg">✕</button>
         </div>
 
         <div class="space-y-4 my-auto max-w-sm mx-auto w-full">
             <div class="text-center space-y-1 mb-2">
-                <h3 class="text-base font-black text-white">Menu de Ferramentas (Grid 2x2)</h3>
                 <p class="text-[11px] text-gray-400">Selecione uma das opções abaixo para executar:</p>
             </div>
 
@@ -425,22 +424,18 @@
             <div class="grid grid-cols-2 gap-3">
                 <!-- Quadradinho 1: Métodos -->
                 <div onclick="abrirSubTelaInsta('metodos')" class="bg-cardbg border-2 border-purple-600 rounded-2xl p-4 text-center cursor-pointer hover:bg-purple-950/40 transition flex flex-col items-center justify-center space-y-2 shadow-lg">
-                    <span class="text-2xl">💀</span>
                     <span class="text-xs font-bold text-purple-300">Métodos Instagram</span>
                 </div>
                 <!-- Quadradinho 2: Travas -->
                 <div onclick="abrirSubTelaInsta('travas')" class="bg-cardbg border-2 border-purple-600 rounded-2xl p-4 text-center cursor-pointer hover:bg-purple-950/40 transition flex flex-col items-center justify-center space-y-2 shadow-lg">
-                    <span class="text-2xl">⚡</span>
                     <span class="text-xs font-bold text-purple-300">Travas de Texto</span>
                 </div>
                 <!-- Quadradinho 3: Multiplicador -->
                 <div onclick="abrirSubTelaInsta('multiplicador')" class="bg-cardbg border-2 border-purple-600 rounded-2xl p-4 text-center cursor-pointer hover:bg-purple-950/40 transition flex flex-col items-center justify-center space-y-2 shadow-lg">
-                    <span class="text-2xl">🔢</span>
                     <span class="text-xs font-bold text-purple-300">Multiplicador & Caracteres</span>
                 </div>
                 <!-- Quadradinho 4: E-mail de Suporte -->
                 <div onclick="abrirSubTelaInsta('email')" class="bg-cardbg border-2 border-purple-600 rounded-2xl p-4 text-center cursor-pointer hover:bg-purple-950/40 transition flex flex-col items-center justify-center space-y-2 shadow-lg">
-                    <span class="text-2xl">✉️</span>
                     <span class="text-xs font-bold text-purple-300">E-mail / Suporte</span>
                 </div>
             </div>
@@ -498,10 +493,10 @@
             <!-- CONTEÚDO 3: MULTIPLICADOR -->
             <div id="subContent-multiplicador" class="sub-panel hidden space-y-3">
                 <h3 class="text-xs font-bold text-purple-300 uppercase">Multiplicador de Texto & Caracteres</h3>
-                <p class="text-[11px] text-gray-400">Multiplique emojis/textos e acompanhe o contador de caracteres:</p>
+                <p class="text-[11px] text-gray-400">Multiplique textos e acompanhe o contador de caracteres:</p>
 
                 <div class="space-y-2">
-                    <textarea id="multiInputText" oninput="atualizarMultiplicador()" placeholder="Digite o texto ou emoji (ex: 🩸)..." class="w-full bg-black border border-purple-900 rounded-lg p-2.5 text-xs text-white focus:outline-none focus:border-purple-600 h-16 resize-none font-mono"></textarea>
+                    <textarea id="multiInputText" oninput="atualizarMultiplicador()" placeholder="Digite o texto..." class="w-full bg-black border border-purple-900 rounded-lg p-2.5 text-xs text-white focus:outline-none focus:border-purple-600 h-16 resize-none font-mono"></textarea>
                     
                     <div class="flex justify-between items-center text-xs text-gray-300 bg-black/60 p-2 rounded-lg border border-purple-900/40">
                         <span>Caracteres: <strong id="charCounter" class="text-purple-400">0</strong></span>
@@ -821,7 +816,7 @@
             const resultado = Array(qtd).fill(texto).join('\n');
 
             if (!texto) {
-                alert("Digite algum texto ou emoji para multiplicar!");
+                alert("Digite algum texto para multiplicar!");
                 return;
             }
 
