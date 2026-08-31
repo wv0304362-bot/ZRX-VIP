@@ -140,7 +140,7 @@
                             </div>
                             <h3 class="text-sm font-bold text-white tracking-wide">Menu Balãozinho YouTube</h3>
                             <span class="text-[10px] text-red-400 font-mono block mb-2">#Grid2x2ToolsYT</span>
-                            <p class="text-xs text-gray-400">Acesse o painel 2x2 com métodos de suporte, travas, multiplicador e e-mail.</p>
+                            <p class="text-xs text-gray-400">Acesse o painel 2x2 com métodos, armazenamento de textos, multiplicador e e-mail.</p>
                         </div>
                         <div class="pt-2 border-t border-gray-800/60 flex justify-between items-center">
                             <span class="text-[10px] text-red-400 font-mono">[ ABRIR GRID ]</span>
@@ -382,7 +382,7 @@
     </main>
 
     <!-- MODAL DO DOWNLOADER -->
-    <div id="downloaderModal" class="fixed inset-0 z-50 bg-black/95 backdrop-blur-md hidden flex flex-col justify-between p-6">
+    <div id="downloaderModal" class="fixed inset-0 z-50 bg-black/95 backdrop-blur-md hidden flex flex-col justify-between p-6 w-screen h-screen">
         <div class="flex justify-between items-center border-b border-yellow-500/30 pb-4">
             <div class="flex items-center space-x-2">
                 <span class="w-3 h-3 rounded-full bg-yellow-500 animate-pulse"></span>
@@ -425,7 +425,7 @@
     </div>
 
     <!-- MODAL PRINCIPAL DO BALÃOZINHO INSTAGRAM (GRID 2x2) -->
-    <div id="instagramGridModal" class="fixed inset-0 z-50 bg-black/95 backdrop-blur-md hidden flex flex-col justify-between p-6">
+    <div id="instagramGridModal" class="fixed inset-0 z-50 bg-black/95 backdrop-blur-md hidden flex flex-col justify-between p-6 w-screen h-screen">
         <div class="flex justify-between items-center border-b border-purple-500/30 pb-4">
             <div class="flex items-center space-x-2">
                 <span class="w-3 h-3 rounded-full bg-purple-500 animate-pulse"></span>
@@ -440,24 +440,19 @@
                 <p class="text-[11px] text-gray-400">Selecione uma das opções abaixo para executar:</p>
             </div>
 
-            <!-- GRID 2x2 ROXO -->
             <div class="grid grid-cols-2 gap-3">
-                <!-- Quadradinho 1: Métodos -->
                 <div onclick="abrirSubTelaInsta('metodos')" class="bg-cardbg border-2 border-purple-600 rounded-2xl p-4 text-center cursor-pointer hover:bg-purple-950/40 transition flex flex-col items-center justify-center space-y-2 shadow-lg">
                     <span class="text-lg font-mono font-bold text-purple-400">[ &sect; ]</span>
                     <span class="text-xs font-bold text-purple-300">Métodos Instagram</span>
                 </div>
-                <!-- Quadradinho 2: Travas -->
                 <div onclick="abrirSubTelaInsta('travas')" class="bg-cardbg border-2 border-purple-600 rounded-2xl p-4 text-center cursor-pointer hover:bg-purple-950/40 transition flex flex-col items-center justify-center space-y-2 shadow-lg">
                     <span class="text-lg font-mono font-bold text-purple-400">[ &omega; ]</span>
                     <span class="text-xs font-bold text-purple-300">Travas de Texto</span>
                 </div>
-                <!-- Quadradinho 3: Multiplicador -->
                 <div onclick="abrirSubTelaInsta('multiplicador')" class="bg-cardbg border-2 border-purple-600 rounded-2xl p-4 text-center cursor-pointer hover:bg-purple-950/40 transition flex flex-col items-center justify-center space-y-2 shadow-lg">
                     <span class="text-lg font-mono font-bold text-purple-400">[ &Sigma; ]</span>
                     <span class="text-xs font-bold text-purple-300">Multiplicador & Caracteres</span>
                 </div>
-                <!-- Quadradinho 4: E-mail de Suporte -->
                 <div onclick="abrirSubTelaInsta('email')" class="bg-cardbg border-2 border-purple-600 rounded-2xl p-4 text-center cursor-pointer hover:bg-purple-950/40 transition flex flex-col items-center justify-center space-y-2 shadow-lg">
                     <span class="text-lg font-mono font-bold text-purple-400">[ &equiv; ]</span>
                     <span class="text-xs font-bold text-purple-300">E-mail / Suporte</span>
@@ -471,7 +466,7 @@
     </div>
 
     <!-- MODAL DE SUB-TELAS DO INSTAGRAM -->
-    <div id="instagramSubModal" class="fixed inset-0 z-50 bg-black/95 backdrop-blur-md hidden flex flex-col justify-between p-6">
+    <div id="instagramSubModal" class="fixed inset-0 z-50 bg-black/95 backdrop-blur-md hidden flex flex-col justify-between p-6 w-screen h-screen">
         <div class="flex justify-between items-center border-b border-purple-500/30 pb-4">
             <div class="flex items-center space-x-2">
                 <button onclick="voltarParaGridInsta()" class="text-purple-400 hover:text-white text-xs font-bold px-2 py-1 bg-purple-950 border border-purple-800 rounded-lg mr-2">&larr; Voltar</button>
@@ -480,9 +475,8 @@
             <button onclick="fecharModalInstagramGrid()" class="text-gray-400 hover:text-white text-xl font-bold px-3 py-1 bg-gray-900 border border-purple-500/30 rounded-lg">&times;</button>
         </div>
 
-        <div class="space-y-4 my-auto max-w-sm mx-auto w-full overflow-y-auto max-h-[70vh] no-scrollbar py-2">
+        <div class="space-y-4 my-auto max-w-sm mx-auto w-full overflow-y-auto max-h-[75vh] no-scrollbar py-2">
             
-            <!-- CONTEÚDO 1: MÉTODOS -->
             <div id="subContent-metodos" class="sub-panel hidden space-y-3">
                 <h3 class="text-xs font-bold text-purple-300 uppercase">Métodos para Derrubar Conta</h3>
                 <p class="text-[11px] text-gray-400">Visualize e copie os métodos salvos ou adicione novos abaixo:</p>
@@ -498,7 +492,6 @@
                 </div>
             </div>
 
-            <!-- CONTEÚDO 2: TRAVAS -->
             <div id="subContent-travas" class="sub-panel hidden space-y-3">
                 <h3 class="text-xs font-bold text-purple-300 uppercase">Travas de Texto do Instagram</h3>
                 <p class="text-[11px] text-gray-400">Guarde e copie suas travas de texto rapidamente:</p>
@@ -514,7 +507,6 @@
                 </div>
             </div>
 
-            <!-- CONTEÚDO 3: MULTIPLICADOR -->
             <div id="subContent-multiplicador" class="sub-panel hidden space-y-3">
                 <h3 class="text-xs font-bold text-purple-300 uppercase">Multiplicador de Texto & Caracteres</h3>
                 <p class="text-[11px] text-gray-400">Multiplique textos e acompanhe o contador de caracteres:</p>
@@ -540,7 +532,6 @@
                 </div>
             </div>
 
-            <!-- CONTEÚDO 4: E-MAIL DE SUPORTE -->
             <div id="subContent-email" class="sub-panel hidden space-y-3">
                 <h3 class="text-xs font-bold text-purple-300 uppercase">Gerador de E-mail de Suporte</h3>
                 <p class="text-[11px] text-gray-400">Preencha os campos para disparar direto para o app de e-mail:</p>
@@ -571,7 +562,7 @@
     </div>
 
     <!-- MODAL PRINCIPAL DO BALÃOZINHO YOUTUBE (GRID 2x2) -->
-    <div id="youtubeGridModal" class="fixed inset-0 z-50 bg-black/95 backdrop-blur-md hidden flex flex-col justify-between p-6">
+    <div id="youtubeGridModal" class="fixed inset-0 z-50 bg-black/95 backdrop-blur-md hidden flex flex-col justify-between p-6 w-screen h-screen">
         <div class="flex justify-between items-center border-b border-red-500/30 pb-4">
             <div class="flex items-center space-x-2">
                 <span class="w-3 h-3 rounded-full bg-red-500 animate-pulse"></span>
@@ -586,26 +577,22 @@
                 <p class="text-[11px] text-gray-400">Selecione uma das opções abaixo para executar:</p>
             </div>
 
-            <!-- GRID 2x2 VERMELHO/YOUTUBE -->
+            <!-- GRID 2x2 YOUTUBE AJUSTADO (COM MENU DE TEXTOS / ARMAZENAMENTO NO MENU LATERAL) -->
             <div class="grid grid-cols-2 gap-3">
-                <!-- Quadradinho 1: Métodos -->
                 <div onclick="abrirSubTelaYoutube('metodos')" class="bg-cardbg border-2 border-red-600 rounded-2xl p-4 text-center cursor-pointer hover:bg-red-950/40 transition flex flex-col items-center justify-center space-y-2 shadow-lg">
                     <span class="text-lg font-mono font-bold text-red-400">[ &sect; ]</span>
                     <span class="text-xs font-bold text-red-300">Métodos YouTube</span>
                 </div>
-                <!-- Quadradinho 2: Travas -->
-                <div onclick="abrirSubTelaYoutube('travas')" class="bg-cardbg border-2 border-red-600 rounded-2xl p-4 text-center cursor-pointer hover:bg-red-950/40 transition flex flex-col items-center justify-center space-y-2 shadow-lg">
-                    <span class="text-lg font-mono font-bold text-red-400">[ &omega; ]</span>
-                    <span class="text-xs font-bold text-red-300">Travas & Comentários</span>
+                <div onclick="abrirSubTelaYoutube('textos')" class="bg-cardbg border-2 border-red-600 rounded-2xl p-4 text-center cursor-pointer hover:bg-red-950/40 transition flex flex-col items-center justify-center space-y-2 shadow-lg">
+                    <span class="text-lg font-mono font-bold text-red-400">[ &equiv; ]</span>
+                    <span class="text-xs font-bold text-red-300">Armazenamento de Textos</span>
                 </div>
-                <!-- Quadradinho 3: Multiplicador -->
                 <div onclick="abrirSubTelaYoutube('multiplicador')" class="bg-cardbg border-2 border-red-600 rounded-2xl p-4 text-center cursor-pointer hover:bg-red-950/40 transition flex flex-col items-center justify-center space-y-2 shadow-lg">
                     <span class="text-lg font-mono font-bold text-red-400">[ &Sigma; ]</span>
                     <span class="text-xs font-bold text-red-300">Multiplicador & Caracteres</span>
                 </div>
-                <!-- Quadradinho 4: E-mail de Suporte -->
                 <div onclick="abrirSubTelaYoutube('email')" class="bg-cardbg border-2 border-red-600 rounded-2xl p-4 text-center cursor-pointer hover:bg-red-950/40 transition flex flex-col items-center justify-center space-y-2 shadow-lg">
-                    <span class="text-lg font-mono font-bold text-red-400">[ &equiv; ]</span>
+                    <span class="text-lg font-mono font-bold text-red-400">[ &there4; ]</span>
                     <span class="text-xs font-bold text-red-300">E-mail / Suporte</span>
                 </div>
             </div>
@@ -616,8 +603,8 @@
         </div>
     </div>
 
-    <!-- MODAL DE SUB-TELAS DO YOUTUBE -->
-    <div id="youtubeSubModal" class="fixed inset-0 z-50 bg-black/95 backdrop-blur-md hidden flex flex-col justify-between p-6">
+    <!-- MODAL DE SUB-TELAS DO YOUTUBE (TELA CHEIA) -->
+    <div id="youtubeSubModal" class="fixed inset-0 z-50 bg-black/95 backdrop-blur-md hidden flex flex-col justify-between p-6 w-screen h-screen">
         <div class="flex justify-between items-center border-b border-red-500/30 pb-4">
             <div class="flex items-center space-x-2">
                 <button onclick="voltarParaGridYoutube()" class="text-red-400 hover:text-white text-xs font-bold px-2 py-1 bg-red-950 border border-red-800 rounded-lg mr-2">&larr; Voltar</button>
@@ -626,9 +613,8 @@
             <button onclick="fecharModalYoutubeGrid()" class="text-gray-400 hover:text-white text-xl font-bold px-3 py-1 bg-gray-900 border border-red-500/30 rounded-lg">&times;</button>
         </div>
 
-        <div class="space-y-4 my-auto max-w-sm mx-auto w-full overflow-y-auto max-h-[70vh] no-scrollbar py-2">
+        <div class="space-y-4 my-auto max-w-sm mx-auto w-full overflow-y-auto max-h-[75vh] no-scrollbar py-2">
             
-            <!-- CONTEÚDO 1: MÉTODOS -->
             <div id="subContentYoutube-metodos" class="sub-panel-yt hidden space-y-3">
                 <h3 class="text-xs font-bold text-red-300 uppercase">Métodos YouTube / Canal</h3>
                 <p class="text-[11px] text-gray-400">Visualize e copie os métodos salvos ou adicione novos abaixo:</p>
@@ -644,23 +630,22 @@
                 </div>
             </div>
 
-            <!-- CONTEÚDO 2: TRAVAS -->
-            <div id="subContentYoutube-travas" class="sub-panel-yt hidden space-y-3">
-                <h3 class="text-xs font-bold text-red-300 uppercase">Travas & Comentários do YouTube</h3>
-                <p class="text-[11px] text-gray-400">Guarde e copie suas travas ou payloads de comentários rapidamente:</p>
+            <!-- NOVA SUBTELA: ARMAZENAMENTO DE TEXTOS NO MENU LATERAL DO YOUTUBE -->
+            <div id="subContentYoutube-textos" class="sub-panel-yt hidden space-y-3">
+                <h3 class="text-xs font-bold text-red-300 uppercase">Armazenamento de Textos (YouTube)</h3>
+                <p class="text-[11px] text-gray-400">Visualize o nome do texto armazenado e copie-o diretamente:</p>
 
-                <div id="listaTravasYoutube" class="space-y-2 max-h-48 overflow-y-auto no-scrollbar bg-black/60 border border-red-900/40 rounded-xl p-2">
-                    <span class="text-gray-500 text-xs block text-center py-2">Nenhuma trava salva.</span>
+                <div id="listaTextosYoutubeVault" class="space-y-2 max-h-48 overflow-y-auto no-scrollbar bg-black/60 border border-red-900/40 rounded-xl p-2">
+                    <span class="text-gray-500 text-xs block text-center py-2">Nenhum texto armazenado.</span>
                 </div>
 
                 <div class="space-y-2 pt-2 border-t border-red-900/40">
-                    <input type="text" id="novaTravaYoutubeTitulo" placeholder="Nome da Trava..." class="w-full bg-black border border-red-900 rounded-lg p-2 text-xs text-white focus:outline-none focus:border-red-600">
-                    <textarea id="novaTravaYoutubeTexto" placeholder="Cole a trava aqui..." class="w-full bg-black border border-red-900 rounded-lg p-2 text-xs text-white focus:outline-none focus:border-red-600 h-20 resize-none font-mono"></textarea>
-                    <button onclick="salvarTravaYoutubeGrid()" class="w-full bg-red-700 hover:bg-red-600 text-white text-xs font-bold py-2.5 rounded-lg transition shadow-md">Salvar Trava</button>
+                    <input type="text" id="novoTextoYoutubeNome" placeholder="Nome do Texto..." class="w-full bg-black border border-red-900 rounded-lg p-2 text-xs text-white focus:outline-none focus:border-red-600">
+                    <textarea id="novoTextoYoutubeConteudo" placeholder="Cole o conteúdo do texto aqui..." class="w-full bg-black border border-red-900 rounded-lg p-2 text-xs text-white focus:outline-none focus:border-red-600 h-20 resize-none font-mono"></textarea>
+                    <button onclick="salvarTextoYoutubeVault()" class="w-full bg-red-700 hover:bg-red-600 text-white text-xs font-bold py-2.5 rounded-lg transition shadow-md">Salvar Texto no Armazenamento</button>
                 </div>
             </div>
 
-            <!-- CONTEÚDO 3: MULTIPLICADOR -->
             <div id="subContentYoutube-multiplicador" class="sub-panel-yt hidden space-y-3">
                 <h3 class="text-xs font-bold text-red-300 uppercase">Multiplicador de Texto & Caracteres</h3>
                 <p class="text-[11px] text-gray-400">Multiplique textos e acompanhe o contador de caracteres:</p>
@@ -686,7 +671,6 @@
                 </div>
             </div>
 
-            <!-- CONTEÚDO 4: E-MAIL DE SUPORTE -->
             <div id="subContentYoutube-email" class="sub-panel-yt hidden space-y-3">
                 <h3 class="text-xs font-bold text-red-300 uppercase">Gerador de E-mail de Suporte</h3>
                 <p class="text-[11px] text-gray-400">Preencha os campos para disparar direto para o app de e-mail:</p>
@@ -784,7 +768,7 @@
             carregarMetodosInsta();
             carregarTravasInstaGrid();
             carregarMetodosYoutube();
-            carregarTravasYoutubeGrid();
+            carregarTextosYoutubeVault();
         });
 
         function switchTab(tabId) {
@@ -845,7 +829,6 @@
             document.getElementById('downloaderModal').classList.add('hidden');
         }
 
-        // FUNÇÕES DO MODAL INSTAGRAM GRID (BALÃOZINHO)
         function abrirModalInstagramGrid() {
             document.getElementById('instagramGridModal').classList.remove('hidden');
         }
@@ -876,7 +859,6 @@
             document.getElementById('instagramGridModal').classList.remove('hidden');
         }
 
-        // FUNÇÕES DO MODAL YOUTUBE GRID (BALÃOZINHO)
         function abrirModalYoutubeGrid() {
             document.getElementById('youtubeGridModal').classList.remove('hidden');
         }
@@ -895,7 +877,7 @@
 
             const titles = {
                 'metodos': 'Métodos YouTube / Canal',
-                'travas': 'Travas & Comentários do YouTube',
+                'textos': 'Armazenamento de Textos',
                 'multiplicador': 'Multiplicador & Contador',
                 'email': 'Gerador de E-mail de Suporte'
             };
@@ -907,7 +889,6 @@
             document.getElementById('youtubeGridModal').classList.remove('hidden');
         }
 
-        // LÓGICA DO QUADRADINHO 1: MÉTODOS INSTAGRAM
         function carregarMetodosInsta() {
             const container = document.getElementById('listaMetodosInsta');
             if (!container) return;
@@ -952,7 +933,6 @@
             alert("Método adicionado com sucesso!");
         }
 
-        // LÓGICA DO QUADRADINHO 2: TRAVAS INSTAGRAM
         function carregarTravasInstaGrid() {
             const container = document.getElementById('listaTravasInsta');
             if (!container) return;
@@ -978,26 +958,6 @@
             });
         }
 
-        function salvarTravaInstaGrid() {
-            const nome = document.getElementById('novaTravaInstaTitulo').value.trim();
-            const conteudo = document.getElementById('novaTravaInstaTexto').value.trim();
-
-            if (!nome || !conteudo) {
-                alert("Preencha o nome e o conteúdo da trava!");
-                return;
-            }
-
-            const travas = JSON.parse(localStorage.getItem('zrx_insta_travas')) || [];
-            travas.push({ nome, conteudo });
-            localStorage.setItem('zrx_insta_travas', JSON.stringify(travas));
-
-            document.getElementById('novaTravaInstaTitulo').value = '';
-            document.getElementById('novaTravaInstaTexto').value = '';
-            carregarTravasInstaGrid();
-            alert("Trava salva com sucesso!");
-        }
-
-        // LÓGICA DO QUADRADINHO 1: MÉTODOS YOUTUBE
         function carregarMetodosYoutube() {
             const container = document.getElementById('listaMetodosYoutube');
             if (!container) return;
@@ -1042,19 +1002,19 @@
             alert("Método adicionado com sucesso!");
         }
 
-        // LÓGICA DO QUADRADINHO 2: TRAVAS YOUTUBE
-        function carregarTravasYoutubeGrid() {
-            const container = document.getElementById('listaTravasYoutube');
+        // FUNÇÕES DO ARMAZENAMENTO DE TEXTOS DO YOUTUBE
+        function carregarTextosYoutubeVault() {
+            const container = document.getElementById('listaTextosYoutubeVault');
             if (!container) return;
 
-            const travas = JSON.parse(localStorage.getItem('zrx_youtube_travas')) || [];
-            if (travas.length === 0) {
-                container.innerHTML = `<span class="text-gray-500 text-xs block text-center py-2">Nenhuma trava salva.</span>`;
+            const textos = JSON.parse(localStorage.getItem('zrx_youtube_vault_texts')) || [];
+            if (textos.length === 0) {
+                container.innerHTML = `<span class="text-gray-500 text-xs block text-center py-2">Nenhum texto armazenado.</span>`;
                 return;
             }
 
             container.innerHTML = '';
-            travas.forEach((t) => {
+            textos.forEach((t) => {
                 const div = document.createElement('div');
                 div.className = 'bg-black/80 border border-red-900/60 rounded-lg p-2.5 flex flex-col space-y-1';
                 div.innerHTML = `
@@ -1068,26 +1028,25 @@
             });
         }
 
-        function salvarTravaYoutubeGrid() {
-            const nome = document.getElementById('novaTravaYoutubeTitulo').value.trim();
-            const conteudo = document.getElementById('novaTravaYoutubeTexto').value.trim();
+        function salvarTextoYoutubeVault() {
+            const nome = document.getElementById('novoTextoYoutubeNome').value.trim();
+            const conteudo = document.getElementById('novoTextoYoutubeConteudo').value.trim();
 
             if (!nome || !conteudo) {
-                alert("Preencha o nome e o conteúdo da trava!");
+                alert("Preencha o nome e o conteúdo do texto!");
                 return;
             }
 
-            const travas = JSON.parse(localStorage.getItem('zrx_youtube_travas')) || [];
-            travas.push({ nome, conteudo });
-            localStorage.setItem('zrx_youtube_travas', JSON.stringify(travas));
+            const textos = JSON.parse(localStorage.getItem('zrx_youtube_vault_texts')) || [];
+            textos.push({ nome, conteudo });
+            localStorage.setItem('zrx_youtube_vault_texts', JSON.stringify(textos));
 
-            document.getElementById('novaTravaYoutubeTitulo').value = '';
-            document.getElementById('novaTravaYoutubeTexto').value = '';
-            carregarTravasYoutubeGrid();
-            alert("Trava salva com sucesso!");
+            document.getElementById('novoTextoYoutubeNome').value = '';
+            document.getElementById('novoTextoYoutubeConteudo').value = '';
+            carregarTextosYoutubeVault();
+            alert("Texto armazenado com sucesso!");
         }
 
-        // LÓGICA DO QUADRADINHO 3: MULTIPLICADOR INSTAGRAM
         function atualizarMultiplicador() {
             const texto = document.getElementById('multiInputText').value;
             const qtd = parseInt(document.getElementById('multiCountInput').value) || 1;
@@ -1120,7 +1079,6 @@
             });
         }
 
-        // LÓGICA DO QUADRADINHO 3: MULTIPLICADOR YOUTUBE
         function atualizarMultiplicadorYoutube() {
             const texto = document.getElementById('multiInputTextYoutube').value;
             const qtd = parseInt(document.getElementById('multiCountInputYoutube').value) || 1;
@@ -1162,7 +1120,6 @@
             });
         }
 
-        // LÓGICA DO QUADRADINHO 4: E-MAIL DE SUPORTE INSTAGRAM
         function enviarEmailInstaSuporte() {
             const destino = document.getElementById('emailDestinoInsta').value.trim();
             const assunto = document.getElementById('emailAssuntoInsta').value.trim();
@@ -1177,7 +1134,6 @@
             window.location.href = mailtoUrl;
         }
 
-        // LÓGICA DO QUADRADINHO 4: E-MAIL DE SUPORTE YOUTUBE
         function enviarEmailYoutubeSuporte() {
             const destino = document.getElementById('emailDestinoYoutube').value.trim();
             const assunto = document.getElementById('emailAssuntoYoutube').value.trim();
@@ -1192,7 +1148,6 @@
             window.location.href = mailtoUrl;
         }
 
-        // INTEGRAÇÃO DO MOTOR YT-DLP COM O PIPELINE DE DOWNLOAD
         function executarDownloadVideoDireto() {
             const urlLink = document.getElementById('mediaLinkInput').value.trim();
             const format = document.getElementById('mediaQualitySelect').value;
@@ -1269,8 +1224,6 @@
 
                 const accessibilityUrl = `https://www.whatsapp.com/contact/?eea=1&subject=messenger&form_type=accessibility`;
                 window.open(accessibilityUrl, '_blank');
-
-                adicionarNotificacao("Shield V5", `Solicitação Anti-Ban gerada para ${phone} via link de acessibilidade.`, "green");
             }, 2500);
         }
 
@@ -1294,7 +1247,6 @@
 
             if (jogarTudo) {
                 statusBox.innerHTML = `<span class="text-green-400 font-bold">&#9889; Gerando ${quantidade} linhas empilhadas...</span>`;
-                
                 const textoEmLinhas = Array(quantidade).fill(payload).join('\n');
                 const urlWhatsApp = `https://api.whatsapp.com/send?phone=${alvo}&text=${encodeURIComponent(textoEmLinhas)}`;
                 
@@ -1302,8 +1254,6 @@
                     window.open(urlWhatsApp, '_blank');
                     statusBox.innerHTML = `<span class="text-green-400 font-bold">&#9989; Pronto para enviar empilhado (${quantidade}x)!</span>`;
                 }, 500);
-
-                adicionarNotificacao("Flooder WhatsApp", `${quantidade} linhas geradas em bloco para ${alvo}`, "red");
                 return;
             }
 
@@ -1312,7 +1262,6 @@
 
             const intervalo = setInterval(() => {
                 enviado++;
-                
                 if (enviado <= quantidade) {
                     statusBox.innerHTML = `
                         <div class="space-y-1 w-full px-1">
@@ -1332,7 +1281,6 @@
                 } else {
                     clearInterval(intervalo);
                     statusBox.innerHTML = `<span class="text-green-400 font-bold">&#9989; ${quantidade} disparos concluídos!</span>`;
-                    adicionarNotificacao("Flooder WhatsApp", `${quantidade} payloads enviados para ${alvo}`, "red");
                 }
             }, 500);
         }
@@ -1358,7 +1306,6 @@
 
             setTimeout(() => {
                 processBox.innerHTML = `<span class="text-green-400 font-bold">&#9989; Concluído para ${inputNumero}!</span>`;
-                adicionarNotificacao("Banzap Gateway", `Denúncia efetuada com sucesso no alvo: ${inputNumero}`, "green");
             }, 4000);
         }
 
@@ -1385,92 +1332,12 @@
                     display.innerText = numeroFormatado;
                     document.getElementById('antiBanPhone').value = numeroFormatado;
                     localStorage.setItem('zrx_virtual_number', numeroFormatado);
-                    adicionarNotificacao("SMS Gateway", `Número obtido: ${numeroFormatado}`, "green");
-                    return;
+                } else {
+                    display.innerText = "+7 999 123-4567";
                 }
-                throw new Error("Array vazio");
-            } catch (error) {
-                const numeroSimulado = "+7 9" + Math.floor(100000000 + Math.random() * 900000000);
-                display.innerText = numeroSimulado;
-                document.getElementById('antiBanPhone').value = numeroSimulado;
-                localStorage.setItem('zrx_virtual_number', numeroSimulado);
-                adicionarNotificacao("SMS Gateway", `Número Rússia gerado: ${numeroSimulado}`, "red");
+            } catch (err) {
+                display.innerText = "+7 999 765-4321";
             }
-        }
-
-        function filtroGlobal() {
-            alert("Filtro Global: No momento, apenas números da Rússia estão ativos na API (freenumber.site).");
-        }
-
-        function adicionarNotificacao(origem, texto, corTipo = "red") {
-            const container = document.getElementById('notificationsContainer');
-            const horaAtual = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-            
-            const div = document.createElement('div');
-            div.className = `border-l-2 border-${corTipo}-500 pl-2 py-1`;
-            div.innerHTML = `
-                <span class="text-[10px] text-gray-500 block">${horaAtual} - ${origem}</span>
-                <span class="text-white">${texto}</span>
-            `;
-            container.prepend(div);
-        }
-
-        function loadAvatar(event) {
-            const file = event.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    document.getElementById('userAvatar').src = e.target.result;
-                    localStorage.setItem('zrx_avatar', e.target.result);
-                }
-                reader.readAsDataURL(file);
-            }
-        }
-
-        function loadBackground(event) {
-            const file = event.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    const bgImg = document.getElementById('bgImage');
-                    const bgVid = document.getElementById('bgVideo');
-
-                    if (file.type.startsWith('video/')) {
-                        bgVid.src = e.target.result;
-                        bgVid.classList.remove('hidden');
-                        bgImg.classList.add('hidden');
-                        localStorage.setItem('zrx_bg_type', 'video');
-                    } else {
-                        bgImg.src = e.target.result;
-                        bgImg.classList.remove('hidden');
-                        bgVid.classList.add('hidden');
-                        localStorage.setItem('zrx_bg_type', 'image');
-                    }
-                    localStorage.setItem('zrx_bg', e.target.result);
-                }
-                reader.readAsDataURL(file);
-            }
-        }
-
-        function setThemeColor(colorHex) {
-            applyThemeColor(colorHex);
-            localStorage.setItem('zrx_color', colorHex);
-        }
-
-        function applyThemeColor(colorHex) {
-            document.documentElement.style.setProperty('--accentred', colorHex);
-            document.querySelectorAll('.bg-accentred').forEach(el => el.style.backgroundColor = colorHex);
-            document.querySelectorAll('.text-red-500, .text-red-400').forEach(el => el.style.color = colorHex);
-            document.querySelectorAll('.border-red-600').forEach(el => el.style.borderColor = colorHex);
-        }
-
-        function updateProfile() {
-            const newName = document.getElementById('inputName',).value;
-            if (newName) {
-                document.getElementById('userName').innerText = newName;
-                localStorage.setItem('zrx_name', newName);
-            }
-            alert('Configurações salvas permanentemente!');
         }
     </script>
 </body>
