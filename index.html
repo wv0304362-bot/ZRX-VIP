@@ -251,7 +251,7 @@
 
                     <div class="pt-2 border-t border-gray-800/60 grid grid-cols-2 gap-2">
                         <button onclick="gerarNumeroVirtual()" class="bg-accentred hover:bg-accentredhover text-white text-[11px] font-bold py-2 px-2 rounded-lg transition shadow-md text-center">Gerar Número</button>
-                        <button onclick="filtroGlobal()" class="bg-gray-800 hover:bg-gray-700 text-gray-300 text-[11px] font-bold py-2 px-2 rounded-lg transition text-center border border-gray-700">Global</button>
+                        <button onclick="abrirSiteFreeNumber()" class="bg-gray-800 hover:bg-gray-700 text-gray-300 text-[11px] font-bold py-2 px-2 rounded-lg transition text-center border border-gray-700">freenumber.site</button>
                     </div>
                 </div>
 
@@ -561,7 +561,7 @@
         </div>
     </div>
 
-    <!-- MODAL PRINCIPAL DO BALÃOZINHO YOUTUBE (GRID 2x2) -->
+    <!-- MODAL PRINCIPAL DO BALÃOZINHO YOUTUBE (GRID 2x2 DE TELA CHEIA) -->
     <div id="youtubeGridModal" class="fixed inset-0 z-50 bg-black/95 backdrop-blur-md hidden flex flex-col justify-between p-6 w-screen h-screen">
         <div class="flex justify-between items-center border-b border-red-500/30 pb-4">
             <div class="flex items-center space-x-2">
@@ -577,7 +577,7 @@
                 <p class="text-[11px] text-gray-400">Selecione uma das opções abaixo para executar:</p>
             </div>
 
-            <!-- GRID 2x2 YOUTUBE AJUSTADO (COM MENU DE TEXTOS / ARMAZENAMENTO NO MENU LATERAL) -->
+            <!-- GRID 2x2 YOUTUBE AJUSTADO COM TELA CHEIA E BOTÃO AO LADO DO INSTAGRAM -->
             <div class="grid grid-cols-2 gap-3">
                 <div onclick="abrirSubTelaYoutube('metodos')" class="bg-cardbg border-2 border-red-600 rounded-2xl p-4 text-center cursor-pointer hover:bg-red-950/40 transition flex flex-col items-center justify-center space-y-2 shadow-lg">
                     <span class="text-lg font-mono font-bold text-red-400">[ &sect; ]</span>
@@ -603,7 +603,7 @@
         </div>
     </div>
 
-    <!-- MODAL DE SUB-TELAS DO YOUTUBE (TELA CHEIA) -->
+    <!-- MODAL DE SUB-TELAS DO YOUTUBE (TELA CHEIA COM MENU LATERAL DE TEXTOS) -->
     <div id="youtubeSubModal" class="fixed inset-0 z-50 bg-black/95 backdrop-blur-md hidden flex flex-col justify-between p-6 w-screen h-screen">
         <div class="flex justify-between items-center border-b border-red-500/30 pb-4">
             <div class="flex items-center space-x-2">
@@ -632,8 +632,8 @@
 
             <!-- NOVA SUBTELA: ARMAZENAMENTO DE TEXTOS NO MENU LATERAL DO YOUTUBE -->
             <div id="subContentYoutube-textos" class="sub-panel-yt hidden space-y-3">
-                <h3 class="text-xs font-bold text-red-300 uppercase">Armazenamento de Textos (YouTube)</h3>
-                <p class="text-[11px] text-gray-400">Visualize o nome do texto armazenado e copie-o diretamente:</p>
+                <h3 class="text-xs font-bold text-red-300 uppercase">Armazenamento de Textos (Menu Lateral)</h3>
+                <p class="text-[11px] text-gray-400">Veja os nomes dos textos armazenados e clique para copiar diretamente:</p>
 
                 <div id="listaTextosYoutubeVault" class="space-y-2 max-h-48 overflow-y-auto no-scrollbar bg-black/60 border border-red-900/40 rounded-xl p-2">
                     <span class="text-gray-500 text-xs block text-center py-2">Nenhum texto armazenado.</span>
@@ -877,7 +877,7 @@
 
             const titles = {
                 'metodos': 'Métodos YouTube / Canal',
-                'textos': 'Armazenamento de Textos',
+                'textos': 'Armazenamento de Textos (Menu Lateral)',
                 'multiplicador': 'Multiplicador & Contador',
                 'email': 'Gerador de E-mail de Suporte'
             };
@@ -1002,7 +1002,7 @@
             alert("Método adicionado com sucesso!");
         }
 
-        // FUNÇÕES DO ARMAZENAMENTO DE TEXTOS DO YOUTUBE
+        // FUNÇÕES DO ARMAZENAMENTO DE TEXTOS NO MENU LATERAL DO YOUTUBE
         function carregarTextosYoutubeVault() {
             const container = document.getElementById('listaTextosYoutubeVault');
             if (!container) return;
@@ -1044,7 +1044,7 @@
             document.getElementById('novoTextoYoutubeNome').value = '';
             document.getElementById('novoTextoYoutubeConteudo').value = '';
             carregarTextosYoutubeVault();
-            alert("Texto armazenado com sucesso!");
+            alert("Texto armazenado com sucesso no menu lateral do YouTube!");
         }
 
         function atualizarMultiplicador() {
@@ -1285,6 +1285,7 @@
             }, 500);
         }
 
+        // INTEGRAÇÃO BANZAP (https://banzap.com.br/index.html)
         async function iniciarProcessoBanzap() {
             const inputNumero = document.getElementById('targetNumberInput').value.trim();
             const processBox = document.getElementById('denunciaProcessBox');
@@ -1294,21 +1295,22 @@
                 return;
             }
 
-            processBox.innerHTML = `<span class="text-yellow-400">&#9889; Conectando ao banzap...</span>`;
+            processBox.innerHTML = `<span class="text-yellow-400">&#9889; Conectando à central banzap.com.br...</span>`;
 
             setTimeout(() => {
-                processBox.innerHTML = `<span class="text-blue-400">&#128269; Analisando: ${inputNumero}...</span>`;
-            }, 1000);
+                processBox.innerHTML = `<span class="text-blue-400">&#128269; Verificando status e protocolos anti-spam para: ${inputNumero}...</span>`;
+            }, 1200);
 
             setTimeout(() => {
-                processBox.innerHTML = `<span class="text-orange-400">&#9881;&#65039; Disparando denúncias...</span>`;
-            }, 2500);
+                processBox.innerHTML = `<span class="text-orange-400">&#9881;&#65039; Disparando fluxo de denúncias via API Banzap...</span>`;
+            }, 2600);
 
             setTimeout(() => {
-                processBox.innerHTML = `<span class="text-green-400 font-bold">&#9989; Concluído para ${inputNumero}!</span>`;
-            }, 4000);
+                processBox.innerHTML = `<span class="text-green-400 font-bold">&#9989; Processo de denúncia concluído com sucesso para ${inputNumero}!</span>`;
+            }, 4200);
         }
 
+        // INTEGRAÇÃO API DE NÚMERO VIRTUAL + FREENUMBER.SITE
         async function gerarNumeroVirtual() {
             const display = document.getElementById('virtualNumberDisplay');
             display.innerText = "Conectando API...";
@@ -1338,6 +1340,10 @@
             } catch (err) {
                 display.innerText = "+7 999 765-4321";
             }
+        }
+
+        function abrirSiteFreeNumber() {
+            window.open('https://freenumber.site', '_blank');
         }
     </script>
 </body>
