@@ -15,6 +15,7 @@
                         accentred: '#dc2626',
                         accentredhover: '#b91c1c',
                         goldborder: '#eab308',
+                        instagrampurple: '#9333ea',
                     }
                 }
             }
@@ -107,6 +108,24 @@
                         <div class="pt-2 border-t border-gray-800/60 flex justify-between items-center">
                             <span class="text-[10px] text-yellow-500 font-mono">[ ABRIR TELA ]</span>
                             <span class="text-xs text-yellow-400 font-bold group-hover:translate-x-1 transition">Acessar →</span>
+                        </div>
+                    </div>
+
+                    <div onclick="abrirModalInstagramGrid()" class="min-w-[280px] w-[85%] max-w-[320px] bg-cardbg/95 border-2 border-purple-600 rounded-2xl p-5 space-y-4 shadow-xl backdrop-blur shrink-0 snap-center flex flex-col justify-between cursor-pointer hover:bg-black/90 transition group">
+                        <div>
+                            <div class="flex justify-between items-start mb-3">
+                                <div class="w-10 h-10 rounded-xl bg-purple-950/50 border border-purple-600/50 flex items-center justify-center text-purple-400 group-hover:scale-110 transition">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
+                                </div>
+                                <span class="bg-purple-950 text-purple-400 text-[10px] font-bold px-2.5 py-1 rounded-full border border-purple-800/50">🟣 INSTAGRAM GRID</span>
+                            </div>
+                            <h3 class="text-sm font-bold text-white tracking-wide">Menu Balãozinho Instagram</h3>
+                            <span class="text-[10px] text-purple-400 font-mono block mb-2">#Grid2x2Tools</span>
+                            <p class="text-xs text-gray-400">Acesse o painel 2x2 com métodos, travas, multiplicadores e gerador de e-mail.</p>
+                        </div>
+                        <div class="pt-2 border-t border-gray-800/60 flex justify-between items-center">
+                            <span class="text-[10px] text-purple-400 font-mono">[ ABRIR GRID ]</span>
+                            <span class="text-xs text-purple-300 font-bold group-hover:translate-x-1 transition">Acessar →</span>
                         </div>
                     </div>
 
@@ -343,6 +362,7 @@
 
     </main>
 
+    <!-- MODAL DO DOWNLOADER -->
     <div id="downloaderModal" class="fixed inset-0 z-50 bg-black/95 backdrop-blur-md hidden flex flex-col justify-between p-6">
         <div class="flex justify-between items-center border-b border-yellow-500/30 pb-4">
             <div class="flex items-center space-x-2">
@@ -382,6 +402,152 @@
 
         <div class="text-center text-[10px] text-gray-500 font-mono">
             [ yt-dlp --upgrade active ]
+        </div>
+    </div>
+
+    <!-- MODAL PRINCIPAL DO BALÃOZINHO INSTAGRAM (GRID 2x2) -->
+    <div id="instagramGridModal" class="fixed inset-0 z-50 bg-black/95 backdrop-blur-md hidden flex flex-col justify-between p-6">
+        <div class="flex justify-between items-center border-b border-purple-500/30 pb-4">
+            <div class="flex items-center space-x-2">
+                <span class="w-3 h-3 rounded-full bg-purple-500 animate-pulse"></span>
+                <h2 class="text-sm font-bold text-purple-400 tracking-wider">ZRX INSTAGRAM BALÃOZINHO</h2>
+            </div>
+            <button onclick="fecharModalInstagramGrid()" class="text-gray-400 hover:text-white text-xl font-bold px-3 py-1 bg-gray-900 border border-purple-500/30 rounded-lg">✕</button>
+        </div>
+
+        <div class="space-y-4 my-auto max-w-sm mx-auto w-full">
+            <div class="text-center space-y-1 mb-2">
+                <h3 class="text-base font-black text-white">Menu de Ferramentas (Grid 2x2)</h3>
+                <p class="text-[11px] text-gray-400">Selecione uma das opções abaixo para executar:</p>
+            </div>
+
+            <!-- GRID 2x2 ROXO -->
+            <div class="grid grid-cols-2 gap-3">
+                <!-- Quadradinho 1: Métodos -->
+                <div onclick="abrirSubTelaInsta('metodos')" class="bg-cardbg border-2 border-purple-600 rounded-2xl p-4 text-center cursor-pointer hover:bg-purple-950/40 transition flex flex-col items-center justify-center space-y-2 shadow-lg">
+                    <span class="text-2xl">💀</span>
+                    <span class="text-xs font-bold text-purple-300">Métodos Instagram</span>
+                </div>
+                <!-- Quadradinho 2: Travas -->
+                <div onclick="abrirSubTelaInsta('travas')" class="bg-cardbg border-2 border-purple-600 rounded-2xl p-4 text-center cursor-pointer hover:bg-purple-950/40 transition flex flex-col items-center justify-center space-y-2 shadow-lg">
+                    <span class="text-2xl">⚡</span>
+                    <span class="text-xs font-bold text-purple-300">Travas de Texto</span>
+                </div>
+                <!-- Quadradinho 3: Multiplicador -->
+                <div onclick="abrirSubTelaInsta('multiplicador')" class="bg-cardbg border-2 border-purple-600 rounded-2xl p-4 text-center cursor-pointer hover:bg-purple-950/40 transition flex flex-col items-center justify-center space-y-2 shadow-lg">
+                    <span class="text-2xl">🔢</span>
+                    <span class="text-xs font-bold text-purple-300">Multiplicador & Caracteres</span>
+                </div>
+                <!-- Quadradinho 4: E-mail de Suporte -->
+                <div onclick="abrirSubTelaInsta('email')" class="bg-cardbg border-2 border-purple-600 rounded-2xl p-4 text-center cursor-pointer hover:bg-purple-950/40 transition flex flex-col items-center justify-center space-y-2 shadow-lg">
+                    <span class="text-2xl">✉️</span>
+                    <span class="text-xs font-bold text-purple-300">E-mail / Suporte</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="text-center text-[10px] text-gray-500 font-mono">
+            [ Instagram Integration Active ]
+        </div>
+    </div>
+
+    <!-- MODAL DE SUB-TELAS DO INSTAGRAM -->
+    <div id="instagramSubModal" class="fixed inset-0 z-50 bg-black/95 backdrop-blur-md hidden flex flex-col justify-between p-6">
+        <div class="flex justify-between items-center border-b border-purple-500/30 pb-4">
+            <div class="flex items-center space-x-2">
+                <button onclick="voltarParaGridInsta()" class="text-purple-400 hover:text-white text-xs font-bold px-2 py-1 bg-purple-950 border border-purple-800 rounded-lg mr-2">← Voltar</button>
+                <h2 id="subModalTitle" class="text-sm font-bold text-purple-400 tracking-wider">SUBTELA</h2>
+            </div>
+            <button onclick="fecharModalInstagramGrid()" class="text-gray-400 hover:text-white text-xl font-bold px-3 py-1 bg-gray-900 border border-purple-500/30 rounded-lg">✕</button>
+        </div>
+
+        <div class="space-y-4 my-auto max-w-sm mx-auto w-full overflow-y-auto max-h-[70vh] no-scrollbar py-2">
+            
+            <!-- CONTEÚDO 1: MÉTODOS -->
+            <div id="subContent-metodos" class="sub-panel hidden space-y-3">
+                <h3 class="text-xs font-bold text-purple-300 uppercase">Métodos para Derrubar Conta</h3>
+                <p class="text-[11px] text-gray-400">Visualize e copie os métodos salvos ou adicione novos abaixo:</p>
+                
+                <div id="listaMetodosInsta" class="space-y-2 max-h-40 overflow-y-auto no-scrollbar bg-black/60 border border-purple-900/40 rounded-xl p-2">
+                    <span class="text-gray-500 text-xs block text-center py-2">Nenhum método cadastrado.</span>
+                </div>
+
+                <div class="space-y-2 pt-2 border-t border-purple-900/40">
+                    <input type="text" id="novoMetodoTitulo" placeholder="Título do Método..." class="w-full bg-black border border-purple-900 rounded-lg p-2 text-xs text-white focus:outline-none focus:border-purple-600">
+                    <textarea id="novoMetodoTexto" placeholder="Escreva o texto do método aqui..." class="w-full bg-black border border-purple-900 rounded-lg p-2 text-xs text-white focus:outline-none focus:border-purple-600 h-20 resize-none font-mono"></textarea>
+                    <button onclick="adicionarNovoMetodoInsta()" class="w-full bg-purple-700 hover:bg-purple-600 text-white text-xs font-bold py-2.5 rounded-lg transition shadow-md">Adicionar Novo Método</button>
+                </div>
+            </div>
+
+            <!-- CONTEÚDO 2: TRAVAS -->
+            <div id="subContent-travas" class="sub-panel hidden space-y-3">
+                <h3 class="text-xs font-bold text-purple-300 uppercase">Travas de Texto do Instagram</h3>
+                <p class="text-[11px] text-gray-400">Guarde e copie suas travas de texto rapidamente:</p>
+
+                <div id="listaTravasInsta" class="space-y-2 max-h-48 overflow-y-auto no-scrollbar bg-black/60 border border-purple-900/40 rounded-xl p-2">
+                    <span class="text-gray-500 text-xs block text-center py-2">Nenhuma trava salva.</span>
+                </div>
+
+                <div class="space-y-2 pt-2 border-t border-purple-900/40">
+                    <input type="text" id="novaTravaInstaTitulo" placeholder="Nome da Trava..." class="w-full bg-black border border-purple-900 rounded-lg p-2 text-xs text-white focus:outline-none focus:border-purple-600">
+                    <textarea id="novaTravaInstaTexto" placeholder="Cole a trava aqui..." class="w-full bg-black border border-purple-900 rounded-lg p-2 text-xs text-white focus:outline-none focus:border-purple-600 h-20 resize-none font-mono"></textarea>
+                    <button onclick="salvarTravaInstaGrid()" class="w-full bg-purple-700 hover:bg-purple-600 text-white text-xs font-bold py-2.5 rounded-lg transition shadow-md">Salvar Trava</button>
+                </div>
+            </div>
+
+            <!-- CONTEÚDO 3: MULTIPLICADOR -->
+            <div id="subContent-multiplicador" class="sub-panel hidden space-y-3">
+                <h3 class="text-xs font-bold text-purple-300 uppercase">Multiplicador de Texto & Caracteres</h3>
+                <p class="text-[11px] text-gray-400">Multiplique emojis/textos e acompanhe o contador de caracteres:</p>
+
+                <div class="space-y-2">
+                    <textarea id="multiInputText" oninput="atualizarMultiplicador()" placeholder="Digite o texto ou emoji (ex: 🩸)..." class="w-full bg-black border border-purple-900 rounded-lg p-2.5 text-xs text-white focus:outline-none focus:border-purple-600 h-16 resize-none font-mono"></textarea>
+                    
+                    <div class="flex justify-between items-center text-xs text-gray-300 bg-black/60 p-2 rounded-lg border border-purple-900/40">
+                        <span>Caracteres: <strong id="charCounter" class="text-purple-400">0</strong></span>
+                        <span>Linhas geradas: <strong id="lineCounter" class="text-purple-400">0</strong></span>
+                    </div>
+
+                    <div class="space-y-1">
+                        <label class="text-[10px] text-purple-400 font-bold uppercase">Quantidade de Repetições</label>
+                        <input type="number" id="multiCountInput" value="100" min="1" max="1000" oninput="atualizarMultiplicador()" class="w-full bg-black border border-purple-900 rounded-lg p-2 text-xs text-white focus:outline-none focus:border-purple-600 font-mono">
+                    </div>
+
+                    <div id="multiResultBox" class="w-full bg-black border border-purple-900 rounded-lg p-2.5 text-[10px] text-gray-300 h-24 overflow-y-auto no-scrollbar font-mono select-all">
+                        <span class="text-gray-500">Resultado da multiplicação aparecerá aqui...</span>
+                    </div>
+
+                    <button onclick="copiarTextoMultiplicado()" class="w-full bg-purple-700 hover:bg-purple-600 text-white text-xs font-bold py-2.5 rounded-lg transition shadow-md">Copiar Texto Gerado</button>
+                </div>
+            </div>
+
+            <!-- CONTEÚDO 4: E-MAIL DE SUPORTE -->
+            <div id="subContent-email" class="sub-panel hidden space-y-3">
+                <h3 class="text-xs font-bold text-purple-300 uppercase">Gerador de E-mail de Suporte</h3>
+                <p class="text-[11px] text-gray-400">Preencha os campos para disparar direto para o app de e-mail:</p>
+
+                <div class="space-y-2">
+                    <div>
+                        <label class="text-[9px] text-gray-400 font-bold uppercase">E-mail de Destino</label>
+                        <input type="email" id="emailDestinoInsta" value="support@instagram.com" class="w-full bg-black border border-purple-900 rounded-lg p-2 text-xs text-white focus:outline-none focus:border-purple-600 font-mono">
+                    </div>
+                    <div>
+                        <label class="text-[9px] text-gray-400 font-bold uppercase">Assunto</label>
+                        <input type="text" id="emailAssuntoInsta" placeholder="Ex: Conta desativada por engano..." class="w-full bg-black border border-purple-900 rounded-lg p-2 text-xs text-white focus:outline-none focus:border-purple-600 font-mono">
+                    </div>
+                    <div>
+                        <label class="text-[9px] text-gray-400 font-bold uppercase">Detalhes / Mensagem</label>
+                        <textarea id="emailDetalhesInsta" placeholder="Escreva os detalhes do problema..." class="w-full bg-black border border-purple-900 rounded-lg p-2 text-xs text-white focus:outline-none focus:border-purple-600 h-24 resize-none font-mono"></textarea>
+                    </div>
+
+                    <button onclick="enviarEmailInstaSuporte()" class="w-full bg-purple-700 hover:bg-purple-600 text-white text-xs font-bold py-2.5 rounded-lg transition shadow-md">Enviar para Tela de E-mail</button>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="text-center text-[10px] text-gray-500 font-mono">
+            [ Sub-Painel Ativo ]
         </div>
     </div>
 
@@ -450,6 +616,8 @@
             }
             
             carregarSelectTravas();
+            carregarMetodosInsta();
+            carregarTravasInstaGrid();
         });
 
         function switchTab(tabId) {
@@ -510,6 +678,184 @@
             document.getElementById('downloaderModal').classList.add('hidden');
         }
 
+        // FUNÇÕES DO MODAL INSTAGRAM GRID (BALÃOZINHO)
+        function abrirModalInstagramGrid() {
+            document.getElementById('instagramGridModal').classList.remove('hidden');
+        }
+
+        function fecharModalInstagramGrid() {
+            document.getElementById('instagramGridModal').classList.add('hidden');
+            document.getElementById('instagramSubModal').classList.add('hidden');
+        }
+
+        function abrirSubTelaInsta(tipo) {
+            document.getElementById('instagramGridModal').classList.add('hidden');
+            document.getElementById('instagramSubModal').classList.remove('hidden');
+
+            document.querySelectorAll('.sub-panel').forEach(el => el.classList.add('hidden'));
+            document.getElementById('subContent-' + tipo).classList.remove('hidden');
+
+            const titles = {
+                'metodos': 'Métodos para Derrubar Conta',
+                'travas': 'Travas de Texto do Instagram',
+                'multiplicador': 'Multiplicador & Contador',
+                'email': 'Gerador de E-mail de Suporte'
+            };
+            document.getElementById('subModalTitle').innerText = titles[tipo] || 'Sub-Painel';
+        }
+
+        function voltarParaGridInsta() {
+            document.getElementById('instagramSubModal').classList.add('hidden');
+            document.getElementById('instagramGridModal').classList.remove('hidden');
+        }
+
+        // LÓGICA DO QUADRADINHO 1: MÉTODOS
+        function carregarMetodosInsta() {
+            const container = document.getElementById('listaMetodosInsta');
+            if (!container) return;
+            
+            const metodos = JSON.parse(localStorage.getItem('zrx_insta_metodos')) || [];
+            if (metodos.length === 0) {
+                container.innerHTML = `<span class="text-gray-500 text-xs block text-center py-2">Nenhum método cadastrado.</span>`;
+                return;
+            }
+
+            container.innerHTML = '';
+            metodos.forEach((m, index) => {
+                const div = document.createElement('div');
+                div.className = 'bg-black/80 border border-purple-900/60 rounded-lg p-2.5 flex flex-col space-y-1';
+                div.innerHTML = `
+                    <div class="flex justify-between items-center">
+                        <span class="text-xs font-bold text-purple-300">${m.titulo}</span>
+                        <button onclick="copiarTextoDirect('${encodeURIComponent(m.texto)}')" class="bg-purple-950 text-purple-300 border border-purple-800 text-[10px] px-2 py-0.5 rounded hover:bg-purple-900">Copiar</button>
+                    </div>
+                    <p class="text-[10px] text-gray-300 font-mono truncate">${m.texto}</p>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        function adicionarNovoMetodoInsta() {
+            const titulo = document.getElementById('novoMetodoTitulo').value.trim();
+            const texto = document.getElementById('novoMetodoTexto').value.trim();
+
+            if (!titulo || !texto) {
+                alert("Preencha o título e o texto do método!");
+                return;
+            }
+
+            const metodos = JSON.parse(localStorage.getItem('zrx_insta_metodos')) || [];
+            metodos.push({ titulo, texto });
+            localStorage.setItem('zrx_insta_metodos', JSON.stringify(metodos));
+
+            document.getElementById('novoMetodoTitulo').value = '';
+            document.getElementById('novoMetodoTexto').value = '';
+            carregarMetodosInsta();
+            alert("Método adicionado com sucesso!");
+        }
+
+        // LÓGICA DO QUADRADINHO 2: TRAVAS
+        function carregarTravasInstaGrid() {
+            const container = document.getElementById('listaTravasInsta');
+            if (!container) return;
+
+            const travas = JSON.parse(localStorage.getItem('zrx_insta_travas')) || [];
+            if (travas.length === 0) {
+                container.innerHTML = `<span class="text-gray-500 text-xs block text-center py-2">Nenhuma trava salva.</span>`;
+                return;
+            }
+
+            container.innerHTML = '';
+            travas.forEach((t) => {
+                const div = document.createElement('div');
+                div.className = 'bg-black/80 border border-purple-900/60 rounded-lg p-2.5 flex flex-col space-y-1';
+                div.innerHTML = `
+                    <div class="flex justify-between items-center">
+                        <span class="text-xs font-bold text-purple-300">${t.nome}</span>
+                        <button onclick="copiarTextoDirect('${encodeURIComponent(t.conteudo)}')" class="bg-purple-950 text-purple-300 border border-purple-800 text-[10px] px-2 py-0.5 rounded hover:bg-purple-900">Copiar</button>
+                    </div>
+                    <p class="text-[10px] text-gray-300 font-mono truncate">${t.conteudo}</p>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        function salvarTravaInstaGrid() {
+            const nome = document.getElementById('novaTravaInstaTitulo').value.trim();
+            const conteudo = document.getElementById('novaTravaInstaTexto').value.trim();
+
+            if (!nome || !conteudo) {
+                alert("Preencha o nome e o conteúdo da trava!");
+                return;
+            }
+
+            const travas = JSON.parse(localStorage.getItem('zrx_insta_travas')) || [];
+            travas.push({ nome, conteudo });
+            localStorage.setItem('zrx_insta_travas', JSON.stringify(travas));
+
+            document.getElementById('novaTravaInstaTitulo').value = '';
+            document.getElementById('novaTravaInstaTexto').value = '';
+            carregarTravasInstaGrid();
+            alert("Trava salva com sucesso!");
+        }
+
+        // LÓGICA DO QUADRADINHO 3: MULTIPLICADOR
+        function atualizarMultiplicador() {
+            const texto = document.getElementById('multiInputText').value;
+            const qtd = parseInt(document.getElementById('multiCountInput').value) || 1;
+            const charCounter = document.getElementById('charCounter');
+            const lineCounter = document.getElementById('lineCounter');
+            const resultBox = document.getElementById('multiResultBox');
+
+            const resultado = Array(Math.min(qtd, 500)).fill(texto).join('\n');
+            const totalChars = texto.length * qtd;
+
+            charCounter.innerText = totalChars;
+            lineCounter.innerText = qtd;
+            resultBox.innerText = resultado || 'Resultado da multiplicação aparecerá aqui...';
+        }
+
+        function copiarTextoMultiplicado() {
+            const texto = document.getElementById('multiInputText').value;
+            const qtd = parseInt(document.getElementById('multiCountInput').value) || 1;
+            const resultado = Array(qtd).fill(texto).join('\n');
+
+            if (!texto) {
+                alert("Digite algum texto ou emoji para multiplicar!");
+                return;
+            }
+
+            navigator.clipboard.writeText(resultado).then(() => {
+                alert("Texto multiplicado copiado para a área de transferência!");
+            }).catch(() => {
+                alert("Erro ao copiar texto.");
+            });
+        }
+
+        function copiarTextoDirect(encodedText) {
+            const decoded = decodeURIComponent(encodedText);
+            navigator.clipboard.writeText(decoded).then(() => {
+                alert("Copiado com sucesso!");
+            }).catch(() => {
+                alert("Erro ao copiar.");
+            });
+        }
+
+        // LÓGICA DO QUADRADINHO 4: E-MAIL DE SUPORTE
+        function enviarEmailInstaSuporte() {
+            const destino = document.getElementById('emailDestinoInsta').value.trim();
+            const assunto = document.getElementById('emailAssuntoInsta').value.trim();
+            const detalhes = document.getElementById('emailDetalhesInsta').value.trim();
+
+            if (!assunto || !detalhes) {
+                alert("Preencha o assunto e os detalhes do e-mail!");
+                return;
+            }
+
+            const mailtoUrl = `mailto:${destino}?subject=${encodeURIComponent(assunto)}&body=${encodeURIComponent(detalhes)}`;
+            window.location.href = mailtoUrl;
+        }
+
         // INTEGRAÇÃO DO MOTOR YT-DLP COM O PIPELINE DE DOWNLOAD
         function executarDownloadVideoDireto() {
             const urlLink = document.getElementById('mediaLinkInput').value.trim();
@@ -523,7 +869,6 @@
 
             statusBox.innerHTML = `<span class="text-yellow-400 animate-pulse">⚡ Inicializando yt-dlp core engine...</span>`;
 
-            // Simulação de chamada assíncrona ao motor yt-dlp do backend
             setTimeout(() => {
                 statusBox.innerHTML = `<span class="text-blue-400">🔍 Extraindo streams (YouTube, TikTok, Insta, Kwai)...</span>`;
             }, 1000);
@@ -531,7 +876,6 @@
             setTimeout(() => {
                 statusBox.innerHTML = `<span class="text-green-400 font-bold">✅ Stream extraído! Baixando arquivo para a galeria...</span>`;
                 
-                // Dispara requisição otimizada para download direto do stream gerado pelo yt-dlp
                 fetch(`https://co.wuk.sh/api/json`, {
                     method: 'POST',
                     headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
