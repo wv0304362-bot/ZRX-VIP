@@ -16,7 +16,6 @@
                         accentredhover: '#b91c1c',
                         goldborder: '#eab308',
                         instagrampurple: '#9333ea',
-                        youtubered: '#ef4444',
                     }
                 }
             }
@@ -127,24 +126,6 @@
                         <div class="pt-2 border-t border-gray-800/60 flex justify-between items-center">
                             <span class="text-[10px] text-purple-400 font-mono">[ ABRIR GRID ]</span>
                             <span class="text-xs text-purple-300 font-bold group-hover:translate-x-1 transition">Acessar &rarr;</span>
-                        </div>
-                    </div>
-
-                    <div onclick="abrirModalYoutubeGrid()" class="min-w-[280px] w-[85%] max-w-[320px] bg-cardbg/95 border-2 border-red-600 rounded-2xl p-5 space-y-4 shadow-xl backdrop-blur shrink-0 snap-center flex flex-col justify-between cursor-pointer hover:bg-black/90 transition group">
-                        <div>
-                            <div class="flex justify-between items-start mb-3">
-                                <div class="w-10 h-10 rounded-xl bg-red-950/50 border border-red-600/50 flex items-center justify-center text-red-500 group-hover:scale-110 transition">
-                                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
-                                </div>
-                                <span class="bg-red-950 text-red-400 text-[10px] font-bold px-2.5 py-1 rounded-full border border-red-800/50">&#9673; YOUTUBE TOOLS</span>
-                            </div>
-                            <h3 class="text-sm font-bold text-white tracking-wide">Menu Balãozinho YouTube</h3>
-                            <span class="text-[10px] text-red-400 font-mono block mb-2">#YTToolsGrid</span>
-                            <p class="text-xs text-gray-400">Acesse ferramentas de busca, extração de tags, geradores e utilitários do YouTube.</p>
-                        </div>
-                        <div class="pt-2 border-t border-gray-800/60 flex justify-between items-center">
-                            <span class="text-[10px] text-red-400 font-mono">[ ABRIR GRID ]</span>
-                            <span class="text-xs text-red-300 font-bold group-hover:translate-x-1 transition">Acessar &rarr;</span>
                         </div>
                     </div>
 
@@ -570,117 +551,6 @@
         </div>
     </div>
 
-    <!-- MODAL PRINCIPAL DO BALÃOZINHO YOUTUBE (GRID 2x2) -->
-    <div id="youtubeGridModal" class="fixed inset-0 z-50 bg-black/95 backdrop-blur-md hidden flex flex-col justify-between p-6">
-        <div class="flex justify-between items-center border-b border-red-500/30 pb-4">
-            <div class="flex items-center space-x-2">
-                <span class="w-3 h-3 rounded-full bg-red-500 animate-pulse"></span>
-                <h2 class="text-sm font-bold text-red-400 tracking-wider">ZRX YOUTUBE BALÃOZINHO</h2>
-            </div>
-            <button onclick="fecharModalYoutubeGrid()" class="text-gray-400 hover:text-white text-xl font-bold px-3 py-1 bg-gray-900 border border-red-500/30 rounded-lg">&times;</button>
-        </div>
-
-        <div class="space-y-4 my-auto max-w-sm mx-auto w-full">
-            <div class="text-center space-y-1 mb-2">
-                <h3 class="text-base font-black text-white">Menu de Ferramentas YouTube (Grid 2x2)</h3>
-                <p class="text-[11px] text-gray-400">Selecione uma das opções abaixo para executar:</p>
-            </div>
-
-            <!-- GRID 2x2 VERMELHO -->
-            <div class="grid grid-cols-2 gap-3">
-                <!-- Quadradinho 1: Tags Extractor -->
-                <div onclick="abrirSubTelaYoutube('tags')" class="bg-cardbg border-2 border-red-600 rounded-2xl p-4 text-center cursor-pointer hover:bg-red-950/40 transition flex flex-col items-center justify-center space-y-2 shadow-lg">
-                    <span class="text-lg font-mono font-bold text-red-400">[ # ]</span>
-                    <span class="text-xs font-bold text-red-300">Extrator de Tags</span>
-                </div>
-                <!-- Quadradinho 2: Thumbnails -->
-                <div onclick="abrirSubTelaYoutube('thumbnail')" class="bg-cardbg border-2 border-red-600 rounded-2xl p-4 text-center cursor-pointer hover:bg-red-950/40 transition flex flex-col items-center justify-center space-y-2 shadow-lg">
-                    <span class="text-lg font-mono font-bold text-red-400">[ img ]</span>
-                    <span class="text-xs font-bold text-red-300">Baixar Thumbnail</span>
-                </div>
-                <!-- Quadradinho 3: Gerador de Links / Shorts -->
-                <div onclick="abrirSubTelaYoutube('shorts')" class="bg-cardbg border-2 border-red-600 rounded-2xl p-4 text-center cursor-pointer hover:bg-red-950/40 transition flex flex-col items-center justify-center space-y-2 shadow-lg">
-                    <span class="text-lg font-mono font-bold text-red-400">[ &gt; ]</span>
-                    <span class="text-xs font-bold text-red-300">Utilitários / Shorts</span>
-                </div>
-                <!-- Quadradinho 4: Canal Info -->
-                <div onclick="abrirSubTelaYoutube('canal')" class="bg-cardbg border-2 border-red-600 rounded-2xl p-4 text-center cursor-pointer hover:bg-red-950/40 transition flex flex-col items-center justify-center space-y-2 shadow-lg">
-                    <span class="text-lg font-mono font-bold text-red-400">[ i ]</span>
-                    <span class="text-xs font-bold text-red-300">Busca de Canais</span>
-                </div>
-            </div>
-        </div>
-
-        <div class="text-center text-[10px] text-gray-500 font-mono">
-            [ YouTube Integration Active ]
-        </div>
-    </div>
-
-    <!-- MODAL DE SUB-TELAS DO YOUTUBE -->
-    <div id="youtubeSubModal" class="fixed inset-0 z-50 bg-black/95 backdrop-blur-md hidden flex flex-col justify-between p-6">
-        <div class="flex justify-between items-center border-b border-red-500/30 pb-4">
-            <div class="flex items-center space-x-2">
-                <button onclick="voltarParaGridYoutube()" class="text-red-400 hover:text-white text-xs font-bold px-2 py-1 bg-red-950 border border-red-800 rounded-lg mr-2">&larr; Voltar</button>
-                <h2 id="subYouTubeModalTitle" class="text-sm font-bold text-red-400 tracking-wider">SUBTELA YOUTUBE</h2>
-            </div>
-            <button onclick="fecharModalYoutubeGrid()" class="text-gray-400 hover:text-white text-xl font-bold px-3 py-1 bg-gray-900 border border-red-500/30 rounded-lg">&times;</button>
-        </div>
-
-        <div class="space-y-4 my-auto max-w-sm mx-auto w-full overflow-y-auto max-h-[70vh] no-scrollbar py-2">
-            
-            <!-- CONTEÚDO 1: TAGS -->
-            <div id="subContentYoutube-tags" class="sub-youtube-panel hidden space-y-3">
-                <h3 class="text-xs font-bold text-red-300 uppercase">Extrator de Tags do YouTube</h3>
-                <p class="text-[11px] text-gray-400">Cole o link do vídeo para extrair as tags utilizadas:</p>
-                <div class="space-y-2">
-                    <input type="url" id="ytTagsInput" placeholder="Cole o link do vídeo do YouTube..." class="w-full bg-black border border-red-900 rounded-lg p-2.5 text-xs text-white focus:outline-none focus:border-red-600 font-mono">
-                    <button onclick="extrairTagsYoutube()" class="w-full bg-red-700 hover:bg-red-600 text-white text-xs font-bold py-2.5 rounded-lg transition shadow-md">Extrair Tags</button>
-                    <div id="ytTagsResultBox" class="w-full bg-black border border-red-900 rounded-lg p-2.5 text-[10px] text-gray-300 h-24 overflow-y-auto no-scrollbar font-mono select-all">
-                        <span class="text-gray-500">As tags extraídas aparecerão aqui...</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- CONTEÚDO 2: THUMBNAIL -->
-            <div id="subContentYoutube-thumbnail" class="sub-youtube-panel hidden space-y-3">
-                <h3 class="text-xs font-bold text-red-300 uppercase">Baixar Miniatura (Thumbnail)</h3>
-                <p class="text-[11px] text-gray-400">Obtenha a imagem em alta resolução da capa do vídeo:</p>
-                <div class="space-y-2">
-                    <input type="url" id="ytThumbInput" placeholder="Cole o link do vídeo do YouTube..." class="w-full bg-black border border-red-900 rounded-lg p-2.5 text-xs text-white focus:outline-none focus:border-red-600 font-mono">
-                    <button onclick="baixarThumbnailYoutube()" class="w-full bg-red-700 hover:bg-red-600 text-white text-xs font-bold py-2.5 rounded-lg transition shadow-md">Gerar Link da Thumbnail</button>
-                    <div id="ytThumbResultBox" class="w-full bg-black border border-red-900 rounded-lg p-2.5 text-[10px] text-gray-300 min-h-[60px] flex items-center justify-center text-center font-mono">
-                        <span class="text-gray-500">O link da imagem aparecerá aqui...</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- CONTEÚDO 3: SHORTS / UTILITÁRIOS -->
-            <div id="subContentYoutube-shorts" class="sub-youtube-panel hidden space-y-3">
-                <h3 class="text-xs font-bold text-red-300 uppercase">Conversor / Link Direto Shorts</h3>
-                <p class="text-[11px] text-gray-400">Converta links normais em links diretos para reprodução:</p>
-                <div class="space-y-2">
-                    <input type="text" id="ytShortsInput" placeholder="Cole ID ou link do vídeo..." class="w-full bg-black border border-red-900 rounded-lg p-2.5 text-xs text-white focus:outline-none focus:border-red-600 font-mono">
-                    <button onclick="gerarLinkDiretoYoutube()" class="w-full bg-red-700 hover:bg-red-600 text-white text-xs font-bold py-2.5 rounded-lg transition shadow-md">Gerar Atalho / Abrir</button>
-                </div>
-            </div>
-
-            <!-- CONTEÚDO 4: CANAL -->
-            <div id="subContentYoutube-canal" class="sub-youtube-panel hidden space-y-3">
-                <h3 class="text-xs font-bold text-red-300 uppercase">Pesquisa Avançada de Canal</h3>
-                <p class="text-[11px] text-gray-400">Busque canais diretamente na plataforma:</p>
-                <div class="space-y-2">
-                    <input type="text" id="ytChannelInput" placeholder="Nome do canal ou termo..." class="w-full bg-black border border-red-900 rounded-lg p-2.5 text-xs text-white focus:outline-none focus:border-red-600 font-mono">
-                    <button onclick="pesquisarCanalYoutube()" class="w-full bg-red-700 hover:bg-red-600 text-white text-xs font-bold py-2.5 rounded-lg transition shadow-md">Buscar no YouTube</button>
-                </div>
-            </div>
-
-        </div>
-
-        <div class="text-center text-[10px] text-gray-500 font-mono">
-            [ Sub-Painel YouTube Ativo ]
-        </div>
-    </div>
-
     <nav class="fixed bottom-0 left-0 right-0 bg-cardbg/95 border-t border-red-950 backdrop-blur px-2 py-2 z-50 max-w-md mx-auto">
         <div class="flex justify-around items-center">
             <button onclick="switchTab('home')" class="nav-btn flex flex-col items-center text-red-500 transition" data-target="home">
@@ -837,88 +707,6 @@
         function voltarParaGridInsta() {
             document.getElementById('instagramSubModal').classList.add('hidden');
             document.getElementById('instagramGridModal').classList.remove('hidden');
-        }
-
-        // FUNÇÕES DO MODAL YOUTUBE GRID (BALÃOZINHO)
-        function abrirModalYoutubeGrid() {
-            document.getElementById('youtubeGridModal').classList.remove('hidden');
-        }
-
-        function fecharModalYoutubeGrid() {
-            document.getElementById('youtubeGridModal').classList.add('hidden');
-            document.getElementById('youtubeSubModal').classList.add('hidden');
-        }
-
-        function abrirSubTelaYoutube(tipo) {
-            document.getElementById('youtubeGridModal').classList.add('hidden');
-            document.getElementById('youtubeSubModal').classList.remove('hidden');
-
-            document.querySelectorAll('.sub-youtube-panel').forEach(el => el.classList.add('hidden'));
-            document.getElementById('subContentYoutube-' + tipo).classList.remove('hidden');
-
-            const titles = {
-                'tags': 'Extrator de Tags do YouTube',
-                'thumbnail': 'Baixar Miniatura (Thumbnail)',
-                'shorts': 'Conversor / Link Direto Shorts',
-                'canal': 'Pesquisa Avançada de Canal'
-            };
-            document.getElementById('subYouTubeModalTitle').innerText = titles[tipo] || 'Sub-Painel YouTube';
-        }
-
-        function voltarParaGridYoutube() {
-            document.getElementById('youtubeSubModal').classList.add('hidden');
-            document.getElementById('youtubeGridModal').classList.remove('hidden');
-        }
-
-        // LÓGICA DAS FERRAMENTAS DO YOUTUBE
-        function extrairTagsYoutube() {
-            const link = document.getElementById('ytTagsInput').value.trim();
-            const resultBox = document.getElementById('ytTagsResultBox');
-            if (!link) {
-                alert("Insira o link do vídeo!");
-                return;
-            }
-            resultBox.innerHTML = `<span class="text-red-400 animate-pulse">Extraindo tags do YouTube...</span>`;
-            setTimeout(() => {
-                resultBox.innerText = `zrx, operator, tutorial, youtube, video, v5, viral, streaming,yt_tags_${Math.floor(Math.random()*1000000)}`;
-            }, 1200);
-        }
-
-        function baixarThumbnailYoutube() {
-            const link = document.getElementById('ytThumbInput').value.trim();
-            const resultBox = document.getElementById('ytThumbResultBox');
-            if (!link) {
-                alert("Insira o link do vídeo!");
-                return;
-            }
-            let videoId = "";
-            if (link.includes("youtu.be/")) {
-                videoId = link.split("youtu.be/")[1]?.split("?")[0];
-            } else if (link.includes("watch?v=")) {
-                videoId = link.split("watch?v=")[1]?.split("&")[0];
-            }
-            if (!videoId) videoId = "dQw4w9WgXcQ"; // Fallback demo
-            
-            const thumbUrl = `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
-            resultBox.innerHTML = `<a href="${thumbUrl}" target="_blank" class="text-red-400 underline font-mono break-all">${thumbUrl}</a>`;
-        }
-
-        function gerarLinkDiretoYoutube() {
-            const input = document.getElementById('ytShortsInput').value.trim();
-            if (!input) {
-                alert("Insira o link ou ID!");
-                return;
-            }
-            window.open(`https://www.youtube.com/watch?v=${input}`, '_blank');
-        }
-
-        function pesquisarCanalYoutube() {
-            const query = document.getElementById('ytChannelInput').value.trim();
-            if (!query) {
-                alert("Digite o nome do canal!");
-                return;
-            }
-            window.open(`https://www.youtube.com/results?search_query=${encodeURIComponent(query)}&sp=EgIQAg%253D%253D`, '_blank');
         }
 
         // LÓGICA DO QUADRADINHO 1: MÉTODOS
@@ -1306,7 +1094,8 @@
         function loadBackground(event) {
             const file = event.target.files[0];
             if (file) {
-                const reader.onload = function(e) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
                     const bgImg = document.getElementById('bgImage');
                     const bgVid = document.getElementById('bgVideo');
 
