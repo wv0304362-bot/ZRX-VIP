@@ -295,8 +295,32 @@
             </div>
         </section>
 
+        <!-- SEÇÃO DE TOOLS COM O NOVO CONSULTADOR DE IP (BALÃOZINHO CIANO) -->
         <section id="tab-tools" class="tab-content hidden space-y-4">
             <h2 class="text-lg font-bold text-red-500 border-l-4 border-red-600 pl-2">Ferramentas Avançadas</h2>
+            
+            <!-- NOVO CARD: CONSULTOR DE IP MÚLTIPLO (BALÃOZINHO CIANO) -->
+            <div class="bg-cardbg/90 border-2 border-cyan-500/60 rounded-xl p-4 space-y-3 backdrop-blur shadow-lg shadow-cyan-950/30">
+                <div class="flex justify-between items-center border-b border-cyan-900/50 pb-2">
+                    <div class="flex items-center space-x-2">
+                        <span class="w-3 h-3 rounded-full bg-cyan-400 animate-pulse shadow-[0_0_8px_#22d3ee]"></span>
+                        <span class="text-xs font-bold text-cyan-400 tracking-wider">🌐 IP ANALYZER & LOOKUP</span>
+                    </div>
+                    <span class="bg-cyan-950 text-cyan-300 text-[9px] font-mono font-bold px-2 py-0.5 rounded border border-cyan-800/50">Multi-API</span>
+                </div>
+                
+                <p class="text-[11px] text-gray-400">Consulte dados avançados do seu IP ou de um IP/Domínio alvo usando múltiplos provedores (ipinfo.io, ipapi.co, ipwho.is).</p>
+
+                <div class="space-y-2">
+                    <input type="text" id="ipTargetInput" placeholder="Deixe em branco para seu IP ou digite IP/Domínio..." class="w-full bg-black border border-cyan-900/70 rounded-lg p-2.5 text-xs text-cyan-300 focus:outline-none focus:border-cyan-400 font-mono">
+                    <button onclick="consultarIpAvancado()" class="w-full bg-cyan-600 hover:bg-cyan-500 text-black font-extrabold text-xs py-2.5 rounded-lg transition shadow-md uppercase tracking-wider">Consultar Múltiplas APIs</button>
+                </div>
+
+                <div id="ipResultContainer" class="bg-black/80 border border-cyan-950 rounded-lg p-3 text-[11px] font-mono text-gray-300 min-h-[90px] max-h-60 overflow-y-auto no-scrollbar space-y-2">
+                    <span class="text-gray-500 text-center block">Aguardando consulta de IP...</span>
+                </div>
+            </div>
+
             <div class="bg-cardbg/90 border border-red-950 rounded-xl p-4 space-y-3 backdrop-blur">
                 <div class="flex justify-between items-center border-b border-gray-800 pb-2">
                     <span class="text-xs text-gray-300">Limpeza de Cache / IMEI</span>
@@ -362,7 +386,7 @@
 
     </main>
 
-    <!-- MODAL DO DOWNLOADER -->
+    <!-- MODAL DO DOWNLOADER (COM O BOTÃO DE VÍDEOS DOWNLOAD AO LADO) -->
     <div id="downloaderModal" class="fixed inset-0 z-50 bg-black/95 backdrop-blur-md hidden flex flex-col justify-between p-6">
         <div class="flex justify-between items-center border-b border-yellow-500/30 pb-4">
             <div class="flex items-center space-x-2">
@@ -392,7 +416,11 @@
                     </select>
                 </div>
 
-                <button onclick="executarDownloadVideoDireto()" class="w-full bg-yellow-500 hover:bg-yellow-400 text-black font-extrabold text-xs py-3.5 rounded-xl transition shadow-lg uppercase tracking-widest">Processar & Baixar</button>
+                <!-- BOTÕES LADO A LADO: PROCESSAR & BAIXAR + VÍDEOS DOWNLOAD -->
+                <div class="grid grid-cols-2 gap-2 pt-1">
+                    <button onclick="executarDownloadVideoDireto()" class="bg-yellow-500 hover:bg-yellow-400 text-black font-extrabold text-[11px] py-3.5 px-2 rounded-xl transition shadow-lg uppercase tracking-tight text-center flex items-center justify-center">Processar & Baixar</button>
+                    <button onclick="abrirModalVideoDownloadsSalvos()" class="bg-zinc-800 hover:bg-zinc-700 text-yellow-400 border border-yellow-600/50 font-bold text-[11px] py-3.5 px-2 rounded-xl transition shadow-lg uppercase tracking-tight text-center flex items-center justify-center">Vídeos Download</button>
+                </div>
             </div>
 
             <div id="downloadStatusBox" class="bg-black/80 border border-yellow-950 rounded-xl p-3 text-[11px] font-mono text-gray-300 min-h-[60px] flex flex-col justify-center items-center text-center">
@@ -402,6 +430,28 @@
 
         <div class="text-center text-[10px] text-gray-500 font-mono">
             [ yt-dlp --upgrade active ]
+        </div>
+    </div>
+
+    <!-- MODAL DE VÍDEOS DOWNLOAD SALVOS -->
+    <div id="videosDownloadModal" class="fixed inset-0 z-50 bg-black/95 backdrop-blur-md hidden flex flex-col justify-between p-6">
+        <div class="flex justify-between items-center border-b border-yellow-500/30 pb-4">
+            <div class="flex items-center space-x-2">
+                <span class="w-3 h-3 rounded-full bg-yellow-400 animate-pulse"></span>
+                <h2 class="text-sm font-bold text-yellow-400 tracking-wider">HISTÓRICO DE VÍDEOS DOWNLOAD</h2>
+            </div>
+            <button onclick="fecharModalVideoDownloadsSalvos()" class="text-gray-400 hover:text-white text-xl font-bold px-3 py-1 bg-gray-900 border border-yellow-500/30 rounded-lg">✕</button>
+        </div>
+
+        <div class="space-y-4 my-auto max-w-sm mx-auto w-full overflow-y-auto max-h-[70vh] no-scrollbar">
+            <p class="text-xs text-gray-400 text-center">Links de mídias e vídeos processados recentemente:</p>
+            <div id="listaHistoricoVideos" class="space-y-2 bg-black/60 border border-yellow-900/40 rounded-xl p-3 min-h-[120px]">
+                <span class="text-gray-500 text-xs block text-center py-4">Nenhum vídeo registrado no histórico.</span>
+            </div>
+        </div>
+
+        <div class="text-center text-[10px] text-gray-500 font-mono">
+            [ Storage Sync Active ]
         </div>
     </div>
 
@@ -613,6 +663,7 @@
             carregarSelectTravas();
             carregarMetodosInsta();
             carregarTravasInstaGrid();
+            carregarHistoricoVideos();
         });
 
         function switchTab(tabId) {
@@ -671,6 +722,49 @@
 
         function fecharModalDownloader() {
             document.getElementById('downloaderModal').classList.add('hidden');
+        }
+
+        function abrirModalVideoDownloadsSalvos() {
+            carregarHistoricoVideos();
+            document.getElementById('videosDownloadModal').classList.remove('hidden');
+        }
+
+        function fecharModalVideoDownloadsSalvos() {
+            document.getElementById('videosDownloadModal').classList.add('hidden');
+        }
+
+        function carregarHistoricoVideos() {
+            const container = document.getElementById('listaHistoricoVideos');
+            if (!container) return;
+
+            const historico = JSON.parse(localStorage.getItem('zrx_videos_history')) || [];
+            if (historico.length === 0) {
+                container.innerHTML = `<span class="text-gray-500 text-xs block text-center py-4">Nenhum vídeo registrado no histórico.</span>`;
+                return;
+            }
+
+            container.innerHTML = '';
+            historico.forEach((item, idx) => {
+                const div = document.createElement('div');
+                div.className = 'bg-black/80 border border-yellow-900/50 rounded-lg p-2.5 flex flex-col space-y-1';
+                div.innerHTML = `
+                    <div class="flex justify-between items-center">
+                        <span class="text-[10px] text-yellow-400 font-mono">#${idx + 1} - ${item.data}</span>
+                        <a href="${item.url}" target="_blank" class="bg-yellow-950 text-yellow-300 border border-yellow-700 text-[10px] px-2 py-0.5 rounded hover:bg-yellow-900">Baixar / Abrir</a>
+                    </div>
+                    <p class="text-[10px] text-gray-300 font-mono truncate">${item.url}</p>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        function salvarHistoricoVideo(url) {
+            const historico = JSON.parse(localStorage.getItem('zrx_videos_history')) || [];
+            const dataHora = new Date().toLocaleString();
+            historico.unshift({ url, data: dataHora });
+            if (historico.length > 20) historico.pop();
+            localStorage.setItem('zrx_videos_history', JSON.stringify(historico));
+            carregarHistoricoVideos();
         }
 
         // FUNÇÕES DO MODAL INSTAGRAM GRID (BALÃOZINHO)
@@ -880,6 +974,7 @@
                 .then(data => {
                     const downloadUrl = data.url || data.stream;
                     if (downloadUrl) {
+                        salvarHistoricoVideo(downloadUrl);
                         const a = document.createElement('a');
                         a.href = downloadUrl;
                         a.target = '_blank';
@@ -889,15 +984,87 @@
                         a.remove();
                         setTimeout(() => fecharModalDownloader(), 1500);
                     } else {
+                        salvarHistoricoVideo(urlLink);
                         window.open(`https://www.google.com/search?q=savefrom+${encodeURIComponent(urlLink)}`, '_blank');
                         fecharModalDownloader();
                     }
                 })
                 .catch(() => {
+                    salvarHistoricoVideo(urlLink);
                     window.open(`https://www.google.com/search?q=savefrom+${encodeURIComponent(urlLink)}`, '_blank');
                     fecharModalDownloader();
                 });
             }, 2200);
+        }
+
+        // NOVO CONSULTADOR DE IP MÚLTIPLO (ipinfo.io, ipapi.co, ipwho.is) COM BALÃOZINHO CIANO
+        async function consultarIpAvancado() {
+            const alvo = document.getElementById('ipTargetInput').value.trim();
+            const resultBox = document.getElementById('ipResultContainer');
+
+            resultBox.innerHTML = `<span class="text-cyan-400 animate-pulse">🌐 Consultando múltiplas APIs (ipinfo.io, ipapi.co, ipwho.is)...</span>`;
+
+            try {
+                // Consulta IP / Domínio se preenchido, caso contrário consulta o IP atual
+                const endpointInfo = alvo ? `https://ipinfo.io/${alvo}/json` : `https://ipinfo.io/json`;
+                const endpointWhois = alvo ? `https://ipwho.is/${alvo}` : `https://ipwho.is/`;
+                const endpointApiCo = alvo ? `https://ipapi.co/${alvo}/json/` : `https://ipapi.co/json/`;
+
+                const [resInfo, resWhois, resCo] = await Promise.allSettled([
+                    fetch(endpointInfo).then(r => r.json()),
+                    fetch(endpointWhois).then(r => r.json()),
+                    fetch(endpointApiCo).then(r => r.json())
+                ]);
+
+                let htmlOutput = `<div class="space-y-3 font-mono text-[11px]">`;
+
+                if (resInfo.status === 'fulfilled' && resInfo.value) {
+                    const d = resInfo.value;
+                    htmlOutput += `
+                        <div class="bg-black/90 border border-cyan-900/60 rounded p-2">
+                            <span class="text-cyan-400 font-bold block">📌 IPInfo.io</span>
+                            <div>IP: <strong class="text-white">${d.ip || 'N/A'}</strong></div>
+                            <div>Cidade / Região: <strong class="text-white">${d.city || ''} / ${d.region || ''}</strong></div>
+                            <div>País: <strong class="text-white">${d.country || ''}</strong></div>
+                            <div>Provedor / ASN: <strong class="text-white">${d.org || 'N/A'}</strong></div>
+                            <div>Localização (Coords): <strong class="text-white">${d.loc || 'N/A'}</strong></div>
+                        </div>
+                    `;
+                }
+
+                if (resWhois.status === 'fulfilled' && resWhois.value && resWhois.value.success !== false) {
+                    const d = resWhois.value;
+                    htmlOutput += `
+                        <div class="bg-black/90 border border-cyan-900/60 rounded p-2">
+                            <span class="text-cyan-400 font-bold block">📌 IPWho.is</span>
+                            <div>IP: <strong class="text-white">${d.ip || 'N/A'}</strong> (${d.type || ''})</div>
+                            <div>Continente / País: <strong class="text-white">${d.continent || ''} - ${d.country || ''}</strong></div>
+                            <div>ISP / Empresa: <strong class="text-white">${d.connection?.isp || d.company?.name || 'N/A'}</strong></div>
+                            <div>Fuso Horário: <strong class="text-white">${d.timezone?.id || 'N/A'}</strong></div>
+                        </div>
+                    `;
+                }
+
+                if (resApiCo = resCo.status === 'fulfilled' && resCo.value && !resCo.value.error) {
+                    const d = resCo.value;
+                    htmlOutput += `
+                        <div class="bg-black/90 border border-cyan-900/60 rounded p-2">
+                            <span class="text-cyan-400 font-bold block">📌 IPApi.co</span>
+                            <div>Rede IP: <strong class="text-white">${d.ip || 'N/A'}</strong></div>
+                            <div>Organização: <strong class="text-white">${d.org || 'N/A'}</strong></div>
+                            <div>Capital / País: <strong class="text-white">${d.country_capital || ''} (${d.country_name || ''})</strong></div>
+                            <div>Código Postal: <strong class="text-white">${d.postal || 'N/A'}</strong></div>
+                        </div>
+                    `;
+                }
+
+                htmlOutput += `</div>`;
+                resultBox.innerHTML = htmlOutput;
+                adicionarNotificacao("IP Analyzer", `Consulta multidados concluída com sucesso.`, "green");
+
+            } catch (error) {
+                resultBox.innerHTML = `<span class="text-red-400">❌ Erro ao consultar APIs de IP. Verifique a conexão.</span>`;
+            }
         }
 
         function ativarBlindagemAccessibility() {
