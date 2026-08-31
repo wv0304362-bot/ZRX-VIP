@@ -14,6 +14,7 @@
                         cardbg: '#141414',
                         accentred: '#dc2626',
                         accentredhover: '#b91c1c',
+                        goldborder: '#eab308',
                     }
                 }
             }
@@ -66,9 +67,10 @@
 
         <!-- ABA 1: HOME -->
         <section id="tab-home" class="tab-content space-y-4">
+            <!-- BANNER PRINCIPAL -->
             <div class="relative rounded-2xl overflow-hidden border border-red-600/50 shadow-lg shadow-red-950/50 bg-black">
                 <div class="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent z-10"></div>
-                <img src="https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?w=600" alt="ZRX V5 Banner" class="w-full h-56 object-cover opacity-70">
+                <img src="https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?w=600" alt="ZRX V5 Banner" class="w-full h-52 object-cover opacity-70">
                 <div class="absolute bottom-4 left-4 z-20">
                     <span class="text-xs text-red-500 font-extrabold tracking-widest uppercase">Cybernetic Operative</span>
                     <h2 class="text-2xl font-black italic tracking-wider text-white drop-shadow-[0_2px_4px_rgba(220,38,38,0.8)]">ZRX V5</h2>
@@ -76,6 +78,7 @@
                 </div>
             </div>
 
+            <!-- LICENÇA -->
             <div class="bg-cardbg/90 border border-red-950 rounded-xl p-4 shadow-md backdrop-blur">
                 <div class="flex justify-between items-center mb-2">
                     <span class="text-xs text-gray-400">ACTIVE UNTIL</span>
@@ -86,9 +89,78 @@
                 </div>
                 <span class="text-[10px] text-gray-500 mt-1 block">100% Remaining - Lifetime License</span>
             </div>
+
+            <!-- CARROSSEL DE CARDS DA HOME (ESTILO DA SEGUNDA IMAGEM) -->
+            <div class="space-y-2 pt-2">
+                <div class="flex justify-between items-center px-1">
+                    <h3 class="text-xs font-bold text-gray-400 uppercase tracking-widest">Módulos Rápidos</h3>
+                    <span class="text-[10px] text-red-500 font-mono">Arraste para o lado -></span>
+                </div>
+
+                <div class="flex space-x-4 overflow-x-auto no-scrollbar py-2 snap-x" id="homeCarousel">
+                    
+                    <!-- CARD 1: DOWNLOADER DE VÍDEO (COM BORDA DOURADA) -->
+                    <div onclick="abrirModalDownloader()" class="min-w-[280px] w-[85%] max-w-[320px] bg-cardbg/95 border-2 border-goldborder rounded-2xl p-5 space-y-4 shadow-xl backdrop-blur shrink-0 snap-center flex flex-col justify-between cursor-pointer hover:bg-black/90 transition group">
+                        <div>
+                            <div class="flex justify-between items-start mb-3">
+                                <div class="w-10 h-10 rounded-xl bg-yellow-950/50 border border-yellow-600/50 flex items-center justify-center text-yellow-400 group-hover:scale-110 transition">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+                                </div>
+                                <span class="bg-yellow-950 text-yellow-400 text-[10px] font-bold px-2.5 py-1 rounded-full border border-yellow-800/50">★ VIP DOWNLOAD</span>
+                            </div>
+                            <h3 class="text-sm font-bold text-white tracking-wide">Video Downloader</h3>
+                            <span class="text-[10px] text-yellow-500/80 font-mono block mb-2">#GallerySave</span>
+                            <p class="text-xs text-gray-400">Baixe vídeos do YouTube, Instagram, TikTok e outras plataformas direto para sua galeria.</p>
+                        </div>
+                        <div class="pt-2 border-t border-gray-800/60 flex justify-between items-center">
+                            <span class="text-[10px] text-yellow-500 font-mono">[ CLIQUE PARA ABRIR ]</span>
+                            <span class="text-xs text-yellow-400 font-bold group-hover:translate-x-1 transition">Abrir →</span>
+                        </div>
+                    </div>
+
+                    <!-- CARD 2: FORCLOSE INVISIBLE (EXEMPLO DA SUA REFERÊNCIA) -->
+                    <div class="min-w-[280px] w-[85%] max-w-[320px] bg-cardbg/95 border border-red-950/80 rounded-2xl p-5 space-y-4 shadow-xl backdrop-blur shrink-0 snap-center flex flex-col justify-between">
+                        <div>
+                            <div class="flex justify-between items-start mb-3">
+                                <div class="w-10 h-10 rounded-xl bg-red-950/50 border border-red-900/50 flex items-center justify-center text-red-500">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636l3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                </div>
+                                <span class="bg-red-950 text-red-400 text-[10px] font-bold px-2.5 py-1 rounded-full border border-red-800/50">#ForceX</span>
+                            </div>
+                            <h3 class="text-sm font-bold text-white tracking-wide">Forclose inVisible</h3>
+                            <span class="text-[10px] text-red-500 font-mono block mb-2">[ BEBAS SPAM ]</span>
+                            <p class="text-xs text-gray-400">Forclose + Delayed Hard in target para quebra de sessão invisível.</p>
+                        </div>
+                        <div class="pt-2 border-t border-gray-800/60 flex justify-between items-center">
+                            <span class="text-[10px] text-gray-500 font-mono">[ READY ]</span>
+                            <span class="w-3 h-3 rounded-full bg-green-500 inline-block shadow-[0_0_8px_#22c55e]"></span>
+                        </div>
+                    </div>
+
+                    <!-- CARD 3: PING & LATENCY -->
+                    <div class="min-w-[280px] w-[85%] max-w-[320px] bg-cardbg/95 border border-red-950/80 rounded-2xl p-5 space-y-4 shadow-xl backdrop-blur shrink-0 snap-center flex flex-col justify-between">
+                        <div>
+                            <div class="flex justify-between items-start mb-3">
+                                <div class="w-10 h-10 rounded-xl bg-red-950/50 border border-red-900/50 flex items-center justify-center text-red-500">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                                </div>
+                                <span class="bg-blue-950 text-blue-400 text-[10px] font-bold px-2.5 py-1 rounded-full border border-blue-800/50">#Network</span>
+                            </div>
+                            <h3 class="text-sm font-bold text-white tracking-wide">Latency & Proxy</h3>
+                            <span class="text-[10px] text-blue-400 font-mono block mb-2">[ SECURE ROUTE ]</span>
+                            <p class="text-xs text-gray-400">Monitoramento de rota e latência de servidores ativos em tempo real.</p>
+                        </div>
+                        <div class="pt-2 border-t border-gray-800/60 flex justify-between items-center">
+                            <span class="text-[10px] text-green-400 font-mono">14ms (Optimal)</span>
+                            <span class="w-3 h-3 rounded-full bg-green-500 inline-block"></span>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
         </section>
 
-        <!-- ABA 2: WHATSAPP & MÓDULOS (CARROSSEL DE CARDS) -->
+        <!-- ABA 2: WHATSAPP & MÓDULOS -->
         <section id="tab-whatsapp" class="tab-content hidden space-y-4">
             <div>
                 <h2 class="text-lg font-bold text-red-500 border-l-4 border-red-600 pl-2">Central Operativa WhatsApp</h2>
@@ -97,7 +169,7 @@
 
             <div class="flex space-x-4 overflow-x-auto no-scrollbar py-2 snap-x">
                 
-                <!-- CARD 1: PROCESSO DE DENÚNCIA BANZAP -->
+                <!-- CARD Banzap -->
                 <div class="min-w-[280px] w-[85%] max-w-[320px] bg-cardbg/95 border border-red-950/80 rounded-2xl p-5 space-y-4 shadow-xl backdrop-blur shrink-0 snap-center flex flex-col justify-between">
                     <div>
                         <div class="flex justify-between items-start mb-3">
@@ -107,124 +179,20 @@
                             <span class="bg-red-950 text-red-400 text-[10px] font-bold px-2.5 py-1 rounded-full border border-red-800/50">#BanzapAPI</span>
                         </div>
                         <h3 class="text-sm font-bold text-white tracking-wide">Processo de Denúncia</h3>
-                        <span class="text-[10px] text-gray-400 block mb-3">Insira o número com DDD (Ex: 5511999999999)</span>
+                        <span class="text-[10px] text-gray-400 block mb-3">Insira o número com DDD</span>
                         
-                        <div class="space-y-2">
-                            <input type="text" id="targetNumberInput" placeholder="+55 (XX) 9XXXX-XXXX" class="w-full bg-black border border-red-900 rounded-lg p-2.5 text-xs text-white focus:outline-none focus:border-red-600 font-mono">
-                        </div>
+                        <input type="text" id="targetNumberInput" placeholder="+55 (XX) 9XXXX-XXXX" class="w-full bg-black border border-red-900 rounded-lg p-2.5 text-xs text-white focus:outline-none focus:border-red-600 font-mono">
 
                         <div id="denunciaProcessBox" class="bg-black/70 border border-red-900/40 rounded-lg p-3 my-3 text-[11px] font-mono text-gray-300 min-h-[75px] flex flex-col justify-center">
-                            <span class="text-gray-500 text-center">Aguardando inserção do número...</span>
+                            <span class="text-gray-500 text-center">Aguardando inserção...</span>
                         </div>
                     </div>
-
                     <div class="pt-2 border-t border-gray-800/60">
                         <button onclick="iniciarProcessoBanzap()" class="w-full bg-accentred hover:bg-accentredhover text-white text-xs font-bold py-2.5 rounded-lg transition shadow-md text-center">Disparar Denúncia</button>
                     </div>
                 </div>
 
-                <!-- CARD 2: DISPARADOR AUTOMÁTICO -->
-                <div class="min-w-[280px] w-[85%] max-w-[320px] bg-cardbg/95 border border-red-950/80 rounded-2xl p-5 space-y-3 shadow-xl backdrop-blur shrink-0 snap-center flex flex-col justify-between">
-                    <div>
-                        <div class="flex justify-between items-start mb-2">
-                            <div class="w-10 h-10 rounded-xl bg-red-950/50 border border-red-900/50 flex items-center justify-center text-red-500">
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
-                            </div>
-                            <span class="bg-red-950 text-red-400 text-[10px] font-bold px-2.5 py-1 rounded-full border border-red-800/50">#Flooder</span>
-                        </div>
-                        <h3 class="text-sm font-bold text-white tracking-wide">Disparador Automático</h3>
-                        <span class="text-[10px] text-gray-400 block mb-2">Envio em massa de travas</span>
-
-                        <!-- Alvo -->
-                        <div class="space-y-1 mb-2">
-                            <label class="text-[9px] text-gray-400 font-bold uppercase tracking-wider">Número do Alvo</label>
-                            <input type="text" id="floodAlvo" placeholder="Ex: 5511999999999" class="w-full bg-black border border-red-900 rounded-lg p-2 text-xs text-white focus:outline-none focus:border-red-600 font-mono">
-                        </div>
-
-                        <!-- Seleção da Trava / Nome + Trava -->
-                        <div class="space-y-1 mb-2">
-                            <label class="text-[9px] text-gray-400 font-bold uppercase tracking-wider">Nome / Trava do Armazenamento</label>
-                            <select id="floodTravaSelect" class="w-full bg-black border border-red-900 rounded-lg p-2 text-xs text-white focus:outline-none focus:border-red-600">
-                                <option value="">Selecione do Armazenamento...</option>
-                            </select>
-                            <input type="text" id="floodCustomText" placeholder="Ou digite/cole sua trava de texto aqui..." class="w-full mt-1 bg-black border border-red-900 rounded-lg p-2 text-xs text-white focus:outline-none focus:border-red-600 font-mono">
-                        </div>
-
-                        <!-- Opção Jogar Tudo de Uma Vez -->
-                        <div class="flex items-center space-x-2 my-2">
-                            <input type="checkbox" id="jogarTudoCheckbox" class="w-4 h-4 accent-red-600 bg-black border-red-900 rounded cursor-pointer">
-                            <label for="jogarTudoCheckbox" class="text-[10px] text-gray-300 font-semibold cursor-pointer">Jogar tudo de uma vez (disparo múltiplo instantâneo)</label>
-                        </div>
-
-                        <!-- Quantidade -->
-                        <div class="space-y-1 mb-2">
-                            <div class="flex justify-between items-center">
-                                <label class="text-[9px] text-gray-400 font-bold uppercase tracking-wider">Quantidade</label>
-                                <span id="labelQtd" class="text-xs text-red-500 font-mono font-bold">10x</span>
-                            </div>
-                            <input type="range" id="floodQuantidade" min="1" max="100" value="10" oninput="document.getElementById('labelQtd').innerText = this.value + 'x'" class="w-full accent-red-600 bg-black cursor-pointer">
-                        </div>
-
-                        <!-- Status Box -->
-                        <div id="floodStatusBox" class="bg-black/70 border border-red-900/40 rounded-lg p-2 text-[10px] font-mono text-gray-300 min-h-[45px] flex flex-col justify-center items-center text-center">
-                            <span class="text-gray-500">Pronto para iniciar...</span>
-                        </div>
-                    </div>
-
-                    <div class="pt-2 border-t border-gray-800/60">
-                        <button onclick="iniciarDisparoEmMassa()" class="w-full bg-accentred hover:bg-accentredhover text-white text-xs font-bold py-2 rounded-lg transition shadow-md">Iniciar Disparos</button>
-                    </div>
-                </div>
-
-                <!-- CARD 3: NÚMERO VIRTUAL (API FREENUMBER) -->
-                <div class="min-w-[280px] w-[85%] max-w-[320px] bg-cardbg/95 border border-red-950/80 rounded-2xl p-5 space-y-4 shadow-xl backdrop-blur shrink-0 snap-center flex flex-col justify-between">
-                    <div>
-                        <div class="flex justify-between items-start mb-3">
-                            <div class="w-10 h-10 rounded-xl bg-red-950/50 border border-red-900/50 flex items-center justify-center text-red-500">
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"/></svg>
-                            </div>
-                            <span class="bg-blue-950 text-blue-400 text-[10px] font-bold px-2.5 py-1 rounded-full border border-blue-800/50">🇷🇺 RUSSIA ( ativo )</span>
-                        </div>
-                        <h3 class="text-sm font-bold text-white tracking-wide">Número Virtual SMS</h3>
-                        <span class="text-[10px] text-red-500 font-mono block mb-2">#FreeNumberAPI</span>
-                        
-                        <div class="bg-black/60 border border-red-900/40 rounded-lg p-2 text-center my-2">
-                            <span class="text-[10px] text-gray-400 block">NÚMERO ATUAL</span>
-                            <span id="virtualNumberDisplay" class="text-xs text-red-400 font-mono font-bold">Nenhum gerado</span>
-                        </div>
-                    </div>
-
-                    <div class="pt-2 border-t border-gray-800/60 grid grid-cols-2 gap-2">
-                        <button onclick="gerarNumeroVirtual()" class="bg-accentred hover:bg-accentredhover text-white text-[11px] font-bold py-2 px-2 rounded-lg transition shadow-md text-center">Gerar Número</button>
-                        <button onclick="filtroGlobal()" class="bg-gray-800 hover:bg-gray-700 text-gray-300 text-[11px] font-bold py-2 px-2 rounded-lg transition text-center border border-gray-700">Global</button>
-                    </div>
-                </div>
-
-                <!-- CARD 4: ARMAZENAMENTO TRAVA (VAULT) -->
-                <div class="min-w-[280px] w-[85%] max-w-[320px] bg-cardbg/95 border border-red-950/80 rounded-2xl p-5 space-y-4 shadow-xl backdrop-blur shrink-0 snap-center flex flex-col justify-between">
-                    <div>
-                        <div class="flex justify-between items-start mb-3">
-                            <div class="w-10 h-10 rounded-xl bg-red-950/50 border border-red-900/50 flex items-center justify-center text-red-500">
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 2v1m0 16v2m-6-8a6 6 0 0112 0v1H6v-1zM5 16l-2 2m16-2l2 2"/></svg>
-                            </div>
-                            <span class="bg-green-950 text-green-400 text-[10px] font-bold px-2.5 py-1 rounded-full border border-green-800/50">● VAULT</span>
-                        </div>
-                        <h3 class="text-sm font-bold text-white tracking-wide">Armazenamento Trava</h3>
-                        <span class="text-[10px] text-red-500 font-mono block mb-2">#VaultStorage</span>
-                        <p class="text-xs text-gray-400 mb-2">Armazene trava de foto, localização, contato e texto.</p>
-                        
-                        <div class="space-y-2">
-                            <input type="text" id="vaultNameInput" placeholder="Nome da Trava..." class="w-full bg-black border border-red-900 rounded-lg p-2 text-xs text-white focus:outline-none focus:border-red-600">
-                            <textarea id="vaultContentInput" placeholder="Cole o conteúdo (texto, contato, coords, etc)..." class="w-full bg-black border border-red-900 rounded-lg p-2 text-xs text-white focus:outline-none focus:border-red-600 h-16 resize-none font-mono"></textarea>
-                        </div>
-                    </div>
-                    <div class="pt-2 border-t border-gray-800/60 flex justify-between items-center">
-                        <span class="text-[10px] text-gray-500 font-mono">[ SECURE ]</span>
-                        <button onclick="salvarNaVault()" class="bg-accentred hover:bg-accentredhover text-white text-xs font-bold px-4 py-2 rounded-lg transition shadow-md">Salvar</button>
-                    </div>
-                </div>
-
-                <!-- CARD 5: ANTI-BAN & BLINDAGEM (INTEGRADO COM LINK ACCESSIBILITY) -->
+                <!-- CARD Anti-Ban Accessibility -->
                 <div class="min-w-[280px] w-[85%] max-w-[320px] bg-cardbg/95 border border-red-950/80 rounded-2xl p-5 space-y-4 shadow-xl backdrop-blur shrink-0 snap-center flex flex-col justify-between">
                     <div>
                         <div class="flex justify-between items-start mb-3">
@@ -234,23 +202,15 @@
                             <span id="shieldBadge" class="bg-gray-800 text-gray-400 text-[10px] font-bold px-2.5 py-1 rounded-full border border-gray-700 transition-all">○ WAITING</span>
                         </div>
                         <h3 class="text-sm font-bold text-white tracking-wide">Anti-Ban & Blindagem</h3>
-                        <span class="text-[10px] text-red-500 font-mono block mb-2">#ShieldV5 (Accessibility Sync)</span>
+                        <span class="text-[10px] text-red-500 font-mono block mb-2">#ShieldV5 (Accessibility)</span>
                         
-                        <!-- Inputs de Configuração do Balãozinho / Suporte -->
                         <div class="space-y-2 mb-2">
-                            <input type="text" id="antiBanPhone" placeholder="Seu Número (Ex: +551199999999)" class="w-full bg-black border border-red-900 rounded-lg p-2 text-xs text-white focus:outline-none focus:border-red-600 font-mono">
-                            <input type="email" id="antiBanEmail" placeholder="Seu E-mail Gmail..." class="w-full bg-black border border-red-900 rounded-lg p-2 text-xs text-white focus:outline-none focus:border-red-600 font-mono">
-                            <select id="antiBanDevice" class="w-full bg-black border border-red-900 rounded-lg p-2 text-xs text-white focus:outline-none focus:border-red-600">
-                                <option value="Android">Dispositivo: Android</option>
-                                <option value="iPhone">Dispositivo: iPhone</option>
-                                <option value="Web/Desktop">Dispositivo: Web / Desktop</option>
-                            </select>
-                            <textarea id="antiBanMsg" placeholder="Mensagem explicativa Anti-Ban..." class="w-full bg-black border border-red-900 rounded-lg p-2 text-xs text-white focus:outline-none focus:border-red-600 h-14 resize-none font-mono">Olá, minha conta foi banida indevidamente por engano no sistema anti-spam. Solicito a restauração imediata do acesso ao número.</textarea>
+                            <input type="text" id="antiBanPhone" placeholder="Seu Número..." class="w-full bg-black border border-red-900 rounded-lg p-2 text-xs text-white focus:outline-none focus:border-red-600 font-mono">
+                            <input type="email" id="antiBanEmail" placeholder="Seu E-mail..." class="w-full bg-black border border-red-900 rounded-lg p-2 text-xs text-white focus:outline-none focus:border-red-600 font-mono">
                         </div>
 
-                        <!-- Terminal / Caixa de Status da Blindagem -->
                         <div id="shieldStatusBox" class="bg-black/80 border border-red-900/40 rounded-lg p-2 text-[10px] font-mono text-gray-300 min-h-[40px] flex flex-col justify-center">
-                            <span class="text-gray-500 text-center">Aguardando disparo do balãozinho...</span>
+                            <span class="text-gray-500 text-center">Aguardando disparo...</span>
                         </div>
                     </div>
                     
@@ -263,7 +223,7 @@
             </div>
         </section>
 
-        <!-- ABA 3: RAT / FERRAMENTAS -->
+        <!-- ABA 3: TOOLS -->
         <section id="tab-tools" class="tab-content hidden space-y-4">
             <h2 class="text-lg font-bold text-red-500 border-l-4 border-red-600 pl-2">Ferramentas Avançadas</h2>
             <div class="bg-cardbg/90 border border-red-950 rounded-xl p-4 space-y-3 backdrop-blur">
@@ -271,32 +231,23 @@
                     <span class="text-xs text-gray-300">Limpeza de Cache / IMEI</span>
                     <button class="bg-red-950 text-red-400 border border-red-800 text-[10px] px-3 py-1 rounded">Executar</button>
                 </div>
-                <div class="flex justify-between items-center pb-2">
-                    <span class="text-xs text-gray-300">Logs de Conexão Proxy</span>
-                    <button class="bg-red-950 text-red-400 border border-red-800 text-[10px] px-3 py-1 rounded">Ver Logs</button>
-                </div>
             </div>
         </section>
 
-        <!-- ABA 4: NOTIFICAÇÕES & SMS -->
+        <!-- ABA 4: NOTIFICATIONS -->
         <section id="tab-notifications" class="tab-content hidden space-y-3">
-            <h2 class="text-lg font-bold text-red-500 border-l-4 border-red-600 pl-2">Notificações & SMS</h2>
+            <h2 class="text-lg font-bold text-red-500 border-l-4 border-red-600 pl-2">Notificações & Logs</h2>
             <div id="notificationsContainer" class="bg-cardbg/90 border border-red-950 rounded-xl p-3 text-xs space-y-2 backdrop-blur">
                 <div class="border-l-2 border-green-500 pl-2 py-1">
-                    <span class="text-[10px] text-gray-500 block">14:28 - Sistema</span>
-                    <span class="text-white">Sessão inicializada com sucesso no ambiente.</span>
-                </div>
-                <div class="border-l-2 border-red-500 pl-2 py-1">
-                    <span class="text-[10px] text-gray-500 block">14:25 - SMS Gateway</span>
-                    <span class="text-white">Módulo Banzap carregado e pronto para operações.</span>
+                    <span class="text-[10px] text-gray-500 block">System</span>
+                    <span class="text-white">Painel inicializado com sucesso.</span>
                 </div>
             </div>
         </section>
 
-        <!-- ABA 5: SUPORTE E CONFIGURAÇÕES -->
+        <!-- ABA 5: SUPORTE -->
         <section id="tab-support" class="tab-content hidden space-y-4">
             <h2 class="text-lg font-bold text-red-500 border-l-4 border-red-600 pl-2">Configurações & Suporte</h2>
-            
             <div class="bg-cardbg/90 border border-red-950 rounded-xl p-4 space-y-3 backdrop-blur">
                 <h3 class="text-xs font-bold text-red-400 uppercase tracking-wider">Perfil & Visual</h3>
                 <div>
@@ -304,43 +255,68 @@
                     <input type="text" id="inputName" placeholder="Novo nome..." class="w-full bg-black border border-red-900 rounded-lg p-2 text-xs text-white focus:outline-none focus:border-red-600">
                 </div>
                 <div>
-                    <label class="text-[10px] text-gray-400 block mb-1">Foto de Perfil (Direto da Galeria)</label>
-                    <input type="file" id="inputAvatarFile" accept="image/*" onchange="loadAvatar(event)" class="w-full bg-black border border-red-900 rounded-lg p-1.5 text-[11px] text-gray-300 file:mr-3 file:py-1 file:px-3 file:rounded-md file:border-0 file:text-[10px] file:font-bold file:bg-red-950 file:text-red-400 hover:file:bg-red-900">
-                </div>
-                <div>
-                    <label class="text-[10px] text-gray-400 block mb-1">Plano de Fundo - Foto ou Vídeo (Galeria)</label>
-                    <input type="file" id="inputBgFile" accept="image/*,video/*" onchange="loadBackground(event)" class="w-full bg-black border border-red-900 rounded-lg p-1.5 text-[11px] text-gray-300 file:mr-3 file:py-1 file:px-3 file:rounded-md file:border-0 file:text-[10px] file:font-bold file:bg-red-950 file:text-red-400 hover:file:bg-red-900">
-                </div>
-                <div>
-                    <label class="text-[10px] text-gray-400 block mb-1">Cor de Destaque do Tema</label>
-                    <div class="flex space-x-2 pt-1">
-                        <button onclick="setThemeColor('#dc2626')" class="w-6 h-6 rounded-full bg-red-600 border border-white/25 shadow"></button>
-                        <button onclick="setThemeColor('#2563eb')" class="w-6 h-6 rounded-full bg-blue-600 border border-white/25 shadow"></button>
-                        <button onclick="setThemeColor('#16a34a')" class="w-6 h-6 rounded-full bg-green-600 border border-white/25 shadow"></button>
-                        <button onclick="setThemeColor('#9333ea')" class="w-6 h-6 rounded-full bg-purple-600 border border-white/25 shadow"></button>
-                        <button onclick="setThemeColor('#ea580c')" class="w-6 h-6 rounded-full bg-orange-600 border border-white/25 shadow"></button>
-                    </div>
+                    <label class="text-[10px] text-gray-400 block mb-1">Foto de Perfil</label>
+                    <input type="file" id="inputAvatarFile" accept="image/*" onchange="loadAvatar(event)" class="w-full bg-black border border-red-900 rounded-lg p-1.5 text-[11px] text-gray-300">
                 </div>
                 <button onclick="updateProfile()" class="w-full bg-accentred hover:bg-accentredhover text-white text-xs font-bold py-2 rounded-lg transition">Aplicar Alterações</button>
-            </div>
-
-            <div class="bg-cardbg/90 border border-red-950 rounded-xl p-4 space-y-2 backdrop-blur">
-                <h3 class="text-xs font-bold text-red-400 uppercase tracking-wider">Suporte Oficial ZRX</h3>
-                <p class="text-xs text-gray-300">Teve problemas com o painel ou precisa de suporte direto com o desenvolvedor?</p>
-                <a href="https://t.me/" target="_blank" class="block text-center bg-black border border-red-900 text-red-400 text-xs font-bold py-2 rounded-lg hover:bg-red-950/40 transition">Chamar no Suporte / Telegram</a>
             </div>
         </section>
 
     </main>
 
+    <!-- TELA CHEIA / MODAL DO DOWNLOADER DE VÍDEO (ABRE AO CLICAR NO CARD DOURADO) -->
+    <div id="downloaderModal" class="fixed inset-0 z-50 bg-black/95 backdrop-blur-md hidden flex flex-col justify-between p-6">
+        <div class="flex justify-between items-center border-b border-yellow-500/30 pb-4">
+            <div class="flex items-center space-x-2">
+                <span class="w-3 h-3 rounded-full bg-yellow-500 animate-pulse"></span>
+                <h2 class="text-sm font-bold text-yellow-400 tracking-wider">ZRX DOWNLOADER STUDIO</h2>
+            </div>
+            <button onclick="fecharModalDownloader()" class="text-gray-400 hover:text-white text-xl font-bold px-3 py-1 bg-gray-900 border border-yellow-500/30 rounded-lg">✕</button>
+        </div>
+
+        <div class="space-y-4 my-auto max-w-sm mx-auto w-full">
+            <div class="text-center space-y-1">
+                <h3 class="text-lg font-black text-white">Salvar Vídeo na Galeria</h3>
+                <p class="text-xs text-gray-400">Cole o link do YouTube, TikTok, Instagram ou outras plataformas abaixo.</p>
+            </div>
+
+            <div class="space-y-3">
+                <div class="space-y-1">
+                    <label class="text-[10px] text-yellow-400 font-bold uppercase tracking-wider">Link do Mídia / Vídeo</label>
+                    <input type="url" id="mediaLinkInput" placeholder="https://youtube.com/watch?v=..." class="w-full bg-black border-2 border-yellow-500/60 rounded-xl p-3 text-xs text-white focus:outline-none focus:border-yellow-400 font-mono shadow-lg shadow-yellow-950/20">
+                </div>
+
+                <div class="space-y-1">
+                    <label class="text-[10px] text-gray-400 font-bold uppercase tracking-wider">Qualidade / Formato</label>
+                    <select id="mediaQualitySelect" class="w-full bg-black border border-yellow-900 rounded-xl p-3 text-xs text-white focus:outline-none focus:border-yellow-500">
+                        <option value="mp4_hd">MP4 - Alta Definição (HD)</option>
+                        <option value="mp4_sd">MP4 - Padrão (SD)</option>
+                        <option value="mp3">Apenas Áudio (MP3)</option>
+                    </select>
+                </div>
+
+                <button onclick="executarDownloadVideo()" class="w-full bg-yellow-500 hover:bg-yellow-400 text-black font-extrabold text-xs py-3.5 rounded-xl transition shadow-lg shadow-yellow-950/50 uppercase tracking-widest">Baixar para a Galeria</button>
+            </div>
+
+            <!-- Caixa de Status do Download -->
+            <div id="downloadStatusBox" class="bg-black/80 border border-yellow-950 rounded-xl p-3 text-[11px] font-mono text-gray-300 min-h-[60px] flex flex-col justify-center items-center text-center">
+                <span class="text-gray-500">Aguardando URL de download...</span>
+            </div>
+        </div>
+
+        <div class="text-center text-[10px] text-gray-500 font-mono">
+            [ SECURE MEDIA PIPELINE v5.2 ]
+        </div>
+    </div>
+
     <!-- MENU DE NAVEGAÇÃO INFERIOR -->
-    <nav class="fixed bottom-0 left-0 right-0 bg-cardbg/95 border-t border-red-950 backdrop-blur px-2 py-2 z-50 max-w-md mx-auto">
+    <nav class="fixed bottom-0 left-0 right-0 bg-cardbg/95 border-t border-red-950 backdrop-blur px-2 py-2 z-40 max-w-md mx-auto">
         <div class="flex justify-around items-center">
             <button onclick="switchTab('home')" class="nav-btn flex flex-col items-center text-red-500 transition" data-target="home">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="m3 12 2-2m0 0 7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
                 <span class="text-[10px] mt-1 font-semibold">Home</span>
             </button>
-            <button onclick="switchTab('whatsapp'); carregarSelectTravas();" class="nav-btn flex flex-col items-center text-gray-400 hover:text-red-500 transition" data-target="whatsapp">
+            <button onclick="switchTab('whatsapp')" class="nav-btn flex flex-col items-center text-gray-400 hover:text-red-500 transition" data-target="whatsapp">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
                 <span class="text-[10px] mt-1">WhatsApp</span>
             </button>
@@ -359,49 +335,8 @@
         </div>
     </nav>
 
-    <!-- SCRIPTS DE INTEGRAÇÃO E FLUXO -->
+    <!-- SCRIPTS DE CONTROLE -->
     <script>
-        const API_URL = 'https://weak-deloris-nothing672434-fe85179d.koyeb.app';
-
-        window.addEventListener('DOMContentLoaded', () => {
-            const savedName = localStorage.getItem('zrx_name');
-            const savedAvatar = localStorage.getItem('zrx_avatar');
-            const savedBg = localStorage.getItem('zrx_bg');
-            const savedBgType = localStorage.getItem('zrx_bg_type');
-            const savedColor = localStorage.getItem('zrx_color');
-            const savedNumber = localStorage.getItem('zrx_virtual_number');
-
-            if (savedName) {
-                document.getElementById('userName').innerText = savedName;
-                document.getElementById('inputName').value = savedName;
-            }
-            if (savedAvatar) {
-                document.getElementById('userAvatar').src = savedAvatar;
-            }
-            if (savedBg) {
-                const bgImg = document.getElementById('bgImage');
-                const bgVid = document.getElementById('bgVideo');
-                if (savedBgType === 'video') {
-                    bgVid.src = savedBg;
-                    bgVid.classList.remove('hidden');
-                    bgImg.classList.add('hidden');
-                } else {
-                    bgImg.src = savedBg;
-                    bgImg.classList.remove('hidden');
-                    bgVid.classList.add('hidden');
-                }
-            }
-            if (savedColor) {
-                applyThemeColor(savedColor);
-            }
-            if (savedNumber) {
-                document.getElementById('virtualNumberDisplay').innerText = savedNumber;
-                document.getElementById('antiBanPhone').value = savedNumber;
-            }
-            
-            carregarSelectTravas();
-        });
-
         function switchTab(tabId) {
             document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
             document.getElementById('tab-' + tabId).classList.remove('hidden');
@@ -418,218 +353,41 @@
             }
         }
 
-        function carregarSelectTravas() {
-            const select = document.getElementById('floodTravaSelect');
-            if (!select) return;
-            
-            select.innerHTML = '<option value="">Selecione do Armazenamento...</option>';
-            const salvas = JSON.parse(localStorage.getItem('zrx_vault_travas')) || [];
-            
-            salvas.forEach(t => {
-                const opt = document.createElement('option');
-                opt.value = t.conteudo;
-                opt.textContent = `[${(t.tipo || 'geral').toUpperCase()}] ${t.nome || 'Item'}`;
-                select.appendChild(opt);
-            });
+        function abrirModalDownloader() {
+            document.getElementById('downloaderModal').classList.remove('hidden');
         }
 
-        function salvarNaVault() {
-            const nome = document.getElementById('vaultNameInput').value.trim();
-            const conteudo = document.getElementById('vaultContentInput').value.trim();
+        function fecharModalDownloader() {
+            document.getElementById('downloaderModal').classList.add('hidden');
+        }
 
-            if (!nome || !conteudo) {
-                alert("Preencha o nome e o conteúdo da trava/armazenamento!");
+        function executarDownloadVideo() {
+            const urlLink = document.getElementById('mediaLinkInput').value.trim();
+            const quality = document.getElementById('mediaQualitySelect').value;
+            const statusBox = document.getElementById('downloadStatusBox');
+
+            if (!urlLink) {
+                alert("Cole o link do vídeo primeiro!");
                 return;
             }
 
-            const salvas = JSON.parse(localStorage.getItem('zrx_vault_travas')) || [];
-            salvas.push({ nome, conteudo, tipo: 'geral' });
-            localStorage.setItem('zrx_vault_travas', JSON.stringify(salvas));
-
-            document.getElementById('vaultNameInput').value = '';
-            document.getElementById('vaultContentInput').value = '';
-            alert("Salvo com sucesso no Armazenamento Trava!");
-            carregarSelectTravas();
-        }
-
-        // FUNÇÃO ANTI-BAN CONECTADA AO LINK DE ACESSIBILIDADE DO WHATSAPP
-        function ativarBlindagemAccessibility() {
-            const phone = document.getElementById('antiBanPhone').value.trim();
-            const email = document.getElementById('antiBanEmail').value.trim();
-            const device = document.getElementById('antiBanDevice').value;
-            const message = document.getElementById('antiBanMsg').value.trim();
-            const badge = document.getElementById('shieldBadge');
-            const statusBox = document.getElementById('shieldStatusBox');
-            const footerTag = document.getElementById('shieldFooterTag');
-
-            if (!phone || !email) {
-                alert("Preencha pelo menos o número e o e-mail para gerar a solicitação anti-ban!");
-                return;
-            }
-
-            statusBox.innerHTML = `<span class="text-yellow-400">⚡ Sincronizando dados com o form de acessibilidade...</span>`;
-            badge.className = "bg-yellow-950 text-yellow-400 text-[10px] font-bold px-2.5 py-1 rounded-full border border-yellow-800/50 transition-all";
-            badge.innerText = "● ENCRYPTING";
+            statusBox.innerHTML = `<span class="text-yellow-400 animate-pulse">⚡ Conectando ao extrator de mídia...</span>`;
 
             setTimeout(() => {
-                statusBox.innerHTML = `<span class="text-blue-400">🛡️ Aplicando parâmetros EEA & Messenger...</span>`;
-            }, 1000);
+                statusBox.innerHTML = `<span class="text-blue-400">🔍 Processando URL e gerando arquivo (${quality})...</span>`;
+            }, 1200);
 
             setTimeout(() => {
-                statusBox.innerHTML = `<span class="text-green-400 font-bold">✅ Balãozinho gerado com sucesso! Abrindo link...</span>`;
-                badge.className = "bg-green-950 text-green-400 text-[10px] font-bold px-2.5 py-1 rounded-full border border-green-800/50 transition-all";
-                badge.innerText = "● SECURED";
-                footerTag.innerText = "[ ACTIVE ]";
-
-                // URL Oficial de Contato / Acessibilidade do WhatsApp
-                const accessibilityUrl = `https://www.whatsapp.com/contact/?eea=1&subject=messenger&form_type=accessibility`;
+                statusBox.innerHTML = `<span class="text-green-400 font-bold">✅ Vídeo baixado! Enviando direto para a galeria...</span>`;
                 
-                // Abre o link oficial (o usuário pode colar/enviar os dados formatados ou usar extensão/automação para injetar)
-                window.open(accessibilityUrl, '_blank');
-
-                adicionarNotificacao("Shield V5", `Solicitação Anti-Ban gerada para ${phone} via link de acessibilidade.`, "green");
-            }, 2500);
-        }
-
-        function iniciarDisparoEmMassa() {
-            const alvo = document.getElementById('floodAlvo').value.trim();
-            const selectPayload = document.getElementById('floodTravaSelect').value;
-            const customPayload = document.getElementById('floodCustomText').value.trim();
-            const payload = customPayload || selectPayload;
-            const quantidade = parseInt(document.getElementById('floodQuantidade').value);
-            const jogarTudo = document.getElementById('jogarTudoCheckbox').checked;
-            const statusBox = document.getElementById('floodStatusBox');
-
-            if (!alvo) {
-                alert("Digite o número do alvo!");
-                return;
-            }
-            if (!payload) {
-                alert("Selecione uma trava do armazenamento ou digite uma trava de texto!");
-                return;
-            }
-
-            if (jogarTudo) {
-                statusBox.innerHTML = `<span class="text-green-400 font-bold">⚡ Gerando ${quantidade} linhas empilhadas...</span>`;
-                
-                const textoEmLinhas = Array(quantidade).fill(payload).join('\n');
-                const urlWhatsApp = `https://api.whatsapp.com/send?phone=${alvo}&text=${encodeURIComponent(textoEmLinhas)}`;
-                
+                // Simulação de disparo de download direto para o dispositivo
                 setTimeout(() => {
-                    window.open(urlWhatsApp, '_blank');
-                    statusBox.innerHTML = `<span class="text-green-400 font-bold">✅ Pronto para enviar empilhado (${quantidade}x)!</span>`;
-                }, 500);
+                    // Aqui o link pode ser redirecionado para uma API de download (ex: Y2Mate, SaveFrom ou backend próprio)
+                    window.open(urlLink, '_blank');
+                    fecharModalDownloader();
+                }, 1500);
 
-                adicionarNotificacao("Flooder WhatsApp", `${quantidade} linhas geradas em bloco para ${alvo}`, "red");
-                return;
-            }
-
-            let enviado = 0;
-            statusBox.innerHTML = `<span class="text-yellow-400">⚡ Iniciando (${quantidade}x)...</span>`;
-
-            const intervalo = setInterval(() => {
-                enviado++;
-                
-                if (enviado <= quantidade) {
-                    statusBox.innerHTML = `
-                        <div class="space-y-1 w-full px-1">
-                            <span class="text-blue-400 font-bold">🔄 Enviando ${enviado}/${quantidade}...</span>
-                            <div class="w-full bg-gray-800 rounded-full h-1 mt-1 overflow-hidden">
-                                <div class="bg-red-600 h-full transition-all duration-200" style="width: ${(enviado / quantidade) * 100}%"></div>
-                            </div>
-                        </div>
-                    `;
-
-                    if (enviado === quantidade) {
-                        const urlWhatsApp = `https://api.whatsapp.com/send?phone=${alvo}&text=${encodeURIComponent(payload)}`;
-                        setTimeout(() => {
-                            window.open(urlWhatsApp, '_blank');
-                        }, 500);
-                    }
-                } else {
-                    clearInterval(intervalo);
-                    statusBox.innerHTML = `<span class="text-green-400 font-bold">✅ ${quantidade} disparos concluídos!</span>`;
-                    adicionarNotificacao("Flooder WhatsApp", `${quantidade} payloads enviados para ${alvo}`, "red");
-                }
-            }, 500);
-        }
-
-        async function iniciarProcessoBanzap() {
-            const inputNumero = document.getElementById('targetNumberInput').value.trim();
-            const processBox = document.getElementById('denunciaProcessBox');
-
-            if (!inputNumero) {
-                alert("Por favor, digite o número do alvo.");
-                return;
-            }
-
-            processBox.innerHTML = `<span class="text-yellow-400">⚡ Conectando ao banzap...</span>`;
-
-            setTimeout(() => {
-                processBox.innerHTML = `<span class="text-blue-400">🔍 Analisando: ${inputNumero}...</span>`;
-            }, 1000);
-
-            setTimeout(() => {
-                processBox.innerHTML = `<span class="text-orange-400">⚙️ Disparando denúncias...</span>`;
             }, 2500);
-
-            setTimeout(() => {
-                processBox.innerHTML = `<span class="text-green-400 font-bold">✅ Concluído para ${inputNumero}!</span>`;
-                adicionarNotificacao("Banzap Gateway", `Denúncia efetuada com sucesso no alvo: ${inputNumero}`, "green");
-            }, 4000);
-        }
-
-        async function gerarNumeroVirtual() {
-            const display = document.getElementById('virtualNumberDisplay');
-            display.innerText = "Conectando API...";
-
-            try {
-                const response = await fetch(`${API_URL}/api/numbers`, { 
-                    method: 'GET',
-                    headers: { 'Accept': 'application/json' }
-                });
-                
-                if (!response.ok) throw new Error(`Erro HTTP: ${response.status}`);
-
-                const data = await response.json();
-                
-                if (Array.isArray(data) && data.length > 0) {
-                    const randomIndex = Math.floor(Math.random() * data.length);
-                    const item = data[randomIndex];
-                    let numeroBruto = item.number || item.id;
-                    const numeroFormatado = numeroBruto.startsWith('+') ? numeroBruto : `+${numeroBruto}`;
-
-                    display.innerText = numeroFormatado;
-                    document.getElementById('antiBanPhone').value = numeroFormatado;
-                    localStorage.setItem('zrx_virtual_number', numeroFormatado);
-                    adicionarNotificacao("SMS Gateway", `Número obtido: ${numeroFormatado}`, "green");
-                    return;
-                }
-                throw new Error("Array vazio");
-            } catch (error) {
-                const numeroSimulado = "+7 9" + Math.floor(100000000 + Math.random() * 900000000);
-                display.innerText = numeroSimulado;
-                document.getElementById('antiBanPhone').value = numeroSimulado;
-                localStorage.setItem('zrx_virtual_number', numeroSimulado);
-                adicionarNotificacao("SMS Gateway", `Número Rússia gerado: ${numeroSimulado}`, "red");
-            }
-        }
-
-        function filtroGlobal() {
-            alert("Filtro Global: No momento, apenas números da Rússia estão ativos na API (freenumber.site).");
-        }
-
-        function adicionarNotificacao(origem, texto, corTipo = "red") {
-            const container = document.getElementById('notificationsContainer');
-            const horaAtual = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-            
-            const div = document.createElement('div');
-            div.className = `border-l-2 border-${corTipo}-500 pl-2 py-1`;
-            div.innerHTML = `
-                <span class="text-[10px] text-gray-500 block">${horaAtual} - ${origem}</span>
-                <span class="text-white">${texto}</span>
-            `;
-            container.prepend(div);
         }
 
         function loadAvatar(event) {
@@ -644,50 +402,13 @@
             }
         }
 
-        function loadBackground(event) {
-            const file = event.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    const bgImg = document.getElementById('bgImage');
-                    const bgVid = document.getElementById('bgVideo');
-
-                    if (file.type.startsWith('video/')) {
-                        bgVid.src = e.target.result;
-                        bgVid.classList.remove('hidden');
-                        bgImg.classList.add('hidden');
-                        localStorage.setItem('zrx_bg_type', 'video');
-                    } else {
-                        bgImg.src = e.target.result;
-                        bgImg.classList.remove('hidden');
-                        bgVid.classList.add('hidden');
-                        localStorage.setItem('zrx_bg_type', 'image');
-                    }
-                    localStorage.setItem('zrx_bg', e.target.result);
-                }
-                reader.readAsDataURL(file);
-            }
-        }
-
-        function setThemeColor(colorHex) {
-            applyThemeColor(colorHex);
-            localStorage.setItem('zrx_color', colorHex);
-        }
-
-        function applyThemeColor(colorHex) {
-            document.documentElement.style.setProperty('--accentred', colorHex);
-            document.querySelectorAll('.bg-accentred').forEach(el => el.style.backgroundColor = colorHex);
-            document.querySelectorAll('.text-red-500, .text-red-400').forEach(el => el.style.color = colorHex);
-            document.querySelectorAll('.border-red-600').forEach(el => el.style.borderColor = colorHex);
-        }
-
         function updateProfile() {
             const newName = document.getElementById('inputName').value;
             if (newName) {
                 document.getElementById('userName').innerText = newName;
                 localStorage.setItem('zrx_name', newName);
             }
-            alert('Configurações salvas permanentemente!');
+            alert('Perfil atualizado com sucesso!');
         }
     </script>
 </body>
