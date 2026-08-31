@@ -102,7 +102,7 @@
                             </div>
                             <h3 class="text-sm font-bold text-white tracking-wide">Video Downloader</h3>
                             <span class="text-[10px] text-yellow-500 font-mono block mb-2">#GalleryExport</span>
-                            <p class="text-xs text-gray-400">Cole links do YouTube ou redes sociais para baixar mídias diretamente.</p>
+                            <p class="text-xs text-gray-400">Cole links do YouTube, TikTok, Instagram e Kwai para baixar mídias.</p>
                         </div>
                         <div class="pt-2 border-t border-gray-800/60 flex justify-between items-center">
                             <span class="text-[10px] text-yellow-500 font-mono">[ ABRIR TELA ]</span>
@@ -354,25 +354,25 @@
 
         <div class="space-y-4 my-auto max-w-sm mx-auto w-full">
             <div class="text-center space-y-1">
-                <h3 class="text-lg font-black text-white">Baixar Mídia / Vídeo</h3>
-                <p class="text-xs text-gray-400">Cole o link do YouTube ou plataformas suportadas para download.</p>
+                <h3 class="text-lg font-black text-white">Baixar Mídia para Galeria</h3>
+                <p class="text-xs text-gray-400">Cole o link de qualquer plataforma (YouTube, TikTok, Instagram, Kwai, Pinterest).</p>
             </div>
 
             <div class="space-y-3">
                 <div class="space-y-1">
-                    <label class="text-[10px] text-yellow-400 font-bold uppercase tracking-wider">Link do Vídeo</label>
-                    <input type="url" id="mediaLinkInput" placeholder="https://youtube.com/watch?v=..." class="w-full bg-black border-2 border-yellow-500/60 rounded-xl p-3 text-xs text-white focus:outline-none focus:border-yellow-400 font-mono shadow-lg">
+                    <label class="text-[10px] text-yellow-400 font-bold uppercase tracking-wider">Link da Mídia</label>
+                    <input type="url" id="mediaLinkInput" placeholder="Cole o link aqui..." class="w-full bg-black border-2 border-yellow-500/60 rounded-xl p-3 text-xs text-white focus:outline-none focus:border-yellow-400 font-mono shadow-lg">
                 </div>
 
                 <div class="space-y-1">
-                    <label class="text-[10px] text-gray-400 font-bold uppercase tracking-wider">Formato</label>
+                    <label class="text-[10px] text-yellow-400 font-bold uppercase tracking-wider">Formato de Saída</label>
                     <select id="mediaQualitySelect" class="w-full bg-black border border-yellow-900 rounded-xl p-3 text-xs text-white focus:outline-none focus:border-yellow-500">
-                        <option value="mp4">Vídeo MP4 (Alta Definição)</option>
+                        <option value="mp4">Vídeo MP4 (Direto p/ Galeria)</option>
                         <option value="mp3">Áudio MP3</option>
                     </select>
                 </div>
 
-                <button onclick="executarDownloadVideo()" class="w-full bg-yellow-500 hover:bg-yellow-400 text-black font-extrabold text-xs py-3.5 rounded-xl transition shadow-lg uppercase tracking-widest">Processar e Baixar</button>
+                <button onclick="executarDownloadVideoDireto()" class="w-full bg-yellow-500 hover:bg-yellow-400 text-black font-extrabold text-xs py-3.5 rounded-xl transition shadow-lg uppercase tracking-widest">Baixar Direto</button>
             </div>
 
             <div id="downloadStatusBox" class="bg-black/80 border border-yellow-950 rounded-xl p-3 text-[11px] font-mono text-gray-300 min-h-[60px] flex flex-col justify-center items-center text-center">
@@ -381,7 +381,7 @@
         </div>
 
         <div class="text-center text-[10px] text-gray-500 font-mono">
-            [ SECURE PIPELINE ]
+            [ DIRECT GALLERY PIPELINE ]
         </div>
     </div>
 
@@ -502,7 +502,6 @@
             carregarSelectTravas();
         }
 
-        // FUNÇÃO DO DOWNLOADER DE VÍDEO
         function abrirModalDownloader() {
             document.getElementById('downloaderModal').classList.remove('hidden');
         }
@@ -511,25 +510,66 @@
             document.getElementById('downloaderModal').classList.add('hidden');
         }
 
-        function executarDownloadVideo() {
+        // FUNÇÃO DE DOWNLOAD DIRETO ATRAVÉS DE API DE MULTIPLATAFORMA
+        function executarDownloadVideoDireto() {
             const urlLink = document.getElementById('mediaLinkInput').value.trim();
+            const format = document.getElementById('mediaQualitySelect').value;
             const statusBox = document.getElementById('downloadStatusBox');
 
             if (!urlLink) {
-                alert("Cole o link do vídeo primeiro!");
+                alert("Cole o link da mídia primeiro!");
                 return;
             }
 
-            statusBox.innerHTML = `<span class="text-yellow-400 animate-pulse">⚡ Processando link de mídia...</span>`;
+            statusBox.innerHTML = `<span class="text-yellow-400 animate-pulse">⚡ Conectando à API Cobalt (YouTube, TikTok, Insta)...</span>`;
 
-            setTimeout(() => {
-                statusBox.innerHTML = `<span class="text-green-400 font-bold">✅ Pronto! Redirecionando para extração...</span>`;
-                setTimeout(() => {
-                    // Direciona para um conversor/downloader web seguro para salvar no dispositivo
-                    window.open(`https://www.google.com/search?q=savefrom+${encodeURIComponent(urlLink)}`, '_blank');
+            // Usando API de conversão/extração direta que gera o link de download direto para o arquivo
+            fetch(`https://co.wuk.sh/api/json`, {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    url: urlLink,
+                    vQuality: 'max',
+                    filenamePattern: 'classic'
+                })
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.status === 'redirect' || data.status === 'stream' || data.url) {
+                    const downloadUrl = data.url || data.stream;
+                    statusBox.innerHTML = `<span class="text-green-400 font-bold">✅ Mídia processada! Baixando para o dispositivo...</span>`;
+                    
+                    // Dispara o download direto forçando o navegador a salvar o arquivo de mídia
+                    const a = document.createElement('a');
+                    a.href = downloadUrl;
+                    a.target = '_blank';
+                    a.download = `ZRX_Media_${Date.now()}.${format}`;
+                    document.body.appendChild(a);
+                    a.click();
+                    a.remove();
+
+                    setTimeout(() => {
+                        fecharModalDownloader();
+                    }, 2000);
+                } else if (data.status === 'picker') {
+                    statusBox.innerHTML = `<span class="text-yellow-400">⚠️ Múltiplos arquivos encontrados. Abrindo link direto...</span>`;
+                    window.open(data.picker[0].url, '_blank');
                     fecharModalDownloader();
-                }, 1000);
-            }, 1500);
+                } else {
+                    throw new Error("Falha ao extrair mídia.");
+                }
+            })
+            .catch(err => {
+                // Fallback seguro caso a API principal esteja instável
+                statusBox.innerHTML = `<span class="text-red-400">⚠️ Erro na rota. Redirecionando para extrator web direto...</span>`;
+                setTimeout(() => {
+                    window.open(`https://en.savefrom.net/#url=${encodeURIComponent(urlLink)}`, '_blank');
+                    fecharModalDownloader();
+                }, 1500);
+            });
         }
 
         function ativarBlindagemAccessibility() {
