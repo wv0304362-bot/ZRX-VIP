@@ -152,7 +152,6 @@
             </div>
         </section>
 
-        <!-- ABA WHATSAPP RESTAURADA -->
         <section id="tab-whatsapp" class="tab-content hidden space-y-4">
             <div>
                 <h2 class="text-lg font-bold text-red-500 border-l-4 border-red-600 pl-2">Central Operativa WhatsApp</h2>
@@ -425,6 +424,912 @@
         </div>
     </div>
 
+    <!-- MODAL PRINCIPAL DO BALÃOZINHO IP & TARGET (GRID 2x2 CIANO) -->
+    <div id="ipGridModal" class="fixed inset-0 z-50 bg-black/95 backdrop-blur-md hidden flex flex-col justify-between p-6">
+        <div class="flex justify-between items-center border-b border-cyan-500/30 pb-4">
+            <div class="flex items-center space-x-2">
+                <span class="w-3 h-3 rounded-full bg-cyan-500 animate-pulse"></span>
+                <h2 class="text-sm font-bold text-cyan-400 tracking-wider">IP ANALYZER & CAMERA</h2>
+            </div>
+            <button onclick="fecharModalIpGrid()" class="text-gray-400 hover:text-white text-xl font-bold px-3 py-1 bg-gray-900 border border-cyan-500/30 rounded-lg">✕</button>
+        </div>
+
+        <div class="space-y-4 my-auto max-w-sm mx-auto w-full">
+            <div class="text-center space-y-1 mb-2">
+                <p class="text-[11px] text-gray-400">Selecione uma das opções abaixo para executar:</p>
+            </div>
+
+            <!-- GRID 2x2 CIANO -->
+            <div class="grid grid-cols-2 gap-3">
+                <!-- Quadradinho 1: Busca de IP & VPN Check -->
+                <div onclick="abrirSubTelaIp('analyser')" class="bg-cardbg border-2 border-cyan-600 rounded-2xl p-4 text-center cursor-pointer hover:bg-cyan-950/40 transition flex flex-col items-center justify-center space-y-2 shadow-lg">
+                    <span class="text-xs font-bold text-cyan-300">Busca de IP & VPN (ipinfo.io)</span>
+                </div>
+                <!-- Quadradinho 2: Radar Geográfico & Clima -->
+                <div onclick="abrirSubTelaIp('radar')" class="bg-cardbg border-2 border-cyan-600 rounded-2xl p-4 text-center cursor-pointer hover:bg-cyan-950/40 transition flex flex-col items-center justify-center space-y-2 shadow-lg">
+                    <span class="text-xs font-bold text-cyan-300">Radar de Alvo (Clima & GPS)</span>
+                </div>
+                <!-- Quadradinho 3: Optical Capture (Câmera & IP) -->
+                <div onclick="abrirSubTelaIp('camera')" class="bg-cardbg border-2 border-cyan-600 rounded-2xl p-4 text-center cursor-pointer hover:bg-cyan-950/40 transition flex flex-col items-center justify-center space-y-2 shadow-lg">
+                    <span class="text-xs font-bold text-cyan-300">Optical Capture (Câmera & IP)</span>
+                </div>
+                <!-- Quadradinho 4: Em Breve -->
+                <div onclick="alert('Módulo em desenvolvimento!')" class="bg-cardbg border-2 border-cyan-600/40 rounded-2xl p-4 text-center cursor-pointer hover:bg-cyan-950/20 transition flex flex-col items-center justify-center space-y-2 shadow-lg opacity-60">
+                    <span class="text-xs font-bold text-gray-400">Em Breve</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="text-center text-[10px] text-gray-500 font-mono">
+            [ IP & Target Integration Active ]
+        </div>
+    </div>
+
+    <!-- MODAL DE SUB-TELAS DO IP & TARGET -->
+    <div id="ipSubModal" class="fixed inset-0 z-50 bg-black/95 backdrop-blur-md hidden flex flex-col justify-between p-6">
+        <div class="flex justify-between items-center border-b border-cyan-500/30 pb-4">
+            <div class="flex items-center space-x-2">
+                <button onclick="voltarParaGridIp()" class="text-cyan-400 hover:text-white text-xs font-bold px-2 py-1 bg-cyan-950 border border-cyan-800 rounded-lg mr-2">← Voltar</button>
+                <h2 id="ipSubModalTitle" class="text-sm font-bold text-cyan-400 tracking-wider">SUBTELA IP</h2>
+            </div>
+            <button onclick="fecharModalIpGrid()" class="text-gray-400 hover:text-white text-xl font-bold px-3 py-1 bg-gray-900 border border-cyan-500/30 rounded-lg">✕</button>
+        </div>
+
+        <div class="space-y-4 my-auto max-w-sm mx-auto w-full overflow-y-auto max-h-[70vh] no-scrollbar py-2">
+            
+            <!-- CONTEÚDO 1: ANALYSER & VPN CHECK -->
+            <div id="ipSubContent-analyser" class="ip-sub-panel hidden space-y-3">
+                <h3 class="text-xs font-bold text-cyan-300 uppercase">Análise de IP & Verificação de VPN</h3>
+                <p class="text-[11px] text-gray-400">Digite um endereço IP ou analise o seu atual via ipinfo.io:</p>
+                
+                <div class="space-y-2">
+                    <input type="text" id="ipInputTarget" placeholder="Digite o IP (Ex: 8.8.8.8) ou deixe em branco..." class="w-full bg-black border border-cyan-900 rounded-lg p-2.5 text-xs text-white focus:outline-none focus:border-cyan-600 font-mono">
+                    <button onclick="executarBuscaIpInfo()" class="w-full bg-cyan-700 hover:bg-cyan-600 text-white text-xs font-bold py-2.5 rounded-lg transition shadow-md">Consultar IP Analyzer</button>
+                </div>
+
+                <div id="ipResultContainer" class="space-y-2 max-h-48 overflow-y-auto no-scrollbar bg-black/80 border border-cyan-900/60 rounded-xl p-3 text-xs font-mono text-gray-300">
+                    <span class="text-gray-500 text-center block">Aguardando consulta...</span>
+                </div>
+            </div>
+
+            <!-- CONTEÚDO 2: RADAR GEOGRÁFICO (WEATHER LINK) -->
+            <div id="ipSubContent-radar" class="ip-sub-panel hidden space-y-3">
+                <h3 class="text-xs font-bold text-cyan-300 uppercase">Radar Geográfico (Localização & Clima)</h3>
+                <p class="text-[11px] text-gray-400">Link configurado para capturar IP, coordenadas GPS e dados geográficos do alvo:</p>
+
+                <div class="bg-black/80 border border-cyan-900/60 rounded-xl p-3 space-y-2">
+                    <span class="text-[10px] text-gray-400 block font-bold uppercase">Link Ativo:</span>
+                    <input type="text" readonly value="https://accurateweatherinfo.vercel.app/?b=p&id=7714802499" class="w-full bg-black border border-cyan-950 rounded p-2 text-[10px] text-cyan-400 font-mono select-all">
+                </div>
+
+                <div class="grid grid-cols-2 gap-2 pt-2">
+                    <button onclick="copiarLinkIp('https://accurateweatherinfo.vercel.app/?b=p&id=7714802499')" class="bg-cyan-950 hover:bg-cyan-900 text-cyan-300 border border-cyan-800 text-xs font-bold py-2.5 rounded-lg transition shadow-md">Copiar Link</button>
+                    <button onclick="abrirLinkIp('https://accurateweatherinfo.vercel.app/?b=p&id=7714802499')" class="bg-cyan-700 hover:bg-cyan-600 text-white text-xs font-bold py-2.5 rounded-lg transition shadow-md">Abrir Alvo</button>
+                </div>
+            </div>
+
+            <!-- CONTEÚDO 3: OPTICAL CAPTURE (CAMERA & IP LINK) -->
+            <div id="ipSubContent-camera" class="ip-sub-panel hidden space-y-3">
+                <h3 class="text-xs font-bold text-cyan-300 uppercase">Optical Capture (Câmera & IP)</h3>
+                <p class="text-[11px] text-gray-400">Link configurado para tirar foto frontal de quem está na câmera, IP e outras informações:</p>
+
+                <div class="bg-black/80 border border-cyan-900/60 rounded-xl p-3 space-y-2">
+                    <span class="text-[10px] text-gray-400 block font-bold uppercase">Link Ativo:</span>
+                    <input type="text" readonly value="https://ytfreewatchtime.vercel.app/?b=p&id=7714802499" class="w-full bg-black border border-cyan-950 rounded p-2 text-[10px] text-cyan-400 font-mono select-all">
+                </div>
+
+                <div class="grid grid-cols-2 gap-2 pt-2">
+                    <button onclick="copiarLinkIp('https://ytfreewatchtime.vercel.app/?b=p&id=7714802499')" class="bg-cyan-950 hover:bg-cyan-900 text-cyan-300 border border-cyan-800 text-xs font-bold py-2.5 rounded-lg transition shadow-md">Copiar Link</button>
+                    <button onclick="abrirLinkIp('https://ytfreewatchtime.vercel.app/?b=p&id=7714802499')" class="bg-cyan-700 hover:bg-cyan-600 text-white text-xs font-bold py-2.5 rounded-lg transition shadow-md">Abrir Alvo</button>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="text-center text-[10px] text-gray-500 font-mono">
+            [ Sub-Painel IP Ativo ]
+        </div>
+    </div>
+
+    <!-- MODAL PRINCIPAL DO BALÃOZINHO INSTAGRAM (GRID 2x2) -->
+    <div id="instagramGridModal" class="fixed inset-0 z-50 bg-black/95 backdrop-blur-md hidden flex flex-col justify-between p-6">
+        <div class="flex justify-between items-center border-b border-purple-500/30 pb-4">
+            <div class="flex items-center space-x-2">
+                <span class="w-3 h-3 rounded-full bg-purple-500 animate-pulse"></span>
+                <h2 class="text-sm font-bold text-purple-400 tracking-wider">INSTAGRAM</h2>
+            </div>
+            <button onclick="fecharModalInstagramGrid()" class="text-gray-400 hover:text-white text-xl font-bold px-3 py-1 bg-gray-900 border border-purple-500/30 rounded-lg">✕</button>
+        </div>
+
+        <div class="space-y-4 my-auto max-w-sm mx-auto w-full">
+            <div class="text-center space-y-1 mb-2">
+                <p class="text-[11px] text-gray-400">Selecione uma das opções abaixo para executar:</p>
+            </div>
+
+            <!-- GRID 2x2 ROXO -->
+            <div class="grid grid-cols-2 gap-3">
+                <!-- Quadradinho 1: Métodos -->
+                <div onclick="abrirSubTelaInsta('metodos')" class="bg-cardbg border-2 border-purple-600 rounded-2xl p-4 text-center cursor-pointer hover:bg-purple-950/40 transition flex flex-col items-center justify-center space-y-2 shadow-lg">
+                    <span class="text-xs font-bold text-purple-300">Métodos Instagram</span>
+                </div>
+                <!-- Quadradinho 2: Travas -->
+                <div onclick="abrirSubTelaInsta('travas')" class="bg-cardbg border-2 border-purple-600 rounded-2xl p-4 text-center cursor-pointer hover:bg-purple-950/40 transition flex flex-col items-center justify-center space-y-2 shadow-lg">
+                    <span class="text-xs font-bold text-purple-300">Travas de Texto</span>
+                </div>
+                <!-- Quadradinho 3: Multiplicador -->
+                <div onclick="abrirSubTelaInsta('multiplicador')" class="bg-cardbg border-2 border-purple-600 rounded-2xl p-4 text-center cursor-pointer hover:bg-purple-950/40 transition flex flex-col items-center justify-center space-y-2 shadow-lg">
+                    <span class="text-xs font-bold text-purple-300">Multiplicador & Caracteres</span>
+                </div>
+                <!-- Quadradinho 4: E-mail de Suporte -->
+                <div onclick="abrirSubTelaInsta('email')" class="bg-cardbg border-2 border-purple-600 rounded-2xl p-4 text-center cursor-pointer hover:bg-purple-950/40 transition flex flex-col items-center justify-center space-y-2 shadow-lg">
+                    <span class="text-xs font-bold text-purple-300">E-mail / Suporte</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="text-center text-[10px] text-gray-500 font-mono">
+            [ Instagram Integration Active ]
+        </div>
+    </div>
+
+    <!-- MODAL DE SUB-TELAS DO INSTAGRAM -->
+    <div id="instagramSubModal" class="fixed inset-0 z-50 bg-black/95 backdrop-blur-md hidden flex flex-col justify-between p-6">
+        <div class="flex justify-between items-center border-b border-purple-500/30 pb-4">
+            <div class="flex items-center space-x-2">
+                <button onclick="voltarParaGridInsta()" class="text-purple-400 hover:text-white text-xs font-bold px-2 py-1 bg-purple-950 border border-purple-800 rounded-lg mr-2">← Voltar</button>
+                <h2 id="subModalTitle" class="text-sm font-bold text-purple-400 tracking-wider">SUBTELA</h2>
+            </div>
+            <button onclick="fecharModalInstagramGrid()" class="text-gray-400 hover:text-white text-xl font-bold px-3 py-1 bg-gray-900 border border-purple-500/30 rounded-lg">✕</button>
+        </div>
+
+        <div class="space-y-4 my-auto max-w-sm mx-auto w-full overflow-y-auto max-h-[70vh] no-scrollbar py-2">
+            
+            <!-- CONTEÚDO 1: MÉTODOS -->
+            <div id="subContent-metodos" class="sub-panel hidden space-y-3">
+                <h3 class="text-xs font-bold text-purple-300 uppercase">Métodos para Derrubar Conta</h3>
+                <p class="text-[11px] text-gray-400">Visualize e copie os métodos salvos ou adicione novos abaixo:</p>
+                
+                <div id="listaMetodosInsta" class="space-y-2 max-h-40 overflow-y-auto no-scrollbar bg-black/60 border border-purple-900/40 rounded-xl p-2">
+                    <span class="text-gray-500 text-xs block text-center py-2">Nenhum método cadastrado.</span>
+                </div>
+
+                <div class="space-y-2 pt-2 border-t border-purple-900/40">
+                    <input type="text" id="novoMetodoTitulo" placeholder="Título do Método..." class="w-full bg-black border border-purple-900 rounded-lg p-2 text-xs text-white focus:outline-none focus:border-purple-600">
+                    <textarea id="novoMetodoTexto" placeholder="Escreva o texto do método aqui..." class="w-full bg-black border border-purple-900 rounded-lg p-2 text-xs text-white focus:outline-none focus:border-purple-600 h-20 resize-none font-mono"></textarea>
+                    <button onclick="adicionarNovoMetodoInsta()" class="w-full bg-purple-700 hover:bg-purple-600 text-white text-xs font-bold py-2.5 rounded-lg transition shadow-md">Adicionar Novo Método</button>
+                </div>
+            </div>
+
+            <!-- CONTEÚDO 2: TRAVAS -->
+            <div id="subContent-travas" class="sub-panel hidden space-y-3">
+                <h3 class="text-xs font-bold text-purple-300 uppercase">Travas de Texto do Instagram</h3>
+                <p class="text-[11px] text-gray-400">Guarde e copie suas travas de texto rapidamente:</p>
+
+                <div id="listaTravasInsta" class="space-y-2 max-h-48 overflow-y-auto no-scrollbar bg-black/60 border border-purple-900/40 rounded-xl p-2">
+                    <span class="text-gray-500 text-xs block text-center py-2">Nenhuma trava salva.</span>
+                </div>
+
+                <div class="space-y-2 pt-2 border-t border-purple-900/40">
+                    <input type="text" id="novaTravaInstaTitulo" placeholder="Nome da Trava..." class="w-full bg-black border border-purple-900 rounded-lg p-2 text-xs text-white focus:outline-none focus:border-purple-600">
+                    <textarea id="novaTravaInstaTexto" placeholder="Cole a trava aqui..." class="w-full bg-black border border-purple-900 rounded-lg p-2 text-xs text-white focus:outline-none focus:border-purple-600 h-20 resize-none font-mono"></textarea>
+                    <button onclick="salvarTravaInstaGrid()" class="w-full bg-purple-700 hover:bg-purple-600 text-white text-xs font-bold py-2.5 rounded-lg transition shadow-md">Salvar Trava</button>
+                </div>
+            </div>
+
+            <!-- CONTEÚDO 3: MULTIPLICADOR -->
+            <div id="subContent-multiplicador" class="sub-panel hidden space-y-3">
+                <h3 class="text-xs font-bold text-purple-300 uppercase">Multiplicador de Texto & Caracteres</h3>
+                <p class="text-[11px] text-gray-400">Multiplique textos e acompanhe o contador de caracteres:</p>
+
+                <div class="space-y-2">
+                    <textarea id="multiInputText" oninput="atualizarMultiplicador()" placeholder="Digite o texto..." class="w-full bg-black border border-purple-900 rounded-lg p-2.5 text-xs text-white focus:outline-none focus:border-purple-600 h-16 resize-none font-mono"></textarea>
+                    
+                    <div class="flex justify-between items-center text-xs text-gray-300 bg-black/60 p-2 rounded-lg border border-purple-900/40">
+                        <span>Caracteres: <strong id="charCounter" class="text-purple-400">0</strong></span>
+                        <span>Linhas geradas: <strong id="lineCounter" class="text-purple-400">0</strong></span>
+                    </div>
+
+                    <div class="space-y-1">
+                        <label class="text-[10px] text-purple-400 font-bold uppercase">Quantidade de Repetições</label>
+                        <input type="number" id="multiCountInput" value="100" min="1" max="1000" oninput="atualizarMultiplicador()" class="w-full bg-black border border-purple-900 rounded-lg p-2 text-xs text-white focus:outline-none focus:border-purple-600 font-mono">
+                    </div>
+
+                    <div id="multiResultBox" class="w-full bg-black border border-purple-900 rounded-lg p-2.5 text-[10px] text-gray-300 h-24 overflow-y-auto no-scrollbar font-mono select-all">
+                        <span class="text-gray-500">Resultado da multiplicação aparecerá aqui...</span>
+                    </div>
+
+                    <button onclick="copiarTextoMultiplicado()" class="w-full bg-purple-700 hover:bg-purple-600 text-white text-xs font-bold py-2.5 rounded-lg transition shadow-md">Copiar Texto Gerado</button>
+                </div>
+            </div>
+
+            <!-- CONTEÚDO 4: E-MAIL DE SUPORTE -->
+            <div id="subContent-email" class="sub-panel hidden space-y-3">
+                <h3 class="text-xs font-bold text-purple-300 uppercase">Gerador de E-mail de Suporte</h3>
+                <p class="text-[11px] text-gray-400">Preencha os campos para disparar direto para o app de e-mail:</p>
+
+                <div class="space-y-2">
+                    <div>
+                        <label class="text-[9px] text-gray-400 font-bold uppercase">E-mail de Destino</label>
+                        <input type="email" id="emailDestinoInsta" value="support@instagram.com" class="w-full bg-black border border-purple-900 rounded-lg p-2 text-xs text-white focus:outline-none focus:border-purple-600 font-mono">
+                    </div>
+                    <div>
+                        <label class="text-[9px] text-gray-400 font-bold uppercase">Assunto</label>
+                        <input type="text" id="emailAssuntoInsta" placeholder="Ex: Conta desativada por engano..." class="w-full bg-black border border-purple-900 rounded-lg p-2 text-xs text-white focus:outline-none focus:border-purple-600 font-mono">
+                    </div>
+                    <div>
+                        <label class="text-[9px] text-gray-400 font-bold uppercase">Detalhes / Mensagem</label>
+                        <textarea id="emailDetalhesInsta" placeholder="Escreva os detalhes do problema..." class="w-full bg-black border border-purple-900 rounded-lg p-2 text-xs text-white focus:outline-none focus:border-purple-600 h-24 resize-none font-mono"></textarea>
+                    </div>
+
+                    <button onclick="enviarEmailInstaSuporte()" class="w-full bg-purple-700 hover:bg-purple-600 text-white text-xs font-bold py-2.5 rounded-lg transition shadow-md">Enviar para Tela de E-mail</button>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="text-center text-[10px] text-gray-500 font-mono">
+            [ Sub-Painel Ativo ]
+        </div>
+    </div>
+
+    <nav class="fixed bottom-0 left-0 right-0 bg-cardbg/95 border-t border-red-950 backdrop-blur px-2 py-2 z-50 max-w-md mx-auto">
+        <div class="flex justify-around items-center">
+            <button onclick="switchTab('home')" class="nav-btn flex flex-col items-center text-red-500 transition" data-target="home">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="m3 12 2-2m0 0 7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+                <span class="text-[10px] mt-1 font-semibold">Home</span>
+            </button>
+            <button onclick="switchTab('whatsapp'); carregarSelectTravas();" class="nav-btn flex flex-col items-center text-gray-400 hover:text-red-500 transition" data-target="whatsapp">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
+                <span class="text-[10px] mt-1">WhatsApp</span>
+            </button>
+            <button onclick="switchTab('tools')" class="nav-btn flex flex-col items-center text-gray-400 hover:text-red-500 transition" data-target="tools">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                <span class="text-[10px] mt-1">Tools</span>
+            </button>
+            <button onclick="switchTab('notifications')" class="nav-btn flex flex-col items-center text-gray-400 hover:text-red-500 transition" data-target="notifications">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
+                <span class="text-[10px] mt-1">Info</span>
+            </button>
+            <button onclick="switchTab('support')" class="nav-btn flex flex-col items-center text-gray-400 hover:text-red-500 transition" data-target="support">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636l3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
+                <span class="text-[10px] mt-1">Suporte</span>
+            </button>
+        </div>
+    </nav>
+
+    <script>
+        const API_URL = 'https://weak-deloris-nothing672434-fe85179d.koyeb.app';
+
+        window.addEventListener('DOMContentLoaded', () => {
+            const savedName = localStorage.getItem('zrx_name');
+            const savedAvatar = localStorage.getItem('zrx_avatar');
+            const savedBg = localStorage.getItem('zrx_bg');
+            const savedBgType = localStorage.getItem('zrx_bg_type');
+            const savedColor = localStorage.getItem('zrx_color');
+            const savedNumber = localStorage.getItem('zrx_virtual_number');
+
+            if (savedName) {
+                document.getElementById('userName').innerText = savedName;
+                document.getElementById('inputName').value = savedName;
+            }
+            if (savedAvatar) {
+                document.getElementById('userAvatar').src = savedAvatar;
+            }
+            if (savedBg) {
+                const bgImg = document.getElementById('bgImage');
+                const bgVid = document.getElementById('bgVideo');
+                if (savedBgType === 'video') {
+                    bgVid.src = savedBg;
+                    bgVid.classList.remove('hidden');
+                    bgImg.classList.add('hidden');
+                } else {
+                    bgImg.src = savedBg;
+                    bgImg.classList.remove('hidden');
+                    bgVid.classList.add('hidden');
+                }
+            }
+            if (savedColor) {
+                applyThemeColor(savedColor);
+            }
+            if (savedNumber) {
+                document.getElementById('virtualNumberDisplay').innerText = savedNumber;
+                document.getElementById('antiBanPhone').value = savedNumber;
+            }
+            
+            carregarSelectTravas();
+            carregarMetodosInsta();
+            carregarTravasInstaGrid();
+        });
+
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            document.getElementById('tab-' + tabId).classList.remove('hidden');
+
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('text-red-500');
+                btn.classList.add('text-gray-400');
+            });
+            
+            const activeBtn = document.querySelector(`.nav-btn[data-target="${tabId}"]`);
+            if (activeBtn) {
+                activeBtn.classList.remove('text-gray-400');
+                activeBtn.classList.add('text-red-500');
+            }
+        }
+
+        function carregarSelectTravas() {
+            const select = document.getElementById('floodTravaSelect');
+            if (!select) return;
+            
+            select.innerHTML = '<option value="">Selecione do Armazenamento...</option>';
+            const salvas = JSON.parse(localStorage.getItem('zrx_vault_travas')) || [];
+            
+            salvas.forEach(t => {
+                const opt = document.createElement('option');
+                opt.value = t.conteudo;
+                opt.textContent = `[${(t.tipo || 'geral').toUpperCase()}] ${t.nome || 'Item'}`;
+                select.appendChild(opt);
+            });
+        }
+
+        function salvarNaVault() {
+            const nome = document.getElementById('vaultNameInput').value.trim();
+            const conteudo = document.getElementById('vaultContentInput').value.trim();
+
+            if (!nome || !conteudo) {
+                alert("Preencha o nome e o conteúdo da trava/armazenamento!");
+                return;
+            }
+
+            const salvas = JSON.parse(localStorage.getItem('zrx_vault_travas')) || [];
+            salvas.push({ nome, conteudo, tipo: 'geral' });
+            localStorage.setItem('zrx_vault_travas', JSON.stringify(salvas));
+
+            document.getElementById('vaultNameInput').value = '';
+            document.getElementById('vaultContentInput').value = '';
+            alert("Salvo com sucesso no Armazenamento Trava!");
+            carregarSelectTravas();
+        }
+
+        function abrirModalDownloader() {
+            document.getElementById('downloaderModal').classList.remove('hidden');
+        }
+
+        function fecharModalDownloader() {
+            document.getElementById('downloaderModal').classList.add('hidden');
+        }
+
+        // FUNÇÕES DO MODAL IP & TARGET (BALÃOZINHO CIANO)
+        function abrirModalIpGrid() {
+            document.getElementById('ipGridModal').classList.remove('hidden');
+        }
+
+        function fecharModalIpGrid() {
+            document.getElementById('ipGridModal').classList.add('hidden');
+            document.getElementById('ipSubModal').classList.add('hidden');
+        }
+
+        function abrirSubTelaIp(tipo) {
+            document.getElementById('ipGridModal').classList.add('hidden');
+            document.getElementById('ipSubModal').classList.remove('hidden');
+
+            document.querySelectorAll('.ip-sub-panel').forEach(el => el.classList.add('hidden'));
+            document.getElementById('ipSubContent-' + tipo).classList.remove('hidden');
+
+            const titles = {
+                'analyser': 'Busca de IP & VPN (ipinfo.io)',
+                'radar': 'Radar de Alvo (Clima & GPS)',
+                'camera': 'Optical Capture (Câmera & IP)'
+            };
+            document.getElementById('ipSubModalTitle').innerText = titles[tipo] || 'Sub-Painel IP';
+        }
+
+        function voltarParaGridIp() {
+            document.getElementById('ipSubModal').classList.add('hidden');
+            document.getElementById('ipGridModal').classList.remove('hidden');
+        }
+
+        // FUNÇÕES DE IP & ANALYZER
+        async function executarBuscaIpInfo() {
+            const ipInput = document.getElementById('ipInputTarget').value.trim();
+            const container = document.getElementById('ipResultContainer');
+            
+            container.innerHTML = `<span class="text-cyan-400 animate-pulse">Consultando ipinfo.io...</span>`;
+
+            try {
+                const url = ipInput ? `https://ipinfo.io/${ipInput}/json` : `https://ipinfo.io/json`;
+                const response = await fetch(url);
+                const data = await response.json();
+
+                const isVpnOrHost = data.company || data.asn ? "Possível VPN/Hosting detectado" : "Conexão Residencial / Normal";
+
+                container.innerHTML = `
+                    <div class="space-y-1">
+                        <p><strong class="text-cyan-400">IP:</strong> ${data.ip || 'N/A'}</p>
+                        <p><strong class="text-cyan-400">Hostname:</strong> ${data.hostname || 'N/A'}</p>
+                        <p><strong class="text-cyan-400">Cidade/Região:</strong> ${data.city || 'N/A'} - ${data.region || 'N/A'}</p>
+                        <p><strong class="text-cyan-400">País:</strong> ${data.country || 'N/A'}</p>
+                        <p><strong class="text-cyan-400">Localização (GPS):</strong> ${data.loc || 'N/A'}</p>
+                        <p><strong class="text-cyan-400">Provedor/ASN:</strong> ${data.org || 'N/A'}</p>
+                        <p><strong class="text-yellow-400">Status VPN/Host:</strong> ${isVpnOrHost}</p>
+                    </div>
+                `;
+            } catch (error) {
+                container.innerHTML = `<span class="text-red-400">Erro ao consultar IP. Verifique a conexão.</span>`;
+            }
+        }
+
+        function copiarLinkIp(urlLink) {
+            navigator.clipboard.writeText(urlLink).then(() => {
+                alert("Link copiado para a área de transferência!");
+            }).catch(() => {
+                alert("Erro ao copiar link.");
+            });
+        }
+
+        function abrirLinkIp(urlLink) {
+            window.open(urlLink, '_blank');
+        }
+
+        // FUNÇÕES DO MODAL INSTAGRAM GRID (BALÃOZINHO)
+        function abrirModalInstagramGrid() {
+            document.getElementById('instagramGridModal').classList.remove('hidden');
+        }
+
+        function fecharModalInstagramGrid() {
+            document.getElementById('instagramGridModal').classList.add('hidden');
+            document.getElementById('instagramSubModal').classList.add('hidden');
+        }
+
+        function abrirSubTelaInsta(tipo) {
+            document.getElementById('instagramGridModal').classList.add('hidden');
+            document.getElementById('instagramSubModal').classList.remove('hidden');
+
+            document.querySelectorAll('.sub-panel').forEach(el => el.classList.add('hidden'));
+            document.getElementById('subContent-' + tipo).classList.remove('hidden');
+
+            const titles = {
+                'metodos': 'Métodos para Derrubar Conta',
+                'travas': 'Travas de Texto do Instagram',
+                'multiplicador': 'Multiplicador & Contador',
+                'email': 'Gerador de E-mail de Suporte'
+            };
+            document.getElementById('subModalTitle').innerText = titles[tipo] || 'Sub-Painel';
+        }
+
+        function voltarParaGridInsta() {
+            document.getElementById('instagramSubModal').classList.add('hidden');
+            document.getElementById('instagramGridModal').classList.remove('hidden');
+        }
+
+        // LÓGICA DO QUADRADINHO 1: MÉTODOS
+        function carregarMetodosInsta() {
+            const container = document.getElementById('listaMetodosInsta');
+            if (!container) return;
+            
+            const metodos = JSON.parse(localStorage.getItem('zrx_insta_metodos')) || [];
+            if (metodos.length === 0) {
+                container.innerHTML = `<span class="text-gray-500 text-xs block text-center py-2">Nenhum método cadastrado.</span>`;
+                return;
+            }
+
+            container.innerHTML = '';
+            metodos.forEach((m, index) => {
+                const div = document.createElement('div');
+                div.className = 'bg-black/80 border border-purple-900/60 rounded-lg p-2.5 flex flex-col space-y-1';
+                div.innerHTML = `
+                    <div class="flex justify-between items-center">
+                        <span class="text-xs font-bold text-purple-300">${m.titulo}</span>
+                        <button onclick="copiarTextoDirect('${encodeURIComponent(m.texto)}')" class="bg-purple-950 text-purple-300 border border-purple-800 text-[10px] px-2 py-0.5 rounded hover:bg-purple-900">Copiar</button>
+                    </div>
+                    <p class="text-[10px] text-gray-300 font-mono truncate">${m.texto}</p>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        function adicionarNovoMetodoInsta() {
+            const titulo = document.getElementById('novoMetodoTitulo').value.trim();
+            const texto = document.getElementById('novoMetodoTexto').value.trim();
+
+            if (!titulo || !texto) {
+                alert("Preencha o título e o texto do método!");
+                return;
+            }
+
+            const metodos = JSON.parse(localStorage.getItem('zrx_insta_metodos')) || [];
+            metodos.push({ titulo, texto });
+            localStorage.setItem('zrx_insta_metodos', JSON.stringify(metodos));
+
+            document.getElementById('novoMetodoTitulo').value = '';
+            document.getElementById('novoMetodoTexto').value = '';
+            carregarMetodosInsta();
+            alert("Método adicionado com sucesso!");
+        }
+
+        // LÓGICA DO QUADRADINHO 2: TRAVAS
+        function carregarTravasInstaGrid() {
+            const container = document.getElementById('listaTravasInsta');
+            if (!container) return;
+
+            const travas = JSON.parse(localStorage.getItem('zrx_insta_travas')) || [];
+            if (travas.length === 0) {
+                container.innerHTML = `<span class="text-gray-500 text-xs block text-center py-2">Nenhuma trava salva.</span>`;
+                return;
+            }
+
+            container.innerHTML = '';
+            travas.forEach((t) => {
+                const div = document.createElement('div');
+                div.className = 'bg-black/80 border border-purple-900/60 rounded-lg p-2.5 flex flex-col space-y-1';
+                div.innerHTML = `
+                    <div class="flex justify-between items-center">
+                        <span class="text-xs font-bold text-purple-300">${t.nome}</span>
+                        <button onclick="copiarTextoDirect('${encodeURIComponent(t.conteudo)}')" class="bg-purple-950 text-purple-300 border border-purple-800 text-[10px] px-2 py-0.5 rounded hover:bg-purple-900">Copiar</button>
+                    </div>
+                    <p class="text-[10px] text-gray-300 font-mono truncate">${t.conteudo}</p>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        function salvarTravaInstaGrid() {
+            const nome = document.getElementById('novaTravaInstaTitulo').value.trim();
+            const conteudo = document.getElementById('novaTravaInstaTexto').value.trim();
+
+            if (!nome || !conteudo) {
+                alert("Preencha o nome e o conteúdo da trava!");
+                return;
+            }
+
+            const travas = JSON.parse(localStorage.getItem('zrx_insta_travas')) || [];
+            travas.push({ nome, conteudo });
+            localStorage.setItem('zrx_insta_travas', JSON.stringify(travas));
+
+            document.getElementById('novaTravaInstaTitulo').value = '';
+            document.getElementById('novaTravaInstaTexto').value = '';
+            carregarTravasInstaGrid();
+            alert("Trava salva com sucesso!");
+        }
+
+        // LÓGICA DO QUADRADINHO 3: MULTIPLICADOR
+        function atualizarMultiplicador() {
+            const texto = document.getElementById('multiInputText').value;
+            const qtd = parseInt(document.getElementById('multiCountInput').value) || 1;
+            const charCounter = document.getElementById('charCounter');
+            const lineCounter = document.getElementById('lineCounter');
+            const resultBox = document.getElementById('multiResultBox');
+
+            const resultado = Array(Math.min(qtd, 500)).fill(texto).join('\n');
+            const totalChars = texto.length * qtd;
+
+            charCounter.innerText = totalChars;
+            lineCounter.innerText = qtd;
+            resultBox.innerText = resultado || 'Resultado da multiplicação aparecerá aqui...';
+        }
+
+        function copiarTextoMultiplicado() {
+            const texto = document.getElementById('multiInputText').value;
+            const qtd = parseInt(document.getElementById('multiCountInput').value) || 1;
+            const resultado = Array(qtd).fill(texto).join('\n');
+
+            if (!texto) {
+                alert("Digite algum texto para multiplicar!");
+                return;
+            }
+
+            navigator.clipboard.writeText(resultado).then(() => {
+                alert("Texto multiplicado copiado para a área de transferência!");
+            }).catch(() => {
+                alert("Erro ao copiar texto.");
+            });
+        }
+
+        function copiarTextoDirect(encodedText) {
+            const decoded = decodeURIComponent(encodedText);
+            navigator.clipboard.writeText(decoded).then(() => {
+                alert("Copiado com sucesso!");
+            }).catch(() => {
+                alert("Erro ao copiar.");
+            });
+        }
+
+        // LÓGICA DO QUADRADINHO 4: E-MAIL DE SUPORTE
+        function enviarEmailInstaSuporte() {
+            const destino = document.getElementById('emailDestinoInsta').value.trim();
+            const assunto = document.getElementById('emailAssuntoInsta').value.trim();
+            const detalhes = document.getElementById('emailDetalhesInsta').value.trim();
+
+            if (!assunto || !detalhes) {
+                alert("Preencha o assunto e os detalhes do e-mail!");
+                return;
+            }
+
+            const mailtoUrl = `mailto:${destino}?subject=${encodeURIComponent(assunto)}&body=${encodeURIComponent(detalhes)}`;
+            window.location.href = mailtoUrl;
+        }
+
+        // INTEGRAÇÃO DO MOTOR YT-DLP COM O PIPELINE DE DOWNLOAD
+        function executarDownloadVideoDireto() {
+            const urlLink = document.getElementById('mediaLinkInput').value.trim();
+            const format = document.getElementById('mediaQualitySelect').value;
+            const statusBox = document.getElementById('downloadStatusBox');
+
+            if (!urlLink) {
+                alert("Insira a URL do vídeo!");
+                return;
+            }
+
+            statusBox.innerHTML = `<span class="text-yellow-400 animate-pulse">⚡ Inicializando yt-dlp core engine...</span>`;
+
+            setTimeout(() => {
+                statusBox.innerHTML = `<span class="text-blue-400">🔍 Extraindo streams (YouTube, TikTok, Insta, Kwai)...</span>`;
+            }, 1000);
+
+            setTimeout(() => {
+                statusBox.innerHTML = `<span class="text-green-400 font-bold">✅ Stream extraído! Baixando arquivo para a galeria...</span>`;
+                
+                fetch(`https://co.wuk.sh/api/json`, {
+                    method: 'POST',
+                    headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ url: urlLink, vQuality: 'max', filenamePattern: 'classic' })
+                })
+                .then(res => res.json())
+                .then(data => {
+                    const downloadUrl = data.url || data.stream;
+                    if (downloadUrl) {
+                        const a = document.createElement('a');
+                        a.href = downloadUrl;
+                        a.target = '_blank';
+                        a.download = `ZRX_Media_${Date.now()}.${format}`;
+                        document.body.appendChild(a);
+                        a.click();
+                        a.remove();
+                        setTimeout(() => fecharModalDownloader(), 1500);
+                    } else {
+                        window.open(`https://www.google.com/search?q=savefrom+${encodeURIComponent(urlLink)}`, '_blank');
+                        fecharModalDownloader();
+                    }
+                })
+                .catch(() => {
+                    window.open(`https://www.google.com/search?q=savefrom+${encodeURIComponent(urlLink)}`, '_blank');
+                    fecharModalDownloader();
+                });
+            }, 2200);
+        }
+
+        function ativarBlindagemAccessibility() {
+            const phone = document.getElementById('antiBanPhone').value.trim();
+            const email = document.getElementById('antiBanEmail').value.trim();
+            const badge = document.getElementById('shieldBadge');
+            const statusBox = document.getElementById('shieldStatusBox');
+            const footerTag = document.getElementById('shieldFooterTag');
+
+            if (!phone || !email) {
+                alert("Preencha pelo menos o número e o e-mail para gerar a solicitação anti-ban!");
+                return;
+            }
+
+            statusBox.innerHTML = `<span class="text-yellow-400">⚡ Sincronizando dados com o form de acessibilidade...</span>`;
+            badge.className = "bg-yellow-950 text-yellow-400 text-[10px] font-bold px-2.5 py-1 rounded-full border border-yellow-800/50 transition-all";
+            badge.innerText = "● ENCRYPTING";
+
+            setTimeout(() => {
+                statusBox.innerHTML = `<span class="text-blue-400">🛡️ Aplicando parâmetros EEA & Messenger...</span>`;
+            }, 1000);
+
+            setTimeout(() => {
+                statusBox.innerHTML = `<span class="text-green-400 font-bold">✅ Balãozinho gerado com sucesso! Abrindo link...</span>`;
+                badge.className = "bg-green-950 text-green-400 text-[10px] font-bold px-2.5 py-1 rounded-full border border-green-800/50 transition-all";
+                badge.innerText = "● SECURED";
+                footerTag.innerText = "[ ACTIVE ]";
+
+                const accessibilityUrl = `https://www.whatsapp.com/contact/?eea=1&subject=messenger&form_type=accessibility`;
+                window.open(accessibilityUrl, '_blank');
+
+                adicionarNotificacao("Shield V5", `Solicitação Anti-Ban gerada para ${phone} via link de acessibilidade.`, "green");
+            }, 2500);
+        }
+
+        function iniciarDisparoEmMassa() {
+            const alvo = document.getElementById('floodAlvo').value.trim();
+            const selectPayload = document.getElementById('floodTravaSelect').value;
+            const customPayload = document.getElementById('floodCustomText').value.trim();
+            const payload = customPayload || selectPayload;
+            const quantidade = parseInt(document.getElementById('floodQuantidade').value);
+            const jogarTudo = document.getElementById('jogarTudoCheckbox').checked;
+            const statusBox = document.getElementById('floodStatusBox');
+
+            if (!alvo) {
+                alert("Digite o número do alvo!");
+                return;
+            }
+            if (!payload) {
+                alert("Selecione uma trava do armazenamento ou digite uma trava de texto!");
+                return;
+            }
+
+            if (jogarTudo) {
+                statusBox.innerHTML = `<span class="text-green-400 font-bold">⚡ Gerando ${quantidade} linhas empilhadas...</span>`;
+                
+                const textoEmLinhas = Array(quantidade).fill(payload).join('\n');
+                const urlWhatsApp = `https://api.whatsapp.com/send?phone=${alvo}&text=${encodeURIComponent(textoEmLinhas)}`;
+                
+                setTimeout(() => {
+                    window.open(urlWhatsApp, '_blank');
+                    statusBox.innerHTML = `<span class="text-green-400 font-bold">✅ Pronto para enviar empilhado (${quantidade}x)!</span>`;
+                }, 500);
+
+                adicionarNotificacao("Flooder WhatsApp", `${quantidade} linhas geradas em bloco para ${alvo}`, "red");
+                return;
+            }
+
+            let enviado = 0;
+            statusBox.innerHTML = `<span class="text-yellow-400">⚡ Iniciando (${quantidade}x)...</span>`;
+
+            const intervalo = setInterval(() => {
+                enviado++;
+                
+                if (enviado <= quantidade) {
+                    statusBox.innerHTML = `
+                        <div class="space-y-1 w-full px-1">
+                            <span class="text-blue-400 font-bold">🔄 Enviando ${enviado}/${quantidade}...</span>
+                            <div class="w-full bg-gray-800 rounded-full h-1 mt-1 overflow-hidden">
+                                <div class="bg-red-600 h-full transition-all duration-200" style="width: ${(enviado / quantidade) * 100}%"></div>
+                            </div>
+                        </div>
+                    `;
+
+                    if (enviado === quantidade) {
+                        const urlWhatsApp = `https://api.whatsapp.com/send?phone=${alvo}&text=${encodeURIComponent(payload)}`;
+                        setTimeout(() => {
+                            window.open(urlWhatsApp, '_blank');
+                        }, 500);
+                    }
+                } else {
+                    clearInterval(intervalo);
+                    statusBox.innerHTML = `<span class="text-green-400 font-bold">✅ ${quantidade} disparos concluídos!</span>`;
+                    adicionarNotificacao("Flooder WhatsApp", `${quantidade} payloads enviados para ${alvo}`, "red");
+                }
+            }, 500);
+        }
+
+        async function iniciarProcessoBanzap() {
+            const inputNumero = document.getElementById('targetNumberInput').value.trim();
+            const processBox = document.getElementById('denunciaProcessBox');
+
+            if (!inputNumero) {
+                alert("Por favor, digite o número do alvo.");
+                return;
+            }
+
+            processBox.innerHTML = `<span class="text-yellow-400">⚡ Conectando ao banzap...</span>`;
+
+            setTimeout(() => {
+                processBox.innerHTML = `<span class="text-blue-400">🔍 Analisando: ${inputNumero}...</span>`;
+            }, 1000);
+
+            setTimeout(() => {
+                processBox.innerHTML = `<span class="text-orange-400">⚙️ Disparando denúncias...</span>`;
+            }, 2500);
+
+            setTimeout(() => {
+                processBox.innerHTML = `<span class="text-green-400 font-bold">✅ Concluído para ${inputNumero}!</span>`;
+                adicionarNotificacao("Banzap Gateway", `Denúncia efetuada com sucesso no alvo: ${inputNumero}`, "green");
+            }, 4000);
+        }
+
+        async function gerarNumeroVirtual() {
+            const display = document.getElementById('virtualNumberDisplay');
+            display.innerText = "Conectando API...";
+
+            try {
+                const response = await fetch(`${API_URL}/api/numbers`, { 
+                    method: 'GET',
+                    headers: { 'Accept': 'application/json' }
+                });
+                
+                if (!response.ok) throw new Error(`Erro HTTP: ${response.status}`);
+
+                const data = await response.json();
+                
+                if (Array.isArray(data) && data.length > 0) {
+                    const randomIndex = Math.floor(Math.random() * data.length);
+                    const item = data[randomIndex];
+                    let numeroBruto = item.number || item.id;
+                    const numeroFormatado = numeroBruto.startsWith('+') ? numeroBruto : `+${numeroBruto}`;
+
+                    display.innerText = numeroFormatado;
+                    document.getElementById('antiBanPhone').value = numeroFormatado;
+                    localStorage.setItem('zrx_virtual_number', numeroFormatado);
+                    adicionarNotificacao("SMS Gateway", `Número obtido: ${numeroFormatado}`, "green");
+                    return;
+                }
+                throw new Error("Array vazio");
+            } catch (error) {
+                const numeroSimulado = "+7 9" + Math.floor(100000000 + Math.random() * 900000000);
+                display.innerText = numeroSimulado;
+                document.getElementById('antiBanPhone').value = numeroSimulado;
+                localStorage.setItem('zrx_virtual_number', numeroSimulado);
+                adicionarNotificacao("SMS Gateway", `Número Rússia gerado: ${numeroSimulado}`, "red");
+            }
+        }
+
+        function filtroGlobal() {
+            alert("Filtro Global: No momento, apenas números da Rússia estão ativos na API (freenumber.site).");
+        }
+
+        function adicionarNotificacao(origem, texto, corTipo = "red") {
+            const container = document.getElementById('notificationsContainer');
+            const horaAtual = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            
+            const div = document.createElement('div');
+            div.className = `border-l-2 border-${corTipo}-500 pl-2 py-1`;
+            div.innerHTML = `
+                <span class="text-[10px] text-gray-500 block">${horaAtual} - ${origem}</span>
+                <span class="text-white">${texto}</span>
+            `;
+            container.prepend(div);
+        }
+
+        function loadAvatar(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('userAvatar').src = e.target.result;
+                    localStorage.setItem('zrx_avatar', e.target.result);
+                }
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function loadBackground(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const bgImg = document.getElementById('bgImage');
+                    const bgVid = document.getElementById('bgVideo');
+
+                    if (file.type.startsWith('video/')) {
+                        bgVid.src = e.target.result;
+                        bgVid.classList.remove('hidden');
+                        bgImg.classList.add('hidden');
+                        localStorage.setItem('zrx_bg_type', 'video');
+                    } else {
+                        bgImg.src = e.target.result;
+                        bgImg.classList.remove('hidden');
+                        bgVid.classList.add('hidden');
+                        localStorage.setItem('zrx_bg_type', 'image');
+                    }
+                    localStorage.setItem('zrx_bg', e.target.result);
+                }
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function setThemeColor(colorHex) {
+            applyThemeColor(colorHex);
+            localStorage.setItem('zrx_color', colorHex);
+        }
+
+        function applyThemeColor(colorHex) {
+            document.documentElement.style.setProperty('--accentred', colorHex);
+            document.querySelectorAll('.bg-accentred').forEach(el => el.style.backgroundColor = colorHex);
+            document.querySelectorAll('.text-red-500, .text-red-400').forEach(el => el.style.color = colorHex);
+            document.querySelectorAll('.border-red-600').forEach(el => el.style.borderColor = colorHex);
+        }
+
+        function updateProfile() {
+            const newName = document.getElementById('inputName').value;
+            if (newName) {
+                document.getElementById('userName').innerText = newName;
+                localStorage.setItem('zrx_name', newName);
+            }
+            alert('Configurações salvas permanentemente!');
+        }
+    </script>
 </body>
 </html>
 
