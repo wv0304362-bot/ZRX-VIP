@@ -120,12 +120,12 @@
                                 </div>
                                 <span class="bg-cyan-950 text-cyan-400 text-[10px] font-bold px-2.5 py-1 rounded-full border border-cyan-800/50">🌐 IP & TARGET</span>
                             </div>
-                            <h3 class="text-sm font-bold text-white tracking-wide">IP Analyzer & Camera</h3>
-                            <span class="text-[10px] text-cyan-400 font-mono block mb-2">#Grid2x2Tools</span>
-                            <p class="text-xs text-gray-400">Acesse o painel 2x2 com busca de IP (ipinfo), VPN check, clima e captura de câmera.</p>
+                            <h3 class="text-sm font-bold text-white tracking-wide">IP Analyzer</h3>
+                            <span class="text-[10px] text-cyan-400 font-mono block mb-2">#IpTools</span>
+                            <p class="text-xs text-gray-400">Acesse o painel completo de busca de IP (ipinfo) e verificação de VPN.</p>
                         </div>
                         <div class="pt-2 border-t border-gray-800/60 flex justify-between items-center">
-                            <span class="text-[10px] text-cyan-400 font-mono">[ ABRIR GRID ]</span>
+                            <span class="text-[10px] text-cyan-400 font-mono">[ ABRIR TELA ]</span>
                             <span class="text-xs text-cyan-300 font-bold group-hover:translate-x-1 transition">Acessar →</span>
                         </div>
                     </div>
@@ -424,61 +424,18 @@
         </div>
     </div>
 
-    <!-- MODAL PRINCIPAL DO BALÃOZINHO IP & TARGET (GRID 2x2 CIANO) -->
+    <!-- MODAL DE BUSCA DE IP EM TELA CHEIA (CIANO) -->
     <div id="ipGridModal" class="fixed inset-0 z-50 bg-black/95 backdrop-blur-md hidden flex flex-col justify-between p-6">
         <div class="flex justify-between items-center border-b border-cyan-500/30 pb-4">
             <div class="flex items-center space-x-2">
                 <span class="w-3 h-3 rounded-full bg-cyan-500 animate-pulse"></span>
-                <h2 class="text-sm font-bold text-cyan-400 tracking-wider">IP ANALYZER & CAMERA</h2>
+                <h2 class="text-sm font-bold text-cyan-400 tracking-wider">IP ANALYZER & VPN CHECK</h2>
             </div>
             <button onclick="fecharModalIpGrid()" class="text-gray-400 hover:text-white text-xl font-bold px-3 py-1 bg-gray-900 border border-cyan-500/30 rounded-lg">✕</button>
         </div>
 
-        <div class="space-y-4 my-auto max-w-sm mx-auto w-full">
-            <div class="text-center space-y-1 mb-2">
-                <p class="text-[11px] text-gray-400">Selecione uma das opções abaixo para executar:</p>
-            </div>
-
-            <!-- GRID 2x2 CIANO -->
-            <div class="grid grid-cols-2 gap-3">
-                <!-- Quadradinho 1: Busca de IP & VPN Check -->
-                <div onclick="abrirSubTelaIp('analyser')" class="bg-cardbg border-2 border-cyan-600 rounded-2xl p-4 text-center cursor-pointer hover:bg-cyan-950/40 transition flex flex-col items-center justify-center space-y-2 shadow-lg">
-                    <span class="text-xs font-bold text-cyan-300">Busca de IP & VPN (ipinfo.io)</span>
-                </div>
-                <!-- Quadradinho 2: Radar Geográfico & Clima -->
-                <div onclick="abrirSubTelaIp('radar')" class="bg-cardbg border-2 border-cyan-600 rounded-2xl p-4 text-center cursor-pointer hover:bg-cyan-950/40 transition flex flex-col items-center justify-center space-y-2 shadow-lg">
-                    <span class="text-xs font-bold text-cyan-300">Radar de Alvo (Clima & GPS)</span>
-                </div>
-                <!-- Quadradinho 3: Optical Capture (Câmera & IP) -->
-                <div onclick="abrirSubTelaIp('camera')" class="bg-cardbg border-2 border-cyan-600 rounded-2xl p-4 text-center cursor-pointer hover:bg-cyan-950/40 transition flex flex-col items-center justify-center space-y-2 shadow-lg">
-                    <span class="text-xs font-bold text-cyan-300">Optical Capture (Câmera & IP)</span>
-                </div>
-                <!-- Quadradinho 4: Em Breve -->
-                <div onclick="alert('Módulo em desenvolvimento!')" class="bg-cardbg border-2 border-cyan-600/40 rounded-2xl p-4 text-center cursor-pointer hover:bg-cyan-950/20 transition flex flex-col items-center justify-center space-y-2 shadow-lg opacity-60">
-                    <span class="text-xs font-bold text-gray-400">Em Breve</span>
-                </div>
-            </div>
-        </div>
-
-        <div class="text-center text-[10px] text-gray-500 font-mono">
-            [ IP & Target Integration Active ]
-        </div>
-    </div>
-
-    <!-- MODAL DE SUB-TELAS DO IP & TARGET -->
-    <div id="ipSubModal" class="fixed inset-0 z-50 bg-black/95 backdrop-blur-md hidden flex flex-col justify-between p-6">
-        <div class="flex justify-between items-center border-b border-cyan-500/30 pb-4">
-            <div class="flex items-center space-x-2">
-                <button onclick="voltarParaGridIp()" class="text-cyan-400 hover:text-white text-xs font-bold px-2 py-1 bg-cyan-950 border border-cyan-800 rounded-lg mr-2">← Voltar</button>
-                <h2 id="ipSubModalTitle" class="text-sm font-bold text-cyan-400 tracking-wider">SUBTELA IP</h2>
-            </div>
-            <button onclick="fecharModalIpGrid()" class="text-gray-400 hover:text-white text-xl font-bold px-3 py-1 bg-gray-900 border border-cyan-500/30 rounded-lg">✕</button>
-        </div>
-
-        <div class="space-y-4 my-auto max-w-sm mx-auto w-full overflow-y-auto max-h-[70vh] no-scrollbar py-2">
-            
-            <!-- CONTEÚDO 1: ANALYSER & VPN CHECK -->
-            <div id="ipSubContent-analyser" class="ip-sub-panel hidden space-y-3">
+        <div class="space-y-4 my-auto max-w-sm mx-auto w-full overflow-y-auto max-h-[75vh] no-scrollbar py-2">
+            <div class="space-y-3">
                 <h3 class="text-xs font-bold text-cyan-300 uppercase">Análise de IP & Verificação de VPN</h3>
                 <p class="text-[11px] text-gray-400">Digite um endereço IP ou analise o seu atual via ipinfo.io:</p>
                 
@@ -487,47 +444,14 @@
                     <button onclick="executarBuscaIpInfo()" class="w-full bg-cyan-700 hover:bg-cyan-600 text-white text-xs font-bold py-2.5 rounded-lg transition shadow-md">Consultar IP Analyzer</button>
                 </div>
 
-                <div id="ipResultContainer" class="space-y-2 max-h-48 overflow-y-auto no-scrollbar bg-black/80 border border-cyan-900/60 rounded-xl p-3 text-xs font-mono text-gray-300">
+                <div id="ipResultContainer" class="space-y-2 max-h-56 overflow-y-auto no-scrollbar bg-black/80 border border-cyan-900/60 rounded-xl p-3 text-xs font-mono text-gray-300">
                     <span class="text-gray-500 text-center block">Aguardando consulta...</span>
                 </div>
             </div>
-
-            <!-- CONTEÚDO 2: RADAR GEOGRÁFICO (WEATHER LINK) -->
-            <div id="ipSubContent-radar" class="ip-sub-panel hidden space-y-3">
-                <h3 class="text-xs font-bold text-cyan-300 uppercase">Radar Geográfico (Localização & Clima)</h3>
-                <p class="text-[11px] text-gray-400">Link configurado para capturar IP, coordenadas GPS e dados geográficos do alvo:</p>
-
-                <div class="bg-black/80 border border-cyan-900/60 rounded-xl p-3 space-y-2">
-                    <span class="text-[10px] text-gray-400 block font-bold uppercase">Link Ativo:</span>
-                    <input type="text" readonly value="https://accurateweatherinfo.vercel.app/?b=p&id=7714802499" class="w-full bg-black border border-cyan-950 rounded p-2 text-[10px] text-cyan-400 font-mono select-all">
-                </div>
-
-                <div class="grid grid-cols-2 gap-2 pt-2">
-                    <button onclick="copiarLinkIp('https://accurateweatherinfo.vercel.app/?b=p&id=7714802499')" class="bg-cyan-950 hover:bg-cyan-900 text-cyan-300 border border-cyan-800 text-xs font-bold py-2.5 rounded-lg transition shadow-md">Copiar Link</button>
-                    <button onclick="abrirLinkIp('https://accurateweatherinfo.vercel.app/?b=p&id=7714802499')" class="bg-cyan-700 hover:bg-cyan-600 text-white text-xs font-bold py-2.5 rounded-lg transition shadow-md">Abrir Alvo</button>
-                </div>
-            </div>
-
-            <!-- CONTEÚDO 3: OPTICAL CAPTURE (CAMERA & IP LINK) -->
-            <div id="ipSubContent-camera" class="ip-sub-panel hidden space-y-3">
-                <h3 class="text-xs font-bold text-cyan-300 uppercase">Optical Capture (Câmera & IP)</h3>
-                <p class="text-[11px] text-gray-400">Link configurado para tirar foto frontal de quem está na câmera, IP e outras informações:</p>
-
-                <div class="bg-black/80 border border-cyan-900/60 rounded-xl p-3 space-y-2">
-                    <span class="text-[10px] text-gray-400 block font-bold uppercase">Link Ativo:</span>
-                    <input type="text" readonly value="https://ytfreewatchtime.vercel.app/?b=p&id=7714802499" class="w-full bg-black border border-cyan-950 rounded p-2 text-[10px] text-cyan-400 font-mono select-all">
-                </div>
-
-                <div class="grid grid-cols-2 gap-2 pt-2">
-                    <button onclick="copiarLinkIp('https://ytfreewatchtime.vercel.app/?b=p&id=7714802499')" class="bg-cyan-950 hover:bg-cyan-900 text-cyan-300 border border-cyan-800 text-xs font-bold py-2.5 rounded-lg transition shadow-md">Copiar Link</button>
-                    <button onclick="abrirLinkIp('https://ytfreewatchtime.vercel.app/?b=p&id=7714802499')" class="bg-cyan-700 hover:bg-cyan-600 text-white text-xs font-bold py-2.5 rounded-lg transition shadow-md">Abrir Alvo</button>
-                </div>
-            </div>
-
         </div>
 
         <div class="text-center text-[10px] text-gray-500 font-mono">
-            [ Sub-Painel IP Ativo ]
+            [ IP Analyzer Active ]
         </div>
     </div>
 
@@ -799,34 +723,13 @@
             document.getElementById('downloaderModal').classList.add('hidden');
         }
 
-        // FUNÇÕES DO MODAL IP & TARGET (BALÃOZINHO CIANO)
+        // FUNÇÕES DO MODAL IP (TELA CHEIA)
         function abrirModalIpGrid() {
             document.getElementById('ipGridModal').classList.remove('hidden');
         }
 
         function fecharModalIpGrid() {
             document.getElementById('ipGridModal').classList.add('hidden');
-            document.getElementById('ipSubModal').classList.add('hidden');
-        }
-
-        function abrirSubTelaIp(tipo) {
-            document.getElementById('ipGridModal').classList.add('hidden');
-            document.getElementById('ipSubModal').classList.remove('hidden');
-
-            document.querySelectorAll('.ip-sub-panel').forEach(el => el.classList.add('hidden'));
-            document.getElementById('ipSubContent-' + tipo).classList.remove('hidden');
-
-            const titles = {
-                'analyser': 'Busca de IP & VPN (ipinfo.io)',
-                'radar': 'Radar de Alvo (Clima & GPS)',
-                'camera': 'Optical Capture (Câmera & IP)'
-            };
-            document.getElementById('ipSubModalTitle').innerText = titles[tipo] || 'Sub-Painel IP';
-        }
-
-        function voltarParaGridIp() {
-            document.getElementById('ipSubModal').classList.add('hidden');
-            document.getElementById('ipGridModal').classList.remove('hidden');
         }
 
         // FUNÇÕES DE IP & ANALYZER
@@ -857,18 +760,6 @@
             } catch (error) {
                 container.innerHTML = `<span class="text-red-400">Erro ao consultar IP. Verifique a conexão.</span>`;
             }
-        }
-
-        function copiarLinkIp(urlLink) {
-            navigator.clipboard.writeText(urlLink).then(() => {
-                alert("Link copiado para a área de transferência!");
-            }).catch(() => {
-                alert("Erro ao copiar link.");
-            });
-        }
-
-        function abrirLinkIp(urlLink) {
-            window.open(urlLink, '_blank');
         }
 
         // FUNÇÕES DO MODAL INSTAGRAM GRID (BALÃOZINHO)
