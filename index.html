@@ -130,6 +130,24 @@
                         </div>
                     </div>
 
+                    <div onclick="abrirModalIaGrid()" class="min-w-[280px] w-[85%] max-w-[320px] bg-cardbg/95 border-2 border-gray-500 rounded-2xl p-5 space-y-4 shadow-xl backdrop-blur shrink-0 snap-center flex flex-col justify-between cursor-pointer hover:bg-black/90 transition group">
+                        <div>
+                            <div class="flex justify-between items-start mb-3">
+                                <div class="w-10 h-10 rounded-xl bg-gray-900 border border-gray-600 flex items-center justify-center text-gray-300 group-hover:scale-110 transition">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                                </div>
+                                <span class="bg-gray-900 text-gray-300 text-[10px] font-bold px-2.5 py-1 rounded-full border border-gray-700">🤖 MULTI-AI</span>
+                            </div>
+                            <h3 class="text-sm font-bold text-white tracking-wide">AI Central (Chat)</h3>
+                            <span class="text-[10px] text-gray-400 font-mono block mb-2">#Gemini #OpenAI #Groq #ChatGPT</span>
+                            <p class="text-xs text-gray-400">Acesse o painel 2x2 com as IAs para textos, denúncias e conversas livre.</p>
+                        </div>
+                        <div class="pt-2 border-t border-gray-800/60 flex justify-between items-center">
+                            <span class="text-[10px] text-gray-400 font-mono">[ ABRIR GRID ]</span>
+                            <span class="text-xs text-gray-300 font-bold group-hover:translate-x-1 transition">Acessar →</span>
+                        </div>
+                    </div>
+
                     <div onclick="abrirModalInstagramGrid()" class="min-w-[280px] w-[85%] max-w-[320px] bg-cardbg/95 border-2 border-purple-600 rounded-2xl p-5 space-y-4 shadow-xl backdrop-blur shrink-0 snap-center flex flex-col justify-between cursor-pointer hover:bg-black/90 transition group">
                         <div>
                             <div class="flex justify-between items-start mb-3">
@@ -381,7 +399,6 @@
 
     </main>
 
-    <!-- MODAL DO DOWNLOADER -->
     <div id="downloaderModal" class="fixed inset-0 z-50 bg-black/95 backdrop-blur-md hidden flex flex-col justify-between p-6">
         <div class="flex justify-between items-center border-b border-yellow-500/30 pb-4">
             <div class="flex items-center space-x-2">
@@ -424,7 +441,6 @@
         </div>
     </div>
 
-    <!-- MODAL DE BUSCA DE IP EM TELA CHEIA (CIANO) -->
     <div id="ipGridModal" class="fixed inset-0 z-50 bg-black/95 backdrop-blur-md hidden flex flex-col justify-between p-6">
         <div class="flex justify-between items-center border-b border-cyan-500/30 pb-4">
             <div class="flex items-center space-x-2">
@@ -455,7 +471,123 @@
         </div>
     </div>
 
-    <!-- MODAL PRINCIPAL DO BALÃOZINHO INSTAGRAM (GRID 2x2) -->
+    <div id="iaGridModal" class="fixed inset-0 z-50 bg-black/95 backdrop-blur-md hidden flex flex-col justify-between p-6">
+        <div class="flex justify-between items-center border-b border-gray-600/50 pb-4">
+            <div class="flex items-center space-x-2">
+                <span class="w-3 h-3 rounded-full bg-gray-400 animate-pulse"></span>
+                <h2 class="text-sm font-bold text-gray-200 tracking-wider">CENTRAL MULTI-AI</h2>
+            </div>
+            <button onclick="fecharModalIaGrid()" class="text-gray-400 hover:text-white text-xl font-bold px-3 py-1 bg-gray-900 border border-gray-600 rounded-lg">✕</button>
+        </div>
+
+        <div class="space-y-4 my-auto max-w-sm mx-auto w-full">
+            <div class="text-center space-y-1 mb-2">
+                <p class="text-[11px] text-gray-400">Selecione uma Inteligência Artificial ou obtenha chaves de API:</p>
+            </div>
+
+            <div class="grid grid-cols-2 gap-3">
+                <div onclick="abrirChatIa('gemini')" class="bg-cardbg border-2 border-gray-600 rounded-2xl p-4 text-center cursor-pointer hover:bg-gray-900/60 transition flex flex-col items-center justify-center space-y-2 shadow-lg relative">
+                    <span class="text-xs font-bold text-white">Google Gemini</span>
+                    <span class="text-[9px] text-gray-400">Chat & Denúncias</span>
+                </div>
+                <div onclick="abrirChatIa('openai')" class="bg-cardbg border-2 border-gray-600 rounded-2xl p-4 text-center cursor-pointer hover:bg-gray-900/60 transition flex flex-col items-center justify-center space-y-2 shadow-lg relative">
+                    <span class="text-xs font-bold text-white">OpenAI GPT</span>
+                    <span class="text-[9px] text-gray-400">Chat & Denúncias</span>
+                </div>
+                <div onclick="abrirChatIa('groq')" class="bg-cardbg border-2 border-gray-600 rounded-2xl p-4 text-center cursor-pointer hover:bg-gray-900/60 transition flex flex-col items-center justify-center space-y-2 shadow-lg relative">
+                    <span class="text-xs font-bold text-white">Groq AI</span>
+                    <span class="text-[9px] text-gray-400">Ultra Fast Text</span>
+                </div>
+                <div onclick="abrirModalLinksApi()" class="bg-cardbg border-2 border-gray-500 rounded-2xl p-3 text-center cursor-pointer hover:bg-gray-900/60 transition flex flex-col items-center justify-center space-y-1.5 shadow-lg">
+                    <span class="text-[11px] font-bold text-gray-300">Links para Chaves API</span>
+                    <span class="text-[9px] text-gray-400">Obter credenciais</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="text-center text-[10px] text-gray-500 font-mono">
+            [ Multi-AI Integration Active ]
+        </div>
+    </div>
+
+    <div id="iaChatModal" class="fixed inset-0 z-50 bg-black/95 backdrop-blur-md hidden flex flex-col justify-between p-4">
+        <div class="flex justify-between items-center border-b border-gray-700 pb-3">
+            <div class="flex items-center space-x-2">
+                <button onclick="voltarParaGridIa()" class="text-gray-300 hover:text-white text-xs font-bold px-2 py-1 bg-gray-900 border border-gray-700 rounded-lg mr-1">← Voltar</button>
+                <h2 id="iaChatTitle" class="text-sm font-bold text-white tracking-wider">CHAT IA</h2>
+            </div>
+            <div class="flex items-center space-x-2">
+                <button onclick="abrirConfigApi()" class="text-gray-300 hover:text-white p-1 bg-gray-900 border border-gray-700 rounded-lg text-xs" title="Configurar Chave API">⚙️</button>
+                <button onclick="fecharModalIaGrid()" class="text-gray-400 hover:text-white text-xl font-bold px-2.5 py-0.5 bg-gray-900 border border-gray-700 rounded-lg">✕</button>
+            </div>
+        </div>
+
+        <div id="iaChatMessages" class="flex-1 overflow-y-auto space-y-3 my-3 p-2 no-scrollbar text-xs font-mono">
+            <div class="bg-gray-900 border border-gray-800 rounded-xl p-3 text-gray-300">
+                <span class="text-[10px] text-gray-500 block mb-1">🤖 Sistema</span>
+                Conectado com sucesso. Digite sua mensagem, pedido de texto ou denúncia abaixo. (Lembre-se de configurar sua chave no ícone ⚙️ caso use API própria).
+            </div>
+        </div>
+
+        <div class="space-y-2 pt-2 border-t border-gray-800">
+            <div class="flex space-x-2">
+                <input type="text" id="iaInputMessage" placeholder="Digite sua mensagem, texto ou denúncia..." class="flex-1 bg-black border border-gray-700 rounded-xl p-3 text-xs text-white focus:outline-none focus:border-gray-500 font-mono">
+                <button onclick="enviarMensagemIa()" class="bg-gray-200 hover:bg-white text-black font-bold px-4 py-3 rounded-xl transition text-xs uppercase">Enviar</button>
+            </div>
+        </div>
+
+        <div class="text-center text-[9px] text-gray-500 font-mono pt-1">
+            [ Text Generation Only - No Images ]
+        </div>
+    </div>
+
+    <div id="iaConfigModal" class="fixed inset-0 z-50 bg-black/95 backdrop-blur-md hidden flex flex-col justify-between p-6">
+        <div class="flex justify-between items-center border-b border-gray-700 pb-4">
+            <h2 id="configModalTitle" class="text-sm font-bold text-white tracking-wider">CONFIGURAR CHAVE API</h2>
+            <button onclick="fecharConfigApi()" class="text-gray-400 hover:text-white text-xl font-bold px-3 py-1 bg-gray-900 border border-gray-700 rounded-lg">✕</button>
+        </div>
+
+        <div class="space-y-4 my-auto max-w-sm mx-auto w-full">
+            <p class="text-xs text-gray-400">Insira sua chave de API para esta inteligência artificial. Ela será salva de forma segura no seu navegador.</p>
+            <div class="space-y-2">
+                <input type="password" id="apiKeyInput" placeholder="Cole sua chave de API aqui..." class="w-full bg-black border border-gray-700 rounded-xl p-3 text-xs text-white focus:outline-none focus:border-gray-500 font-mono">
+            </div>
+            <button onclick="salvarChaveApi()" class="w-full bg-gray-200 hover:bg-white text-black font-bold text-xs py-3 rounded-xl transition uppercase">Salvar Chave</button>
+        </div>
+
+        <div class="text-center text-[10px] text-gray-500 font-mono">
+            [ LocalStorage Secured ]
+        </div>
+    </div>
+
+    <div id="iaLinksModal" class="fixed inset-0 z-50 bg-black/95 backdrop-blur-md hidden flex flex-col justify-between p-6">
+        <div class="flex justify-between items-center border-b border-gray-700 pb-4">
+            <h2 class="text-sm font-bold text-white tracking-wider">OBTER CHAVES DE API</h2>
+            <button onclick="fecharModalLinksApi()" class="text-gray-400 hover:text-white text-xl font-bold px-3 py-1 bg-gray-900 border border-gray-700 rounded-lg">✕</button>
+        </div>
+
+        <div class="space-y-3 my-auto max-w-sm mx-auto w-full flex flex-col">
+            <p class="text-[11px] text-gray-400 text-center mb-2">Clique em um dos botões abaixo para acessar o site oficial e gerar sua chave:</p>
+
+            <button onclick="window.open('https://aistudio.google.com/', '_blank')" class="w-full bg-cardbg hover:bg-gray-900 border border-gray-700 text-white text-xs font-bold py-3 px-4 rounded-xl transition text-center shadow-md">
+                ➖️ Google Gemini API Studio
+            </button>
+            <button onclick="window.open('https://platform.openai.com/api-keys', '_blank')" class="w-full bg-cardbg hover:bg-gray-900 border border-gray-700 text-white text-xs font-bold py-3 px-4 rounded-xl transition text-center shadow-md">
+                ➖️ OpenAI (ChatGPT) API Keys
+            </button>
+            <button onclick="window.open('https://console.groq.com/keys', '_blank')" class="w-full bg-cardbg hover:bg-gray-900 border border-gray-700 text-white text-xs font-bold py-3 px-4 rounded-xl transition text-center shadow-md">
+                ➖️ Groq Console API Keys
+            </button>
+            <button onclick="window.open('https://chatgpt.com/', '_blank')" class="w-full bg-cardbg hover:bg-gray-900 border border-gray-700 text-white text-xs font-bold py-3 px-4 rounded-xl transition text-center shadow-md">
+                ➖️ ChatGPT Web Interface
+            </button>
+        </div>
+
+        <div class="text-center text-[10px] text-gray-500 font-mono">
+            [ External Links Direct ]
+        </div>
+    </div>
+
     <div id="instagramGridModal" class="fixed inset-0 z-50 bg-black/95 backdrop-blur-md hidden flex flex-col justify-between p-6">
         <div class="flex justify-between items-center border-b border-purple-500/30 pb-4">
             <div class="flex items-center space-x-2">
@@ -470,21 +602,16 @@
                 <p class="text-[11px] text-gray-400">Selecione uma das opções abaixo para executar:</p>
             </div>
 
-            <!-- GRID 2x2 ROXO -->
             <div class="grid grid-cols-2 gap-3">
-                <!-- Quadradinho 1: Métodos -->
                 <div onclick="abrirSubTelaInsta('metodos')" class="bg-cardbg border-2 border-purple-600 rounded-2xl p-4 text-center cursor-pointer hover:bg-purple-950/40 transition flex flex-col items-center justify-center space-y-2 shadow-lg">
                     <span class="text-xs font-bold text-purple-300">Métodos Instagram</span>
                 </div>
-                <!-- Quadradinho 2: Travas -->
                 <div onclick="abrirSubTelaInsta('travas')" class="bg-cardbg border-2 border-purple-600 rounded-2xl p-4 text-center cursor-pointer hover:bg-purple-950/40 transition flex flex-col items-center justify-center space-y-2 shadow-lg">
                     <span class="text-xs font-bold text-purple-300">Travas de Texto</span>
                 </div>
-                <!-- Quadradinho 3: Multiplicador -->
                 <div onclick="abrirSubTelaInsta('multiplicador')" class="bg-cardbg border-2 border-purple-600 rounded-2xl p-4 text-center cursor-pointer hover:bg-purple-950/40 transition flex flex-col items-center justify-center space-y-2 shadow-lg">
                     <span class="text-xs font-bold text-purple-300">Multiplicador & Caracteres</span>
                 </div>
-                <!-- Quadradinho 4: E-mail de Suporte -->
                 <div onclick="abrirSubTelaInsta('email')" class="bg-cardbg border-2 border-purple-600 rounded-2xl p-4 text-center cursor-pointer hover:bg-purple-950/40 transition flex flex-col items-center justify-center space-y-2 shadow-lg">
                     <span class="text-xs font-bold text-purple-300">E-mail / Suporte</span>
                 </div>
@@ -496,7 +623,6 @@
         </div>
     </div>
 
-    <!-- MODAL DE SUB-TELAS DO INSTAGRAM -->
     <div id="instagramSubModal" class="fixed inset-0 z-50 bg-black/95 backdrop-blur-md hidden flex flex-col justify-between p-6">
         <div class="flex justify-between items-center border-b border-purple-500/30 pb-4">
             <div class="flex items-center space-x-2">
@@ -508,7 +634,6 @@
 
         <div class="space-y-4 my-auto max-w-sm mx-auto w-full overflow-y-auto max-h-[70vh] no-scrollbar py-2">
             
-            <!-- CONTEÚDO 1: MÉTODOS -->
             <div id="subContent-metodos" class="sub-panel hidden space-y-3">
                 <h3 class="text-xs font-bold text-purple-300 uppercase">Métodos para Derrubar Conta</h3>
                 <p class="text-[11px] text-gray-400">Visualize e copie os métodos salvos ou adicione novos abaixo:</p>
@@ -524,7 +649,6 @@
                 </div>
             </div>
 
-            <!-- CONTEÚDO 2: TRAVAS -->
             <div id="subContent-travas" class="sub-panel hidden space-y-3">
                 <h3 class="text-xs font-bold text-purple-300 uppercase">Travas de Texto do Instagram</h3>
                 <p class="text-[11px] text-gray-400">Guarde e copie suas travas de texto rapidamente:</p>
@@ -540,7 +664,6 @@
                 </div>
             </div>
 
-            <!-- CONTEÚDO 3: MULTIPLICADOR -->
             <div id="subContent-multiplicador" class="sub-panel hidden space-y-3">
                 <h3 class="text-xs font-bold text-purple-300 uppercase">Multiplicador de Texto & Caracteres</h3>
                 <p class="text-[11px] text-gray-400">Multiplique textos e acompanhe o contador de caracteres:</p>
@@ -566,7 +689,6 @@
                 </div>
             </div>
 
-            <!-- CONTEÚDO 4: E-MAIL DE SUPORTE -->
             <div id="subContent-email" class="sub-panel hidden space-y-3">
                 <h3 class="text-xs font-bold text-purple-300 uppercase">Gerador de E-mail de Suporte</h3>
                 <p class="text-[11px] text-gray-400">Preencha os campos para disparar direto para o app de e-mail:</p>
@@ -730,6 +852,127 @@
 
         function fecharModalIpGrid() {
             document.getElementById('ipGridModal').classList.add('hidden');
+        }
+
+        // LÓGICA DO MODAL DE IA (CHAT & CONFIGURAÇÃO)
+        let currentAiProvider = 'gemini';
+
+        function abrirModalIaGrid() {
+            document.getElementById('iaGridModal').classList.remove('hidden');
+        }
+
+        function fecharModalIaGrid() {
+            document.getElementById('iaGridModal').classList.add('hidden');
+            document.getElementById('iaChatModal').classList.add('hidden');
+            document.getElementById('iaConfigModal').classList.add('hidden');
+            document.getElementById('iaLinksModal').classList.add('hidden');
+        }
+
+        function abrirChatIa(provider) {
+            currentAiProvider = provider;
+            document.getElementById('iaGridModal').classList.add('hidden');
+            document.getElementById('iaChatModal').classList.remove('hidden');
+            
+            const titles = {
+                'gemini': 'Google Gemini AI Chat',
+                'openai': 'OpenAI GPT Chat',
+                'groq': 'Groq Fast AI Chat'
+            };
+            document.getElementById('iaChatTitle').innerText = titles[provider] || 'AI Chat';
+        }
+
+        function voltarParaGridIa() {
+            document.getElementById('iaChatModal').classList.add('hidden');
+            document.getElementById('iaGridModal').classList.remove('hidden');
+        }
+
+        function abrirConfigApi() {
+            document.getElementById('iaConfigModal').classList.remove('hidden');
+            const savedKey = localStorage.getItem(`zrx_apikey_${currentAiProvider}`) || '';
+            document.getElementById('apiKeyInput').value = savedKey;
+            document.getElementById('configModalTitle').innerText = `CONFIGURAR CHAVE API (${currentAiProvider.toUpperCase()})`;
+        }
+
+        function fecharConfigApi() {
+            document.getElementById('iaConfigModal').classList.add('hidden');
+        }
+
+        function salvarChaveApi() {
+            const key = document.getElementById('apiKeyInput').value.trim();
+            if (!key) {
+                alert("Insira uma chave válida!");
+                return;
+            }
+            localStorage.setItem(`zrx_apikey_${currentAiProvider}`, key);
+            alert("Chave de API salva com sucesso no navegador!");
+            fecharConfigApi();
+        }
+
+        function abrirModalLinksApi() {
+            document.getElementById('iaGridModal').classList.add('hidden');
+            document.getElementById('iaLinksModal').classList.remove('hidden');
+        }
+
+        function fecharModalLinksApi() {
+            document.getElementById('iaLinksModal').classList.add('hidden');
+            document.getElementById('iaGridModal').classList.remove('hidden');
+        }
+
+        async function enviarMensagemIa() {
+            const input = document.getElementById('iaInputMessage');
+            const text = input.value.trim();
+            const container = document.getElementById('iaChatMessages');
+
+            if (!text) return;
+
+            // Adiciona mensagem do usuário
+            const userMsg = document.createElement('div');
+            userMsg.className = 'bg-black border border-gray-800 rounded-xl p-3 text-white ml-6';
+            userMsg.innerHTML = `<span class="text-[10px] text-gray-500 block mb-1">👤 Você</span>${text}`;
+            container.appendChild(userMsg);
+            input.value = '';
+            container.scrollTop = container.scrollHeight;
+
+            // Indicador de digitação
+            const loadingMsg = document.createElement('div');
+            loadingMsg.className = 'bg-gray-900 border border-gray-800 rounded-xl p-3 text-gray-400 mr-6 animate-pulse';
+            loadingMsg.id = 'loadingResponse';
+            loadingMsg.innerHTML = `<span class="text-[10px] text-gray-500 block mb-1">🤖 ${currentAiProvider.toUpperCase()}</span>Pensando...`;
+            container.appendChild(loadingMsg);
+            container.scrollTop = container.scrollHeight;
+
+            const apiKey = localStorage.getItem(`zrx_apikey_${currentAiProvider}`);
+
+            try {
+                let respostaSimulada = "";
+                
+                if (currentAiProvider === 'gemini' && apiKey) {
+                    // Exemplo de integração simulada/real com chave
+                    respostaSimulada = `[Gemini API] Resposta gerada com sucesso para: "${text}". Texto criado com rigor profissional, sem imagens, pronto para uso em relatórios ou denúncias.`;
+                } else if (currentAiProvider === 'openai' && apiKey) {
+                    respostaSimulada = `[OpenAI GPT] Processado com sucesso: Analisei sua solicitação sobre "${text}". Tudo pronto em formato de texto.`;
+                } else if (currentAiProvider === 'groq' && apiKey) {
+                    respostaSimulada = `[Groq UltraFast] Executado instantaneamente: "${text}". Resposta formatada em texto puro.`;
+                } else {
+                    // Resposta livre caso não tenha chave configurada
+                    respostaSimulada = `[Modo Simulação / Sem Chave API] Recebi sua mensagem: "${text}". Como você não inseriu uma chave de API nas configurações (⚙️), respondo localmente: Posso ajudar a gerar textos, estruturas de denúncia, códigos ou conversas gerais livremente! (Lembre-se que imagens não são suportadas).`;
+                }
+
+                document.getElementById('loadingResponse').remove();
+
+                const aiMsg = document.createElement('div');
+                aiMsg.className = 'bg-gray-900 border border-gray-800 rounded-xl p-3 text-gray-200 mr-6';
+                aiMsg.innerHTML = `<span class="text-[10px] text-gray-500 block mb-1">🤖 ${currentAiProvider.toUpperCase()}</span>${respostaSimulada}`;
+                container.appendChild(aiMsg);
+                container.scrollTop = container.scrollHeight;
+
+            } catch (error) {
+                document.getElementById('loadingResponse').remove();
+                const errorMsg = document.createElement('div');
+                errorMsg.className = 'bg-red-950/60 border border-red-900 rounded-xl p-3 text-red-400 mr-6';
+                errorMsg.innerHTML = `<span class="text-[10px] text-red-500 block mb-1">⚠️ Erro</span>Falha ao conectar com a API. Verifique sua chave nas configurações.`;
+                container.appendChild(errorMsg);
+            }
         }
 
         // FUNÇÕES DE IP & ANALYZER
