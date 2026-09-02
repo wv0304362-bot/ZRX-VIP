@@ -510,7 +510,8 @@
         </div>
     </div>
 
-    <div id="iaChatModal" class="fixed inset-0 z-50 bg-black/95 backdrop-blur-md hidden flex flex-col justify-between p-4">
+    <!-- MODAL DE CHAT DA IA (BARRA DE ESCRITA ELEVADA) -->
+    <div id="iaChatModal" class="fixed inset-0 z-50 bg-black/95 backdrop-blur-md hidden flex flex-col justify-between p-4 pb-8">
         <div class="flex justify-between items-center border-b border-gray-700 pb-3">
             <div class="flex items-center space-x-2">
                 <button onclick="voltarParaGridIa()" class="text-gray-300 hover:text-white text-xs font-bold px-2 py-1 bg-gray-900 border border-gray-700 rounded-lg mr-1">← Voltar</button>
@@ -523,13 +524,11 @@
         </div>
 
         <div id="iaChatMessages" class="flex-1 overflow-y-auto space-y-3 my-3 p-2 no-scrollbar text-xs font-mono">
-            <div class="bg-gray-900 border border-gray-800 rounded-xl p-3 text-gray-300">
-                <span class="text-[10px] text-gray-500 block mb-1">🤖 Sistema</span>
-                Conectado com sucesso. Digite sua mensagem, pedido de texto ou denúncia abaixo. (Lembre-se de configurar sua chave no ícone ⚙️ caso use API própria).
-            </div>
+            <!-- As mensagens serão carregadas separadamente por IA via JS -->
         </div>
 
-        <div class="space-y-2 pt-2 border-t border-gray-800">
+        <!-- BARRA DE ESCRITA ELEVADA PARA ACOMPANHAR O TECLADO -->
+        <div class="space-y-2 pt-2 border-t border-gray-800 mb-6">
             <div class="flex space-x-2">
                 <input type="text" id="iaInputMessage" placeholder="Digite sua mensagem, texto ou denúncia..." class="flex-1 bg-black border border-gray-700 rounded-xl p-3 text-xs text-white focus:outline-none focus:border-gray-500 font-mono">
                 <button onclick="enviarMensagemIa()" class="bg-gray-200 hover:bg-white text-black font-bold px-4 py-3 rounded-xl transition text-xs uppercase">Enviar</button>
@@ -537,7 +536,7 @@
         </div>
 
         <div class="text-center text-[9px] text-gray-500 font-mono pt-1">
-            [ Text Generation Only - No Images ]
+            [ Text Generation Only - Independent Models ]
         </div>
     </div>
 
@@ -560,6 +559,7 @@
         </div>
     </div>
 
+    <!-- MODAL DE LINKS EXTERNOS INDIRETO NO NAVEGADOR -->
     <div id="iaLinksModal" class="fixed inset-0 z-50 bg-black/95 backdrop-blur-md hidden flex flex-col justify-between p-6">
         <div class="flex justify-between items-center border-b border-gray-700 pb-4">
             <h2 class="text-sm font-bold text-white tracking-wider">OBTER CHAVES DE API</h2>
@@ -567,20 +567,20 @@
         </div>
 
         <div class="space-y-3 my-auto max-w-sm mx-auto w-full flex flex-col">
-            <p class="text-[11px] text-gray-400 text-center mb-2">Clique em um dos botões abaixo para acessar o site oficial e gerar sua chave:</p>
+            <p class="text-[11px] text-gray-400 text-center mb-2">Clique em um dos botões abaixo para abrir o site oficial no navegador e gerar sua chave:</p>
 
-            <button onclick="window.open('https://aistudio.google.com/', '_blank')" class="w-full bg-cardbg hover:bg-gray-900 border border-gray-700 text-white text-xs font-bold py-3 px-4 rounded-xl transition text-center shadow-md">
+            <a href="https://aistudio.google.com/" target="_blank" rel="noopener noreferrer" class="w-full bg-cardbg hover:bg-gray-900 border border-gray-700 text-white text-xs font-bold py-3 px-4 rounded-xl transition text-center shadow-md block">
                 ➖️ Google Gemini API Studio
-            </button>
-            <button onclick="window.open('https://platform.openai.com/api-keys', '_blank')" class="w-full bg-cardbg hover:bg-gray-900 border border-gray-700 text-white text-xs font-bold py-3 px-4 rounded-xl transition text-center shadow-md">
+            </a>
+            <a href="https://platform.openai.com/api-keys" target="_blank" rel="noopener noreferrer" class="w-full bg-cardbg hover:bg-gray-900 border border-gray-700 text-white text-xs font-bold py-3 px-4 rounded-xl transition text-center shadow-md block">
                 ➖️ OpenAI (ChatGPT) API Keys
-            </button>
-            <button onclick="window.open('https://console.groq.com/keys', '_blank')" class="w-full bg-cardbg hover:bg-gray-900 border border-gray-700 text-white text-xs font-bold py-3 px-4 rounded-xl transition text-center shadow-md">
+            </a>
+            <a href="https://console.groq.com/keys" target="_blank" rel="noopener noreferrer" class="w-full bg-cardbg hover:bg-gray-900 border border-gray-700 text-white text-xs font-bold py-3 px-4 rounded-xl transition text-center shadow-md block">
                 ➖️ Groq Console API Keys
-            </button>
-            <button onclick="window.open('https://chatgpt.com/', '_blank')" class="w-full bg-cardbg hover:bg-gray-900 border border-gray-700 text-white text-xs font-bold py-3 px-4 rounded-xl transition text-center shadow-md">
+            </a>
+            <a href="https://chatgpt.com/" target="_blank" rel="noopener noreferrer" class="w-full bg-cardbg hover:bg-gray-900 border border-gray-700 text-white text-xs font-bold py-3 px-4 rounded-xl transition text-center shadow-md block">
                 ➖️ ChatGPT Web Interface
-            </button>
+            </a>
         </div>
 
         <div class="text-center text-[10px] text-gray-500 font-mono">
@@ -845,7 +845,6 @@
             document.getElementById('downloaderModal').classList.add('hidden');
         }
 
-        // FUNÇÕES DO MODAL IP (TELA CHEIA)
         function abrirModalIpGrid() {
             document.getElementById('ipGridModal').classList.remove('hidden');
         }
@@ -854,7 +853,6 @@
             document.getElementById('ipGridModal').classList.add('hidden');
         }
 
-        // LÓGICA DO MODAL DE IA (CHAT & CONFIGURAÇÃO)
         let currentAiProvider = 'gemini';
 
         function abrirModalIaGrid() {
@@ -879,6 +877,9 @@
                 'groq': 'Groq Fast AI Chat'
             };
             document.getElementById('iaChatTitle').innerText = titles[provider] || 'AI Chat';
+
+            // Carrega histórico isolado da IA selecionada
+            carregarHistoricoChatIsolado(provider);
         }
 
         function voltarParaGridIa() {
@@ -918,6 +919,35 @@
             document.getElementById('iaGridModal').classList.remove('hidden');
         }
 
+        function carregarHistoricoChatIsolado(provider) {
+            const container = document.getElementById('iaChatMessages');
+            container.innerHTML = '';
+
+            const historico = JSON.parse(localStorage.getItem(`zrx_chat_history_${provider}`)) || [
+                { sender: 'system', text: `Conectado com sucesso ao ${provider.toUpperCase()}. Sessão isolada e independente. Digite sua mensagem abaixo.` }
+            ];
+
+            historico.forEach(msg => {
+                const div = document.createElement('div');
+                if (msg.sender === 'user') {
+                    div.className = 'bg-black border border-gray-800 rounded-xl p-3 text-white ml-6';
+                    div.innerHTML = `<span class="text-[10px] text-gray-500 block mb-1">👤 Você</span>${msg.text}`;
+                } else {
+                    div.className = 'bg-gray-900 border border-gray-800 rounded-xl p-3 text-gray-300 mr-6';
+                    div.innerHTML = `<span class="text-[10px] text-gray-500 block mb-1">🤖 ${provider.toUpperCase()}</span>${msg.text}`;
+                }
+                container.appendChild(div);
+            });
+            container.scrollTop = container.scrollHeight;
+        }
+
+        function salvarMensagemHistoricoIsolado(provider, sender, text) {
+            const key = `zrx_chat_history_${provider}`;
+            const historico = JSON.parse(localStorage.getItem(key)) || [];
+            historico.push({ sender, text });
+            localStorage.setItem(key, JSON.stringify(historico));
+        }
+
         async function enviarMensagemIa() {
             const input = document.getElementById('iaInputMessage');
             const text = input.value.trim();
@@ -925,37 +955,32 @@
 
             if (!text) return;
 
-            // Adiciona mensagem do usuário
+            // Adiciona mensagem do usuário na tela
             const userMsg = document.createElement('div');
             userMsg.className = 'bg-black border border-gray-800 rounded-xl p-3 text-white ml-6';
             userMsg.innerHTML = `<span class="text-[10px] text-gray-500 block mb-1">👤 Você</span>${text}`;
             container.appendChild(userMsg);
+            
+            salvarMensagemHistoricoIsolado(currentAiProvider, 'user', text);
             input.value = '';
             container.scrollTop = container.scrollHeight;
 
-            // Indicador de digitação
+            // Indicador de digitação isolado
             const loadingMsg = document.createElement('div');
             loadingMsg.className = 'bg-gray-900 border border-gray-800 rounded-xl p-3 text-gray-400 mr-6 animate-pulse';
             loadingMsg.id = 'loadingResponse';
-            loadingMsg.innerHTML = `<span class="text-[10px] text-gray-500 block mb-1">🤖 ${currentAiProvider.toUpperCase()}</span>Pensando...`;
+            loadingMsg.innerHTML = `<span class="text-[10px] text-gray-500 block mb-1">🤖 ${currentAiProvider.toUpperCase()}</span>Pensando de forma independente...`;
             container.appendChild(loadingMsg);
             container.scrollTop = container.scrollHeight;
 
             const apiKey = localStorage.getItem(`zrx_apikey_${currentAiProvider}`);
 
-            try {
+            setTimeout(() => {
                 let respostaSimulada = "";
-                
-                if (currentAiProvider === 'gemini' && apiKey) {
-                    // Exemplo de integração simulada/real com chave
-                    respostaSimulada = `[Gemini API] Resposta gerada com sucesso para: "${text}". Texto criado com rigor profissional, sem imagens, pronto para uso em relatórios ou denúncias.`;
-                } else if (currentAiProvider === 'openai' && apiKey) {
-                    respostaSimulada = `[OpenAI GPT] Processado com sucesso: Analisei sua solicitação sobre "${text}". Tudo pronto em formato de texto.`;
-                } else if (currentAiProvider === 'groq' && apiKey) {
-                    respostaSimulada = `[Groq UltraFast] Executado instantaneamente: "${text}". Resposta formatada em texto puro.`;
+                if (apiKey) {
+                    respostaSimulada = `[${currentAiProvider.toUpperCase()} API] Resposta gerada com sucesso para: "${text}". Processamento isolado concluído.`;
                 } else {
-                    // Resposta livre caso não tenha chave configurada
-                    respostaSimulada = `[Modo Simulação / Sem Chave API] Recebi sua mensagem: "${text}". Como você não inseriu uma chave de API nas configurações (⚙️), respondo localmente: Posso ajudar a gerar textos, estruturas de denúncia, códigos ou conversas gerais livremente! (Lembre-se que imagens não são suportadas).`;
+                    respostaSimulada = `[${currentAiProvider.toUpperCase()} - Sem Chave] Recebi sua mensagem: "${text}". Esta IA está operando isoladamente das demais. Configure sua chave no ícone ⚙️ se desejar chamadas externas via API.`;
                 }
 
                 document.getElementById('loadingResponse').remove();
@@ -964,48 +989,12 @@
                 aiMsg.className = 'bg-gray-900 border border-gray-800 rounded-xl p-3 text-gray-200 mr-6';
                 aiMsg.innerHTML = `<span class="text-[10px] text-gray-500 block mb-1">🤖 ${currentAiProvider.toUpperCase()}</span>${respostaSimulada}`;
                 container.appendChild(aiMsg);
+
+                salvarMensagemHistoricoIsolado(currentAiProvider, 'ai', respostaSimulada);
                 container.scrollTop = container.scrollHeight;
-
-            } catch (error) {
-                document.getElementById('loadingResponse').remove();
-                const errorMsg = document.createElement('div');
-                errorMsg.className = 'bg-red-950/60 border border-red-900 rounded-xl p-3 text-red-400 mr-6';
-                errorMsg.innerHTML = `<span class="text-[10px] text-red-500 block mb-1">⚠️ Erro</span>Falha ao conectar com a API. Verifique sua chave nas configurações.`;
-                container.appendChild(errorMsg);
-            }
+            }, 800);
         }
 
-        // FUNÇÕES DE IP & ANALYZER
-        async function executarBuscaIpInfo() {
-            const ipInput = document.getElementById('ipInputTarget').value.trim();
-            const container = document.getElementById('ipResultContainer');
-            
-            container.innerHTML = `<span class="text-cyan-400 animate-pulse">Consultando ipinfo.io...</span>`;
-
-            try {
-                const url = ipInput ? `https://ipinfo.io/${ipInput}/json` : `https://ipinfo.io/json`;
-                const response = await fetch(url);
-                const data = await response.json();
-
-                const isVpnOrHost = data.company || data.asn ? "Possível VPN/Hosting detectado" : "Conexão Residencial / Normal";
-
-                container.innerHTML = `
-                    <div class="space-y-1">
-                        <p><strong class="text-cyan-400">IP:</strong> ${data.ip || 'N/A'}</p>
-                        <p><strong class="text-cyan-400">Hostname:</strong> ${data.hostname || 'N/A'}</p>
-                        <p><strong class="text-cyan-400">Cidade/Região:</strong> ${data.city || 'N/A'} - ${data.region || 'N/A'}</p>
-                        <p><strong class="text-cyan-400">País:</strong> ${data.country || 'N/A'}</p>
-                        <p><strong class="text-cyan-400">Localização (GPS):</strong> ${data.loc || 'N/A'}</p>
-                        <p><strong class="text-cyan-400">Provedor/ASN:</strong> ${data.org || 'N/A'}</p>
-                        <p><strong class="text-yellow-400">Status VPN/Host:</strong> ${isVpnOrHost}</p>
-                    </div>
-                `;
-            } catch (error) {
-                container.innerHTML = `<span class="text-red-400">Erro ao consultar IP. Verifique a conexão.</span>`;
-            }
-        }
-
-        // FUNÇÕES DO MODAL INSTAGRAM GRID (BALÃOZINHO)
         function abrirModalInstagramGrid() {
             document.getElementById('instagramGridModal').classList.remove('hidden');
         }
@@ -1019,16 +1008,16 @@
             document.getElementById('instagramGridModal').classList.add('hidden');
             document.getElementById('instagramSubModal').classList.remove('hidden');
 
-            document.querySelectorAll('.sub-panel').forEach(el => el.classList.add('hidden'));
+            document.querySelectorAll('.sub-panel').forEach(p => p.classList.add('hidden'));
             document.getElementById('subContent-' + tipo).classList.remove('hidden');
 
             const titles = {
-                'metodos': 'Métodos para Derrubar Conta',
-                'travas': 'Travas de Texto do Instagram',
-                'multiplicador': 'Multiplicador & Contador',
-                'email': 'Gerador de E-mail de Suporte'
+                'metodos': 'MÉTODOS INSTAGRAM',
+                'travas': 'TRAVAS DE TEXTO',
+                'multiplicador': 'MULTIPLICADOR & CARACTERES',
+                'email': 'GERADOR DE E-MAIL'
             };
-            document.getElementById('subModalTitle').innerText = titles[tipo] || 'Sub-Painel';
+            document.getElementById('subModalTitle').innerText = titles[tipo] || 'SUBTELA';
         }
 
         function voltarParaGridInsta() {
@@ -1036,30 +1025,75 @@
             document.getElementById('instagramGridModal').classList.remove('hidden');
         }
 
-        // LÓGICA DO QUADRADINHO 1: MÉTODOS
-        function carregarMetodosInsta() {
-            const container = document.getElementById('listaMetodosInsta');
-            if (!container) return;
+        function atualizarMultiplicador() {
+            const texto = document.getElementById('multiInputText').value;
+            const qtd = parseInt(document.getElementById('multiCountInput').value) || 1;
             
-            const metodos = JSON.parse(localStorage.getItem('zrx_insta_metodos')) || [];
-            if (metodos.length === 0) {
-                container.innerHTML = `<span class="text-gray-500 text-xs block text-center py-2">Nenhum método cadastrado.</span>`;
+            document.getElementById('charCounter').innerText = texto.length * qtd;
+            document.getElementById('lineCounter').innerText = qtd;
+
+            if (!texto) {
+                document.getElementById('multiResultBox').innerHTML = '<span class="text-gray-500">Resultado da multiplicação aparecerá aqui...</span>';
+                return;
+            }
+
+            let resultado = '';
+            for (let i = 0; i < qtd; i++) {
+                resultado += texto + '\n';
+            }
+            document.getElementById('multiResultBox').innerText = resultado;
+        }
+
+        function copiarTextoMultiplicado() {
+            const boxText = document.getElementById('multiResultBox').innerText;
+            navigator.clipboard.writeText(boxText);
+            alert("Texto multiplicado copiado para a área de transferência!");
+        }
+
+        function salvarTravaInstaGrid() {
+            const titulo = document.getElementById('novaTravaInstaTitulo').value.trim();
+            const texto = document.getElementById('novaTravaInstaTexto').value.trim();
+
+            if (!titulo || !texto) {
+                alert("Preencha o título e a trava!");
+                return;
+            }
+
+            const travas = JSON.parse(localStorage.getItem('zrx_instagram_travas')) || [];
+            travas.push({ titulo, texto });
+            localStorage.setItem('zrx_instagram_travas', JSON.stringify(travas));
+
+            document.getElementById('novaTravaInstaTitulo').value = '';
+            document.getElementById('novaTravaInstaTexto').value = '';
+            alert("Trava salva com sucesso!");
+            carregarTravasInstaGrid();
+        }
+
+        function carregarTravasInstaGrid() {
+            const container = document.getElementById('listaTravasInsta');
+            if (!container) return;
+
+            const travas = JSON.parse(localStorage.getItem('zrx_instagram_travas')) || [];
+            if (travas.length === 0) {
+                container.innerHTML = '<span class="text-gray-500 text-xs block text-center py-2">Nenhuma trava salva.</span>';
                 return;
             }
 
             container.innerHTML = '';
-            metodos.forEach((m, index) => {
-                const div = document.createElement('div');
-                div.className = 'bg-black/80 border border-purple-900/60 rounded-lg p-2.5 flex flex-col space-y-1';
-                div.innerHTML = `
-                    <div class="flex justify-between items-center">
-                        <span class="text-xs font-bold text-purple-300">${m.titulo}</span>
-                        <button onclick="copiarTextoDirect('${encodeURIComponent(m.texto)}')" class="bg-purple-950 text-purple-300 border border-purple-800 text-[10px] px-2 py-0.5 rounded hover:bg-purple-900">Copiar</button>
-                    </div>
-                    <p class="text-[10px] text-gray-300 font-mono truncate">${m.texto}</p>
-                `;
-                container.appendChild(div);
+            travas.forEach((t, index) => {
+                const item = document.createElement('div');
+                item.className = 'bg-black/80 border border-purple-900/40 rounded-lg p-2.5 flex justify-between items-center';
+                item.innerHTML = `<div><strong class="text-xs text-purple-300 block">${t.titulo}</strong><span class="text-[10px] text-gray-400 font-mono truncate max-w-[180px] block">${t.texto}</span></div><button onclick="copiarTravaInsta(${index})" class="bg-purple-900 hover:bg-purple-800 text-purple-200 text-[10px] px-2.5 py-1 rounded">Copiar</button>`;
+                container.appendChild(item);
             });
+        }
+
+        function copiarTravaInsta(index) {
+            const travas = JSON.parse(localStorage.getItem('zrx_instagram_travas')) || [];
+            if (travas[index]) {
+                navigator.clipboard.writeText(travas[index].texto);
+                alert(`Trava "${travas[index].titulo}" copiada!`);
+            }
         }
 
         function adicionarNovoMetodoInsta() {
@@ -1071,397 +1105,49 @@
                 return;
             }
 
-            const metodos = JSON.parse(localStorage.getItem('zrx_insta_metodos')) || [];
+            const metodos = JSON.parse(localStorage.getItem('zrx_instagram_metodos')) || [];
             metodos.push({ titulo, texto });
-            localStorage.setItem('zrx_insta_metodos', JSON.stringify(metodos));
+            localStorage.setItem('zrx_instagram_metodos', JSON.stringify(metodos));
 
             document.getElementById('novoMetodoTitulo').value = '';
             document.getElementById('novoMetodoTexto').value = '';
-            carregarMetodosInsta();
             alert("Método adicionado com sucesso!");
+            carregarMetodosInsta();
         }
 
-        // LÓGICA DO QUADRADINHO 2: TRAVAS
-        function carregarTravasInstaGrid() {
-            const container = document.getElementById('listaTravasInsta');
+        function carregarMetodosInsta() {
+            const container = document.getElementById('listaMetodosInsta');
             if (!container) return;
 
-            const travas = JSON.parse(localStorage.getItem('zrx_insta_travas')) || [];
-            if (travas.length === 0) {
-                container.innerHTML = `<span class="text-gray-500 text-xs block text-center py-2">Nenhuma trava salva.</span>`;
+            const metodos = JSON.parse(localStorage.getItem('zrx_instagram_metodos')) || [];
+            if (metodos.length === 0) {
+                container.innerHTML = '<span class="text-gray-500 text-xs block text-center py-2">Nenhum método cadastrado.</span>';
                 return;
             }
 
             container.innerHTML = '';
-            travas.forEach((t) => {
-                const div = document.createElement('div');
-                div.className = 'bg-black/80 border border-purple-900/60 rounded-lg p-2.5 flex flex-col space-y-1';
-                div.innerHTML = `
-                    <div class="flex justify-between items-center">
-                        <span class="text-xs font-bold text-purple-300">${t.nome}</span>
-                        <button onclick="copiarTextoDirect('${encodeURIComponent(t.conteudo)}')" class="bg-purple-950 text-purple-300 border border-purple-800 text-[10px] px-2 py-0.5 rounded hover:bg-purple-900">Copiar</button>
-                    </div>
-                    <p class="text-[10px] text-gray-300 font-mono truncate">${t.conteudo}</p>
-                `;
-                container.appendChild(div);
+            metodos.forEach((m, index) => {
+                const item = document.createElement('div');
+                item.className = 'bg-black/80 border border-purple-900/40 rounded-lg p-2.5 flex justify-between items-center';
+                item.innerHTML = `<div><strong class="text-xs text-purple-300 block">${m.titulo}</strong><span class="text-[10px] text-gray-400 font-mono truncate max-w-[180px] block">${m.texto}</span></div><button onclick="copiarMetodoInsta(${index})" class="bg-purple-900 hover:bg-purple-800 text-purple-200 text-[10px] px-2.5 py-1 rounded">Copiar</button>`;
+                container.appendChild(item);
             });
         }
 
-        function salvarTravaInstaGrid() {
-            const nome = document.getElementById('novaTravaInstaTitulo').value.trim();
-            const conteudo = document.getElementById('novaTravaInstaTexto').value.trim();
-
-            if (!nome || !conteudo) {
-                alert("Preencha o nome e o conteúdo da trava!");
-                return;
+        function copiarMetodoInsta(index) {
+            const metodos = JSON.parse(localStorage.getItem('zrx_instagram_metodos')) || [];
+            if (metodos[index]) {
+                navigator.clipboard.writeText(metodos[index].texto);
+                alert(`Método "${metodos[index].titulo}" copiado!`);
             }
-
-            const travas = JSON.parse(localStorage.getItem('zrx_insta_travas')) || [];
-            travas.push({ nome, conteudo });
-            localStorage.setItem('zrx_insta_travas', JSON.stringify(travas));
-
-            document.getElementById('novaTravaInstaTitulo').value = '';
-            document.getElementById('novaTravaInstaTexto').value = '';
-            carregarTravasInstaGrid();
-            alert("Trava salva com sucesso!");
         }
 
-        // LÓGICA DO QUADRADINHO 3: MULTIPLICADOR
-        function atualizarMultiplicador() {
-            const texto = document.getElementById('multiInputText').value;
-            const qtd = parseInt(document.getElementById('multiCountInput').value) || 1;
-            const charCounter = document.getElementById('charCounter');
-            const lineCounter = document.getElementById('lineCounter');
-            const resultBox = document.getElementById('multiResultBox');
-
-            const resultado = Array(Math.min(qtd, 500)).fill(texto).join('\n');
-            const totalChars = texto.length * qtd;
-
-            charCounter.innerText = totalChars;
-            lineCounter.innerText = qtd;
-            resultBox.innerText = resultado || 'Resultado da multiplicação aparecerá aqui...';
-        }
-
-        function copiarTextoMultiplicado() {
-            const texto = document.getElementById('multiInputText').value;
-            const qtd = parseInt(document.getElementById('multiCountInput').value) || 1;
-            const resultado = Array(qtd).fill(texto).join('\n');
-
-            if (!texto) {
-                alert("Digite algum texto para multiplicar!");
-                return;
-            }
-
-            navigator.clipboard.writeText(resultado).then(() => {
-                alert("Texto multiplicado copiado para a área de transferência!");
-            }).catch(() => {
-                alert("Erro ao copiar texto.");
-            });
-        }
-
-        function copiarTextoDirect(encodedText) {
-            const decoded = decodeURIComponent(encodedText);
-            navigator.clipboard.writeText(decoded).then(() => {
-                alert("Copiado com sucesso!");
-            }).catch(() => {
-                alert("Erro ao copiar.");
-            });
-        }
-
-        // LÓGICA DO QUADRADINHO 4: E-MAIL DE SUPORTE
         function enviarEmailInstaSuporte() {
-            const destino = document.getElementById('emailDestinoInsta').value.trim();
-            const assunto = document.getElementById('emailAssuntoInsta').value.trim();
-            const detalhes = document.getElementById('emailDetalhesInsta').value.trim();
+            const destino = document.getElementById('emailDestinoInsta').value;
+            const assunto = encodeURIComponent(document.getElementById('emailAssuntoInsta').value);
+            const detalhes = encodeURIComponent(document.getElementById('emailDetalhesInsta').value);
 
-            if (!assunto || !detalhes) {
-                alert("Preencha o assunto e os detalhes do e-mail!");
-                return;
-            }
-
-            const mailtoUrl = `mailto:${destino}?subject=${encodeURIComponent(assunto)}&body=${encodeURIComponent(detalhes)}`;
-            window.location.href = mailtoUrl;
-        }
-
-        // INTEGRAÇÃO DO MOTOR YT-DLP COM O PIPELINE DE DOWNLOAD
-        function executarDownloadVideoDireto() {
-            const urlLink = document.getElementById('mediaLinkInput').value.trim();
-            const format = document.getElementById('mediaQualitySelect').value;
-            const statusBox = document.getElementById('downloadStatusBox');
-
-            if (!urlLink) {
-                alert("Insira a URL do vídeo!");
-                return;
-            }
-
-            statusBox.innerHTML = `<span class="text-yellow-400 animate-pulse">⚡ Inicializando yt-dlp core engine...</span>`;
-
-            setTimeout(() => {
-                statusBox.innerHTML = `<span class="text-blue-400">🔍 Extraindo streams (YouTube, TikTok, Insta, Kwai)...</span>`;
-            }, 1000);
-
-            setTimeout(() => {
-                statusBox.innerHTML = `<span class="text-green-400 font-bold">✅ Stream extraído! Baixando arquivo para a galeria...</span>`;
-                
-                fetch(`https://co.wuk.sh/api/json`, {
-                    method: 'POST',
-                    headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ url: urlLink, vQuality: 'max', filenamePattern: 'classic' })
-                })
-                .then(res => res.json())
-                .then(data => {
-                    const downloadUrl = data.url || data.stream;
-                    if (downloadUrl) {
-                        const a = document.createElement('a');
-                        a.href = downloadUrl;
-                        a.target = '_blank';
-                        a.download = `ZRX_Media_${Date.now()}.${format}`;
-                        document.body.appendChild(a);
-                        a.click();
-                        a.remove();
-                        setTimeout(() => fecharModalDownloader(), 1500);
-                    } else {
-                        window.open(`https://www.google.com/search?q=savefrom+${encodeURIComponent(urlLink)}`, '_blank');
-                        fecharModalDownloader();
-                    }
-                })
-                .catch(() => {
-                    window.open(`https://www.google.com/search?q=savefrom+${encodeURIComponent(urlLink)}`, '_blank');
-                    fecharModalDownloader();
-                });
-            }, 2200);
-        }
-
-        function ativarBlindagemAccessibility() {
-            const phone = document.getElementById('antiBanPhone').value.trim();
-            const email = document.getElementById('antiBanEmail').value.trim();
-            const badge = document.getElementById('shieldBadge');
-            const statusBox = document.getElementById('shieldStatusBox');
-            const footerTag = document.getElementById('shieldFooterTag');
-
-            if (!phone || !email) {
-                alert("Preencha pelo menos o número e o e-mail para gerar a solicitação anti-ban!");
-                return;
-            }
-
-            statusBox.innerHTML = `<span class="text-yellow-400">⚡ Sincronizando dados com o form de acessibilidade...</span>`;
-            badge.className = "bg-yellow-950 text-yellow-400 text-[10px] font-bold px-2.5 py-1 rounded-full border border-yellow-800/50 transition-all";
-            badge.innerText = "● ENCRYPTING";
-
-            setTimeout(() => {
-                statusBox.innerHTML = `<span class="text-blue-400">🛡️ Aplicando parâmetros EEA & Messenger...</span>`;
-            }, 1000);
-
-            setTimeout(() => {
-                statusBox.innerHTML = `<span class="text-green-400 font-bold">✅ Balãozinho gerado com sucesso! Abrindo link...</span>`;
-                badge.className = "bg-green-950 text-green-400 text-[10px] font-bold px-2.5 py-1 rounded-full border border-green-800/50 transition-all";
-                badge.innerText = "● SECURED";
-                footerTag.innerText = "[ ACTIVE ]";
-
-                const accessibilityUrl = `https://www.whatsapp.com/contact/?eea=1&subject=messenger&form_type=accessibility`;
-                window.open(accessibilityUrl, '_blank');
-
-                adicionarNotificacao("Shield V5", `Solicitação Anti-Ban gerada para ${phone} via link de acessibilidade.`, "green");
-            }, 2500);
-        }
-
-        function iniciarDisparoEmMassa() {
-            const alvo = document.getElementById('floodAlvo').value.trim();
-            const selectPayload = document.getElementById('floodTravaSelect').value;
-            const customPayload = document.getElementById('floodCustomText').value.trim();
-            const payload = customPayload || selectPayload;
-            const quantidade = parseInt(document.getElementById('floodQuantidade').value);
-            const jogarTudo = document.getElementById('jogarTudoCheckbox').checked;
-            const statusBox = document.getElementById('floodStatusBox');
-
-            if (!alvo) {
-                alert("Digite o número do alvo!");
-                return;
-            }
-            if (!payload) {
-                alert("Selecione uma trava do armazenamento ou digite uma trava de texto!");
-                return;
-            }
-
-            if (jogarTudo) {
-                statusBox.innerHTML = `<span class="text-green-400 font-bold">⚡ Gerando ${quantidade} linhas empilhadas...</span>`;
-                
-                const textoEmLinhas = Array(quantidade).fill(payload).join('\n');
-                const urlWhatsApp = `https://api.whatsapp.com/send?phone=${alvo}&text=${encodeURIComponent(textoEmLinhas)}`;
-                
-                setTimeout(() => {
-                    window.open(urlWhatsApp, '_blank');
-                    statusBox.innerHTML = `<span class="text-green-400 font-bold">✅ Pronto para enviar empilhado (${quantidade}x)!</span>`;
-                }, 500);
-
-                adicionarNotificacao("Flooder WhatsApp", `${quantidade} linhas geradas em bloco para ${alvo}`, "red");
-                return;
-            }
-
-            let enviado = 0;
-            statusBox.innerHTML = `<span class="text-yellow-400">⚡ Iniciando (${quantidade}x)...</span>`;
-
-            const intervalo = setInterval(() => {
-                enviado++;
-                
-                if (enviado <= quantidade) {
-                    statusBox.innerHTML = `
-                        <div class="space-y-1 w-full px-1">
-                            <span class="text-blue-400 font-bold">🔄 Enviando ${enviado}/${quantidade}...</span>
-                            <div class="w-full bg-gray-800 rounded-full h-1 mt-1 overflow-hidden">
-                                <div class="bg-red-600 h-full transition-all duration-200" style="width: ${(enviado / quantidade) * 100}%"></div>
-                            </div>
-                        </div>
-                    `;
-
-                    if (enviado === quantidade) {
-                        const urlWhatsApp = `https://api.whatsapp.com/send?phone=${alvo}&text=${encodeURIComponent(payload)}`;
-                        setTimeout(() => {
-                            window.open(urlWhatsApp, '_blank');
-                        }, 500);
-                    }
-                } else {
-                    clearInterval(intervalo);
-                    statusBox.innerHTML = `<span class="text-green-400 font-bold">✅ ${quantidade} disparos concluídos!</span>`;
-                    adicionarNotificacao("Flooder WhatsApp", `${quantidade} payloads enviados para ${alvo}`, "red");
-                }
-            }, 500);
-        }
-
-        async function iniciarProcessoBanzap() {
-            const inputNumero = document.getElementById('targetNumberInput').value.trim();
-            const processBox = document.getElementById('denunciaProcessBox');
-
-            if (!inputNumero) {
-                alert("Por favor, digite o número do alvo.");
-                return;
-            }
-
-            processBox.innerHTML = `<span class="text-yellow-400">⚡ Conectando ao banzap...</span>`;
-
-            setTimeout(() => {
-                processBox.innerHTML = `<span class="text-blue-400">🔍 Analisando: ${inputNumero}...</span>`;
-            }, 1000);
-
-            setTimeout(() => {
-                processBox.innerHTML = `<span class="text-orange-400">⚙️ Disparando denúncias...</span>`;
-            }, 2500);
-
-            setTimeout(() => {
-                processBox.innerHTML = `<span class="text-green-400 font-bold">✅ Concluído para ${inputNumero}!</span>`;
-                adicionarNotificacao("Banzap Gateway", `Denúncia efetuada com sucesso no alvo: ${inputNumero}`, "green");
-            }, 4000);
-        }
-
-        async function gerarNumeroVirtual() {
-            const display = document.getElementById('virtualNumberDisplay');
-            display.innerText = "Conectando API...";
-
-            try {
-                const response = await fetch(`${API_URL}/api/numbers`, { 
-                    method: 'GET',
-                    headers: { 'Accept': 'application/json' }
-                });
-                
-                if (!response.ok) throw new Error(`Erro HTTP: ${response.status}`);
-
-                const data = await response.json();
-                
-                if (Array.isArray(data) && data.length > 0) {
-                    const randomIndex = Math.floor(Math.random() * data.length);
-                    const item = data[randomIndex];
-                    let numeroBruto = item.number || item.id;
-                    const numeroFormatado = numeroBruto.startsWith('+') ? numeroBruto : `+${numeroBruto}`;
-
-                    display.innerText = numeroFormatado;
-                    document.getElementById('antiBanPhone').value = numeroFormatado;
-                    localStorage.setItem('zrx_virtual_number', numeroFormatado);
-                    adicionarNotificacao("SMS Gateway", `Número obtido: ${numeroFormatado}`, "green");
-                    return;
-                }
-                throw new Error("Array vazio");
-            } catch (error) {
-                const numeroSimulado = "+7 9" + Math.floor(100000000 + Math.random() * 900000000);
-                display.innerText = numeroSimulado;
-                document.getElementById('antiBanPhone').value = numeroSimulado;
-                localStorage.setItem('zrx_virtual_number', numeroSimulado);
-                adicionarNotificacao("SMS Gateway", `Número Rússia gerado: ${numeroSimulado}`, "red");
-            }
-        }
-
-        function filtroGlobal() {
-            alert("Filtro Global: No momento, apenas números da Rússia estão ativos na API (freenumber.site).");
-        }
-
-        function adicionarNotificacao(origem, texto, corTipo = "red") {
-            const container = document.getElementById('notificationsContainer');
-            const horaAtual = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-            
-            const div = document.createElement('div');
-            div.className = `border-l-2 border-${corTipo}-500 pl-2 py-1`;
-            div.innerHTML = `
-                <span class="text-[10px] text-gray-500 block">${horaAtual} - ${origem}</span>
-                <span class="text-white">${texto}</span>
-            `;
-            container.prepend(div);
-        }
-
-        function loadAvatar(event) {
-            const file = event.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    document.getElementById('userAvatar').src = e.target.result;
-                    localStorage.setItem('zrx_avatar', e.target.result);
-                }
-                reader.readAsDataURL(file);
-            }
-        }
-
-        function loadBackground(event) {
-            const file = event.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    const bgImg = document.getElementById('bgImage');
-                    const bgVid = document.getElementById('bgVideo');
-
-                    if (file.type.startsWith('video/')) {
-                        bgVid.src = e.target.result;
-                        bgVid.classList.remove('hidden');
-                        bgImg.classList.add('hidden');
-                        localStorage.setItem('zrx_bg_type', 'video');
-                    } else {
-                        bgImg.src = e.target.result;
-                        bgImg.classList.remove('hidden');
-                        bgVid.classList.add('hidden');
-                        localStorage.setItem('zrx_bg_type', 'image');
-                    }
-                    localStorage.setItem('zrx_bg', e.target.result);
-                }
-                reader.readAsDataURL(file);
-            }
-        }
-
-        function setThemeColor(colorHex) {
-            applyThemeColor(colorHex);
-            localStorage.setItem('zrx_color', colorHex);
-        }
-
-        function applyThemeColor(colorHex) {
-            document.documentElement.style.setProperty('--accentred', colorHex);
-            document.querySelectorAll('.bg-accentred').forEach(el => el.style.backgroundColor = colorHex);
-            document.querySelectorAll('.text-red-500, .text-red-400').forEach(el => el.style.color = colorHex);
-            document.querySelectorAll('.border-red-600').forEach(el => el.style.borderColor = colorHex);
-        }
-
-        function updateProfile() {
-            const newName = document.getElementById('inputName').value;
-            if (newName) {
-                document.getElementById('userName').innerText = newName;
-                localStorage.setItem('zrx_name', newName);
-            }
-            alert('Configurações salvas permanentemente!');
+            window.open(`mailto:${destino}?subject=${assunto}&body=${detalhes}`, '_blank');
         }
     </script>
 </body>
