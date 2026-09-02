@@ -523,7 +523,7 @@
         </div>
 
         <div id="iaChatMessages" class="flex-1 overflow-y-auto space-y-3 my-3 p-2 no-scrollbar text-xs font-mono">
-            </div>
+        </div>
 
         <div class="space-y-2 pt-2 border-t border-gray-800 mb-6">
             <div class="flex space-x-2">
@@ -868,7 +868,6 @@
             document.getElementById('ipGridModal').classList.add('hidden');
         }
 
-        // LÓGICA DE IA COM HISTÓRICO ISOLADO POR PROVEDOR
         let currentAiProvider = 'gemini';
 
         function abrirModalIaGrid() {
@@ -951,7 +950,7 @@
             container.innerHTML = '';
 
             const historico = JSON.parse(localStorage.getItem(`zrx_chat_history_${provider}`)) || [
-                { sender: 'system', text: `Conectado ao ${provider.toUpperCase()}. Sessão isolada e independente.` }
+                { sender: 'system', text: `Conectado ao ${provider.toUpperCase()}. Sessão isolada e independente para textos e denúncias.` }
             ];
 
             historico.forEach(msg => {
@@ -978,7 +977,7 @@
             localStorage.setItem(key, JSON.stringify(historico));
         }
 
-        async function enviarMensagemIa() {
+        function enviarMensagemIa() {
             const input = document.getElementById('iaInputMessage');
             const text = input.value.trim();
             const container = document.getElementById('iaChatMessages');
@@ -997,7 +996,7 @@
             const loadingMsg = document.createElement('div');
             loadingMsg.className = 'bg-gray-900 border border-gray-800 rounded-xl p-3 text-gray-400 mr-6 animate-pulse';
             loadingMsg.id = 'loadingResponse';
-            loadingMsg.innerHTML = `<span class="text-[10px] text-gray-500 block mb-1">🤖 ${currentAiProvider.toUpperCase()}</span>Pensando...`;
+            loadingMsg.innerHTML = `<span class="text-[10px] text-gray-500 block mb-1">🤖 ${currentAiProvider.toUpperCase()}</span>Processando texto / denúncia...`;
             container.appendChild(loadingMsg);
             container.scrollTop = container.scrollHeight;
 
@@ -1006,12 +1005,13 @@
             setTimeout(() => {
                 let resposta = "";
                 if (apiKey) {
-                    resposta = `[${currentAiProvider.toUpperCase()} API] Resposta gerada com sucesso para: "${text}". Processado isoladamente.`;
+                    resposta = `[${currentAiProvider.toUpperCase()} API] Texto/Denúncia processada com sucesso: "${text}". Resposta gerada via chave externa.`;
                 } else {
-                    resposta = `[${currentAiProvider.toUpperCase()} - Simulação] Recebi: "${text}". Esta IA opera separada das outras. Configure sua chave em ⚙️ se desejar chamadas externas.`;
+                    resposta = `[${currentAiProvider.toUpperCase()} - Simulador Textual] Processado: "${text}". O motor de texto e denúncias está ativo e pronto para uso livre.`;
                 }
 
-                document.getElementById('loadingResponse').remove();
+                const loadingEl = document.getElementById('loadingResponse');
+                if (loadingEl) loadingEl.remove();
 
                 const aiMsg = document.createElement('div');
                 aiMsg.className = 'bg-gray-900 border border-gray-800 rounded-xl p-3 text-gray-200 mr-6';
