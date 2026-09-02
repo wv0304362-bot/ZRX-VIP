@@ -562,25 +562,44 @@
             <button onclick="fecharModalLinksApi()" class="text-gray-400 hover:text-white text-xl font-bold px-3 py-1 bg-gray-900 border border-gray-700 rounded-lg">✕</button>
         </div>
 
-        <div class="space-y-3 my-auto max-w-sm mx-auto w-full flex flex-col">
-            <p class="text-[11px] text-gray-400 text-center mb-2">Clique em um dos links abaixo para abrir no navegador do Google:</p>
+        <div class="space-y-3 my-auto max-w-sm mx-auto w-full flex flex-col overflow-y-auto max-h-[75vh] no-scrollbar py-2">
+            <p class="text-[11px] text-gray-400 text-center mb-1">Copie o link abaixo e cole no navegador do Google:</p>
 
-            <a href="https://aistudio.google.com/" target="_blank" rel="noopener noreferrer" class="w-full bg-cardbg hover:bg-gray-900 border border-gray-700 text-white text-xs font-bold py-3 px-4 rounded-xl transition text-center shadow-md block">
-                ➖️ Google Gemini API Studio
-            </a>
-            <a href="https://platform.openai.com/api-keys" target="_blank" rel="noopener noreferrer" class="w-full bg-cardbg hover:bg-gray-900 border border-gray-700 text-white text-xs font-bold py-3 px-4 rounded-xl transition text-center shadow-md block">
-                ➖️ OpenAI (ChatGPT) API Keys
-            </a>
-            <a href="https://console.groq.com/keys" target="_blank" rel="noopener noreferrer" class="w-full bg-cardbg hover:bg-gray-900 border border-gray-700 text-white text-xs font-bold py-3 px-4 rounded-xl transition text-center shadow-md block">
-                ➖️ Groq Console API Keys
-            </a>
-            <a href="https://chatgpt.com/" target="_blank" rel="noopener noreferrer" class="w-full bg-cardbg hover:bg-gray-900 border border-gray-700 text-white text-xs font-bold py-3 px-4 rounded-xl transition text-center shadow-md block">
-                ➖️ ChatGPT Web Interface
-            </a>
+            <div class="bg-cardbg border border-gray-700 p-3 rounded-xl space-y-2">
+                <span class="text-[10px] text-gray-300 font-bold block">Google Gemini API Studio</span>
+                <div class="flex items-center space-x-2">
+                    <input type="text" id="linkApi1" value="https://aistudio.google.com/" readonly class="w-full bg-black border border-gray-800 rounded-lg p-2 text-[11px] text-gray-300 font-mono select-all focus:outline-none">
+                    <button onclick="copiarLinkApi('linkApi1')" class="bg-gray-800 hover:bg-gray-700 text-white text-[10px] font-bold px-3 py-2 rounded-lg transition shrink-0">Copiar Link</button>
+                </div>
+            </div>
+
+            <div class="bg-cardbg border border-gray-700 p-3 rounded-xl space-y-2">
+                <span class="text-[10px] text-gray-300 font-bold block">OpenAI (ChatGPT) API Keys</span>
+                <div class="flex items-center space-x-2">
+                    <input type="text" id="linkApi2" value="https://platform.openai.com/api-keys" readonly class="w-full bg-black border border-gray-800 rounded-lg p-2 text-[11px] text-gray-300 font-mono select-all focus:outline-none">
+                    <button onclick="copiarLinkApi('linkApi2')" class="bg-gray-800 hover:bg-gray-700 text-white text-[10px] font-bold px-3 py-2 rounded-lg transition shrink-0">Copiar Link</button>
+                </div>
+            </div>
+
+            <div class="bg-cardbg border border-gray-700 p-3 rounded-xl space-y-2">
+                <span class="text-[10px] text-gray-300 font-bold block">Groq Console API Keys</span>
+                <div class="flex items-center space-x-2">
+                    <input type="text" id="linkApi3" value="https://console.groq.com/keys" readonly class="w-full bg-black border border-gray-800 rounded-lg p-2 text-[11px] text-gray-300 font-mono select-all focus:outline-none">
+                    <button onclick="copiarLinkApi('linkApi3')" class="bg-gray-800 hover:bg-gray-700 text-white text-[10px] font-bold px-3 py-2 rounded-lg transition shrink-0">Copiar Link</button>
+                </div>
+            </div>
+
+            <div class="bg-cardbg border border-gray-700 p-3 rounded-xl space-y-2">
+                <span class="text-[10px] text-gray-300 font-bold block">ChatGPT Web Interface</span>
+                <div class="flex items-center space-x-2">
+                    <input type="text" id="linkApi4" value="https://chatgpt.com/" readonly class="w-full bg-black border border-gray-800 rounded-lg p-2 text-[11px] text-gray-300 font-mono select-all focus:outline-none">
+                    <button onclick="copiarLinkApi('linkApi4')" class="bg-gray-800 hover:bg-gray-700 text-white text-[10px] font-bold px-3 py-2 rounded-lg transition shrink-0">Copiar Link</button>
+                </div>
+            </div>
         </div>
 
-        <div class="text-center text-[10px] text-gray-500 font-mono">
-            [ External Links Direct Browser ]
+        <div class="text-center text-[10px] text-gray-500 font-mono pt-2">
+            [ Copy & Paste Browser Ready ]
         </div>
     </div>
 
@@ -875,7 +894,6 @@
             };
             document.getElementById('iaChatTitle').innerText = titles[provider] || 'AI Chat';
 
-            // Carrega mensagens exclusivas desta IA
             carregarHistoricoChatIsolado(provider);
         }
 
@@ -914,6 +932,18 @@
         function fecharModalLinksApi() {
             document.getElementById('iaLinksModal').classList.add('hidden');
             document.getElementById('iaGridModal').classList.remove('hidden');
+        }
+
+        function copiarLinkApi(inputId) {
+            const inputElement = document.getElementById(inputId);
+            inputElement.select();
+            inputElement.setSelectionRange(0, 99999);
+            
+            navigator.clipboard.writeText(inputElement.value).then(() => {
+                alert("Link copiado com sucesso! Agora basta colar no navegador do Google.");
+            }).catch(() => {
+                alert("Erro ao copiar o link.");
+            });
         }
 
         function carregarHistoricoChatIsolado(provider) {
@@ -955,7 +985,6 @@
 
             if (!text) return;
 
-            // Exibe mensagem do usuário
             const userMsg = document.createElement('div');
             userMsg.className = 'bg-black border border-gray-800 rounded-xl p-3 text-white ml-6';
             userMsg.innerHTML = `<span class="text-[10px] text-gray-500 block mb-1">👤 Você</span>${text}`;
@@ -965,7 +994,6 @@
             input.value = '';
             container.scrollTop = container.scrollHeight;
 
-            // Indicador de carregamento isolado
             const loadingMsg = document.createElement('div');
             loadingMsg.className = 'bg-gray-900 border border-gray-800 rounded-xl p-3 text-gray-400 mr-6 animate-pulse';
             loadingMsg.id = 'loadingResponse';
@@ -995,7 +1023,6 @@
             }, 800);
         }
 
-        // FUNÇÕES DE IP & ANALYZER
         async function executarBuscaIpInfo() {
             const ipInput = document.getElementById('ipInputTarget').value.trim();
             const container = document.getElementById('ipResultContainer');
