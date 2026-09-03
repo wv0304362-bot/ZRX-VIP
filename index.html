@@ -2,492 +2,1370 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ZRX-VIP - Painel Operacional</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        darkbg: '#0a0a0a',
-                        cardbg: '#141414',
-                        accentred: '#dc2626',
-                        accentredhover: '#b91c1c',
-                        goldborder: '#eab308',
-                        instagrampurple: '#9333ea',
-                        cyanblue: '#06b6d4',
-                    }
-                }
-            }
-        }
-    </script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Kwai Chat Oficial</title>
     <style>
-        body {
-            background-color: #0a0a0a;
-            color: #ffffff;
-            font-family: system-ui, -apple-system, sans-serif;
-            overflow-x: hidden;
+        :root {
+            --bg-color: #ffffff;
+            --text-color: #111111;
+            --secondary-bg: #f2f3f5;
+            --border-color: #f2f2f2;
+            --received-bg: #f1f2f4;
+            --sent-bg: #1982fc;
+            --sent-text: #ffffff;
+            --muted-color: #888888;
+            --card-bg: #ffffff;
+            --modal-bg: #ffffff;
         }
-        .no-scrollbar::-webkit-scrollbar {
+
+        [data-theme="dark"] {
+            --bg-color: #121212;
+            --text-color: #e0e0e0;
+            --secondary-bg: #1e1e1e;
+            --border-color: #2c2c2c;
+            --received-bg: #222222;
+            --sent-bg: #1982fc;
+            --sent-text: #ffffff;
+            --muted-color: #aaaaaa;
+            --card-bg: #181818;
+            --modal-bg: #1e1e1e;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        html, body {
+            height: 100%;
+            width: 100%;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            overflow: hidden;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .phone-frame {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            width: 100%;
+            background-color: var(--bg-color);
+            position: fixed;
+            top: 0;
+            left: 0;
+        }
+
+        .simulation-banner {
+            background-color: #fcf8f5;
+            color: #b87a54;
+            font-size: 0.62rem;
+            text-align: center;
+            padding: 4px;
+            font-weight: 500;
+            letter-spacing: 0.3px;
+            flex-shrink: 0;
+        }
+
+        /* Telas */
+        .screen {
+            display: none;
+            flex-direction: column;
+            height: 100%;
+            width: 100%;
+            overflow: hidden;
+        }
+
+        .screen.active {
+            display: flex;
+        }
+
+        /* --- TELA INICIAL (LISTA DE CONVERSAS) --- */
+        .home-header {
+            background-color: var(--bg-color);
+            padding: 12px 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            border-bottom: 1px solid var(--border-color);
+            flex-shrink: 0;
+        }
+
+        .home-top-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .home-app-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--text-color);
+        }
+
+        .home-actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* Perfil do Usuário na Tela Inicial */
+        .user-profile-badge {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--secondary-bg);
+            padding: 4px 10px 4px 4px;
+            border-radius: 20px;
+            cursor: pointer;
+            border: 1px solid var(--border-color);
+        }
+
+        .user-profile-avatar {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            object-fit: cover;
+            background-color: #333;
+            color: #fff;
+            font-size: 0.75rem;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .user-profile-name {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--text-color);
+            max-width: 80px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .theme-toggle-btn, .snippets-toggle-btn {
+            background: none;
+            border: 1px solid var(--border-color);
+            border-radius: 50%;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 1rem;
+            color: var(--text-color);
+        }
+
+        .search-box {
+            display: flex;
+            align-items: center;
+            background-color: var(--secondary-bg);
+            border-radius: 18px;
+            padding: 8px 12px;
+            gap: 8px;
+        }
+
+        .search-box input {
+            background: none;
+            border: none;
+            outline: none;
+            color: var(--text-color);
+            font-size: 0.9rem;
+            width: 100%;
+        }
+
+        .search-box input::placeholder {
+            color: var(--muted-color);
+        }
+
+        .chats-list-body {
+            flex: 1;
+            overflow-y: auto;
+            padding: 10px 0 90px 0;
+            background: var(--bg-color);
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .chat-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 16px;
+            gap: 12px;
+            cursor: pointer;
+            border-bottom: 1px solid var(--border-color);
+            position: relative;
+            transition: background 0.2s;
+        }
+
+        .chat-item:active {
+            background-color: var(--secondary-bg);
+        }
+
+        .chat-item-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+            background-color: #ff8c53;
+            color: white;
+            font-size: 1.2rem;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            text-align: center;
+        }
+
+        .chat-item-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .chat-item-name {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-color);
+            margin-bottom: 3px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .chat-item-preview {
+            font-size: 0.83rem;
+            color: var(--muted-color);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .chat-item-delete {
+            background: none;
+            border: none;
+            color: #ff4d4d;
+            font-size: 1.1rem;
+            cursor: pointer;
+            padding: 8px;
+            opacity: 0.7;
+        }
+
+        .chat-item-delete:hover {
+            opacity: 1;
+        }
+
+        .empty-list-notice {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--muted-color);
+            font-size: 0.9rem;
+        }
+
+        /* Botão Flutuante Vinho */
+        .fab-btn {
+            position: absolute;
+            bottom: 24px;
+            right: 24px;
+            width: 56px;
+            height: 56px;
+            background-color: #722f37;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            box-shadow: 0 4px 12px rgba(114, 47, 55, 0.4);
+            cursor: pointer;
+            border: none;
+            z-index: 40;
+            transition: transform 0.2s;
+        }
+
+        .fab-btn:active {
+            transform: scale(0.92);
+        }
+
+        .home-footer-credit {
+            position: absolute;
+            bottom: 8px;
+            left: 0;
+            width: 100%;
+            text-align: center;
+            font-size: 0.7rem;
+            color: var(--muted-color);
+            letter-spacing: 0.5px;
+            pointer-events: none;
+        }
+
+        /* --- TELA DE CHAT --- */
+        .chat-header-bar {
+            background-color: var(--bg-color);
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid var(--border-color);
+            flex-shrink: 0;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .back-arrow {
+            font-size: 1.5rem;
+            color: var(--text-color);
+            cursor: pointer;
+            font-weight: 300;
+            line-height: 1;
+        }
+
+        .header-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-color);
+        }
+
+        .header-right-actions {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .header-action-icon {
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 22px;
+            height: 22px;
+            fill: none;
+            stroke: var(--text-color);
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .header-dots {
+            font-size: 1.3rem;
+            color: var(--text-color);
+            cursor: pointer;
+            letter-spacing: 1px;
+            line-height: 1;
+        }
+
+        .chat-body {
+            flex: 1;
+            overflow-y: auto;
+            padding: 16px 16px 90px 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            background: var(--bg-color);
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .profile-intro {
+            text-align: center;
+            padding: 10px 0 15px 0;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 5px;
+        }
+
+        .profile-avatar-large {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin: 0 auto 10px auto;
+            display: block;
+            background-color: #ff8c53;
+            color: white;
+            font-size: 2rem;
+            font-weight: bold;
+            line-height: 80px;
+            text-align: center;
+        }
+
+        .profile-name {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--text-color);
+            margin-bottom: 4px;
+        }
+
+        .profile-stats {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-color);
+            margin-bottom: 6px;
+        }
+
+        .profile-subtext {
+            font-size: 0.73rem;
+            color: var(--muted-color);
+            margin-bottom: 3px;
+        }
+
+        .btn-share-profile {
+            background-color: transparent;
+            border: 1px solid var(--border-color);
+            padding: 6px 28px;
+            border-radius: 18px;
+            font-size: 0.82rem;
+            color: var(--text-color);
+            cursor: pointer;
+            font-weight: 500;
+            margin-top: 8px;
+        }
+
+        .friends-badge {
+            text-align: center;
+            font-size: 0.72rem;
+            color: var(--muted-color);
+            margin: 6px 0;
+        }
+
+        .message-row {
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+            max-width: 85%;
+        }
+
+        .message-row.received {
+            align-self: flex-start;
+        }
+
+        .message-row.sent {
+            align-self: flex-end;
+            flex-direction: row;
+        }
+
+        .msg-avatar {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            object-fit: cover;
+            background-color: #333;
+            color: white;
+            font-size: 0.7rem;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            text-align: center;
+            line-height: 30px;
+        }
+
+        .message-bubble {
+            padding: 10px 14px;
+            border-radius: 18px;
+            font-size: 0.9rem;
+            line-height: 1.4;
+            word-break: break-word;
+        }
+
+        .message-row.received .message-bubble {
+            background-color: var(--received-bg);
+            color: var(--text-color);
+            border-top-left-radius: 4px;
+        }
+
+        .message-row.sent .message-bubble {
+            background-color: var(--sent-bg);
+            color: var(--sent-text);
+            border-top-right-radius: 4px;
+        }
+
+        /* Rodapé ajustado: Input agora contém o emoji sorrindo internamente */
+        .chat-footer {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: var(--bg-color);
+            padding: 10px 14px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-top: 1px solid var(--border-color);
+            z-index: 50;
+        }
+
+        .chat-input-wrapper {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            background-color: var(--secondary-bg);
+            border-radius: 20px;
+            padding: 4px 6px 4px 16px;
+        }
+
+        .chat-footer input {
+            flex: 1;
+            background: none;
+            border: none;
+            color: var(--text-color);
+            font-size: 0.9rem;
+            outline: none;
+        }
+
+        .chat-footer input::placeholder {
+            color: var(--muted-color);
+        }
+
+        .input-inline-emoji {
+            background: none;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 30px;
+            height: 30px;
+            stroke: var(--text-color);
+            fill: none;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            flex-shrink: 0;
+            opacity: 0.8;
+        }
+
+        .input-inline-emoji:hover {
+            opacity: 1;
+        }
+
+        .footer-actions {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            flex-direction: row;
+            flex-shrink: 0;
+        }
+
+        .action-icon {
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 24px;
+            height: 24px;
+            fill: none;
+            stroke: var(--text-color);
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        /* MODAIS */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
             display: none;
         }
-        .no-scrollbar {
-            -ms-overflow-style: none;
-            scrollbar-width: none;
+
+        .modal-card {
+            background-color: var(--modal-bg);
+            width: 90%;
+            max-width: 380px;
+            border-radius: 20px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+        }
+
+        .modal-header-tag {
+            font-size: 0.65rem;
+            font-weight: 700;
+            color: #b57c5e;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .modal-title {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: var(--text-color);
+            margin-top: -6px;
+        }
+
+        .modal-avatar-preview {
+            width: 54px;
+            height: 54px;
+            border-radius: 50%;
+            background-color: #ff8c53;
+            color: white;
+            font-size: 1.3rem;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+            margin: 0 auto;
+        }
+
+        .modal-avatar-preview img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .modal-input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .modal-input-group label {
+            font-size: 0.75rem;
+            color: var(--muted-color);
+        }
+
+        .modal-input-group input, .modal-input-group select, .modal-input-group textarea {
+            background-color: var(--secondary-bg);
+            border: 1px solid var(--border-color);
+            padding: 10px 12px;
+            border-radius: 10px;
+            font-size: 0.9rem;
+            color: var(--text-color);
+            outline: none;
+        }
+
+        .modal-row {
+            display: flex;
+            gap: 10px;
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 6px;
+        }
+
+        .btn-modal-cancel {
+            flex: 1;
+            background-color: transparent;
+            border: none;
+            color: var(--text-color);
+            font-weight: 600;
+            font-size: 0.9rem;
+            padding: 10px;
+            cursor: pointer;
+        }
+
+        .btn-modal-save {
+            flex: 1;
+            background-color: #ff5722;
+            border: none;
+            color: white;
+            font-weight: 600;
+            font-size: 0.9rem;
+            padding: 10px;
+            border-radius: 12px;
+            cursor: pointer;
+        }
+
+        /* Estilos da Mini Lista de Textos (Snippets) */
+        .snippets-list-container {
+            max-height: 200px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-top: 4px;
+        }
+
+        .snippet-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background-color: var(--secondary-bg);
+            padding: 8px 12px;
+            border-radius: 10px;
+            border: 1px solid var(--border-color);
+            gap: 8px;
+        }
+
+        .snippet-text {
+            font-size: 0.85rem;
+            color: var(--text-color);
+            word-break: break-word;
+            flex: 1;
+        }
+
+        .snippet-actions {
+            display: flex;
+            gap: 6px;
+        }
+
+        .btn-snippet-copy {
+            background-color: #ff5722;
+            color: white;
+            border: none;
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            cursor: pointer;
+        }
+
+        .btn-snippet-del {
+            background: none;
+            border: none;
+            color: #ff4d4d;
+            font-size: 0.9rem;
+            cursor: pointer;
+        }
+
+        input[type="file"] {
+            display: none;
         }
     </style>
 </head>
-<body class="flex flex-col min-h-screen pb-24 relative">
+<body>
 
-    <div id="bg-container" class="fixed inset-0 z-[-1] overflow-hidden opacity-25 pointer-events-none">
-        <img id="bgImage" src="https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?w=600" alt="Background" class="w-full h-full object-cover">
-        <video id="bgVideo" class="w-full h-full object-cover hidden" autoplay muted loop></video>
-    </div>
+    <div class="phone-frame">
+        <div class="simulation-banner">SIMULAÇÃO · conteúdo fictício</div>
 
-    <header class="p-4 flex items-center justify-between border-b border-red-900/40 bg-cardbg/90 backdrop-blur">
-        <div class="flex items-center space-x-3">
-            <div class="relative">
-                <img id="userAvatar" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150" alt="Avatar" class="w-12 h-12 rounded-full object-cover border-2 border-accentred">
-                <span class="absolute bottom-0 right-0 w-3 h-3 bg-green-500 border-2 border-cardbg rounded-full"></span>
+        <!-- TELA 1: LISTA DE CONVERSAS (HOME) -->
+        <div id="screen-home" class="screen active">
+            <div class="home-header">
+                <div class="home-top-row">
+                    <span class="home-app-title">Mensagens Kwai</span>
+                    <div class="home-actions">
+                        <!-- Perfil do Usuário na Home -->
+                        <div class="user-profile-badge" onclick="openUserConfigModal()" title="Configurar meu perfil">
+                            <div id="my-home-avatar-box">
+                                <div class="user-profile-avatar" id="my-home-avatar-txt">Eu</div>
+                            </div>
+                            <span class="user-profile-name" id="my-home-name">Meu Perfil</span>
+                        </div>
+                        <!-- Botão da Mini Lista de Textos -->
+                        <button class="snippets-toggle-btn" id="snippets-btn" onclick="openSnippetsModal()" title="Mini lista de textos">📋</button>
+                        <!-- Botão de Tema -->
+                        <button class="theme-toggle-btn" id="theme-btn" onclick="toggleTheme()" title="Alternar tema">🌙</button>
+                    </div>
+                </div>
+                <div class="search-box">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                    <input type="text" id="search-input" placeholder="Pesquisar conversa..." oninput="filterChats()">
+                </div>
             </div>
-            <div>
-                <h1 id="userName" class="font-bold text-sm tracking-wider">ZRX Operator</h1>
-                <span class="text-xs text-red-500 font-semibold bg-red-950/60 px-2 py-0.5 rounded border border-red-900/50">OWNER / VIP</span>
+
+            <div class="chats-list-body" id="chats-list-container">
+                <!-- Preenchido via JS -->
             </div>
+
+            <button class="fab-btn" onclick="openNewProfileModal()" title="Criar novo chat">+</button>
+
+            <div class="home-footer-credit">Developed by WINCHESTER</div>
         </div>
-        <div class="text-right">
-            <span class="text-[10px] text-gray-400 block">STATUS</span>
-            <span class="text-xs text-green-400 font-bold">ONLINE</span>
-        </div>
-    </header>
 
-    <main class="flex-1 p-4 max-w-md mx-auto w-full z-10">
-
-        <section id="tab-home" class="tab-content space-y-4">
-            <div class="relative rounded-2xl overflow-hidden border border-red-600/50 shadow-lg shadow-red-950/50 bg-black">
-                <div class="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent z-10"></div>
-                <img src="https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?w=600" alt="ZRX V5 Banner" class="w-full h-56 object-cover opacity-70">
-                <div class="absolute bottom-4 left-4 z-20">
-                    <span class="text-xs text-red-500 font-extrabold tracking-widest uppercase">Cybernetic Operative</span>
-                    <h2 class="text-2xl font-black italic tracking-wider text-white drop-shadow-[0_2px_4px_rgba(220,38,38,0.8)]">ZRX V5</h2>
-                    <p class="text-[11px] text-gray-300 mt-0.5">Engine v5.2.1 // Secure Connection</p>
+        <!-- TELA 2: TELA DE CHAT INDIVIDUAL -->
+        <div id="screen-chat" class="screen">
+            <div class="chat-header-bar">
+                <div class="header-left">
+                    <span class="back-arrow" onclick="goBackHome()">‹</span>
+                    <span class="header-title" id="display-name">Nome</span>
+                </div>
+                <div class="header-right-actions">
+                    <!-- Ícone de Telefone / Ligação -->
+                    <svg class="header-action-icon" viewBox="0 0 24 24" onclick="alert('Simulação de chamada iniciada')">
+                        <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+                    </svg>
+                    <!-- Três pontos (Configurações do Chat) -->
+                    <div class="header-dots" onclick="openEditModal()">···</div>
                 </div>
             </div>
 
-            <div class="bg-cardbg/90 border border-red-950 rounded-xl p-4 shadow-md backdrop-blur">
-                <div class="flex justify-between items-center mb-2">
-                    <span class="text-xs text-gray-400">ACTIVE UNTIL</span>
-                    <span class="text-xs text-red-400 font-mono">2099-12-31</span>
-                </div>
-                <div class="w-full bg-gray-800 h-2 rounded-full overflow-hidden">
-                    <div class="bg-accentred h-full w-full"></div>
-                </div>
-                <span class="text-[10px] text-gray-500 mt-1 block">100% Remaining - Lifetime License</span>
-            </div>
-
-            <div class="space-y-2 pt-2">
-                <div class="flex justify-between items-center px-1">
-                    <h3 class="text-xs font-bold text-gray-400 uppercase tracking-widest">Módulos Rápidos</h3>
-                    <span class="text-[10px] text-yellow-500 font-mono">Arraste para o lado -&gt;</span>
+            <div class="chat-body" id="chat-body">
+                <div class="profile-intro">
+                    <div id="display-avatar-container"></div>
+                    <div class="profile-name" id="display-name-sub">Nome</div>
+                    <div class="profile-stats" id="display-stats">0 seguidores · 0 publicação</div>
+                    <div class="profile-subtext">Você está seguindo o perfil e mais pessoas</div>
+                    <div class="profile-subtext">Vocês são amigos agora</div>
+                    <div class="profile-subtext">Compartilhe este personagem fictício</div>
+                    <button class="btn-share-profile">Compartilhar</button>
                 </div>
 
-                <div class="flex space-x-4 overflow-x-auto no-scrollbar py-2 snap-x">
-                    
-                    <div onclick="abrirModalDownloader()" class="min-w-[280px] w-[85%] max-w-[320px] bg-cardbg/95 border-2 border-goldborder rounded-2xl p-5 space-y-4 shadow-xl backdrop-blur shrink-0 snap-center flex flex-col justify-between cursor-pointer hover:bg-black/90 transition group">
-                        <div>
-                            <div class="flex justify-between items-start mb-3">
-                                <div class="w-10 h-10 rounded-xl bg-yellow-950/50 border border-yellow-600/50 flex items-center justify-center text-yellow-400 group-hover:scale-110 transition">
-                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
-                                </div>
-                                <span class="bg-yellow-950 text-yellow-400 text-[10px] font-bold px-2.5 py-1 rounded-full border border-yellow-800/50">★ YT-DLP ENGINE</span>
-                            </div>
-                            <h3 class="text-sm font-bold text-white tracking-wide">Video Downloader</h3>
-                            <span class="text-[10px] text-yellow-500 font-mono block mb-2">#UniversalExtract</span>
-                            <p class="text-xs text-gray-400">Baixe vídeos do YouTube, TikTok, Instagram e Kwai direto para a galeria.</p>
-                        </div>
-                        <div class="pt-2 border-t border-gray-800/60 flex justify-between items-center">
-                            <span class="text-[10px] text-yellow-500 font-mono">[ ABRIR TELA ]</span>
-                            <span class="text-xs text-yellow-400 font-bold group-hover:translate-x-1 transition">Acessar →</span>
-                        </div>
-                    </div>
-
-                    <div onclick="abrirModalIpGrid()" class="min-w-[280px] w-[85%] max-w-[320px] bg-cardbg/95 border-2 border-cyanblue rounded-2xl p-5 space-y-4 shadow-xl backdrop-blur shrink-0 snap-center flex flex-col justify-between cursor-pointer hover:bg-black/90 transition group">
-                        <div>
-                            <div class="flex justify-between items-start mb-3">
-                                <div class="w-10 h-10 rounded-xl bg-cyan-950/50 border border-cyan-600/50 flex items-center justify-center text-cyan-400 group-hover:scale-110 transition">
-                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
-                                </div>
-                                <span class="bg-cyan-950 text-cyan-400 text-[10px] font-bold px-2.5 py-1 rounded-full border border-cyan-800/50">🌐 IP &amp; TARGET</span>
-                            </div>
-                            <h3 class="text-sm font-bold text-white tracking-wide">IP Analyzer</h3>
-                            <span class="text-[10px] text-cyan-400 font-mono block mb-2">#IpTools</span>
-                            <p class="text-xs text-gray-400">Acesse o painel completo de busca de IP (ipinfo) e verificação de VPN.</p>
-                        </div>
-                        <div class="pt-2 border-t border-gray-800/60 flex justify-between items-center">
-                            <span class="text-[10px] text-cyan-400 font-mono">[ ABRIR TELA ]</span>
-                            <span class="text-xs text-cyan-300 font-bold group-hover:translate-x-1 transition">Acessar →</span>
-                        </div>
-                    </div>
-
-                    <div onclick="abrirModalIaGrid()" class="min-w-[280px] w-[85%] max-w-[320px] bg-cardbg/95 border-2 border-gray-500 rounded-2xl p-5 space-y-4 shadow-xl backdrop-blur shrink-0 snap-center flex flex-col justify-between cursor-pointer hover:bg-black/90 transition group">
-                        <div>
-                            <div class="flex justify-between items-start mb-3">
-                                <div class="w-10 h-10 rounded-xl bg-gray-900 border border-gray-600 flex items-center justify-center text-gray-300 group-hover:scale-110 transition">
-                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
-                                </div>
-                                <span class="bg-gray-900 text-gray-300 text-[10px] font-bold px-2.5 py-1 rounded-full border border-gray-700">🤖 MULTI-AI</span>
-                            </div>
-                            <h3 class="text-sm font-bold text-white tracking-wide">Central de IA (Chat)</h3>
-                            <span class="text-[10px] text-gray-400 font-mono block mb-2">#Gemini #OpenAI #Groq #ChatGPT</span>
-                            <p class="text-xs text-gray-400">Acesse o painel com as IAs para textos, denúncias e conversas livres.</p>
-                        </div>
-                        <div class="pt-2 border-t border-gray-800/60 flex justify-between items-center">
-                            <span class="text-[10px] text-gray-400 font-mono">[ ABRIR PAINEL ]</span>
-                            <span class="text-xs text-gray-300 font-bold group-hover:translate-x-1 transition">Acessar →</span>
-                        </div>
-                    </div>
-
-                    <div onclick="abrirModalInstagramGrid()" class="min-w-[280px] w-[85%] max-w-[320px] bg-cardbg/95 border-2 border-purple-600 rounded-2xl p-5 space-y-4 shadow-xl backdrop-blur shrink-0 snap-center flex flex-col justify-between cursor-pointer hover:bg-black/90 transition group">
-                        <div>
-                            <div class="flex justify-between items-start mb-3">
-                                <div class="w-10 h-10 rounded-xl bg-purple-950/50 border border-purple-600/50 flex items-center justify-center text-purple-400 group-hover:scale-110 transition">
-                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
-                                </div>
-                                <span class="bg-purple-950 text-purple-400 text-[10px] font-bold px-2.5 py-1 rounded-full border border-purple-800/50">🟣 INSTAGRAM GRID</span>
-                            </div>
-                            <h3 class="text-sm font-bold text-white tracking-wide">INSTAGRAM</h3>
-                            <span class="text-[10px] text-purple-400 font-mono block mb-2">#Grid2x2Tools</span>
-                            <p class="text-xs text-gray-400">Acesse o painel 2x2 com métodos, travas, multiplicadores e gerador de e-mail.</p>
-                        </div>
-                        <div class="pt-2 border-t border-gray-800/60 flex justify-between items-center">
-                            <span class="text-[10px] text-purple-400 font-mono">[ ABRIR GRID ]</span>
-                            <span class="text-xs text-purple-300 font-bold group-hover:translate-x-1 transition">Acessar →</span>
-                        </div>
-                    </div>
-
-                    <!-- NOVO MÓDULO KWAI ADICIONADO AO LADO DO INSTAGRAM -->
-                    <div onclick="abrirModalKwaiGrid()" class="min-w-[280px] w-[85%] max-w-[320px] bg-cardbg/95 border-2 border-orange-500 rounded-2xl p-5 space-y-4 shadow-xl backdrop-blur shrink-0 snap-center flex flex-col justify-between cursor-pointer hover:bg-black/90 transition group">
-                        <div>
-                            <div class="flex justify-between items-start mb-3">
-                                <div class="w-10 h-10 rounded-xl bg-orange-950/50 border border-orange-600/50 flex items-center justify-center text-orange-400 group-hover:scale-110 transition">
-                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.26a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/><path stroke-linecap="round" stroke-linejoin="round" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                                </div>
-                                <span class="bg-orange-950 text-orange-400 text-[10px] font-bold px-2.5 py-1 rounded-full border border-orange-800/50">🟠 KWAI GRID</span>
-                            </div>
-                            <h3 class="text-sm font-bold text-white tracking-wide">KWAI</h3>
-                            <span class="text-[10px] text-orange-400 font-mono block mb-2">#KwaiTools</span>
-                            <p class="text-xs text-gray-400">Gerencie armazenamento de texto, e-mail de suporte e chat fake do Kwai.</p>
-                        </div>
-                        <div class="pt-2 border-t border-gray-800/60 flex justify-between items-center">
-                            <span class="text-[10px] text-orange-400 font-mono">[ ABRIR GRID ]</span>
-                            <span class="text-xs text-orange-300 font-bold group-hover:translate-x-1 transition">Acessar →</span>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-        </section>
-
-        <!-- (Restante do código original mantido inalterado abaixo...) -->
-
-        <section id="tab-whatsapp" class="tab-content hidden space-y-4">
-            <div>
-                <h2 class="text-lg font-bold text-red-500 border-l-4 border-red-600 pl-2">Central Operativa WhatsApp</h2>
-                <p class="text-xs text-gray-400 mt-1">Gerencie denúncias, números virtuais e disparos em massa.</p>
-            </div>
-
-            <div class="flex space-x-4 overflow-x-auto no-scrollbar py-2 snap-x">
+                <div class="friends-badge">Vocês são amigos agora</div>
                 
-                <div class="min-w-[280px] w-[85%] max-w-[320px] bg-cardbg/95 border border-red-950/80 rounded-2xl p-5 space-y-4 shadow-xl backdrop-blur shrink-0 snap-center flex flex-col justify-between">
-                    <div>
-                        <div class="flex justify-between items-start mb-3">
-                            <div class="w-10 h-10 rounded-xl bg-red-950/50 border border-red-900/50 flex items-center justify-center text-red-500">
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
-                            </div>
-                            <span class="bg-red-950 text-red-400 text-[10px] font-bold px-2.5 py-1 rounded-full border border-red-800/50">#BanzapAPI</span>
-                        </div>
-                        <h3 class="text-sm font-bold text-white tracking-wide">Processo de Denúncia</h3>
-                        <span class="text-[10px] text-gray-400 block mb-3">Insira o número com DDD (Ex: 5511999999999)</span>
-                        
-                        <div class="space-y-2">
-                            <input type="text" id="targetNumberInput" placeholder="+55 (XX) 9XXXX-XXXX" class="w-full bg-black border border-red-900 rounded-lg p-2.5 text-xs text-white focus:outline-none focus:border-red-600 font-mono">
-                        </div>
-
-                        <div id="denunciaProcessBox" class="bg-black/70 border border-red-900/40 rounded-lg p-3 my-3 text-[11px] font-mono text-gray-300 min-h-[75px] flex flex-col justify-center">
-                            <span class="text-gray-500 text-center">Aguardando inserção do número...</span>
-                        </div>
-                    </div>
-
-                    <div class="pt-2 border-t border-gray-800/60">
-                        <button onclick="iniciarProcessoBanzap()" class="w-full bg-accentred hover:bg-accentredhover text-white text-xs font-bold py-2.5 rounded-lg transition shadow-md text-center">Disparar Denúncia</button>
-                    </div>
-                </div>
-
-                <div class="min-w-[280px] w-[85%] max-w-[320px] bg-cardbg/95 border border-red-950/80 rounded-2xl p-5 space-y-3 shadow-xl backdrop-blur shrink-0 snap-center flex flex-col justify-between">
-                    <div>
-                        <div class="flex justify-between items-start mb-2">
-                            <div class="w-10 h-10 rounded-xl bg-red-950/50 border border-red-900/50 flex items-center justify-center text-red-500">
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
-                            </div>
-                            <span class="bg-red-950 text-red-400 text-[10px] font-bold px-2.5 py-1 rounded-full border border-red-800/50">#Flooder</span>
-                        </div>
-                        <h3 class="text-sm font-bold text-white tracking-wide">Disparador Automático</h3>
-                        <span class="text-[10px] text-gray-400 block mb-2">Envio em massa de travas</span>
-
-                        <div class="space-y-1 mb-2">
-                            <label class="text-[9px] text-gray-400 font-bold uppercase tracking-wider">Número do Alvo</label>
-                            <input type="text" id="floodAlvo" placeholder="Ex: 5511999999999" class="w-full bg-black border border-red-900 rounded-lg p-2 text-xs text-white focus:outline-none focus:border-red-600 font-mono">
-                        </div>
-
-                        <div class="space-y-1 mb-2">
-                            <label class="text-[9px] text-gray-400 font-bold uppercase tracking-wider">Nome / Trava do Armazenamento</label>
-                            <select id="floodTravaSelect" class="w-full bg-black border border-red-900 rounded-lg p-2 text-xs text-white focus:outline-none focus:border-red-600">
-                                <option value="">Selecione do Armazenamento...</option>
-                            </select>
-                            <input type="text" id="floodCustomText" placeholder="Ou digite/cole sua trava de texto aqui..." class="w-full mt-1 bg-black border border-red-900 rounded-lg p-2 text-xs text-white focus:outline-none focus:border-red-600 font-mono">
-                        </div>
-
-                        <div class="flex items-center space-x-2 my-2">
-                            <input type="checkbox" id="jogarTudoCheckbox" class="w-4 h-4 accent-red-600 bg-black border-red-900 rounded cursor-pointer">
-                            <label for="jogarTudoCheckbox" class="text-[10px] text-gray-300 font-semibold cursor-pointer">Jogar tudo de uma vez (disparo múltiplo instantâneo)</label>
-                        </div>
-
-                        <div class="space-y-1 mb-2">
-                            <div class="flex justify-between items-center">
-                                <label class="text-[9px] text-gray-400 font-bold uppercase tracking-wider">Quantidade</label>
-                                <span id="labelQtd" class="text-xs text-red-500 font-mono font-bold">10x</span>
-                            </div>
-                            <input type="range" id="floodQuantidade" min="1" max="100" value="10" oninput="document.getElementById('labelQtd').innerText = this.value + 'x'" class="w-full accent-red-600 bg-black cursor-pointer">
-                        </div>
-
-                        <div id="floodStatusBox" class="bg-black/70 border border-red-900/40 rounded-lg p-2 text-[10px] font-mono text-gray-300 min-h-[45px] flex flex-col justify-center items-center text-center">
-                            <span class="text-gray-500">Pronto para iniciar...</span>
-                        </div>
-                    </div>
-
-                    <div class="pt-2 border-t border-gray-800/60">
-                        <button onclick="iniciarDisparoEmMassa()" class="w-full bg-accentred hover:bg-accentredhover text-white text-xs font-bold py-2 rounded-lg transition shadow-md">Iniciar Disparos</button>
-                    </div>
-                </div>
-
-                <div class="min-w-[280px] w-[85%] max-w-[320px] bg-cardbg/95 border border-red-950/80 rounded-2xl p-5 space-y-4 shadow-xl backdrop-blur shrink-0 snap-center flex flex-col justify-between">
-                    <div>
-                        <div class="flex justify-between items-start mb-3">
-                            <div class="w-10 h-10 rounded-xl bg-red-950/50 border border-red-900/50 flex items-center justify-center text-red-500">
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"/></svg>
-                            </div>
-                            <span class="bg-blue-950 text-blue-400 text-[10px] font-bold px-2.5 py-1 rounded-full border border-blue-800/50">🇷🇺 RUSSIA ( ativo )</span>
-                        </div>
-                        <h3 class="text-sm font-bold text-white tracking-wide">Número Virtual SMS</h3>
-                        <span class="text-[10px] text-red-500 font-mono block mb-2">#FreeNumberAPI</span>
-                        
-                        <div class="bg-black/60 border border-red-900/40 rounded-lg p-2 text-center my-2">
-                            <span class="text-[10px] text-gray-400 block">NÚMERO ATUAL</span>
-                            <span id="virtualNumberDisplay" class="text-xs text-red-400 font-mono font-bold">Nenhum gerado</span>
-                        </div>
-                    </div>
-
-                    <div class="pt-2 border-t border-gray-800/60 grid grid-cols-2 gap-2">
-                        <button onclick="gerarNumeroVirtual()" class="bg-accentred hover:bg-accentredhover text-white text-[11px] font-bold py-2 px-2 rounded-lg transition shadow-md text-center">Gerar Número</button>
-                        <button onclick="filtroGlobal()" class="bg-gray-800 hover:bg-gray-700 text-gray-300 text-[11px] font-bold py-2 px-2 rounded-lg transition text-center border border-gray-700">Global</button>
-                    </div>
-                </div>
-
-                <div class="min-w-[280px] w-[85%] max-w-[320px] bg-cardbg/95 border border-red-950/80 rounded-2xl p-5 space-y-4 shadow-xl backdrop-blur shrink-0 snap-center flex flex-col justify-between">
-                    <div>
-                        <div class="flex justify-between items-start mb-3">
-                            <div class="w-10 h-10 rounded-xl bg-red-950/50 border border-red-900/50 flex items-center justify-center text-red-500">
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 2v1m0 16v2m-6-8a6 6 0 0112 0v1H6v-1zM5 16l-2 2m16-2l2 2"/></svg>
-                            </div>
-                            <span class="bg-green-950 text-green-400 text-[10px] font-bold px-2.5 py-1 rounded-full border border-green-800/50">● VAULT</span>
-                        </div>
-                        <h3 class="text-sm font-bold text-white tracking-wide">Armazenamento Trava</h3>
-                        <span class="text-[10px] text-red-500 font-mono block mb-2">#VaultStorage</span>
-                        <p class="text-xs text-gray-400 mb-2">Armazene trava de foto, localização, contato e texto.</p>
-                        
-                        <div class="space-y-2">
-                            <input type="text" id="vaultNameInput" placeholder="Nome da Trava..." class="w-full bg-black border border-red-900 rounded-lg p-2 text-xs text-white focus:outline-none focus:border-red-600">
-                            <textarea id="vaultContentInput" placeholder="Cole o conteúdo (texto, contato, coords, etc)..." class="w-full bg-black border border-red-900 rounded-lg p-2 text-xs text-white focus:outline-none focus:border-red-600 h-16 resize-none font-mono"></textarea>
-                        </div>
-                    </div>
-                    <div class="pt-2 border-t border-gray-800/60 flex justify-between items-center">
-                        <span class="text-[10px] text-gray-500 font-mono">[ SECURE ]</span>
-                        <button onclick="salvarNaVault()" class="bg-accentred hover:bg-accentredhover text-white text-xs font-bold px-4 py-2 rounded-lg transition shadow-md">Salvar</button>
-                    </div>
-                </div>
-
-                <div class="min-w-[280px] w-[85%] max-w-[320px] bg-cardbg/95 border border-red-950/80 rounded-2xl p-5 space-y-4 shadow-xl backdrop-blur shrink-0 snap-center flex flex-col justify-between">
-                    <div>
-                        <div class="flex justify-between items-start mb-3">
-                            <div class="w-10 h-10 rounded-xl bg-red-950/50 border border-red-900/50 flex items-center justify-center text-red-500">
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
-                            </div>
-                            <span id="shieldBadge" class="bg-gray-800 text-gray-400 text-[10px] font-bold px-2.5 py-1 rounded-full border border-gray-700 transition-all">○ WAITING</span>
-                        </div>
-                        <h3 class="text-sm font-bold text-white tracking-wide">Anti-Ban &amp; Blindagem</h3>
-                        <span class="text-[10px] text-red-500 font-mono block mb-2">#ShieldV5 (Accessibility Sync)</span>
-                        
-                        <div class="space-y-2 mb-2">
-                            <input type="text" id="antiBanPhone" placeholder="Seu Número (Ex: +551199999999)" class="w-full bg-black border border-red-900 rounded-lg p-2 text-xs text-white focus:outline-none focus:border-red-600 font-mono">
-                            <input type="email" id="antiBanEmail" placeholder="Seu E-mail Gmail..." class="w-full bg-black border border-red-900 rounded-lg p-2 text-xs text-white focus:outline-none focus:border-red-600 font-mono">
-                            <select id="antiBanDevice" class="w-full bg-black border border-red-900 rounded-lg p-2 text-xs text-white focus:outline-none focus:border-red-600">
-                                <option value="Android">Dispositivo: Android</option>
-                                <option value="iPhone">Dispositivo: iPhone</option>
-                                <option value="Web/Desktop">Dispositivo: Web / Desktop</option>
-                            </select>
-                            <textarea id="antiBanMsg" placeholder="Mensagem explicativa Anti-Ban..." class="w-full bg-black border border-red-900 rounded-lg p-2 text-xs text-white focus:outline-none focus:border-red-600 h-14 resize-none font-mono">Olá, minha conta foi banida indevidamente por engano no sistema anti-spam. Solicito a restauração imediata do acesso ao número.</textarea>
-                        </div>
-
-                        <div id="shieldStatusBox" class="bg-black/80 border border-red-900/40 rounded-lg p-2 text-[10px] font-mono text-gray-300 min-h-[40px] flex flex-col justify-center">
-                            <span class="text-gray-500 text-center">Aguardando disparo do formulário...</span>
-                        </div>
-                    </div>
-                    
-                    <div class="pt-2 border-t border-gray-800/60 flex justify-between items-center">
-                        <span id="shieldFooterTag" class="text-[10px] text-gray-500 font-mono">[ SYNC ]</span>
-                        <button onclick="ativarBlindagemAccessibility()" class="bg-accentred hover:bg-accentredhover text-white text-xs font-bold px-4 py-2 rounded-lg transition shadow-md">Disparar Link</button>
-                    </div>
-                </div>
-
+                <div id="messages-container" style="display: flex; flex-direction: column; gap: 10px;"></div>
             </div>
-        </section>
 
-        <!-- (Demais seções e modais preservados...) -->
-
-    </main>
-
-    <!-- NOVO MODAL PRINCIPAL DO KWAI (Com os 3 balões grandes lado a lado) -->
-    <div id="kwaiGridModal" class="fixed inset-0 z-50 bg-black/95 backdrop-blur-md hidden flex flex-col justify-between p-6">
-        <div class="flex justify-between items-center border-b border-orange-500/30 pb-4">
-            <div class="flex items-center space-x-2">
-                <span class="w-3 h-3 rounded-full bg-orange-500 animate-pulse"></span>
-                <h2 class="text-sm font-bold text-orange-400 tracking-wider">KWAI OPERATIONAL GRID</h2>
+            <div class="chat-footer">
+                <div class="chat-input-wrapper">
+                    <input type="text" id="chat-input" placeholder="Diga algo">
+                    <!-- Emoji Sorrindo embutido dentro da barra "Diga algo" -->
+                    <svg class="input-inline-emoji" viewBox="0 0 24 24">
+                        <circle cx="12" cy="12" r="9"></circle>
+                        <path d="M9 10h.01M15 10h.01M9.5 15a3.5 3.5 0 0 0 5 0"></path>
+                    </svg>
+                </div>
+                <div class="footer-actions">
+                    <!-- 1. Microfone -->
+                    <svg class="action-icon" viewBox="0 0 24 24">
+                        <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path>
+                        <path d="M19 10v1a7 7 0 0 1-14 0v-1M12 18.5V23M8 23h8"></path>
+                    </svg>
+                    <!-- 2. Imagem / Galeria -->
+                    <svg class="action-icon" viewBox="0 0 24 24" onclick="document.getElementById('file-chat-img').click()">
+                        <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                        <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                        <polyline points="21 15 16 10 5 21"></polyline>
+                    </svg>
+                    <!-- 3. Curtida / Positivo -->
+                    <svg class="action-icon" viewBox="0 0 24 24">
+                        <path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"></path>
+                    </svg>
+                </div>
             </div>
-            <button onclick="fecharModalKwaiGrid()" class="text-gray-400 hover:text-white text-xl font-bold px-3 py-1 bg-gray-900 border border-orange-500/30 rounded-lg">✕</button>
         </div>
 
-        <!-- 3 Balões grandes um do lado do outro -->
-        <div class="my-auto max-w-4xl mx-auto w-full grid grid-cols-1 md:grid-cols-3 gap-4 overflow-y-auto max-h-[75vh] no-scrollbar py-2">
-            
-            <!-- Balão 1: Armazenamento de Texto -->
-            <div class="bg-cardbg border-2 border-orange-600 rounded-2xl p-5 flex flex-col justify-between space-y-4 shadow-xl">
-                <div>
-                    <div class="flex justify-between items-start mb-3">
-                        <span class="bg-orange-950 text-orange-400 text-[10px] font-bold px-2.5 py-1 rounded-full border border-orange-800/50">#01 VAULT</span>
-                    </div>
-                    <h3 class="text-sm font-bold text-white tracking-wide mb-2">Armazenamento de Texto</h3>
-                    <p class="text-xs text-gray-400 mb-3">Guarde e gerencie seus textos operacionais do Kwai.</p>
-                    
-                    <div class="space-y-2">
-                        <input type="text" id="kwaiVaultTitle" placeholder="Título do Texto..." class="w-full bg-black border border-orange-900 rounded-lg p-2 text-xs text-white focus:outline-none focus:border-orange-600">
-                        <textarea id="kwaiVaultText" placeholder="Cole seu texto/trava aqui..." class="w-full bg-black border border-orange-900 rounded-lg p-2 text-xs text-white focus:outline-none focus:border-orange-600 h-20 resize-none font-mono"></textarea>
-                    </div>
+        <!-- MODAL DE CONFIGURAR MEU PERFIL (USUÁRIO) -->
+        <div class="modal-overlay" id="user-config-modal">
+            <div class="modal-card">
+                <div class="modal-header-tag">Configuração Pessoal</div>
+                <div class="modal-title">Meu Perfil</div>
+
+                <div class="modal-avatar-preview" id="modal-my-avatar-box" onclick="document.getElementById('file-my-avatar').click()" title="Escolher foto do meu perfil">
+                    <span id="modal-my-avatar-text">Eu</span>
                 </div>
-                <button onclick="salvarKwaiVault()" class="w-full bg-orange-700 hover:bg-orange-600 text-white text-xs font-bold py-2.5 rounded-lg transition shadow-md">Salvar no Armazenamento</button>
-            </div>
+                <div style="font-size: 0.72rem; color: var(--muted-color); text-align: center; margin-top: -6px;">Toque para escolher sua foto</div>
 
-            <!-- Balão 2: Negócio do E-mail (Assunto, Detalhe, Enviar) -->
-            <div class="bg-cardbg border-2 border-orange-600 rounded-2xl p-5 flex flex-col justify-between space-y-4 shadow-xl">
-                <div>
-                    <div class="flex justify-between items-start mb-3">
-                        <span class="bg-orange-950 text-orange-400 text-[10px] font-bold px-2.5 py-1 rounded-full border border-orange-800/50">#02 EMAIL</span>
-                    </div>
-                    <h3 class="text-sm font-bold text-white tracking-wide mb-2">Suporte por E-mail</h3>
-                    
-                    <div class="space-y-2">
-                        <div>
-                            <label class="text-[9px] text-gray-400 font-bold uppercase">Assunto</label>
-                            <input type="text" id="kwaiEmailAssunto" placeholder="Assunto do e-mail..." class="w-full bg-black border border-orange-900 rounded-lg p-2 text-xs text-white focus:outline-none focus:border-orange-600 font-mono">
-                        </div>
-                        <div>
-                            <label class="text-[9px] text-gray-400 font-bold uppercase">Detalhe</label>
-                            <textarea id="kwaiEmailDetalhe" placeholder="Detalhes do problema..." class="w-full bg-black border border-orange-900 rounded-lg p-2 text-xs text-white focus:outline-none focus:border-orange-600 h-20 resize-none font-mono"></textarea>
-                        </div>
-                    </div>
+                <div class="modal-input-group">
+                    <label>Seu Nome / Apelido nas Mensagens</label>
+                    <input type="text" id="input-my-name" placeholder="Ex: Eu">
                 </div>
-                <button onclick="enviarKwaiEmail()" class="w-full bg-orange-700 hover:bg-orange-600 text-white text-xs font-bold py-2.5 rounded-lg transition shadow-md">Enviar</button>
-            </div>
 
-            <!-- Balão 3: Chat Fake -->
-            <div class="bg-cardbg border-2 border-orange-600 rounded-2xl p-5 flex flex-col justify-between space-y-4 shadow-xl">
-                <div class="flex flex-col h-full">
-                    <div class="flex justify-between items-start mb-3">
-                        <span class="bg-orange-950 text-orange-400 text-[10px] font-bold px-2.5 py-1 rounded-full border border-orange-800/50">#03 CHAT</span>
-                    </div>
-                    <h3 class="text-sm font-bold text-white tracking-wide mb-2">Chat Fake Kwai</h3>
-                    
-                    <div id="kwaiFakeChatBox" class="flex-1 bg-black/80 border border-orange-900/60 rounded-xl p-2.5 h-28 overflow-y-auto no-scrollbar font-mono text-[10px] text-gray-300 space-y-2 mb-2">
-                        <div class="text-gray-500 text-center">Simulador de chat ativo...</div>
-                    </div>
-
-                    <div class="flex space-x-1">
-                        <input type="text" id="kwaiChatInput" placeholder="Mensagem fake..." class="flex-1 bg-black border border-orange-900 rounded-lg p-2 text-xs text-white focus:outline-none focus:border-orange-600 font-mono">
-                        <button onclick="enviarKwaiChat()" class="bg-orange-700 hover:bg-orange-600 text-white text-xs font-bold px-3 py-2 rounded-lg transition">Enviar</button>
-                    </div>
+                <div class="modal-buttons">
+                    <button class="btn-modal-cancel" onclick="closeUserConfigModal()">Cancelar</button>
+                    <button class="btn-modal-save" onclick="saveUserConfigModal()">Salvar</button>
                 </div>
             </div>
-
         </div>
 
-        <div class="text-center text-[10px] text-gray-500 font-mono">
-            [ Kwai Integration Active ]
+        <!-- MODAL DE CRIAR / EDITAR PERFIL DO PERSONAGEM -->
+        <div class="modal-overlay" id="profile-modal">
+            <div class="modal-card">
+                <div class="modal-header-tag" id="modal-tag">Novo Chat Fictício</div>
+                <div class="modal-title" id="modal-main-title">Criar perfil</div>
+
+                <div class="modal-avatar-preview" id="modal-avatar-box" onclick="document.getElementById('file-avatar').click()" title="Escolher foto">
+                    <span id="modal-avatar-text">L</span>
+                </div>
+                <div style="font-size: 0.72rem; color: var(--muted-color); text-align: center; margin-top: -6px;">Toque para escolher foto</div>
+
+                <div class="modal-input-group">
+                    <label>Nome do Personagem</label>
+                    <input type="text" id="input-name" placeholder="Ex: Lia Martins">
+                </div>
+
+                <div class="modal-input-group">
+                    <label>Tipo de Conta / Subtítulo</label>
+                    <input type="text" id="input-subtext" value="Personagem fictício">
+                </div>
+
+                <div class="modal-row">
+                    <div class="modal-input-group">
+                        <label>Seguidores</label>
+                        <input type="number" id="input-followers" value="1091">
+                    </div>
+                    <div class="modal-input-group">
+                        <label>Publicações</label>
+                        <input type="number" id="input-posts" value="1">
+                    </div>
+                </div>
+
+                <div class="modal-input-group" id="sender-group">
+                    <label>Enviar próxima mensagem como:</label>
+                    <select id="input-sender-type">
+                        <option value="received">Outro lado (Personagem)</option>
+                        <option value="sent">Meu lado (Eu)</option>
+                    </select>
+                </div>
+
+                <div class="modal-buttons">
+                    <button class="btn-modal-cancel" onclick="closeProfileModal()">Cancelar</button>
+                    <button class="btn-modal-save" onclick="saveProfileModal()">Salvar</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- MODAL DA MINI LISTA DE TEXTOS (SNIPPETS) -->
+        <div class="modal-overlay" id="snippets-modal">
+            <div class="modal-card">
+                <div class="modal-header-tag">Anotações Rápidas</div>
+                <div class="modal-title">Mini Lista de Textos</div>
+
+                <div class="modal-input-group">
+                    <label>Adicionar novo texto:</label>
+                    <div style="display: flex; gap: 8px;">
+                        <input type="text" id="new-snippet-input" placeholder="Digite um texto rápido..." style="flex: 1;">
+                        <button class="btn-modal-save" onclick="addSnippet()" style="flex: none; padding: 0 16px;">Adicionar</button>
+                    </div>
+                </div>
+
+                <div class="modal-input-group">
+                    <label>Textos salvos (Toque em copiar):</label>
+                    <div class="snippets-list-container" id="snippets-list-container">
+                        <!-- Preenchido via JS -->
+                    </div>
+                </div>
+
+                <div class="modal-buttons">
+                    <button class="btn-modal-save" onclick="closeSnippetsModal()" style="width: 100%;">Fechar</button>
+                </div>
+            </div>
         </div>
     </div>
 
-    <!-- (Modais de downloader, IP, IA, Instagram e Navegação originais preservados...) -->
-    <div id="downloaderModal" class="fixed inset-0 z-50 bg-black/95 backdrop-blur-md hidden flex flex-col justify-between p-6">
-        <!-- ... Conteúdo original do modal ... -->
-    </div>
+    <!-- Inputs file ocultos -->
+    <input type="file" id="file-my-avatar" accept="image/*" onchange="loadMyAvatarImage(event)">
+    <input type="file" id="file-avatar" accept="image/*" onchange="loadAvatarImage(event)">
+    <input type="file" id="file-chat-img" accept="image/*" onchange="sendGalleryImage(event)">
 
     <script>
-        // Funções adicionais para o módulo Kwai
-        function abrirModalKwaiGrid() {
-            document.getElementById('kwaiGridModal').classList.remove('hidden');
+        let myProfile = JSON.parse(localStorage.getItem('kwai_myProfile')) || {
+            name: "Eu",
+            image: null
+        };
+
+        let chatsList = JSON.parse(localStorage.getItem('kwai_chatsList')) || [
+            {
+                id: 1,
+                name: "FAVELADOMAFIA",
+                subtext: "Personagem fictício",
+                followers: 4320,
+                posts: 12,
+                image: null,
+                messages: [
+                    { text: "filha", type: "received", isImg: false },
+                    { text: "O vídeo não está disponível porque foi ocultada", type: "received", isImg: false },
+                    { text: "filha é minha pka", type: "sent", isImg: false }
+                ]
+            }
+        ];
+
+        let textSnippets = JSON.parse(localStorage.getItem('kwai_textSnippets')) || [
+            "Oi, tudo bem?",
+            "Adorei sua publicação!",
+            "Me segue de volta?"
+        ];
+
+        let currentTheme = localStorage.getItem('kwai_theme') || 'light';
+        if (currentTheme === 'dark') {
+            document.documentElement.setAttribute('data-theme', 'dark');
+            document.getElementById('theme-btn').textContent = '☀️';
         }
 
-        function fecharModalKwaiGrid() {
-            document.getElementById('kwaiGridModal').classList.add('hidden');
+        let currentChatId = null;
+        let isEditing = false;
+        let tempAvatarBase64 = null;
+        let tempMyAvatarBase64 = myProfile.image;
+
+        const chatsListContainer = document.getElementById('chats-list-container');
+        const chatInput = document.getElementById('chat-input');
+        const messagesContainer = document.getElementById('messages-container');
+        const chatBody = document.getElementById('chat-body');
+
+        function saveData() {
+            localStorage.setItem('kwai_chatsList', JSON.stringify(chatsList));
+            localStorage.setItem('kwai_textSnippets', JSON.stringify(textSnippets));
+            localStorage.setItem('kwai_myProfile', JSON.stringify(myProfile));
+            localStorage.setItem('kwai_theme', currentTheme);
         }
 
-        function salvarKwaiVault() {
-            const titulo = document.getElementById('kwaiVaultTitle').value.trim();
-            const texto = document.getElementById('kwaiVaultText').value.trim();
-            if (!titulo || !texto) {
-                alert("Preencha o título e o texto!");
+        function updateMyProfileUI() {
+            document.getElementById('my-home-name').textContent = myProfile.name;
+            const box = document.getElementById('my-home-avatar-box');
+            if (myProfile.image) {
+                box.innerHTML = `<img src="${myProfile.image}" class="user-profile-avatar">`;
+            } else {
+                box.innerHTML = `<div class="user-profile-avatar">${myProfile.name.charAt(0).toUpperCase()}</div>`;
+            }
+        }
+
+        function toggleTheme() {
+            if (currentTheme === 'light') {
+                currentTheme = 'dark';
+                document.documentElement.setAttribute('data-theme', 'dark');
+                document.getElementById('theme-btn').textContent = '☀️';
+            } else {
+                currentTheme = 'light';
+                document.documentElement.removeAttribute('data-theme');
+                document.getElementById('theme-btn').textContent = '🌙';
+            }
+            saveData();
+        }
+
+        function renderChatsList(filterText = "") {
+            const filtered = chatsList.filter(c => c.name.toLowerCase().includes(filterText.toLowerCase()));
+
+            if (filtered.length === 0) {
+                chatsListContainer.innerHTML = `<div class="empty-list-notice">Nenhum chat encontrado.<br>Toque no botão vinho (+) para criar.</div>`;
                 return;
             }
-            alert("Texto salvo com sucesso no armazenamento do Kwai!");
-            document.getElementById('kwaiVaultTitle').value = '';
-            document.getElementById('kwaiVaultText').value = '';
+
+            chatsListContainer.innerHTML = filtered.map(chat => {
+                const lastMsg = chat.messages.length > 0 
+                    ? (chat.messages[chat.messages.length - 1].isImg ? "[Imagem]" : chat.messages[chat.messages.length - 1].text)
+                    : "Nenhuma mensagem ainda";
+                
+                const avatarHTML = chat.image 
+                    ? `<img src="${chat.image}" class="chat-item-avatar">`
+                    : `<div class="chat-item-avatar">${chat.name.charAt(0).toUpperCase()}</div>`;
+
+                return `
+                    <div class="chat-item" onclick="openChat(${chat.id})">
+                        ${avatarHTML}
+                        <div class="chat-item-info">
+                            <div class="chat-item-name">${chat.name}</div>
+                            <div class="chat-item-preview">${lastMsg}</div>
+                        </div>
+                        <button class="chat-item-delete" onclick="deleteChat(event, ${chat.id})" title="Apagar chat">🗑️</button>
+                    </div>
+                `;
+            }).join('');
         }
 
-        function enviarKwaiEmail() {
-            const assunto = document.getElementById('kwaiEmailAssunto').value.trim();
-            const detalhe = document.getElementById('kwaiEmailDetalhe').value.trim();
-            if (!assunto || !detalhe) {
-                alert("Preencha o assunto e o detalhe!");
+        function filterChats() {
+            const query = document.getElementById('search-input').value;
+            renderChatsList(query);
+        }
+
+        function openChat(id) {
+            currentChatId = id;
+            const chat = chatsList.find(c => c.id === id);
+            if (!chat) return;
+
+            document.getElementById('screen-home').classList.remove('active');
+            document.getElementById('screen-chat').classList.add('active');
+
+            updateChatUI(chat);
+        }
+
+        function goBackHome() {
+            document.getElementById('screen-chat').classList.remove('active');
+            document.getElementById('screen-home').classList.add('active');
+            renderChatsList(document.getElementById('search-input').value);
+        }
+
+        function updateChatUI(chat) {
+            document.getElementById('display-name').textContent = chat.name;
+            document.getElementById('display-name-sub').textContent = chat.name;
+            document.getElementById('display-stats').textContent = `${chat.followers} seguidores · ${chat.posts} publicação`;
+
+            const avatarContainer = document.getElementById('display-avatar-container');
+            if (chat.image) {
+                avatarContainer.innerHTML = `<img src="${chat.image}" class="profile-avatar-large">`;
+            } else {
+                avatarContainer.innerHTML = `<div class="profile-avatar-large">${chat.name.charAt(0).toUpperCase()}</div>`;
+            }
+
+            renderMessages(chat);
+        }
+
+        function renderMessages(chat) {
+            messagesContainer.innerHTML = chat.messages.map(m => {
+                let content = m.isImg ? `<img src="${m.text}" style="max-width: 180px; border-radius: 8px; display: block;">` : m.text;
+
+                if (m.type === 'received') {
+                    let avatarHTML = chat.image 
+                        ? `<img src="${chat.image}" class="msg-avatar">`
+                        : `<div class="msg-avatar">${chat.name.charAt(0).toUpperCase()}</div>`;
+
+                    return `
+                        <div class="message-row received">
+                            ${avatarHTML}
+                            <div class="message-bubble">${content}</div>
+                        </div>
+                    `;
+                } else {
+                    let myAvatarHTML = myProfile.image
+                        ? `<img src="${myProfile.image}" class="msg-avatar">`
+                        : `<div class="msg-avatar" style="background-color: #333; color: #fff;">${myProfile.name.charAt(0).toUpperCase()}</div>`;
+
+                    return `
+                        <div class="message-row sent">
+                            <div class="message-bubble">${content}</div>
+                            ${myAvatarHTML}
+                        </div>
+                    `;
+                }
+            }).join('');
+
+            chatBody.scrollTop = chatBody.scrollHeight;
+        }
+
+        chatInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                const text = chatInput.value.trim();
+                if (!text || currentChatId === null) return;
+
+                const chat = chatsList.find(c => c.id === currentChatId);
+                if (!chat) return;
+
+                const senderType = document.getElementById('input-sender-type').value;
+                chat.messages.push({ text: text, type: senderType, isImg: false });
+
+                chatInput.value = "";
+                renderMessages(chat);
+                saveData();
+            }
+        });
+
+        function sendGalleryImage(event) {
+            const file = event.target.files[0];
+            if (file && currentChatId !== null) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const chat = chatsList.find(c => c.id === currentChatId);
+                    if (chat) {
+                        const senderType = document.getElementById('input-sender-type').value;
+                        chat.messages.push({ text: e.target.result, type: senderType, isImg: true });
+                        renderMessages(chat);
+                        saveData();
+                    }
+                }
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function deleteChat(event, id) {
+            event.stopPropagation();
+            if (confirm("Deseja realmente apagar este chat da lista?")) {
+                chatsList = chatsList.filter(c => c.id !== id);
+                renderChatsList(document.getElementById('search-input').value);
+                saveData();
+            }
+        }
+
+        function openUserConfigModal() {
+            tempMyAvatarBase64 = myProfile.image;
+            document.getElementById('input-my-name').value = myProfile.name;
+            const box = document.getElementById('modal-my-avatar-box');
+            if (myProfile.image) {
+                box.innerHTML = `<img src="${myProfile.image}">`;
+            } else {
+                box.innerHTML = `<span id="modal-my-avatar-text">${myProfile.name.charAt(0).toUpperCase()}</span>`;
+            }
+            document.getElementById('user-config-modal').style.display = 'flex';
+        }
+
+        function closeUserConfigModal() {
+            document.getElementById('user-config-modal').style.display = 'none';
+        }
+
+        function loadMyAvatarImage(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    tempMyAvatarBase64 = e.target.result;
+                    const box = document.getElementById('modal-my-avatar-box');
+                    box.innerHTML = `<img src="${tempMyAvatarBase64}">`;
+                }
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function saveUserConfigModal() {
+            const name = document.getElementById('input-my-name').value.trim();
+            if (name) {
+                myProfile.name = name;
+            }
+            myProfile.image = tempMyAvatarBase64;
+            updateMyProfileUI();
+            closeUserConfigModal();
+            saveData();
+            if (currentChatId !== null) {
+                const chat = chatsList.find(c => c.id === currentChatId);
+                if (chat) renderMessages(chat);
+            }
+        }
+
+        function openNewProfileModal() {
+            if (chatsList.length >= 15) {
+                alert("Você atingiu o limite máximo de 15 chats criados.");
                 return;
             }
-            const mailtoUrl = `mailto:support@kwai.com?subject=${encodeURIComponent(assunto)}&body=${encodeURIComponent(detalhe)}`;
-            window.location.href = mailtoUrl;
+            isEditing = false;
+            tempAvatarBase64 = null;
+            document.getElementById('modal-tag').textContent = "Novo Chat Fictício";
+            document.getElementById('modal-main-title').textContent = "Criar perfil";
+            document.getElementById('sender-group').style.display = 'none';
+
+            document.getElementById('input-name').value = "";
+            document.getElementById('input-subtext').value = "Personagem fictício";
+            document.getElementById('input-followers').value = 500;
+            document.getElementById('input-posts').value = 1;
+            document.getElementById('modal-avatar-box').innerHTML = `<span id="modal-avatar-text">+</span>`;
+
+            document.getElementById('profile-modal').style.display = 'flex';
         }
 
-        function enviarKwaiChat() {
-            const input = document.getElementById('kwaiChatInput');
-            const chatBox = document.getElementById('kwaiFakeChatBox');
-            const msg = input.value.trim();
-            if (!msg) return;
+        function openEditModal() {
+            isEditing = true;
+            const chat = chatsList.find(c => c.id === currentChatId);
+            if (!chat) return;
 
-            const div = document.createElement('div');
-            div.className = 'text-white bg-orange-950/40 p-1.5 rounded border border-orange-900/40';
-            div.innerHTML = `<strong>Você:</strong> ${msg}`;
-            chatBox.appendChild(div);
-            input.value = '';
-            chatBox.scrollTop = chatBox.scrollHeight;
+            tempAvatarBase64 = chat.image;
+            document.getElementById('modal-tag').textContent = "Configurações do Chat";
+            document.getElementById('modal-main-title').textContent = "Editar perfil";
+            document.getElementById('sender-group').style.display = 'flex';
+
+            document.getElementById('input-name').value = chat.name;
+            document.getElementById('input-subtext').value = chat.subtext;
+            document.getElementById('input-followers').value = chat.followers;
+            document.getElementById('input-posts').value = chat.posts;
+
+            const modalAvatarBox = document.getElementById('modal-avatar-box');
+            if (chat.image) {
+                modalAvatarBox.innerHTML = `<img src="${chat.image}">`;
+            } else {
+                modalAvatarBox.innerHTML = `<span id="modal-avatar-text">${chat.name.charAt(0).toUpperCase()}</span>`;
+            }
+
+            document.getElementById('profile-modal').style.display = 'flex';
         }
 
-        // Restante do script original mantido intacto...
+        function closeProfileModal() {
+            document.getElementById('profile-modal').style.display = 'none';
+        }
+
+        function loadAvatarImage(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    tempAvatarBase64 = e.target.result;
+                    const modalAvatarBox = document.getElementById('modal-avatar-box');
+                    modalAvatarBox.innerHTML = `<img src="${tempAvatarBase64}">`;
+                }
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function saveProfileModal() {
+            const name = document.getElementById('input-name').value.trim();
+            const subtext = document.getElementById('input-subtext').value.trim();
+            const followers = parseInt(document.getElementById('input-followers').value) || 0;
+            const posts = parseInt(document.getElementById('input-posts').value) || 0;
+
+            if (!name) {
+                alert("Por favor, insira o nome do personagem.");
+                return;
+            }
+
+            if (!isEditing) {
+                const newId = chatsList.length > 0 ? Math.max(...chatsList.map(c => c.id)) + 1 : 1;
+                chatsList.push({
+                    id: newId,
+                    name: name,
+                    subtext: subtext,
+                    followers: followers,
+                    posts: posts,
+                    image: tempAvatarBase64,
+                    messages: [
+                        { text: `Olá, sou ${name}. Vamos conversar!`, type: "received", isImg: false }
+                    ]
+                });
+            } else {
+                const chat = chatsList.find(c => c.id === currentChatId);
+                if (chat) {
+                    chat.name = name;
+                    chat.subtext = subtext;
+                    chat.followers = followers;
+                    chat.posts = posts;
+                    chat.image = tempAvatarBase64;
+                    updateChatUI(chat);
+                }
+            }
+
+            closeProfileModal();
+            renderChatsList(document.getElementById('search-input').value);
+            saveData();
+        }
+
+        function openSnippetsModal() {
+            renderSnippetsList();
+            document.getElementById('snippets-modal').style.display = 'flex';
+        }
+
+        function closeSnippetsModal() {
+            document.getElementById('snippets-modal').style.display = 'none';
+        }
+
+        function renderSnippetsList() {
+            const container = document.getElementById('snippets-list-container');
+            if (textSnippets.length === 0) {
+                container.innerHTML = `<div style="text-align: center; color: var(--muted-color); font-size: 0.8rem; padding: 10px;">Nenhum texto salvo.</div>`;
+                return;
+            }
+
+            container.innerHTML = textSnippets.map((text, index) => `
+                <div class="snippet-item">
+                    <span class="snippet-text">${text}</span>
+                    <div class="snippet-actions">
+                        <button class="btn-snippet-copy" onclick="copySnippetText('${text.replace(/'/g, "\\'")}')">Copiar</button>
+                        <button class="btn-snippet-del" onclick="deleteSnippet(${index})" title="Excluir">🗑️</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function addSnippet() {
+            const input = document.getElementById('new-snippet-input');
+            const text = input.value.trim();
+            if (!text) return;
+
+            textSnippets.push(text);
+            input.value = "";
+            renderSnippetsList();
+            saveData();
+        }
+
+        function deleteSnippet(index) {
+            textSnippets.splice(index, 1);
+            renderSnippetsList();
+            saveData();
+        }
+
+        function copySnippetText(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                alert("Texto copiado para a área de transferência!");
+            }).catch(err => {
+                console.error("Erro ao copiar: ", err);
+            });
+        }
+
+        updateMyProfileUI();
+        renderChatsList();
     </script>
 </body>
 </html>
