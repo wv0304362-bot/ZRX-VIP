@@ -977,7 +977,7 @@
             localStorage.setItem(key, JSON.stringify(historico));
         }
 
-        function enviarMensagemIa() {
+        async function enviarMensagemIa() {
             const input = document.getElementById('iaInputMessage');
             const text = input.value.trim();
             const container = document.getElementById('iaChatMessages');
@@ -996,18 +996,86 @@
             const loadingMsg = document.createElement('div');
             loadingMsg.className = 'bg-gray-900 border border-gray-800 rounded-xl p-3 text-gray-400 mr-6 animate-pulse';
             loadingMsg.id = 'loadingResponse';
-            loadingMsg.innerHTML = `<span class="text-[10px] text-gray-500 block mb-1">🤖 ${currentAiProvider.toUpperCase()}</span>Processando texto / denúncia...`;
+            loadingMsg.innerHTML = `<span class="text-[10px] text-gray-500 block mb-1">🤖 ${currentAiProvider.toUpperCase()}</span>Gerando resposta...`;
             container.appendChild(loadingMsg);
             container.scrollTop = container.scrollHeight;
 
             const apiKey = localStorage.getItem(`zrx_apikey_${currentAiProvider}`);
 
-            setTimeout(() => {
+            if (!apiKey) {
+                const loadingEl = document.getElementById('loadingResponse');
+                if (loadingEl) loadingEl.remove();
+
+                const aiMsg = document.createElement('div');
+                aiMsg.className = 'bg-gray-900 border border-red-900/50 rounded-xl p-3 text-red-400 mr-6';
+                const msgErro = `[Aviso] Nenhuma chave de API do ${currentAiProvider.toUpperCase()} foi salva. Clique no ícone de engrenagem ⚙️ no topo para inserir sua chave de API para poder conversar de verdade.`;
+                aiMsg.innerHTML = `<span class="text-[10px] text-red-500 block mb-1">🤖 ${currentAiProvider.toUpperCase()}</span>${msgErro}`;
+                container.appendChild(aiMsg);
+
+                salvarMensagemHistoricoIsolado(currentAiProvider, 'ai', msgErro);
+                container.scrollTop = container.scrollHeight;
+                return;
+            }
+
+            try {
                 let resposta = "";
-                if (apiKey) {
-                    resposta = `[${currentAiProvider.toUpperCase()} API] Texto/Denúncia processada com sucesso: "${text}". Resposta gerada via chave externa.`;
-                } else {
-                    resposta = `[${currentAiProvider.toUpperCase()} - Simulador Textual] Processado: "${text}". O motor de texto e denúncias está ativo e pronto para uso livre.`;
+
+                if (currentAiProvider === 'gemini') {
+                    const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            contents: [{ parts: [{ text: text }] }]
+                        })
+                    });
+                    const data = await res.json();
+                    if (data.candidates && data.candidates[0].content.parts[0].text) {
+                        resposta = data.candidates[0].content.parts[0].text;
+                    } else if (data.error) {
+                        resposta = `[Erro na API]: ${data.error.message}`;
+                    } else {
+                        resposta = "Não foi possível interpretar a resposta da API do Gemini.";
+                    }
+                } else if (currentAiProvider === 'openai') {
+                    const res = await fetch('https://api.openai.com/v1/chat/completions', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${apiKey}`
+                        },
+                        body: JSON.stringify({
+                            model: 'gpt-3.5-turbo',
+                            messages: [{ role: 'user', content: text }]
+                        })
+                    });
+                    const data = await res.json();
+                    if (data.choices && data.choices[0].message.content) {
+                        resposta = data.choices[0].message.content;
+                    } else if (data.error) {
+                        resposta = `[Erro na API]: ${data.error.message}`;
+                    } else {
+                        resposta = "Não foi possível interpretar a resposta da API da OpenAI.";
+                    }
+                } else if (currentAiProvider === 'groq') {
+                    const res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${apiKey}`
+                        },
+                        body: JSON.stringify({
+                            model: 'llama-3.3-70b-versatile',
+                            messages: [{ role: 'user', content: text }]
+                        })
+                    });
+                    const data = await res.json();
+                    if (data.choices && data.choices[0].message.content) {
+                        resposta = data.choices[0].message.content;
+                    } else if (data.error) {
+                        resposta = `[Erro na API]: ${data.error.message}`;
+                    } else {
+                        resposta = "Não foi possível interpretar a resposta da API do Groq.";
+                    }
                 }
 
                 const loadingEl = document.getElementById('loadingResponse');
@@ -1020,7 +1088,20 @@
 
                 salvarMensagemHistoricoIsolado(currentAiProvider, 'ai', resposta);
                 container.scrollTop = container.scrollHeight;
-            }, 800);
+
+            } catch (err) {
+                const loadingEl = document.getElementById('loadingResponse');
+                if (loadingEl) loadingEl.remove();
+
+                const aiMsg = document.createElement('div');
+                aiMsg.className = 'bg-gray-900 border border-red-900/50 rounded-xl p-3 text-red-400 mr-6';
+                const msgErro = `[Erro de Conexão]: Falha ao comunicar com a API do ${currentAiProvider.toUpperCase()}. Verifique se sua chave está correta.`;
+                aiMsg.innerHTML = `<span class="text-[10px] text-red-500 block mb-1">🤖 ${currentAiProvider.toUpperCase()}</span>${msgErro}`;
+                container.appendChild(aiMsg);
+
+                salvarMensagemHistoricoIsolado(currentAiProvider, 'ai', msgErro);
+                container.scrollTop = container.scrollHeight;
+            }
         }
 
         async function executarBuscaIpInfo() {
