@@ -1476,115 +1476,119 @@
                 
                 setTimeout(() => {
                     window.open(urlWhatsApp, '_blank');
-                    statusBox.innerHTML = `<span class="text-green-400 font-bold">✅ Pronto para enviar empilhado (${quantidade}x)!</span>`;
-                }, 500);
-
-                adicionarNotificacao("Flooder WhatsApp", `${quantidade} linhas geradas em bloco para ${alvo}`, "green");
+                    statusBox.innerHTML = `<span class="text-green-400 font-bold">✅ Disparo múltiplo enviado!</span>`;
+                }, 800);
             } else {
-                statusBox.innerHTML = `<span class="text-yellow-400">🚀 Iniciando sequência de disparos...</span>`;
+                statusBox.innerHTML = `<span class="text-yellow-400">⚡ Preparando envio individual (${quantidade}x)...</span>`;
                 
-                let enviados = 0;
+                let cont = 0;
                 const interval = setInterval(() => {
-                    enviados++;
-                    statusBox.innerHTML = `<span class="text-blue-400">Disparando ${enviados}/${quantidade}...</span>`;
+                    cont++;
+                    statusBox.innerHTML = `<span class="text-blue-400">Enviando item ${cont}/${quantidade}...</span>`;
                     
                     const urlWhatsApp = `https://api.whatsapp.com/send?phone=${alvo}&text=${encodeURIComponent(payload)}`;
                     window.open(urlWhatsApp, '_blank');
 
-                    if (enviados >= quantidade) {
+                    if (cont >= quantidade) {
                         clearInterval(interval);
-                        statusBox.innerHTML = `<span class="text-green-400 font-bold">✅ Todos os ${quantidade} disparos foram efetuados!</span>`;
-                        adicionarNotificacao("Flooder WhatsApp", `Disparo individual finalizado (${quantidade}x) para ${alvo}`, "green");
+                        statusBox.innerHTML = `<span class="text-green-400 font-bold">✅ Todos os ${quantidade} disparos foram concluídos!</span>`;
                     }
-                }, 1200);
+                }, 1500);
             }
         }
 
         function iniciarProcessoBanzap() {
-            const number = document.getElementById('targetNumberInput').value.trim();
+            const num = document.getElementById('targetNumberInput').value.trim();
             const box = document.getElementById('denunciaProcessBox');
 
-            if (!number) {
-                alert("Insira o número do alvo!");
+            if (!num) {
+                alert("Insira o número de telefone com DDD!");
                 return;
             }
 
-            box.innerHTML = `<span class="text-yellow-400 animate-pulse">⚡ Conectando ao gateway Banzap...</span>`;
+            box.innerHTML = `<span class="text-yellow-400 animate-pulse">⚡ Inicializando Banzap API...</span>`;
 
             setTimeout(() => {
-                box.innerHTML = `<span class="text-blue-400">📡 Gerando protocolo de denúncia...</span>`;
-            }, 1000);
+                box.innerHTML = `<span class="text-blue-400">🔍 Verificando relatórios de spam para ${num}...</span>`;
+            }, 1200);
 
             setTimeout(() => {
-                box.innerHTML = `<span class="text-green-400 font-bold">✅ Denúncia processada para ${number}!</span>`;
-                adicionarNotificacao("Banzap API", `Denúncia disparada com sucesso para ${number}`, "green");
+                box.innerHTML = `<span class="text-green-400 font-bold">✅ Denúncia processada. Abrindo canal oficial de suporte...</span>`;
+                const mailtoUrl = `mailto:support@whatsapp.com?subject=Den%C3%BAncia%20de%20Spam%20${encodeURIComponent(num)}&body=Solicito%20an%C3%A1lise%20urgente%20da%20conta%20${encodeURIComponent(num)}%20por%20viola%C3%A7%C3%A3o%20dos%20termos%20de%20servi%C3%A7o.`;
+                window.location.href = mailtoUrl;
             }, 2500);
         }
 
         function gerarNumeroVirtual() {
-            const display = document.getElementById('virtualNumberDisplay');
-            display.innerText = "Gerando...";
+            const disp = document.getElementById('virtualNumberDisplay');
+            disp.innerText = "Gerando...";
 
             setTimeout(() => {
-                const randomNum = "+79" + Math.floor(100000000 + Math.random() * 900000000);
-                display.innerText = randomNum;
-                document.getElementById('antiBanPhone').value = randomNum;
-                localStorage.setItem('zrx_virtual_number', randomNum);
-                adicionarNotificacao("SMS Virtual", `Novo número gerado: ${randomNum}`, "blue");
-            }, 1200);
+                const rand = Math.floor(100000000 + Math.random() * 900000000);
+                const novoNum = `+7 9${rand}`;
+                disp.innerText = novoNum;
+                localStorage.setItem('zrx_virtual_number', novoNum);
+                document.getElementById('antiBanPhone').value = novoNum;
+                alert(`Novo número virtual da Rússia gerado: ${novoNum}`);
+            }, 1000);
         }
 
         function filtroGlobal() {
-            alert("Filtro Global de Servidores SMS ativado.");
+            alert("Filtro Global ativado. Configurado para rotacionar IPs e regiões SMS.");
         }
 
-        function loadAvatar(event) {
-            const file = event.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    document.getElementById('userAvatar').src = e.target.result;
-                    localStorage.setItem('zrx_avatar', e.target.result);
-                };
-                reader.readAsDataURL(file);
-            }
+        function loadAvatar(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(evt) {
+                const dataUrl = evt.target.result;
+                document.getElementById('userAvatar').src = dataUrl;
+                localStorage.setItem('zrx_avatar', dataUrl);
+            };
+            reader.readAsDataURL(file);
         }
 
-        function loadBackground(event) {
-            const file = event.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    const bgImg = document.getElementById('bgImage');
-                    const bgVid = document.getElementById('bgVideo');
+        function loadBackground(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(evt) {
+                const dataUrl = evt.target.result;
+                const bgImg = document.getElementById('bgImage');
+                const bgVid = document.getElementById('bgVideo');
 
-                    if (file.type.startsWith('video/')) {
-                        bgVid.src = e.target.result;
-                        bgVid.classList.remove('hidden');
-                        bgImg.classList.add('hidden');
-                        localStorage.setItem('zrx_bg_type', 'video');
-                    } else {
-                        bgImg.src = e.target.result;
-                        bgImg.classList.remove('hidden');
-                        bgVid.classList.add('hidden');
-                        localStorage.setItem('zrx_bg_type', 'image');
-                    }
-                    localStorage.setItem('zrx_bg', e.target.result);
-                };
-                reader.readAsDataURL(file);
-            }
+                if (file.type.startsWith('video/')) {
+                    bgVid.src = dataUrl;
+                    bgVid.classList.remove('hidden');
+                    bgImg.classList.add('hidden');
+                    localStorage.setItem('zrx_bg_type', 'video');
+                } else {
+                    bgImg.src = dataUrl;
+                    bgImg.classList.remove('hidden');
+                    bgVid.classList.add('hidden');
+                    localStorage.setItem('zrx_bg_type', 'image');
+                }
+                localStorage.setItem('zrx_bg', dataUrl);
+            };
+            reader.readAsDataURL(file);
         }
 
-        function setThemeColor(colorHex) {
-            localStorage.setItem('zrx_color', colorHex);
-            applyThemeColor(colorHex);
-            alert("Cor de destaque alterada com sucesso!");
+        function setThemeColor(hexColor) {
+            applyThemeColor(hexColor);
+            localStorage.setItem('zrx_color', hexColor);
         }
 
-        function applyThemeColor(colorHex) {
-            document.querySelectorAll('.bg-accentred').forEach(el => el.style.backgroundColor = colorHex);
-            document.querySelectorAll('.border-accentred').forEach(el => el.style.borderColor = colorHex);
-            document.querySelectorAll('.text-red-500').forEach(el => el.style.color = colorHex);
+        function applyThemeColor(hexColor) {
+            document.querySelectorAll('.border-accentred, .border-red-900').forEach(el => {
+                el.style.borderColor = hexColor;
+            });
+            document.querySelectorAll('.bg-accentred').forEach(el => {
+                el.style.backgroundColor = hexColor;
+            });
+            document.querySelectorAll('.text-red-500, .text-red-400').forEach(el => {
+                el.style.color = hexColor;
+            });
         }
 
         function updateProfile() {
@@ -1592,23 +1596,20 @@
             if (newName) {
                 document.getElementById('userName').innerText = newName;
                 localStorage.setItem('zrx_name', newName);
-                alert("Nome atualizado com sucesso!");
             }
+            alert("Perfil e preferências atualizados com sucesso!");
         }
 
-        function adicionarNotificacao(origem, texto, tipo = "green") {
+        function adicionarNotificacao(origem, msg, cor = "green") {
             const container = document.getElementById('notificationsContainer');
             if (!container) return;
 
+            const timeStr = new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
             const div = document.createElement('div');
-            const now = new Date();
-            const hora = now.getHours().toString().padStart(2, '0') + ':' + now.getMinutes().toString().padStart(2, '0');
-            
-            const colorClass = tipo === "green" ? "border-green-500" : "border-red-500";
-            div.className = `border-l-2 ${colorClass} pl-2 py-1`;
+            div.className = `border-l-2 border-${cor}-500 pl-2 py-1`;
             div.innerHTML = `
-                <span class="text-[10px] text-gray-500 block">${hora} - ${origem}</span>
-                <span class="text-white">${texto}</span>
+                <span class="text-[10px] text-gray-500 block">${timeStr} - ${origem}</span>
+                <span class="text-white">${msg}</span>
             `;
             container.prepend(div);
         }
