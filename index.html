@@ -138,12 +138,12 @@
                                 </div>
                                 <span class="bg-gray-900 text-gray-300 text-[10px] font-bold px-2.5 py-1 rounded-full border border-gray-700">🤖 MULTI-AI</span>
                             </div>
-                            <h3 class="text-sm font-bold text-white tracking-wide">AI Central (Chat)</h3>
+                            <h3 class="text-sm font-bold text-white tracking-wide">Central de IA (Chat)</h3>
                             <span class="text-[10px] text-gray-400 font-mono block mb-2">#Gemini #OpenAI #Groq #ChatGPT</span>
-                            <p class="text-xs text-gray-400">Acesse o painel 2x2 com as IAs para textos, denúncias e conversas livre.</p>
+                            <p class="text-xs text-gray-400">Acesse o painel com as IAs para textos, denúncias e conversas livres.</p>
                         </div>
                         <div class="pt-2 border-t border-gray-800/60 flex justify-between items-center">
-                            <span class="text-[10px] text-gray-400 font-mono">[ ABRIR GRID ]</span>
+                            <span class="text-[10px] text-gray-400 font-mono">[ ABRIR PAINEL ]</span>
                             <span class="text-xs text-gray-300 font-bold group-hover:translate-x-1 transition">Acessar →</span>
                         </div>
                     </div>
@@ -319,7 +319,7 @@
                         </div>
 
                         <div id="shieldStatusBox" class="bg-black/80 border border-red-900/40 rounded-lg p-2 text-[10px] font-mono text-gray-300 min-h-[40px] flex flex-col justify-center">
-                            <span class="text-gray-500 text-center">Aguardando disparo do balãozinho...</span>
+                            <span class="text-gray-500 text-center">Aguardando disparo do formulário...</span>
                         </div>
                     </div>
                     
@@ -533,7 +533,7 @@
         </div>
 
         <div class="text-center text-[9px] text-gray-500 font-mono pt-1">
-            [ Text Generation Only - Independent Sessions ]
+            [ Geração de Texto em Português - Sessão Independente ]
         </div>
     </div>
 
@@ -611,7 +611,7 @@
         </div>
 
         <div class="text-center text-[10px] text-gray-500 font-mono pt-2">
-            [ Copy &amp; Paste Browser Ready ]
+            [ Copie e Cole no Navegador ]
         </div>
     </div>
 
@@ -1071,6 +1071,7 @@
 
             try {
                 let resposta = "";
+                const systemPromptPt = "Responda sempre em português do Brasil de forma direta, concisa e profissional.";
 
                 if (currentAiProvider === 'gemini') {
                     const modelToUse = apiVersion || 'gemini-2.5-flash';
@@ -1078,6 +1079,7 @@
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({
+                            system_instruction: { parts: [{ text: systemPromptPt }] },
                             contents: [{ parts: [{ text: text }] }]
                         })
                     });
@@ -1099,7 +1101,10 @@
                         },
                         body: JSON.stringify({
                             model: modelToUse,
-                            messages: [{ role: 'user', content: text }]
+                            messages: [
+                                { role: 'system', content: systemPromptPt },
+                                { role: 'user', content: text }
+                            ]
                         })
                     });
                     const data = await res.json();
@@ -1120,7 +1125,10 @@
                         },
                         body: JSON.stringify({
                             model: modelToUse,
-                            messages: [{ role: 'user', content: text }]
+                            messages: [
+                                { role: 'system', content: systemPromptPt },
+                                { role: 'user', content: text }
+                            ]
                         })
                     });
                     const data = await res.json();
@@ -1430,7 +1438,7 @@
             }, 1000);
 
             setTimeout(() => {
-                statusBox.innerHTML = `<span class="text-green-400 font-bold">✅ Balãozinho gerado com sucesso! Abrindo link...</span>`;
+                statusBox.innerHTML = `<span class="text-green-400 font-bold">✅ Link gerado com sucesso! Abrindo...</span>`;
                 badge.className = "bg-green-950 text-green-400 text-[10px] font-bold px-2.5 py-1 rounded-full border border-green-800/50 transition-all";
                 badge.innerText = "● SECURED";
                 footerTag.innerText = "[ ACTIVE ]";
@@ -1471,150 +1479,112 @@
                     statusBox.innerHTML = `<span class="text-green-400 font-bold">✅ Pronto para enviar empilhado (${quantidade}x)!</span>`;
                 }, 500);
 
-                adicionarNotificacao("Flooder WhatsApp", `${quantidade} linhas geradas em bloco para ${alvo}`, "red");
-                return;
-            }
-
-            let enviado = 0;
-            statusBox.innerHTML = `<span class="text-yellow-400">⚡ Iniciando (${quantidade}x)...</span>`;
-
-            const intervalo = setInterval(() => {
-                enviado++;
+                adicionarNotificacao("Flooder WhatsApp", `${quantidade} linhas geradas em bloco para ${alvo}`, "green");
+            } else {
+                statusBox.innerHTML = `<span class="text-yellow-400">🚀 Iniciando sequência de disparos...</span>`;
                 
-                if (enviado <= quantidade) {
-                    statusBox.innerHTML = `
-                        <div class="space-y-1 w-full px-1">
-                            <span class="text-blue-400 font-bold">🔄 Enviando ${enviado}/${quantidade}...</span>
-                            <div class="w-full bg-gray-800 rounded-full h-1.5 overflow-hidden">
-                                <div class="bg-red-600 h-full" style="width: ${(enviado/quantidade)*100}%"></div>
-                            </div>
-                        </div>
-                    `;
+                let enviados = 0;
+                const interval = setInterval(() => {
+                    enviados++;
+                    statusBox.innerHTML = `<span class="text-blue-400">Disparando ${enviados}/${quantidade}...</span>`;
+                    
                     const urlWhatsApp = `https://api.whatsapp.com/send?phone=${alvo}&text=${encodeURIComponent(payload)}`;
                     window.open(urlWhatsApp, '_blank');
-                } else {
-                    clearInterval(intervalo);
-                    statusBox.innerHTML = `<span class="text-green-400 font-bold">✅ Todos os ${quantidade} disparos concluídos!</span>`;
-                    adicionarNotificacao("Flooder WhatsApp", `${quantidade} disparos finalizados para ${alvo}`, "green");
-                }
-            }, 1200);
+
+                    if (enviados >= quantidade) {
+                        clearInterval(interval);
+                        statusBox.innerHTML = `<span class="text-green-400 font-bold">✅ Todos os ${quantidade} disparos foram efetuados!</span>`;
+                        adicionarNotificacao("Flooder WhatsApp", `Disparo individual finalizado (${quantidade}x) para ${alvo}`, "green");
+                    }
+                }, 1200);
+            }
         }
 
         function iniciarProcessoBanzap() {
-            const numero = document.getElementById('targetNumberInput').value.trim();
+            const number = document.getElementById('targetNumberInput').value.trim();
             const box = document.getElementById('denunciaProcessBox');
 
-            if (!numero) {
-                alert("Digite o número do alvo para iniciar o processo de denúncia!");
+            if (!number) {
+                alert("Insira o número do alvo!");
                 return;
             }
 
-            box.innerHTML = `<span class="text-yellow-400 animate-pulse">⚡ Conectando ao cluster Banzap...</span>`;
+            box.innerHTML = `<span class="text-yellow-400 animate-pulse">⚡ Conectando ao gateway Banzap...</span>`;
 
             setTimeout(() => {
-                box.innerHTML = `<span class="text-blue-400">🔍 Verificando relatórios e métricas de spam...</span>`;
+                box.innerHTML = `<span class="text-blue-400">📡 Gerando protocolo de denúncia...</span>`;
             }, 1000);
 
             setTimeout(() => {
-                box.innerHTML = `<span class="text-green-400 font-bold">✅ Processo finalizado! Denúncia enviada para os servidores do WhatsApp.</span>`;
-                adicionarNotificacao("Processo Banzap", `Denúncia disparada com sucesso para ${numero}`, "red");
+                box.innerHTML = `<span class="text-green-400 font-bold">✅ Denúncia processada para ${number}!</span>`;
+                adicionarNotificacao("Banzap API", `Denúncia disparada com sucesso para ${number}`, "green");
             }, 2500);
         }
 
         function gerarNumeroVirtual() {
             const display = document.getElementById('virtualNumberDisplay');
-            display.innerText = "Gerando número...";
+            display.innerText = "Gerando...";
 
             setTimeout(() => {
-                const prefixos = ['+79', '+791', '+792', '+793', '+795'];
-                const randPref = prefixos[Math.floor(Math.random() * prefixos.length)];
-                const randSuf = Math.floor(10000000 + Math.random() * 90000000);
-                const novoNum = `${randPref}${randSuf}`;
-
-                display.innerText = novoNum;
-                document.getElementById('antiBanPhone').value = novoNum;
-                localStorage.setItem('zrx_virtual_number', novoNum);
-
-                adicionarNotificacao("Número Virtual SMS", `Novo número gerado: ${novoNum}`, "green");
+                const randomNum = "+79" + Math.floor(100000000 + Math.random() * 900000000);
+                display.innerText = randomNum;
+                document.getElementById('antiBanPhone').value = randomNum;
+                localStorage.setItem('zrx_virtual_number', randomNum);
+                adicionarNotificacao("SMS Virtual", `Novo número gerado: ${randomNum}`, "blue");
             }, 1200);
         }
 
         function filtroGlobal() {
-            alert("Filtro Global de Países Ativado! Conexão de números roteada via Proxy de Alta Performance.");
+            alert("Filtro Global de Servidores SMS ativado.");
         }
 
-        function adicionarNotificacao(titulo, mensagem, cor = "green") {
-            const container = document.getElementById('notificationsContainer');
-            if (!container) return;
-
-            const agora = new Date();
-            const hora = agora.getHours().toString().padStart(2, '0') + ':' + agora.getMinutes().toString().padStart(2, '0');
-
-            const div = document.createElement('div');
-            div.className = `border-l-2 border-${cor}-500 pl-2 py-1`;
-            div.innerHTML = `
-                <span class="text-[10px] text-gray-500 block">${hora} - ${titulo}</span>
-                <span class="text-white">${mensagem}</span>
-            `;
-
-            container.insertBefore(div, container.firstChild);
+        function loadAvatar(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('userAvatar').src = e.target.result;
+                    localStorage.setItem('zrx_avatar', e.target.result);
+                };
+                reader.readAsDataURL(file);
+            }
         }
 
-        function loadAvatar(e) {
-            const file = e.target.files[0];
-            if (!file) return;
+        function loadBackground(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const bgImg = document.getElementById('bgImage');
+                    const bgVid = document.getElementById('bgVideo');
 
-            const reader = new FileReader();
-            reader.onload = function(evt) {
-                const dataUrl = evt.target.result;
-                document.getElementById('userAvatar').src = dataUrl;
-                localStorage.setItem('zrx_avatar', dataUrl);
-            };
-            reader.readAsDataURL(file);
+                    if (file.type.startsWith('video/')) {
+                        bgVid.src = e.target.result;
+                        bgVid.classList.remove('hidden');
+                        bgImg.classList.add('hidden');
+                        localStorage.setItem('zrx_bg_type', 'video');
+                    } else {
+                        bgImg.src = e.target.result;
+                        bgImg.classList.remove('hidden');
+                        bgVid.classList.add('hidden');
+                        localStorage.setItem('zrx_bg_type', 'image');
+                    }
+                    localStorage.setItem('zrx_bg', e.target.result);
+                };
+                reader.readAsDataURL(file);
+            }
         }
 
-        function loadBackground(e) {
-            const file = e.target.files[0];
-            if (!file) return;
-
-            const reader = new FileReader();
-            reader.onload = function(evt) {
-                const dataUrl = evt.target.result;
-                const bgImg = document.getElementById('bgImage');
-                const bgVid = document.getElementById('bgVideo');
-
-                if (file.type.startsWith('video/')) {
-                    bgVid.src = dataUrl;
-                    bgVid.classList.remove('hidden');
-                    bgImg.classList.add('hidden');
-                    localStorage.setItem('zrx_bg_type', 'video');
-                } else {
-                    bgImg.src = dataUrl;
-                    bgImg.classList.remove('hidden');
-                    bgVid.classList.add('hidden');
-                    localStorage.setItem('zrx_bg_type', 'image');
-                }
-
-                localStorage.setItem('zrx_bg', dataUrl);
-            };
-            reader.readAsDataURL(file);
+        function setThemeColor(colorHex) {
+            localStorage.setItem('zrx_color', colorHex);
+            applyThemeColor(colorHex);
+            alert("Cor de destaque alterada com sucesso!");
         }
 
-        function setThemeColor(hexColor) {
-            applyThemeColor(hexColor);
-            localStorage.setItem('zrx_color', hexColor);
-        }
-
-        function applyThemeColor(hexColor) {
-            document.querySelectorAll('.text-red-500, .text-red-400').forEach(el => {
-                el.style.color = hexColor;
-            });
-            document.querySelectorAll('.bg-accentred, .bg-red-600').forEach(el => {
-                el.style.backgroundColor = hexColor;
-            });
-            document.querySelectorAll('.border-red-900, .border-red-600, .border-accentred').forEach(el => {
-                el.style.borderColor = hexColor;
-            });
+        function applyThemeColor(colorHex) {
+            document.querySelectorAll('.bg-accentred').forEach(el => el.style.backgroundColor = colorHex);
+            document.querySelectorAll('.border-accentred').forEach(el => el.style.borderColor = colorHex);
+            document.querySelectorAll('.text-red-500').forEach(el => el.style.color = colorHex);
         }
 
         function updateProfile() {
@@ -1622,8 +1592,25 @@
             if (newName) {
                 document.getElementById('userName').innerText = newName;
                 localStorage.setItem('zrx_name', newName);
+                alert("Nome atualizado com sucesso!");
             }
-            alert("Perfil atualizado com sucesso!");
+        }
+
+        function adicionarNotificacao(origem, texto, tipo = "green") {
+            const container = document.getElementById('notificationsContainer');
+            if (!container) return;
+
+            const div = document.createElement('div');
+            const now = new Date();
+            const hora = now.getHours().toString().padStart(2, '0') + ':' + now.getMinutes().toString().padStart(2, '0');
+            
+            const colorClass = tipo === "green" ? "border-green-500" : "border-red-500";
+            div.className = `border-l-2 ${colorClass} pl-2 py-1`;
+            div.innerHTML = `
+                <span class="text-[10px] text-gray-500 block">${hora} - ${origem}</span>
+                <span class="text-white">${texto}</span>
+            `;
+            container.prepend(div);
         }
     </script>
 </body>
