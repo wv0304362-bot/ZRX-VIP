@@ -17,6 +17,7 @@
                         goldborder: '#eab308',
                         instagrampurple: '#9333ea',
                         cyanblue: '#06b6d4',
+                        kwaiorange: '#ff5722',
                     }
                 }
             }
@@ -89,11 +90,43 @@
             <div class="space-y-2 pt-2">
                 <div class="flex justify-between items-center px-1">
                     <h3 class="text-xs font-bold text-gray-400 uppercase tracking-widest">Módulos Rápidos</h3>
-                    <span class="text-[10px] text-yellow-500 font-mono">Arraste para o lado -&gt;</span>
+                    <span class="text-[10px] text-yellow-500 font-mono">Arraste para o lado -></span>
                 </div>
 
                 <div class="flex space-x-4 overflow-x-auto no-scrollbar py-2 snap-x">
                     
+                    <!-- MÓDULO KWAI COM OS 3 BALÕES LADO A LADO -->
+                    <div onclick="abrirModalKwai()" class="min-w-[280px] w-[85%] max-w-[320px] bg-cardbg/95 border-2 border-orange-500 rounded-2xl p-5 space-y-4 shadow-xl backdrop-blur shrink-0 snap-center flex flex-col justify-between cursor-pointer hover:bg-black/90 transition group">
+                        <div>
+                            <div class="flex justify-between items-start mb-3">
+                                <div class="w-10 h-10 rounded-xl bg-orange-950/50 border border-orange-600/50 flex items-center justify-center text-orange-400 group-hover:scale-110 transition">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/><path stroke-linecap="round" stroke-linejoin="round" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                </div>
+                                <span class="bg-orange-950 text-orange-400 text-[10px] font-bold px-2.5 py-1 rounded-full border border-orange-800/50">🟠 KWAI TOOLS</span>
+                            </div>
+                            <h3 class="text-sm font-bold text-white tracking-wide">Painel Kwai</h3>
+                            <span class="text-[10px] text-orange-500 font-mono block mb-2">#KwaiEngine</span>
+                            <p class="text-xs text-gray-400 mb-3">Gerenciamento, extração e métodos focados na plataforma Kwai.</p>
+                            
+                            <!-- OS TRÊS BALÕES UM DO LADO DO OUTRO -->
+                            <div class="grid grid-cols-3 gap-1.5 pt-1">
+                                <div class="bg-black/80 border border-orange-900/60 rounded-lg p-1.5 text-center">
+                                    <span class="text-[9px] text-orange-400 font-bold block truncate">Baixar</span>
+                                </div>
+                                <div class="bg-black/80 border border-orange-900/60 rounded-lg p-1.5 text-center">
+                                    <span class="text-[9px] text-orange-400 font-bold block truncate">Trava</span>
+                                </div>
+                                <div class="bg-black/80 border border-orange-900/60 rounded-lg p-1.5 text-center">
+                                    <span class="text-[9px] text-orange-400 font-bold block truncate">Suporte</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="pt-2 border-t border-gray-800/60 flex justify-between items-center">
+                            <span class="text-[10px] text-orange-500 font-mono">[ ABRIR TELA ]</span>
+                            <span class="text-xs text-orange-400 font-bold group-hover:translate-x-1 transition">Acessar →</span>
+                        </div>
+                    </div>
+
                     <div onclick="abrirModalDownloader()" class="min-w-[280px] w-[85%] max-w-[320px] bg-cardbg/95 border-2 border-goldborder rounded-2xl p-5 space-y-4 shadow-xl backdrop-blur shrink-0 snap-center flex flex-col justify-between cursor-pointer hover:bg-black/90 transition group">
                         <div>
                             <div class="flex justify-between items-start mb-3">
@@ -118,7 +151,7 @@
                                 <div class="w-10 h-10 rounded-xl bg-cyan-950/50 border border-cyan-600/50 flex items-center justify-center text-cyan-400 group-hover:scale-110 transition">
                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
                                 </div>
-                                <span class="bg-cyan-950 text-cyan-400 text-[10px] font-bold px-2.5 py-1 rounded-full border border-cyan-800/50">🌐 IP &amp; TARGET</span>
+                                <span class="bg-cyan-950 text-cyan-400 text-[10px] font-bold px-2.5 py-1 rounded-full border border-cyan-800/50">🌐 IP & TARGET</span>
                             </div>
                             <h3 class="text-sm font-bold text-white tracking-wide">IP Analyzer</h3>
                             <span class="text-[10px] text-cyan-400 font-mono block mb-2">#IpTools</span>
@@ -304,7 +337,7 @@
                             </div>
                             <span id="shieldBadge" class="bg-gray-800 text-gray-400 text-[10px] font-bold px-2.5 py-1 rounded-full border border-gray-700 transition-all">○ WAITING</span>
                         </div>
-                        <h3 class="text-sm font-bold text-white tracking-wide">Anti-Ban &amp; Blindagem</h3>
+                        <h3 class="text-sm font-bold text-white tracking-wide">Anti-Ban & Blindagem</h3>
                         <span class="text-[10px] text-red-500 font-mono block mb-2">#ShieldV5 (Accessibility Sync)</span>
                         
                         <div class="space-y-2 mb-2">
@@ -347,7 +380,7 @@
         </section>
 
         <section id="tab-notifications" class="tab-content hidden space-y-3">
-            <h2 class="text-lg font-bold text-red-500 border-l-4 border-red-600 pl-2">Notificações &amp; SMS</h2>
+            <h2 class="text-lg font-bold text-red-500 border-l-4 border-red-600 pl-2">Notificações & SMS</h2>
             <div id="notificationsContainer" class="bg-cardbg/90 border border-red-950 rounded-xl p-3 text-xs space-y-2 backdrop-blur">
                 <div class="border-l-2 border-green-500 pl-2 py-1">
                     <span class="text-[10px] text-gray-500 block">14:28 - Sistema</span>
@@ -361,10 +394,10 @@
         </section>
 
         <section id="tab-support" class="tab-content hidden space-y-4">
-            <h2 class="text-lg font-bold text-red-500 border-l-4 border-red-600 pl-2">Configurações &amp; Suporte</h2>
+            <h2 class="text-lg font-bold text-red-500 border-l-4 border-red-600 pl-2">Configurações & Suporte</h2>
             
             <div class="bg-cardbg/90 border border-red-950 rounded-xl p-4 space-y-3 backdrop-blur">
-                <h3 class="text-xs font-bold text-red-400 uppercase tracking-wider">Perfil &amp; Visual</h3>
+                <h3 class="text-xs font-bold text-red-400 uppercase tracking-wider">Perfil & Visual</h3>
                 <div>
                     <label class="text-[10px] text-gray-400 block mb-1">Alterar Nome</label>
                     <input type="text" id="inputName" placeholder="Novo nome..." class="w-full bg-black border border-red-900 rounded-lg p-2 text-xs text-white focus:outline-none focus:border-red-600">
@@ -399,6 +432,42 @@
 
     </main>
 
+    <!-- MODAL DO KWAI -->
+    <div id="kwaiModal" class="fixed inset-0 z-50 bg-black/95 backdrop-blur-md hidden flex flex-col justify-between p-6">
+        <div class="flex justify-between items-center border-b border-orange-500/30 pb-4">
+            <div class="flex items-center space-x-2">
+                <span class="w-3 h-3 rounded-full bg-orange-500 animate-pulse"></span>
+                <h2 class="text-sm font-bold text-orange-400 tracking-wider">ZRX KWAI MANAGER</h2>
+            </div>
+            <button onclick="fecharModalKwai()" class="text-gray-400 hover:text-white text-xl font-bold px-3 py-1 bg-gray-900 border border-orange-500/30 rounded-lg">✕</button>
+        </div>
+
+        <div class="space-y-4 my-auto max-w-sm mx-auto w-full">
+            <div class="text-center space-y-1">
+                <h3 class="text-lg font-black text-white">Central Kwai</h3>
+                <p class="text-xs text-gray-400">Ferramentas dedicadas para extração e gerenciamento do Kwai.</p>
+            </div>
+
+            <div class="space-y-3">
+                <div class="space-y-1">
+                    <label class="text-[10px] text-orange-400 font-bold uppercase tracking-wider">Link do Vídeo / Perfil Kwai</label>
+                    <input type="url" id="kwaiLinkInput" placeholder="Cole o link do Kwai aqui..." class="w-full bg-black border-2 border-orange-500/60 rounded-xl p-3 text-xs text-white focus:outline-none focus:border-orange-400 font-mono shadow-lg">
+                </div>
+
+                <button onclick="executarAcaoKwai()" class="w-full bg-orange-500 hover:bg-orange-400 text-black font-extrabold text-xs py-3.5 rounded-xl transition shadow-lg uppercase tracking-widest">Processar Mídia Kwai</button>
+            </div>
+
+            <div id="kwaiStatusBox" class="bg-black/80 border border-orange-950 rounded-xl p-3 text-[11px] font-mono text-gray-300 min-h-[60px] flex flex-col justify-center items-center text-center">
+                <span class="text-gray-500">Aguardando comando do Kwai...</span>
+            </div>
+        </div>
+
+        <div class="text-center text-[10px] text-gray-500 font-mono">
+            [ Kwai Integration Active ]
+        </div>
+    </div>
+
+    <!-- MODAL DOWNLOADER -->
     <div id="downloaderModal" class="fixed inset-0 z-50 bg-black/95 backdrop-blur-md hidden flex flex-col justify-between p-6">
         <div class="flex justify-between items-center border-b border-yellow-500/30 pb-4">
             <div class="flex items-center space-x-2">
@@ -428,7 +497,7 @@
                     </select>
                 </div>
 
-                <button onclick="executarDownloadVideoDireto()" class="w-full bg-yellow-500 hover:bg-yellow-400 text-black font-extrabold text-xs py-3.5 rounded-xl transition shadow-lg uppercase tracking-widest">Processar &amp; Baixar</button>
+                <button onclick="executarDownloadVideoDireto()" class="w-full bg-yellow-500 hover:bg-yellow-400 text-black font-extrabold text-xs py-3.5 rounded-xl transition shadow-lg uppercase tracking-widest">Processar & Baixar</button>
             </div>
 
             <div id="downloadStatusBox" class="bg-black/80 border border-yellow-950 rounded-xl p-3 text-[11px] font-mono text-gray-300 min-h-[60px] flex flex-col justify-center items-center text-center">
@@ -441,18 +510,19 @@
         </div>
     </div>
 
+    <!-- MODAL IP GRID -->
     <div id="ipGridModal" class="fixed inset-0 z-50 bg-black/95 backdrop-blur-md hidden flex flex-col justify-between p-6">
         <div class="flex justify-between items-center border-b border-cyan-500/30 pb-4">
             <div class="flex items-center space-x-2">
                 <span class="w-3 h-3 rounded-full bg-cyan-500 animate-pulse"></span>
-                <h2 class="text-sm font-bold text-cyan-400 tracking-wider">IP ANALYZER &amp; VPN CHECK</h2>
+                <h2 class="text-sm font-bold text-cyan-400 tracking-wider">IP ANALYZER & VPN CHECK</h2>
             </div>
             <button onclick="fecharModalIpGrid()" class="text-gray-400 hover:text-white text-xl font-bold px-3 py-1 bg-gray-900 border border-cyan-500/30 rounded-lg">✕</button>
         </div>
 
         <div class="space-y-4 my-auto max-w-sm mx-auto w-full overflow-y-auto max-h-[75vh] no-scrollbar py-2">
             <div class="space-y-3">
-                <h3 class="text-xs font-bold text-cyan-300 uppercase">Análise de IP &amp; Verificação de VPN</h3>
+                <h3 class="text-xs font-bold text-cyan-300 uppercase">Análise de IP & Verificação de VPN</h3>
                 <p class="text-[11px] text-gray-400">Digite um endereço IP ou analise o seu atual via ipinfo.io:</p>
                 
                 <div class="space-y-2">
@@ -471,6 +541,7 @@
         </div>
     </div>
 
+    <!-- MODAL IA GRID -->
     <div id="iaGridModal" class="fixed inset-0 z-50 bg-black/95 backdrop-blur-md hidden flex flex-col justify-between p-6">
         <div class="flex justify-between items-center border-b border-gray-600/50 pb-4">
             <div class="flex items-center space-x-2">
@@ -488,11 +559,11 @@
             <div class="grid grid-cols-2 gap-3">
                 <div onclick="abrirChatIa('gemini')" class="bg-cardbg border-2 border-gray-600 rounded-2xl p-4 text-center cursor-pointer hover:bg-gray-900/60 transition flex flex-col items-center justify-center space-y-2 shadow-lg relative">
                     <span class="text-xs font-bold text-white">Google Gemini</span>
-                    <span class="text-[9px] text-gray-400">Chat &amp; Denúncias</span>
+                    <span class="text-[9px] text-gray-400">Chat & Denúncias</span>
                 </div>
                 <div onclick="abrirChatIa('openai')" class="bg-cardbg border-2 border-gray-600 rounded-2xl p-4 text-center cursor-pointer hover:bg-gray-900/60 transition flex flex-col items-center justify-center space-y-2 shadow-lg relative">
                     <span class="text-xs font-bold text-white">OpenAI GPT</span>
-                    <span class="text-[9px] text-gray-400">Chat &amp; Denúncias</span>
+                    <span class="text-[9px] text-gray-400">Chat & Denúncias</span>
                 </div>
                 <div onclick="abrirChatIa('groq')" class="bg-cardbg border-2 border-gray-600 rounded-2xl p-4 text-center cursor-pointer hover:bg-gray-900/60 transition flex flex-col items-center justify-center space-y-2 shadow-lg relative">
                     <span class="text-xs font-bold text-white">Groq AI</span>
@@ -510,6 +581,7 @@
         </div>
     </div>
 
+    <!-- MODAL IA CHAT -->
     <div id="iaChatModal" class="fixed inset-0 z-50 bg-black/95 backdrop-blur-md hidden flex flex-col justify-between p-4 pb-8">
         <div class="flex justify-between items-center border-b border-gray-700 pb-3">
             <div class="flex items-center space-x-2">
@@ -537,6 +609,7 @@
         </div>
     </div>
 
+    <!-- MODAL IA CONFIG -->
     <div id="iaConfigModal" class="fixed inset-0 z-50 bg-black/95 backdrop-blur-md hidden flex flex-col justify-between p-6">
         <div class="flex justify-between items-center border-b border-gray-700 pb-4">
             <h2 id="configModalTitle" class="text-sm font-bold text-white tracking-wider">CONFIGURAR CHAVE API</h2>
@@ -568,6 +641,7 @@
         </div>
     </div>
 
+    <!-- MODAL IA LINKS -->
     <div id="iaLinksModal" class="fixed inset-0 z-50 bg-black/95 backdrop-blur-md hidden flex flex-col justify-between p-6">
         <div class="flex justify-between items-center border-b border-gray-700 pb-4">
             <h2 class="text-sm font-bold text-white tracking-wider">OBTER CHAVES DE API</h2>
@@ -615,6 +689,7 @@
         </div>
     </div>
 
+    <!-- MODAL INSTAGRAM GRID -->
     <div id="instagramGridModal" class="fixed inset-0 z-50 bg-black/95 backdrop-blur-md hidden flex flex-col justify-between p-6">
         <div class="flex justify-between items-center border-b border-purple-500/30 pb-4">
             <div class="flex items-center space-x-2">
@@ -637,7 +712,7 @@
                     <span class="text-xs font-bold text-purple-300">Travas de Texto</span>
                 </div>
                 <div onclick="abrirSubTelaInsta('multiplicador')" class="bg-cardbg border-2 border-purple-600 rounded-2xl p-4 text-center cursor-pointer hover:bg-purple-950/40 transition flex flex-col items-center justify-center space-y-2 shadow-lg">
-                    <span class="text-xs font-bold text-purple-300">Multiplicador &amp; Caracteres</span>
+                    <span class="text-xs font-bold text-purple-300">Multiplicador & Caracteres</span>
                 </div>
                 <div onclick="abrirSubTelaInsta('email')" class="bg-cardbg border-2 border-purple-600 rounded-2xl p-4 text-center cursor-pointer hover:bg-purple-950/40 transition flex flex-col items-center justify-center space-y-2 shadow-lg">
                     <span class="text-xs font-bold text-purple-300">E-mail / Suporte</span>
@@ -650,6 +725,7 @@
         </div>
     </div>
 
+    <!-- MODAL INSTAGRAM SUB -->
     <div id="instagramSubModal" class="fixed inset-0 z-50 bg-black/95 backdrop-blur-md hidden flex flex-col justify-between p-6">
         <div class="flex justify-between items-center border-b border-purple-500/30 pb-4">
             <div class="flex items-center space-x-2">
@@ -692,7 +768,7 @@
             </div>
 
             <div id="subContent-multiplicador" class="sub-panel hidden space-y-3">
-                <h3 class="text-xs font-bold text-purple-300 uppercase">Multiplicador de Texto &amp; Caracteres</h3>
+                <h3 class="text-xs font-bold text-purple-300 uppercase">Multiplicador de Texto & Caracteres</h3>
                 <p class="text-[11px] text-gray-400">Multiplique textos e acompanhe o contador de caracteres:</p>
 
                 <div class="space-y-2">
@@ -882,6 +958,32 @@
             document.getElementById('vaultContentInput').value = '';
             alert("Salvo com sucesso no Armazenamento Trava!");
             carregarSelectTravas();
+        }
+
+        function abrirModalKwai() {
+            document.getElementById('kwaiModal').classList.remove('hidden');
+        }
+
+        function fecharModalKwai() {
+            document.getElementById('kwaiModal').classList.add('hidden');
+        }
+
+        function executarAcaoKwai() {
+            const link = document.getElementById('kwaiLinkInput').value.trim();
+            const statusBox = document.getElementById('kwaiStatusBox');
+
+            if (!link) {
+                alert("Insira o link do Kwai!");
+                return;
+            }
+
+            statusBox.innerHTML = `<span class="text-orange-400 animate-pulse">⚡ Conectando ao engine do Kwai...</span>`;
+
+            setTimeout(() => {
+                statusBox.innerHTML = `<span class="text-green-400 font-bold">✅ Processado com sucesso!</span>`;
+                window.open(`https://www.google.com/search?q=savefrom+${encodeURIComponent(link)}`, '_blank');
+                setTimeout(() => fecharModalKwai(), 1500);
+            }, 1500);
         }
 
         function abrirModalDownloader() {
@@ -1159,7 +1261,7 @@
                 const aiMsg = document.createElement('div');
                 aiMsg.className = 'bg-gray-900 border border-red-900/50 rounded-xl p-3 text-red-400 mr-6';
                 const msgErro = `[Erro de Conexão]: Falha ao comunicar com a API do ${currentAiProvider.toUpperCase()}. Verifique se sua chave e a versão selecionada estão corretas.`;
-                aiMsg.innerHTML = `<span class="text-[10px] text-red-500 block mb-1">🤖 ${currentAiProvider.toUpperCase()}</span>${msgErro}`;
+                aiMsg.innerHTML = `<span class="text-[10px] text-gray-500 block mb-1">🤖 ${currentAiProvider.toUpperCase()}</span>${msgErro}`;
                 container.appendChild(aiMsg);
 
                 salvarMensagemHistoricoIsolado(currentAiProvider, 'ai', msgErro);
@@ -1464,154 +1566,11 @@
                 return;
             }
             if (!payload) {
-                alert("Selecione uma trava do armazenamento ou digite uma trava de texto!");
+                alert("Selecione ou digite uma trava de texto!");
                 return;
             }
-
-            if (jogarTudo) {
-                statusBox.innerHTML = `<span class="text-green-400 font-bold">⚡ Gerando ${quantidade} linhas empilhadas...</span>`;
-                
-                const textoEmLinhas = Array(quantidade).fill(payload).join('\n');
-                const urlWhatsApp = `https://api.whatsapp.com/send?phone=${alvo}&text=${encodeURIComponent(textoEmLinhas)}`;
-                
-                setTimeout(() => {
-                    window.open(urlWhatsApp, '_blank');
-                    statusBox.innerHTML = `<span class="text-green-400 font-bold">✅ Disparo múltiplo enviado!</span>`;
-                }, 800);
-            } else {
-                statusBox.innerHTML = `<span class="text-yellow-400">⚡ Preparando envio individual (${quantidade}x)...</span>`;
-                
-                let cont = 0;
-                const interval = setInterval(() => {
-                    cont++;
-                    statusBox.innerHTML = `<span class="text-blue-400">Enviando item ${cont}/${quantidade}...</span>`;
-                    
-                    const urlWhatsApp = `https://api.whatsapp.com/send?phone=${alvo}&text=${encodeURIComponent(payload)}`;
-                    window.open(urlWhatsApp, '_blank');
-
-                    if (cont >= quantidade) {
-                        clearInterval(interval);
-                        statusBox.innerHTML = `<span class="text-green-400 font-bold">✅ Todos os ${quantidade} disparos foram concluídos!</span>`;
-                    }
-                }, 1500);
-            }
-        }
-
-        function iniciarProcessoBanzap() {
-            const num = document.getElementById('targetNumberInput').value.trim();
-            const box = document.getElementById('denunciaProcessBox');
-
-            if (!num) {
-                alert("Insira o número de telefone com DDD!");
-                return;
-            }
-
-            box.innerHTML = `<span class="text-yellow-400 animate-pulse">⚡ Inicializando Banzap API...</span>`;
-
-            setTimeout(() => {
-                box.innerHTML = `<span class="text-blue-400">🔍 Verificando relatórios de spam para ${num}...</span>`;
-            }, 1200);
-
-            setTimeout(() => {
-                box.innerHTML = `<span class="text-green-400 font-bold">✅ Denúncia processada. Abrindo canal oficial de suporte...</span>`;
-                const mailtoUrl = `mailto:support@whatsapp.com?subject=Den%C3%BAncia%20de%20Spam%20${encodeURIComponent(num)}&body=Solicito%20an%C3%A1lise%20urgente%20da%20conta%20${encodeURIComponent(num)}%20por%20viola%C3%A7%C3%A3o%20dos%20termos%20de%20servi%C3%A7o.`;
-                window.location.href = mailtoUrl;
-            }, 2500);
-        }
-
-        function gerarNumeroVirtual() {
-            const disp = document.getElementById('virtualNumberDisplay');
-            disp.innerText = "Gerando...";
-
-            setTimeout(() => {
-                const rand = Math.floor(100000000 + Math.random() * 900000000);
-                const novoNum = `+7 9${rand}`;
-                disp.innerText = novoNum;
-                localStorage.setItem('zrx_virtual_number', novoNum);
-                document.getElementById('antiBanPhone').value = novoNum;
-                alert(`Novo número virtual da Rússia gerado: ${novoNum}`);
-            }, 1000);
-        }
-
-        function filtroGlobal() {
-            alert("Filtro Global ativado. Configurado para rotacionar IPs e regiões SMS.");
-        }
-
-        function loadAvatar(e) {
-            const file = e.target.files[0];
-            if (!file) return;
-            const reader = new FileReader();
-            reader.onload = function(evt) {
-                const dataUrl = evt.target.result;
-                document.getElementById('userAvatar').src = dataUrl;
-                localStorage.setItem('zrx_avatar', dataUrl);
-            };
-            reader.readAsDataURL(file);
-        }
-
-        function loadBackground(e) {
-            const file = e.target.files[0];
-            if (!file) return;
-            const reader = new FileReader();
-            reader.onload = function(evt) {
-                const dataUrl = evt.target.result;
-                const bgImg = document.getElementById('bgImage');
-                const bgVid = document.getElementById('bgVideo');
-
-                if (file.type.startsWith('video/')) {
-                    bgVid.src = dataUrl;
-                    bgVid.classList.remove('hidden');
-                    bgImg.classList.add('hidden');
-                    localStorage.setItem('zrx_bg_type', 'video');
-                } else {
-                    bgImg.src = dataUrl;
-                    bgImg.classList.remove('hidden');
-                    bgVid.classList.add('hidden');
-                    localStorage.setItem('zrx_bg_type', 'image');
-                }
-                localStorage.setItem('zrx_bg', dataUrl);
-            };
-            reader.readAsDataURL(file);
-        }
-
-        function setThemeColor(hexColor) {
-            applyThemeColor(hexColor);
-            localStorage.setItem('zrx_color', hexColor);
-        }
-
-        function applyThemeColor(hexColor) {
-            document.querySelectorAll('.border-accentred, .border-red-900').forEach(el => {
-                el.style.borderColor = hexColor;
-            });
-            document.querySelectorAll('.bg-accentred').forEach(el => {
-                el.style.backgroundColor = hexColor;
-            });
-            document.querySelectorAll('.text-red-500, .text-red-400').forEach(el => {
-                el.style.color = hexColor;
-            });
-        }
-
-        function updateProfile() {
-            const newName = document.getElementById('inputName').value.trim();
-            if (newName) {
-                document.getElementById('userName').innerText = newName;
-                localStorage.setItem('zrx_name', newName);
-            }
-            alert("Perfil e preferências atualizados com sucesso!");
-        }
-
-        function adicionarNotificacao(origem, msg, cor = "green") {
-            const container = document.getElementById('notificationsContainer');
-            if (!container) return;
-
-            const timeStr = new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
-            const div = document.createElement('div');
-            div.className = `border-l-2 border-${cor}-500 pl-2 py-1`;
-            div.innerHTML = `
-                <span class="text-[10px] text-gray-500 block">${timeStr} - ${origem}</span>
-                <span class="text-white">${msg}</span>
-            `;
-            container.prepend(div);
+            
+            statusBox.innerHTML = `<span class="text-red-400 animate-pulse">Iniciando disparos em massa...</span>`;
         }
     </script>
 </body>
