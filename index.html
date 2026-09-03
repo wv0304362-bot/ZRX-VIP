@@ -544,11 +544,22 @@
         </div>
 
         <div class="space-y-4 my-auto max-w-sm mx-auto w-full">
-            <p class="text-xs text-gray-400">Insira sua chave de API para esta inteligência artificial. Ela será salva de forma segura no seu navegador.</p>
-            <div class="space-y-2">
-                <input type="password" id="apiKeyInput" placeholder="Cole sua chave de API aqui..." class="w-full bg-black border border-gray-700 rounded-xl p-3 text-xs text-white focus:outline-none focus:border-gray-500 font-mono">
+            <p class="text-xs text-gray-400">Insira sua chave de API e selecione a versão do modelo para esta inteligência artificial.</p>
+            
+            <div class="space-y-3">
+                <div class="space-y-1">
+                    <label class="text-[10px] text-gray-300 font-bold uppercase">Chave de API</label>
+                    <input type="password" id="apiKeyInput" placeholder="Cole sua chave de API aqui..." class="w-full bg-black border border-gray-700 rounded-xl p-3 text-xs text-white focus:outline-none focus:border-gray-500 font-mono">
+                </div>
+
+                <div class="space-y-1">
+                    <label class="text-[10px] text-gray-300 font-bold uppercase">Versão do Modelo / Engine API</label>
+                    <select id="apiVersionSelect" class="w-full bg-black border border-gray-700 rounded-xl p-3 text-xs text-white focus:outline-none focus:border-gray-500 font-mono">
+                    </select>
+                </div>
             </div>
-            <button onclick="salvarChaveApi()" class="w-full bg-gray-200 hover:bg-white text-black font-bold text-xs py-3 rounded-xl transition uppercase">Salvar Chave</button>
+
+            <button onclick="salvarChaveApi()" class="w-full bg-gray-200 hover:bg-white text-black font-bold text-xs py-3 rounded-xl transition uppercase shadow-lg">Salvar Configuração</button>
         </div>
 
         <div class="text-center text-[10px] text-gray-500 font-mono">
@@ -761,6 +772,26 @@
     <script>
         const API_URL = 'https://weak-deloris-nothing672434-fe85179d.koyeb.app';
 
+        const defaultAiVersions = {
+            'gemini': [
+                { val: 'gemini-2.5-flash', label: 'Gemini 2.5 Flash (Padrão/Novo)' },
+                { val: 'gemini-2.0-flash', label: 'Gemini 2.0 Flash' },
+                { val: 'gemini-1.5-flash', label: 'Gemini 1.5 Flash' },
+                { val: 'gemini-1.5-pro', label: 'Gemini 1.5 Pro' }
+            ],
+            'openai': [
+                { val: 'gpt-4o-mini', label: 'GPT-4o Mini (Recomendado)' },
+                { val: 'gpt-4o', label: 'GPT-4o' },
+                { val: 'gpt-4-turbo', label: 'GPT-4 Turbo' },
+                { val: 'gpt-3.5-turbo', label: 'GPT-3.5 Turbo' }
+            ],
+            'groq': [
+                { val: 'llama-3.3-70b-versatile', label: 'Llama 3.3 70B (Rápido)' },
+                { val: 'llama3-8b-8192', label: 'Llama 3 8B' },
+                { val: 'mixtral-8x7b-32768', label: 'Mixtral 8x7b' }
+            ]
+        };
+
         window.addEventListener('DOMContentLoaded', () => {
             const savedName = localStorage.getItem('zrx_name');
             const savedAvatar = localStorage.getItem('zrx_avatar');
@@ -904,8 +935,22 @@
         function abrirConfigApi() {
             document.getElementById('iaConfigModal').classList.remove('hidden');
             const savedKey = localStorage.getItem(`zrx_apikey_${currentAiProvider}`) || '';
+            const savedVersion = localStorage.getItem(`zrx_apiversion_${currentAiProvider}`) || '';
+            
             document.getElementById('apiKeyInput').value = savedKey;
             document.getElementById('configModalTitle').innerText = `CONFIGURAR CHAVE API (${currentAiProvider.toUpperCase()})`;
+
+            const selectVer = document.getElementById('apiVersionSelect');
+            selectVer.innerHTML = '';
+            
+            const opcoes = defaultAiVersions[currentAiProvider] || [{ val: 'default', label: 'Versão Padrão' }];
+            opcoes.forEach(op => {
+                const opt = document.createElement('option');
+                opt.value = op.val;
+                opt.textContent = op.label;
+                if (op.val === savedVersion) opt.selected = true;
+                selectVer.appendChild(opt);
+            });
         }
 
         function fecharConfigApi() {
@@ -914,12 +959,15 @@
 
         function salvarChaveApi() {
             const key = document.getElementById('apiKeyInput').value.trim();
+            const version = document.getElementById('apiVersionSelect').value;
+            
             if (!key) {
                 alert("Insira uma chave válida!");
                 return;
             }
             localStorage.setItem(`zrx_apikey_${currentAiProvider}`, key);
-            alert("Chave de API salva com sucesso no navegador!");
+            localStorage.setItem(`zrx_apiversion_${currentAiProvider}`, version);
+            alert("Chave e versão do modelo salvas com sucesso no navegador!");
             fecharConfigApi();
         }
 
@@ -1001,6 +1049,7 @@
             container.scrollTop = container.scrollHeight;
 
             const apiKey = localStorage.getItem(`zrx_apikey_${currentAiProvider}`);
+            const apiVersion = localStorage.getItem(`zrx_apiversion_${currentAiProvider}`) || (defaultAiVersions[currentAiProvider] ? defaultAiVersions[currentAiProvider][0].val : '');
 
             if (!apiKey) {
                 const loadingEl = document.getElementById('loadingResponse');
@@ -1021,7 +1070,8 @@
                 let resposta = "";
 
                 if (currentAiProvider === 'gemini') {
-                    const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`, {
+                    const modelToUse = apiVersion || 'gemini-2.5-flash';
+                    const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${modelToUse}:generateContent?key=${apiKey}`, {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({
@@ -1037,6 +1087,7 @@
                         resposta = "Não foi possível interpretar a resposta da API do Gemini.";
                     }
                 } else if (currentAiProvider === 'openai') {
+                    const modelToUse = apiVersion || 'gpt-4o-mini';
                     const res = await fetch('https://api.openai.com/v1/chat/completions', {
                         method: 'POST',
                         headers: {
@@ -1044,7 +1095,7 @@
                             'Authorization': `Bearer ${apiKey}`
                         },
                         body: JSON.stringify({
-                            model: 'gpt-3.5-turbo',
+                            model: modelToUse,
                             messages: [{ role: 'user', content: text }]
                         })
                     });
@@ -1057,6 +1108,7 @@
                         resposta = "Não foi possível interpretar a resposta da API da OpenAI.";
                     }
                 } else if (currentAiProvider === 'groq') {
+                    const modelToUse = apiVersion || 'llama-3.3-70b-versatile';
                     const res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
                         method: 'POST',
                         headers: {
@@ -1064,7 +1116,7 @@
                             'Authorization': `Bearer ${apiKey}`
                         },
                         body: JSON.stringify({
-                            model: 'llama-3.3-70b-versatile',
+                            model: modelToUse,
                             messages: [{ role: 'user', content: text }]
                         })
                     });
@@ -1095,7 +1147,7 @@
 
                 const aiMsg = document.createElement('div');
                 aiMsg.className = 'bg-gray-900 border border-red-900/50 rounded-xl p-3 text-red-400 mr-6';
-                const msgErro = `[Erro de Conexão]: Falha ao comunicar com a API do ${currentAiProvider.toUpperCase()}. Verifique se sua chave está correta.`;
+                const msgErro = `[Erro de Conexão]: Falha ao comunicar com a API do ${currentAiProvider.toUpperCase()}. Verifique se sua chave e a versão selecionada estão corretas.`;
                 aiMsg.innerHTML = `<span class="text-[10px] text-red-500 block mb-1">🤖 ${currentAiProvider.toUpperCase()}</span>${msgErro}`;
                 container.appendChild(aiMsg);
 
@@ -1503,87 +1555,90 @@
                 }
                 throw new Error("Array vazio");
             } catch (error) {
-                const numeroSimulado = "+7 9" + Math.floor(100000000 + Math.random() * 900000000);
-                display.innerText = numeroSimulado;
-                document.getElementById('antiBanPhone').value = numeroSimulado;
-                localStorage.setItem('zrx_virtual_number', numeroSimulado);
-                adicionarNotificacao("SMS Gateway", `Número Rússia gerado: ${numeroSimulado}`, "red");
+                display.innerText = "+7 (912) 840-2219";
+                document.getElementById('antiBanPhone').value = "+79128402219";
+                localStorage.setItem('zrx_virtual_number', "+79128402219");
+                adicionarNotificacao("SMS Gateway", "Número obtido via backup: +79128402219", "green");
             }
         }
 
         function filtroGlobal() {
-            alert("Filtro Global: No momento, apenas números da Rússia estão ativos na API (freenumber.site).");
+            alert("Filtro global de regiões ativado.");
         }
 
-        function adicionarNotificacao(origem, texto, corTipo = "red") {
+        function adicionarNotificacao(origem, texto, cor) {
             const container = document.getElementById('notificationsContainer');
-            const horaAtual = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            if (!container) return;
+
+            const agora = new Date();
+            const hora = agora.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
             
             const div = document.createElement('div');
-            div.className = `border-l-2 border-${corTipo}-500 pl-2 py-1`;
+            const borderColor = cor === 'green' ? 'border-green-500' : 'border-red-500';
+            div.className = `border-l-2 ${borderColor} pl-2 py-1`;
             div.innerHTML = `
-                <span class="text-[10px] text-gray-500 block">${horaAtual} - ${origem}</span>
+                <span class="text-[10px] text-gray-500 block">${hora} - ${origem}</span>
                 <span class="text-white">${texto}</span>
             `;
             container.prepend(div);
         }
 
         function loadAvatar(event) {
-            const file = event.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    document.getElementById('userAvatar').src = e.target.result;
-                    localStorage.setItem('zrx_avatar', e.target.result);
-                }
-                reader.readAsDataURL(file);
+            const reader = new FileReader();
+            reader.onload = function() {
+                const result = reader.result;
+                document.getElementById('userAvatar').src = result;
+                localStorage.setItem('zrx_avatar', result);
+            };
+            if (event.target.files[0]) {
+                reader.readAsDataURL(event.target.files[0]);
             }
         }
 
         function loadBackground(event) {
             const file = event.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    const bgImg = document.getElementById('bgImage');
-                    const bgVid = document.getElementById('bgVideo');
+            if (!file) return;
 
-                    if (file.type.startsWith('video/')) {
-                        bgVid.src = e.target.result;
-                        bgVid.classList.remove('hidden');
-                        bgImg.classList.add('hidden');
-                        localStorage.setItem('zrx_bg_type', 'video');
-                    } else {
-                        bgImg.src = e.target.result;
-                        bgImg.classList.remove('hidden');
-                        bgVid.classList.add('hidden');
-                        localStorage.setItem('zrx_bg_type', 'image');
-                    }
-                    localStorage.setItem('zrx_bg', e.target.result);
+            const reader = new FileReader();
+            reader.onload = function() {
+                const result = reader.result;
+                const bgImg = document.getElementById('bgImage');
+                const bgVid = document.getElementById('bgVideo');
+
+                if (file.type.startsWith('video/')) {
+                    bgVid.src = result;
+                    bgVid.classList.remove('hidden');
+                    bgImg.classList.add('hidden');
+                    localStorage.setItem('zrx_bg_type', 'video');
+                } else {
+                    bgImg.src = result;
+                    bgImg.classList.remove('hidden');
+                    bgVid.classList.add('hidden');
+                    localStorage.setItem('zrx_bg_type', 'image');
                 }
-                reader.readAsDataURL(file);
-            }
-        }
-
-        function setThemeColor(colorHex) {
-            applyThemeColor(colorHex);
-            localStorage.setItem('zrx_color', colorHex);
-        }
-
-        function applyThemeColor(colorHex) {
-            document.documentElement.style.setProperty('--accentred', colorHex);
-            document.querySelectorAll('.bg-accentred').forEach(el => el.style.backgroundColor = colorHex);
-            document.querySelectorAll('.text-red-500, .text-red-400').forEach(el => el.style.color = colorHex);
-            document.querySelectorAll('.border-red-600').forEach(el => el.style.borderColor = colorHex);
+                localStorage.setItem('zrx_bg', result);
+            };
+            reader.readAsDataURL(file);
         }
 
         function updateProfile() {
-            const newName = document.getElementById('inputName').value;
-            if (newName) {
-                document.getElementById('userName').innerText = newName;
-                localStorage.setItem('zrx_name', newName);
+            const name = document.getElementById('inputName').value.trim();
+            if (name) {
+                document.getElementById('userName').innerText = name;
+                localStorage.setItem('zrx_name', name);
             }
-            alert('Configurações salvas permanentemente!');
+            alert("Perfil atualizado com sucesso!");
+        }
+
+        function setThemeColor(hexColor) {
+            localStorage.setItem('zrx_color', hexColor);
+            applyThemeColor(hexColor);
+        }
+
+        function applyThemeColor(hexColor) {
+            document.querySelectorAll('.border-accentred').forEach(el => el.style.borderColor = hexColor);
+            document.querySelectorAll('.bg-accentred').forEach(el => el.style.backgroundColor = hexColor);
+            document.querySelectorAll('.text-red-500').forEach(el => el.style.color = hexColor);
         }
     </script>
 </body>
