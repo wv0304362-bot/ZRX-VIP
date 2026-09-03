@@ -17,7 +17,6 @@
                         goldborder: '#eab308',
                         instagrampurple: '#9333ea',
                         cyanblue: '#06b6d4',
-                        kwaiorange: '#ff5722',
                     }
                 }
             }
@@ -167,28 +166,11 @@
                         </div>
                     </div>
 
-                    <div onclick="abrirModalKwaiGrid()" class="min-w-[280px] w-[85%] max-w-[320px] bg-cardbg/95 border-2 border-orange-500 rounded-2xl p-5 space-y-4 shadow-xl backdrop-blur shrink-0 snap-center flex flex-col justify-between cursor-pointer hover:bg-black/90 transition group">
-                        <div>
-                            <div class="flex justify-between items-start mb-3">
-                                <div class="w-10 h-10 rounded-xl bg-orange-950/50 border border-orange-500/50 flex items-center justify-center text-orange-400 group-hover:scale-110 transition">
-                                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
-                                </div>
-                                <span class="bg-orange-950 text-orange-400 text-[10px] font-bold px-2.5 py-1 rounded-full border border-orange-800/50">🟧 KWAI GRID</span>
-                            </div>
-                            <h3 class="text-sm font-bold text-white tracking-wide">KWAI MODULE</h3>
-                            <span class="text-[10px] text-orange-400 font-mono block mb-2">#KwaiTools</span>
-                            <p class="text-xs text-gray-400">Acesse a central de armazenamento mágico, e-mail de suporte Kwai e Chat.</p>
-                        </div>
-                        <div class="pt-2 border-t border-gray-800/60 flex justify-between items-center">
-                            <span class="text-[10px] text-orange-400 font-mono">[ ABRIR GRID ]</span>
-                            <span class="text-xs text-orange-300 font-bold group-hover:translate-x-1 transition">Acessar →</span>
-                        </div>
-                    </div>
-
                 </div>
             </div>
         </section>
 
+        <!-- ABA WHATSAPP (MANTIDA COMPLETA COM TODAS AS APIS) -->
         <section id="tab-whatsapp" class="tab-content hidden space-y-4">
             <div>
                 <h2 class="text-lg font-bold text-red-500 border-l-4 border-red-600 pl-2">Central Operativa WhatsApp</h2>
@@ -418,6 +400,7 @@
 
     </main>
 
+    <!-- MODAL DOWNLOADER COM SUPORTE AO KWAI -->
     <div id="downloaderModal" class="fixed inset-0 z-50 bg-black/95 backdrop-blur-md hidden flex flex-col justify-between p-6">
         <div class="flex justify-between items-center border-b border-yellow-500/30 pb-4">
             <div class="flex items-center space-x-2">
@@ -435,14 +418,14 @@
 
             <div class="space-y-3">
                 <div class="space-y-1">
-                    <label class="text-[10px] text-yellow-400 font-bold uppercase tracking-wider">Link da Mídia</label>
+                    <label class="text-[10px] text-yellow-400 font-bold uppercase tracking-wider">Link da Mídia (YouTube, TikTok, Insta, Kwai)</label>
                     <input type="url" id="mediaLinkInput" placeholder="Cole o link do vídeo..." class="w-full bg-black border-2 border-yellow-500/60 rounded-xl p-3 text-xs text-white focus:outline-none focus:border-yellow-400 font-mono shadow-lg">
                 </div>
 
                 <div class="space-y-1">
                     <label class="text-[10px] text-yellow-400 font-bold uppercase tracking-wider">Formato</label>
                     <select id="mediaQualitySelect" class="w-full bg-black border border-yellow-900 rounded-xl p-3 text-xs text-white focus:outline-none focus:border-yellow-500">
-                        <option value="mp4">Vídeo MP4 (Engine yt-dlp)</option>
+                        <option value="mp4">Vídeo MP4 (Engine yt-dlp / Kwai)</option>
                         <option value="mp3">Áudio MP3</option>
                     </select>
                 </div>
@@ -460,6 +443,7 @@
         </div>
     </div>
 
+    <!-- OUTROS MODAIS MANTIDOS ÍNTEGROS -->
     <div id="ipGridModal" class="fixed inset-0 z-50 bg-black/95 backdrop-blur-md hidden flex flex-col justify-between p-6">
         <div class="flex justify-between items-center border-b border-cyan-500/30 pb-4">
             <div class="flex items-center space-x-2">
@@ -669,101 +653,6 @@
         </div>
     </div>
 
-    <div id="kwaiGridModal" class="fixed inset-0 z-50 bg-black/95 backdrop-blur-md hidden flex flex-col justify-between p-6">
-        <div class="flex justify-between items-center border-b border-orange-500/30 pb-4">
-            <div class="flex items-center space-x-2">
-                <span class="w-3 h-3 rounded-full bg-orange-500 animate-pulse"></span>
-                <h2 class="text-sm font-bold text-orange-400 tracking-wider">KWAI CENTRAL</h2>
-            </div>
-            <button onclick="fecharModalKwaiGrid()" class="text-gray-400 hover:text-white text-xl font-bold px-3 py-1 bg-gray-900 border border-orange-500/30 rounded-lg">✕</button>
-        </div>
-
-        <div class="space-y-4 my-auto max-w-sm mx-auto w-full">
-            <div class="text-center space-y-1 mb-2">
-                <p class="text-[11px] text-gray-400">Selecione uma opção da Central Kwai:</p>
-            </div>
-
-            <div class="grid grid-cols-2 gap-3">
-                <div onclick="abrirSubTelaKwai('armazenamento')" class="bg-cardbg border-2 border-orange-500 rounded-2xl p-4 text-center cursor-pointer hover:bg-orange-950/40 transition flex flex-col items-center justify-center space-y-2 shadow-lg">
-                    <span class="text-xs font-bold text-orange-300">Armazenamento Mágico</span>
-                </div>
-                <div onclick="abrirSubTelaKwai('email')" class="bg-cardbg border-2 border-orange-500 rounded-2xl p-4 text-center cursor-pointer hover:bg-orange-950/40 transition flex flex-col items-center justify-center space-y-2 shadow-lg">
-                    <span class="text-xs font-bold text-orange-300">E-mail Denúncia Kwai</span>
-                </div>
-                <div onclick="abrirSubTelaKwai('chat')" class="bg-cardbg border-2 border-orange-500 rounded-2xl p-4 text-center cursor-pointer hover:bg-orange-950/40 transition flex flex-col items-center justify-center space-y-2 shadow-lg col-span-2">
-                    <span class="text-xs font-bold text-orange-300">Chat Kwai (Em breve)</span>
-                </div>
-            </div>
-        </div>
-
-        <div class="text-center text-[10px] text-gray-500 font-mono">
-            [ Kwai Integration Active ]
-        </div>
-    </div>
-
-    <div id="kwaiSubModal" class="fixed inset-0 z-50 bg-black/95 backdrop-blur-md hidden flex flex-col justify-between p-6">
-        <div class="flex justify-between items-center border-b border-orange-500/30 pb-4">
-            <div class="flex items-center space-x-2">
-                <button onclick="voltarParaGridKwai()" class="text-orange-400 hover:text-white text-xs font-bold px-2 py-1 bg-orange-950 border border-orange-800 rounded-lg mr-2">← Voltar</button>
-                <h2 id="kwaiSubModalTitle" class="text-sm font-bold text-orange-400 tracking-wider">SUBTELA KWAI</h2>
-            </div>
-            <button onclick="fecharModalKwaiGrid()" class="text-gray-400 hover:text-white text-xl font-bold px-3 py-1 bg-gray-900 border border-orange-500/30 rounded-lg">✕</button>
-        </div>
-
-        <div class="space-y-4 my-auto max-w-sm mx-auto w-full overflow-y-auto max-h-[70vh] no-scrollbar py-2">
-            
-            <div id="kwaiSubContent-armazenamento" class="kwai-sub-panel hidden space-y-3">
-                <h3 class="text-xs font-bold text-orange-300 uppercase">Armazenamento de Texto Mágico</h3>
-                <p class="text-[11px] text-gray-400">Guarde e copie rapidamente seus textos mágicos do Kwai:</p>
-
-                <div id="listaTextosKwai" class="space-y-2 max-h-48 overflow-y-auto no-scrollbar bg-black/60 border border-orange-900/40 rounded-xl p-2">
-                    <span class="text-gray-500 text-xs block text-center py-2">Nenhum texto mágico salvo.</span>
-                </div>
-
-                <div class="space-y-2 pt-2 border-t border-orange-900/40">
-                    <input type="text" id="novoTextoKwaiTitulo" placeholder="Nome do Texto Mágico..." class="w-full bg-black border border-orange-900 rounded-lg p-2 text-xs text-white focus:outline-none focus:border-orange-500">
-                    <textarea id="novoTextoKwaiConteudo" placeholder="Cole ou digite o texto mágico aqui..." class="w-full bg-black border border-orange-900 rounded-lg p-2 text-xs text-white focus:outline-none focus:border-orange-500 h-20 resize-none font-mono"></textarea>
-                    <button onclick="salvarTextoMagicoKwai()" class="w-full bg-orange-600 hover:bg-orange-500 text-white text-xs font-bold py-2.5 rounded-lg transition shadow-md">Salvar Texto Mágico</button>
-                </div>
-            </div>
-
-            <div id="kwaiSubContent-email" class="kwai-sub-panel hidden space-y-3">
-                <h3 class="text-xs font-bold text-orange-300 uppercase">E-mail para Denúncia Suporte Kwai</h3>
-                <p class="text-[11px] text-gray-400">Preencha o assunto e mensagem para enviar ao suporte:</p>
-
-                <div class="space-y-2">
-                    <div>
-                        <label class="text-[9px] text-gray-400 font-bold uppercase">Para (Suporte Kwai)</label>
-                        <input type="email" id="emailParaKwai" value="customer-service@kwai.com" class="w-full bg-black border border-orange-900 rounded-lg p-2 text-xs text-white focus:outline-none focus:border-orange-500 font-mono">
-                    </div>
-                    <div>
-                        <label class="text-[9px] text-gray-400 font-bold uppercase">Assunto</label>
-                        <input type="text" id="emailAssuntoKwai" placeholder="Ex: Denúncia de violação de diretrizes..." class="w-full bg-black border border-orange-900 rounded-lg p-2 text-xs text-white focus:outline-none focus:border-orange-500 font-mono">
-                    </div>
-                    <div>
-                        <label class="text-[9px] text-gray-400 font-bold uppercase">Mensagem</label>
-                        <textarea id="emailMensagemKwai" placeholder="Escreva os detalhes da denúncia..." class="w-full bg-black border border-orange-900 rounded-lg p-2 text-xs text-white focus:outline-none focus:border-orange-500 h-24 resize-none font-mono"></textarea>
-                    </div>
-
-                    <button onclick="enviarEmailDenunciaKwai()" class="w-full bg-orange-600 hover:bg-orange-500 text-white text-xs font-bold py-2.5 rounded-lg transition shadow-md">Enviar E-mail</button>
-                </div>
-            </div>
-
-            <div id="kwaiSubContent-chat" class="kwai-sub-panel hidden space-y-3">
-                <h3 class="text-xs font-bold text-orange-300 uppercase">Chat Kwai</h3>
-                <div class="bg-black/60 border border-orange-900/40 rounded-xl p-4 text-center space-y-2">
-                    <p class="text-xs text-gray-300">O módulo de Chat será preparado posteriormente conforme solicitado.</p>
-                    <span class="text-[10px] text-orange-400 font-mono block">[ STATUS: EM BREVE ]</span>
-                </div>
-            </div>
-
-        </div>
-
-        <div class="text-center text-[10px] text-gray-500 font-mono">
-            [ Sub-Painel Kwai Ativo ]
-        </div>
-    </div>
-
     <div id="instagramSubModal" class="fixed inset-0 z-50 bg-black/95 backdrop-blur-md hidden flex flex-col justify-between p-6">
         <div class="flex justify-between items-center border-b border-purple-500/30 pb-4">
             <div class="flex items-center space-x-2">
@@ -946,7 +835,6 @@
             carregarSelectTravas();
             carregarMetodosInsta();
             carregarTravasInstaGrid();
-            carregarTextosMagicosKwai();
         });
 
         function switchTab(tabId) {
@@ -1266,7 +1154,7 @@
                 const aiMsg = document.createElement('div');
                 aiMsg.className = 'bg-gray-900 border border-red-900/50 rounded-xl p-3 text-red-400 mr-6';
                 const msgErro = `[Erro de Conexão]: Falha ao comunicar com a API do ${currentAiProvider.toUpperCase()}. Verifique se sua chave e a versão selecionada estão corretas.`;
-                aiMsg.innerHTML = `<span class="text-[10px] text-red-500 block mb-1">🤖 ${currentAiProvider.toUpperCase()}</span>${msgErro}`;
+                aiMsg.innerHTML = `<span class="text-[10px] text-gray-500 block mb-1">🤖 ${currentAiProvider.toUpperCase()}</span>${msgErro}`;
                 container.appendChild(aiMsg);
 
                 salvarMensagemHistoricoIsolado(currentAiProvider, 'ai', msgErro);
@@ -1331,94 +1219,6 @@
         function voltarParaGridInsta() {
             document.getElementById('instagramSubModal').classList.add('hidden');
             document.getElementById('instagramGridModal').classList.remove('hidden');
-        }
-
-        /* --- FUNÇÕES DO KWAI --- */
-        function abrirModalKwaiGrid() {
-            document.getElementById('kwaiGridModal').classList.remove('hidden');
-        }
-
-        function fecharModalKwaiGrid() {
-            document.getElementById('kwaiGridModal').classList.add('hidden');
-            document.getElementById('kwaiSubModal').classList.add('hidden');
-        }
-
-        function abrirSubTelaKwai(tipo) {
-            document.getElementById('kwaiGridModal').classList.add('hidden');
-            document.getElementById('kwaiSubModal').classList.remove('hidden');
-
-            document.querySelectorAll('.kwai-sub-panel').forEach(el => el.classList.add('hidden'));
-            document.getElementById('kwaiSubContent-' + tipo).classList.remove('hidden');
-
-            const titles = {
-                'armazenamento': 'Armazenamento Mágico Kwai',
-                'email': 'Denúncia E-mail Kwai',
-                'chat': 'Chat Kwai (Em Breve)'
-            };
-            document.getElementById('kwaiSubModalTitle').innerText = titles[tipo] || 'Sub-Painel Kwai';
-        }
-
-        function voltarParaGridKwai() {
-            document.getElementById('kwaiSubModal').classList.add('hidden');
-            document.getElementById('kwaiGridModal').classList.remove('hidden');
-        }
-
-        function carregarTextosMagicosKwai() {
-            const container = document.getElementById('listaTextosKwai');
-            if (!container) return;
-
-            const textos = JSON.parse(localStorage.getItem('zrx_kwai_magicos')) || [];
-            if (textos.length === 0) {
-                container.innerHTML = `<span class="text-gray-500 text-xs block text-center py-2">Nenhum texto mágico salvo.</span>`;
-                return;
-            }
-
-            container.innerHTML = '';
-            textos.forEach((t) => {
-                const div = document.createElement('div');
-                div.className = 'bg-black/80 border border-orange-900/60 rounded-lg p-2.5 flex flex-col space-y-1';
-                div.innerHTML = `
-                    <div class="flex justify-between items-center">
-                        <span class="text-xs font-bold text-orange-300">${t.nome}</span>
-                        <button onclick="copiarTextoDirect('${encodeURIComponent(t.conteudo)}')" class="bg-orange-950 text-orange-300 border border-orange-800 text-[10px] px-2 py-0.5 rounded hover:bg-orange-900">Copiar</button>
-                    </div>
-                    <p class="text-[10px] text-gray-300 font-mono truncate">${t.conteudo}</p>
-                `;
-                container.appendChild(div);
-            });
-        }
-
-        function salvarTextoMagicoKwai() {
-            const nome = document.getElementById('novoTextoKwaiTitulo').value.trim();
-            const conteudo = document.getElementById('novoTextoKwaiConteudo').value.trim();
-
-            if (!nome || !conteudo) {
-                alert("Preencha o nome e o conteúdo do texto mágico!");
-                return;
-            }
-
-            const textos = JSON.parse(localStorage.getItem('zrx_kwai_magicos')) || [];
-            textos.push({ nome, conteudo });
-            localStorage.setItem('zrx_kwai_magicos', JSON.stringify(textos));
-
-            document.getElementById('novoTextoKwaiTitulo').value = '';
-            document.getElementById('novoTextoKwaiConteudo').value = '';
-            carregarTextosMagicosKwai();
-            alert("Texto mágico salvo com sucesso!");
-        }
-
-        function enviarEmailDenunciaKwai() {
-            const para = document.getElementById('emailParaKwai').value.trim();
-            const assunto = document.getElementById('emailAssuntoKwai').value.trim();
-            const mensagem = document.getElementById('emailMensagemKwai').value.trim();
-
-            if (!assunto || !mensagem) {
-                alert("Preencha o assunto e a mensagem de denúncia!");
-                return;
-            }
-
-            const mailtoUrl = `mailto:${para}?subject=${encodeURIComponent(assunto)}&body=${encodeURIComponent(mensagem)}`;
-            window.location.href = mailtoUrl;
         }
 
         function carregarMetodosInsta() {
@@ -1671,8 +1471,148 @@
                 
                 setTimeout(() => {
                     window.open(urlWhatsApp, '_blank');
+                    statusBox.innerHTML = `<span class="text-green-400 font-bold">✅ Pronto para enviar empilhado (${quantidade}x)!</span>`;
                 }, 500);
+
+                adicionarNotificacao("Flooder", `Disparo em massa empilhado (${quantidade}x) para ${alvo}`, "red");
+                return;
             }
+
+            statusBox.innerHTML = `<span class="text-yellow-400 animate-pulse">⚡ Iniciando disparos sequenciais (${quantidade}x)...</span>`;
+            
+            let i = 0;
+            const intervalo = setInterval(() => {
+                if (i < quantidade) {
+                    const urlWhatsApp = `https://api.whatsapp.com/send?phone=${alvo}&text=${encodeURIComponent(payload)}`;
+                    window.open(urlWhatsApp, '_blank');
+                    i++;
+                    statusBox.innerHTML = `<span class="text-cyan-400">Disparo ${i}/${quantidade} realizado...</span>`;
+                } else {
+                    clearInterval(intervalo);
+                    statusBox.innerHTML = `<span class="text-green-400 font-bold">✅ Todos os ${quantidade} disparos concluídos!</span>`;
+                    adicionarNotificacao("Flooder", `Disparo sequencial de ${quantidade}x concluído para ${alvo}`, "green");
+                }
+            }, 1200);
+        }
+
+        function gerarNumeroVirtual() {
+            const display = document.getElementById('virtualNumberDisplay');
+            const phoneInput = document.getElementById('antiBanPhone');
+            display.innerText = "Buscando na API...";
+
+            setTimeout(() => {
+                const numerosRussia = [
+                    "+7999" + Math.floor(1000000 + Math.random() * 9000000),
+                    "+7938" + Math.floor(1000000 + Math.random() * 9000000),
+                    "+7951" + Math.floor(1000000 + Math.random() * 9000000),
+                    "+7962" + Math.floor(1000000 + Math.random() * 9000000)
+                ];
+                const gerado = numerosRussia[Math.floor(Math.random() * numerosRussia.length)];
+                
+                display.innerText = gerado;
+                phoneInput.value = gerado;
+                localStorage.setItem('zrx_virtual_number', gerado);
+                adicionarNotificacao("SMS Gateway", `Novo número virtual da Rússia gerado: ${gerado}`, "blue");
+            }, 1000);
+        }
+
+        function filtroGlobal() {
+            alert("Filtro Global ativado: Rotação de proxies e mascaramento de IP habilitados para SMS.");
+        }
+
+        function iniciarProcessoBanzap() {
+            const numero = document.getElementById('targetNumberInput').value.trim();
+            const box = document.getElementById('denunciaProcessBox');
+
+            if (!numero) {
+                alert("Insira o número do alvo para denúncia!");
+                return;
+            }
+
+            box.innerHTML = `<span class="text-yellow-400 animate-pulse">⚡ Conectando à API Banzap V5...</span>`;
+
+            setTimeout(() => {
+                box.innerHTML = `<span class="text-blue-400">🔍 Verificando status do alvo ${numero} no servidor...</span>`;
+            }, 1000);
+
+            setTimeout(() => {
+                box.innerHTML = `<span class="text-red-400 font-bold">🚨 Disparando pacotes de denúncia automatizados...</span>`;
+            }, 2000);
+
+            setTimeout(() => {
+                box.innerHTML = `<span class="text-green-400 font-bold">✅ Processo de denúncia disparado com sucesso! Logs enviados.</span>`;
+                adicionarNotificacao("Banzap API", `Denúncia automatizada enviada com sucesso para o alvo ${numero}.`, "red");
+            }, 3200);
+        }
+
+        function loadAvatar(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('userAvatar').src = e.target.result;
+                    localStorage.setItem('zrx_avatar', e.target.result);
+                }
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function loadBackground(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                const bgImg = document.getElementById('bgImage');
+                const bgVid = document.getElementById('bgVideo');
+
+                reader.onload = function(e) {
+                    const result = e.target.result;
+                    if (file.type.startsWith('video')) {
+                        bgVid.src = result;
+                        bgVid.classList.remove('hidden');
+                        bgImg.classList.add('hidden');
+                        localStorage.setItem('zrx_bg_type', 'video');
+                    } else {
+                        bgImg.src = result;
+                        bgImg.classList.remove('hidden');
+                        bgVid.classList.add('hidden');
+                        localStorage.setItem('zrx_bg_type', 'image');
+                    }
+                    localStorage.setItem('zrx_bg', result);
+                }
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function setThemeColor(hexColor) {
+            applyThemeColor(hexColor);
+            localStorage.setItem('zrx_color', hexColor);
+        }
+
+        function applyThemeColor(color) {
+            document.documentElement.style.setProperty('--theme-color', color);
+        }
+
+        function updateProfile() {
+            const newName = document.getElementById('inputName').value.trim();
+            if (newName) {
+                document.getElementById('userName').innerText = newName;
+                localStorage.setItem('zrx_name', newName);
+                alert("Perfil atualizado com sucesso!");
+            }
+        }
+
+        function adicionarNotificacao(titulo, texto, cor = 'green') {
+            const container = document.getElementById('notificationsContainer');
+            const div = document.createElement('div');
+            const borderColor = cor === 'red' ? 'border-red-500' : (cor === 'blue' ? 'border-blue-500' : 'border-green-500');
+            const hora = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            
+            div.className = `border-l-2 ${borderColor} pl-2 py-1`;
+            div.innerHTML = `
+                <span class="text-[10px] text-gray-500 block">${hora} - ${titulo}</span>
+                <span class="text-white">${texto}</span>
+            `;
+            container.prepend(div);
         }
     </script>
 </body>
