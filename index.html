@@ -627,14 +627,20 @@
                 <div onclick="abrirSubTelaInsta('multiplicador')" class="bg-cardbg border-2 border-purple-600 rounded-2xl p-4 text-center cursor-pointer hover:bg-purple-950/40 transition flex flex-col items-center justify-center space-y-2 shadow-lg">
                     <span class="text-xs font-bold text-purple-300">Multiplicador & Caracteres</span>
                 </div>
-                <div onclick="abrirSubTelaInsta('email')" class="bg-cardbg border-2 border-purple-600 rounded-2xl p-4 text-center cursor-pointer hover:bg-purple-950/40 transition flex flex-col items-center justify-center space-y-2 shadow-lg">
-                    <span class="text-xs font-bold text-purple-300">E-mail / Suporte</span>
+                <!-- Botões Kwai e Instagram lado a lado -->
+                <div class="flex gap-2 col-span-2">
+                    <div onclick="abrirSubTelaKwai()" class="flex-1 bg-cardbg border-2 border-red-500 rounded-2xl p-4 text-center cursor-pointer hover:bg-red-950/40 transition flex flex-col items-center justify-center space-y-2 shadow-lg">
+                        <span class="text-xs font-bold text-red-400">Kwai</span>
+                    </div>
+                    <div onclick="abrirSubTelaInsta('email')" class="flex-1 bg-cardbg border-2 border-purple-600 rounded-2xl p-4 text-center cursor-pointer hover:bg-purple-950/40 transition flex flex-col items-center justify-center space-y-2 shadow-lg">
+                        <span class="text-xs font-bold text-purple-300">E-mail / Suporte</span>
+                    </div>
                 </div>
             </div>
         </div>
 
         <div class="text-center text-[10px] text-gray-500 font-mono">
-            [ Instagram Integration Active ]
+            [ Instagram & Kwai Integration Active ]
         </div>
     </div>
 
@@ -723,6 +729,32 @@
                     </div>
 
                     <button onclick="enviarEmailInstaSuporte()" class="w-full bg-purple-700 hover:bg-purple-600 text-white text-xs font-bold py-2.5 rounded-lg transition shadow-md">Enviar para Tela de E-mail</button>
+                </div>
+            </div>
+
+            <div id="subContent-kwai" class="sub-panel hidden space-y-3">
+                <h3 class="text-xs font-bold text-red-400 uppercase">Painel Kwai Suporte</h3>
+                <p class="text-[11px] text-gray-400">Preencha os campos abaixo para envio de suporte/mensagem:</p>
+
+                <div class="space-y-2">
+                    <div>
+                        <label class="text-[9px] text-gray-400 font-bold uppercase">Armazenamento de Texto</label>
+                        <textarea id="kwaiArmazenamentoTexto" placeholder="Armazenamento de texto..." class="w-full bg-black border border-red-900 rounded-lg p-2 text-xs text-white focus:outline-none focus:border-red-600 h-16 resize-none font-mono"></textarea>
+                    </div>
+                    <div>
+                        <label class="text-[9px] text-gray-400 font-bold uppercase">E-mail</label>
+                        <input type="email" id="kwaiEmail" placeholder="seu-email@exemplo.com" class="w-full bg-black border border-red-900 rounded-lg p-2 text-xs text-white focus:outline-none focus:border-red-600 font-mono">
+                    </div>
+                    <div>
+                        <label class="text-[9px] text-gray-400 font-bold uppercase">Assunto</label>
+                        <input type="text" id="kwaiAssunto" placeholder="Assunto..." class="w-full bg-black border border-red-900 rounded-lg p-2 text-xs text-white focus:outline-none focus:border-red-600 font-mono">
+                    </div>
+                    <div>
+                        <label class="text-[9px] text-gray-400 font-bold uppercase">Mensagem</label>
+                        <textarea id="kwaiMensagem" placeholder="Mensagem..." class="w-full bg-black border border-red-900 rounded-lg p-2 text-xs text-white focus:outline-none focus:border-red-600 h-20 resize-none font-mono"></textarea>
+                    </div>
+
+                    <button onclick="enviarKwaiSuporte()" class="w-full bg-red-600 hover:bg-red-500 text-white text-xs font-bold py-2.5 rounded-lg transition shadow-md">Enviar</button>
                 </div>
             </div>
 
@@ -1144,6 +1176,16 @@
             document.getElementById('subModalTitle').innerText = titles[tipo] || 'Sub-Painel';
         }
 
+        function abrirSubTelaKwai() {
+            document.getElementById('instagramGridModal').classList.add('hidden');
+            document.getElementById('instagramSubModal').classList.remove('hidden');
+
+            document.querySelectorAll('.sub-panel').forEach(el => el.classList.add('hidden'));
+            document.getElementById('subContent-kwai').classList.remove('hidden');
+
+            document.getElementById('subModalTitle').innerText = 'Painel Kwai Suporte';
+        }
+
         function voltarParaGridInsta() {
             document.getElementById('instagramSubModal').classList.add('hidden');
             document.getElementById('instagramGridModal').classList.remove('hidden');
@@ -1289,6 +1331,22 @@
             }
 
             const mailtoUrl = `mailto:${destino}?subject=${encodeURIComponent(assunto)}&body=${encodeURIComponent(detalhes)}`;
+            window.location.href = mailtoUrl;
+        }
+
+        function enviarKwaiSuporte() {
+            const email = document.getElementById('kwaiEmail').value.trim();
+            const assunto = document.getElementById('kwaiAssunto').value.trim();
+            const mensagem = document.getElementById('kwaiMensagem').value.trim();
+            const armazenamento = document.getElementById('kwaiArmazenamentoTexto').value.trim();
+
+            if (!email || !assunto || !mensagem) {
+                alert("Preencha os campos obrigatórios (E-mail, Assunto e Mensagem)!");
+                return;
+            }
+
+            const corpoCompleto = armazenamento ? `${armazenamento}\n\n---\n\n${mensagem}` : mensagem;
+            const mailtoUrl = `mailto:${email}?subject=${encodeURIComponent(assunto)}&body=${encodeURIComponent(corpoCompleto)}`;
             window.location.href = mailtoUrl;
         }
 
@@ -1493,83 +1551,23 @@
                 display.innerText = numeroSimulado;
                 document.getElementById('antiBanPhone').value = numeroSimulado;
                 localStorage.setItem('zrx_virtual_number', numeroSimulado);
-                adicionarNotificacao("SMS Gateway", `Número Rússia gerado: ${numeroSimulado}`, "red");
+                adicionarNotificacao("SMS Gateway", `Número simulado obtido: ${numeroSimulado}`, "yellow");
             }
         }
 
-        function filtroGlobal() {
-            alert("Filtro Global: No momento, apenas números da Rússia estão ativos na API (freenumber.site).");
-        }
-
-        function adicionarNotificacao(origem, texto, corTipo = "red") {
+        function adicionarNotificacao(titulo, descricao, cor) {
             const container = document.getElementById('notificationsContainer');
-            const horaAtual = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-            
+            if (!container) return;
+
             const div = document.createElement('div');
-            div.className = `border-l-2 border-${corTipo}-500 pl-2 py-1`;
+            div.className = `border-l-2 border-${cor}-500 pl-2 py-1`;
+            
+            const horaAtual = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
             div.innerHTML = `
-                <span class="text-[10px] text-gray-500 block">${horaAtual} - ${origem}</span>
-                <span class="text-white">${texto}</span>
+                <span class="text-[10px] text-gray-500 block">${horaAtual} - ${titulo}</span>
+                <span class="text-white">${descricao}</span>
             `;
             container.prepend(div);
-        }
-
-        function loadAvatar(event) {
-            const file = event.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    document.getElementById('userAvatar').src = e.target.result;
-                    localStorage.setItem('zrx_avatar', e.target.result);
-                }
-                reader.readAsDataURL(file);
-            }
-        }
-
-        function loadBackground(event) {
-            const file = event.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    const bgImg = document.getElementById('bgImage');
-                    const bgVid = document.getElementById('bgVideo');
-
-                    if (file.type.startsWith('video/')) {
-                        bgVid.src = e.target.result;
-                        bgVid.classList.remove('hidden');
-                        bgImg.classList.add('hidden');
-                        localStorage.setItem('zrx_bg_type', 'video');
-                    } else {
-                        bgImg.src = e.target.result;
-                        bgImg.classList.remove('hidden');
-                        bgVid.classList.add('hidden');
-                        localStorage.setItem('zrx_bg_type', 'image');
-                    }
-                    localStorage.setItem('zrx_bg', e.target.result);
-                }
-                reader.readAsDataURL(file);
-            }
-        }
-
-        function setThemeColor(colorHex) {
-            applyThemeColor(colorHex);
-            localStorage.setItem('zrx_color', colorHex);
-        }
-
-        function applyThemeColor(colorHex) {
-            document.documentElement.style.setProperty('--accentred', colorHex);
-            document.querySelectorAll('.bg-accentred').forEach(el => el.style.backgroundColor = colorHex);
-            document.querySelectorAll('.text-red-500, .text-red-400').forEach(el => el.style.color = colorHex);
-            document.querySelectorAll('.border-red-600').forEach(el => el.style.borderColor = colorHex);
-        }
-
-        function updateProfile() {
-            const newName = document.getElementById('inputName').value;
-            if (newName) {
-                document.getElementById('userName').innerText = newName;
-                localStorage.setItem('zrx_name', newName);
-            }
-            alert('Configurações salvas permanentemente!');
         }
     </script>
 </body>
