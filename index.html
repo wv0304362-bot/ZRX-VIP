@@ -17,7 +17,6 @@
                         goldborder: '#eab308',
                         instagrampurple: '#9333ea',
                         cyanblue: '#06b6d4',
-                        kwaiorange: '#ff6600',
                     }
                 }
             }
@@ -631,15 +630,11 @@
                 <div onclick="abrirSubTelaInsta('email')" class="bg-cardbg border-2 border-purple-600 rounded-2xl p-4 text-center cursor-pointer hover:bg-purple-950/40 transition flex flex-col items-center justify-center space-y-2 shadow-lg">
                     <span class="text-xs font-bold text-purple-300">E-mail / Suporte</span>
                 </div>
-                <!-- BALÃOZINHO DO KWAI ADICIONADO AO LADO DO INSTAGRAM -->
-                <div onclick="abrirSubTelaKwai()" class="bg-cardbg border-2 border-kwaiorange rounded-2xl p-4 text-center cursor-pointer hover:bg-orange-950/40 transition flex flex-col items-center justify-center space-y-2 shadow-lg col-span-2">
-                    <span class="text-xs font-bold text-orange-400">Kwai (Texto & E-mail)</span>
-                </div>
             </div>
         </div>
 
         <div class="text-center text-[10px] text-gray-500 font-mono">
-            [ Instagram & Kwai Integration Active ]
+            [ Instagram Integration Active ]
         </div>
     </div>
 
@@ -731,42 +726,6 @@
                 </div>
             </div>
 
-            <!-- SUBTELA DO KWAI CONTENDO OS DOIS BALÃOZINHOS (TEXTO E E-MAIL) -->
-            <div id="subContent-kwai" class="sub-panel hidden space-y-4">
-                <h3 class="text-xs font-bold text-orange-400 uppercase">Kwai - Armazenamento de Texto & E-mail</h3>
-                <p class="text-[11px] text-gray-400">Gerencie seu texto e o envio de e-mail do Kwai:</p>
-
-                <!-- BALÃOZINHO 1: ARMAZENAR TEXTO -->
-                <div class="bg-black/60 border border-orange-900/40 rounded-xl p-3 space-y-2">
-                    <span class="text-[11px] font-bold text-orange-400 block">📦 Armazenar Texto (Kwai)</span>
-                    <input type="text" id="kwaiTextoTitulo" placeholder="Título do Texto..." class="w-full bg-black border border-orange-900 rounded-lg p-2 text-xs text-white focus:outline-none focus:border-orange-600">
-                    <textarea id="kwaiTextoArmazenar" placeholder="Digite ou cole seu texto aqui..." class="w-full bg-black border border-orange-900 rounded-lg p-2 text-xs text-white focus:outline-none focus:border-orange-600 h-16 resize-none font-mono"></textarea>
-                    <button onclick="salvarTextoKwai()" class="w-full bg-orange-600 hover:bg-orange-500 text-black font-bold text-xs py-2 rounded-lg transition">Salvar Texto</button>
-                    
-                    <div id="listaTextosKwai" class="space-y-1 max-h-28 overflow-y-auto no-scrollbar pt-2 border-t border-orange-900/40 text-[10px]">
-                        <span class="text-gray-500">Nenhum texto salvo.</span>
-                    </div>
-                </div>
-
-                <!-- BALÃOZINHO 2: E-MAIL -->
-                <div class="bg-black/60 border border-orange-900/40 rounded-xl p-3 space-y-2">
-                    <span class="text-[11px] font-bold text-orange-400 block">✉️ Enviar E-mail (Kwai)</span>
-                    <div class="space-y-1">
-                        <label class="text-[9px] text-gray-400 font-bold uppercase">Para</label>
-                        <input type="email" id="kwaiEmailPara" value="support@kwai.com" class="w-full bg-black border border-orange-900 rounded-lg p-2 text-xs text-white focus:outline-none focus:border-orange-600 font-mono">
-                    </div>
-                    <div class="space-y-1">
-                        <label class="text-[9px] text-gray-400 font-bold uppercase">Assunto</label>
-                        <input type="text" id="kwaiEmailAssunto" placeholder="Assunto..." class="w-full bg-black border border-orange-900 rounded-lg p-2 text-xs text-white focus:outline-none focus:border-orange-600 font-mono">
-                    </div>
-                    <div class="space-y-1">
-                        <label class="text-[9px] text-gray-400 font-bold uppercase">Mensagem</label>
-                        <textarea id="kwaiEmailMensagem" placeholder="Mensagem..." class="w-full bg-black border border-orange-900 rounded-lg p-2 text-xs text-white focus:outline-none focus:border-orange-600 h-20 resize-none font-mono"></textarea>
-                    </div>
-                    <button onclick="enviarEmailKwai()" class="w-full bg-orange-600 hover:bg-orange-500 text-black font-bold text-xs py-2 rounded-lg transition">Envia</button>
-                </div>
-            </div>
-
         </div>
 
         <div class="text-center text-[10px] text-gray-500 font-mono">
@@ -841,7 +800,6 @@
             carregarSelectTravas();
             carregarMetodosInsta();
             carregarTravasInstaGrid();
-            carregarTextosKwai();
         });
 
         function switchTab(tabId) {
@@ -1186,16 +1144,6 @@
             document.getElementById('subModalTitle').innerText = titles[tipo] || 'Sub-Painel';
         }
 
-        function abrirSubTelaKwai() {
-            document.getElementById('instagramGridModal').classList.add('hidden');
-            document.getElementById('instagramSubModal').classList.remove('hidden');
-
-            document.querySelectorAll('.sub-panel').forEach(el => el.classList.add('hidden'));
-            document.getElementById('subContent-kwai').classList.remove('hidden');
-
-            document.getElementById('subModalTitle').innerText = 'Kwai (Texto & E-mail)';
-        }
-
         function voltarParaGridInsta() {
             document.getElementById('instagramSubModal').classList.add('hidden');
             document.getElementById('instagramGridModal').classList.remove('hidden');
@@ -1287,61 +1235,6 @@
             document.getElementById('novaTravaInstaTexto').value = '';
             carregarTravasInstaGrid();
             alert("Trava salva com sucesso!");
-        }
-
-        function salvarTextoKwai() {
-            const titulo = document.getElementById('kwaiTextoTitulo').value.trim();
-            const conteudo = document.getElementById('kwaiTextoArmazenar').value.trim();
-
-            if (!titulo || !conteudo) {
-                alert("Preencha o título e o texto!");
-                return;
-            }
-
-            const textos = JSON.parse(localStorage.getItem('zrx_kwai_textos')) || [];
-            textos.push({ titulo, conteudo });
-            localStorage.setItem('zrx_kwai_textos', JSON.stringify(textos));
-
-            document.getElementById('kwaiTextoTitulo').value = '';
-            document.getElementById('kwaiTextoArmazenar').value = '';
-            carregarTextosKwai();
-            alert("Texto armazenado com sucesso no Kwai!");
-        }
-
-        function carregarTextosKwai() {
-            const container = document.getElementById('listaTextosKwai');
-            if (!container) return;
-
-            const textos = JSON.parse(localStorage.getItem('zrx_kwai_textos')) || [];
-            if (textos.length === 0) {
-                container.innerHTML = `<span class="text-gray-500">Nenhum texto salvo.</span>`;
-                return;
-            }
-
-            container.innerHTML = '';
-            textos.forEach((t) => {
-                const div = document.createElement('div');
-                div.className = 'bg-black border border-orange-900/40 rounded p-1.5 flex justify-between items-center';
-                div.innerHTML = `
-                    <span class="text-orange-300 font-bold truncate max-w-[150px]">${t.titulo}</span>
-                    <button onclick="copiarTextoDirect('${encodeURIComponent(t.conteudo)}')" class="bg-orange-950 text-orange-400 border border-orange-800 px-2 py-0.5 rounded text-[9px]">Copiar</button>
-                `;
-                container.appendChild(div);
-            });
-        }
-
-        function enviarEmailKwai() {
-            const para = document.getElementById('kwaiEmailPara').value.trim();
-            const assunto = document.getElementById('kwaiEmailAssunto').value.trim();
-            const mensagem = document.getElementById('kwaiEmailMensagem').value.trim();
-
-            if (!assunto || !mensagem) {
-                alert("Preencha o assunto e a mensagem!");
-                return;
-            }
-
-            const mailtoUrl = `mailto:${para}?subject=${encodeURIComponent(assunto)}&body=${encodeURIComponent(mensagem)}`;
-            window.location.href = mailtoUrl;
         }
 
         function atualizarMultiplicador() {
@@ -1600,8 +1493,83 @@
                 display.innerText = numeroSimulado;
                 document.getElementById('antiBanPhone').value = numeroSimulado;
                 localStorage.setItem('zrx_virtual_number', numeroSimulado);
-                adicionarNotificacao("SMS Gateway", `Número simulado obtido: ${numeroSimulado}`, "yellow");
+                adicionarNotificacao("SMS Gateway", `Número Rússia gerado: ${numeroSimulado}`, "red");
             }
+        }
+
+        function filtroGlobal() {
+            alert("Filtro Global: No momento, apenas números da Rússia estão ativos na API (freenumber.site).");
+        }
+
+        function adicionarNotificacao(origem, texto, corTipo = "red") {
+            const container = document.getElementById('notificationsContainer');
+            const horaAtual = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            
+            const div = document.createElement('div');
+            div.className = `border-l-2 border-${corTipo}-500 pl-2 py-1`;
+            div.innerHTML = `
+                <span class="text-[10px] text-gray-500 block">${horaAtual} - ${origem}</span>
+                <span class="text-white">${texto}</span>
+            `;
+            container.prepend(div);
+        }
+
+        function loadAvatar(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('userAvatar').src = e.target.result;
+                    localStorage.setItem('zrx_avatar', e.target.result);
+                }
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function loadBackground(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const bgImg = document.getElementById('bgImage');
+                    const bgVid = document.getElementById('bgVideo');
+
+                    if (file.type.startsWith('video/')) {
+                        bgVid.src = e.target.result;
+                        bgVid.classList.remove('hidden');
+                        bgImg.classList.add('hidden');
+                        localStorage.setItem('zrx_bg_type', 'video');
+                    } else {
+                        bgImg.src = e.target.result;
+                        bgImg.classList.remove('hidden');
+                        bgVid.classList.add('hidden');
+                        localStorage.setItem('zrx_bg_type', 'image');
+                    }
+                    localStorage.setItem('zrx_bg', e.target.result);
+                }
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function setThemeColor(colorHex) {
+            applyThemeColor(colorHex);
+            localStorage.setItem('zrx_color', colorHex);
+        }
+
+        function applyThemeColor(colorHex) {
+            document.documentElement.style.setProperty('--accentred', colorHex);
+            document.querySelectorAll('.bg-accentred').forEach(el => el.style.backgroundColor = colorHex);
+            document.querySelectorAll('.text-red-500, .text-red-400').forEach(el => el.style.color = colorHex);
+            document.querySelectorAll('.border-red-600').forEach(el => el.style.borderColor = colorHex);
+        }
+
+        function updateProfile() {
+            const newName = document.getElementById('inputName').value;
+            if (newName) {
+                document.getElementById('userName').innerText = newName;
+                localStorage.setItem('zrx_name', newName);
+            }
+            alert('Configurações salvas permanentemente!');
         }
     </script>
 </body>
