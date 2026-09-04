@@ -89,7 +89,7 @@
             <div class="space-y-2 pt-2">
                 <div class="flex justify-between items-center px-1">
                     <h3 class="text-xs font-bold text-gray-400 uppercase tracking-widest">Módulos Rápidos</h3>
-                    <span class="text-[10px] text-yellow-500 font-mono">Arraste para o lado -></span>
+                    <span class="text-[10px] text-yellow-500 font-mono">Arraste para o lado -&gt;</span>
                 </div>
 
                 <div class="flex space-x-4 overflow-x-auto no-scrollbar py-2 snap-x">
@@ -118,7 +118,7 @@
                                 <div class="w-10 h-10 rounded-xl bg-cyan-950/50 border border-cyan-600/50 flex items-center justify-center text-cyan-400 group-hover:scale-110 transition">
                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
                                 </div>
-                                <span class="bg-cyan-950 text-cyan-400 text-[10px] font-bold px-2.5 py-1 rounded-full border border-cyan-800/50">🌐 IP & TARGET</span>
+                                <span class="bg-cyan-950 text-cyan-400 text-[10px] font-bold px-2.5 py-1 rounded-full border border-cyan-800/50">🌐 IP &amp; TARGET</span>
                             </div>
                             <h3 class="text-sm font-bold text-white tracking-wide">IP Analyzer</h3>
                             <span class="text-[10px] text-cyan-400 font-mono block mb-2">#IpTools</span>
@@ -170,6 +170,7 @@
             </div>
         </section>
 
+        <!-- ABA WHATSAPP (MANTIDA COMPLETA COM TODAS AS APIS) -->
         <section id="tab-whatsapp" class="tab-content hidden space-y-4">
             <div>
                 <h2 class="text-lg font-bold text-red-500 border-l-4 border-red-600 pl-2">Central Operativa WhatsApp</h2>
@@ -304,7 +305,7 @@
                             </div>
                             <span id="shieldBadge" class="bg-gray-800 text-gray-400 text-[10px] font-bold px-2.5 py-1 rounded-full border border-gray-700 transition-all">○ WAITING</span>
                         </div>
-                        <h3 class="text-sm font-bold text-white tracking-wide">Anti-Ban & Blindagem</h3>
+                        <h3 class="text-sm font-bold text-white tracking-wide">Anti-Ban &amp; Blindagem</h3>
                         <span class="text-[10px] text-red-500 font-mono block mb-2">#ShieldV5 (Accessibility Sync)</span>
                         
                         <div class="space-y-2 mb-2">
@@ -347,7 +348,7 @@
         </section>
 
         <section id="tab-notifications" class="tab-content hidden space-y-3">
-            <h2 class="text-lg font-bold text-red-500 border-l-4 border-red-600 pl-2">Notificações & SMS</h2>
+            <h2 class="text-lg font-bold text-red-500 border-l-4 border-red-600 pl-2">Notificações &amp; SMS</h2>
             <div id="notificationsContainer" class="bg-cardbg/90 border border-red-950 rounded-xl p-3 text-xs space-y-2 backdrop-blur">
                 <div class="border-l-2 border-green-500 pl-2 py-1">
                     <span class="text-[10px] text-gray-500 block">14:28 - Sistema</span>
@@ -361,10 +362,10 @@
         </section>
 
         <section id="tab-support" class="tab-content hidden space-y-4">
-            <h2 class="text-lg font-bold text-red-500 border-l-4 border-red-600 pl-2">Configurações & Suporte</h2>
+            <h2 class="text-lg font-bold text-red-500 border-l-4 border-red-600 pl-2">Configurações &amp; Suporte</h2>
             
             <div class="bg-cardbg/90 border border-red-950 rounded-xl p-4 space-y-3 backdrop-blur">
-                <h3 class="text-xs font-bold text-red-400 uppercase tracking-wider">Perfil & Visual</h3>
+                <h3 class="text-xs font-bold text-red-400 uppercase tracking-wider">Perfil &amp; Visual</h3>
                 <div>
                     <label class="text-[10px] text-gray-400 block mb-1">Alterar Nome</label>
                     <input type="text" id="inputName" placeholder="Novo nome..." class="w-full bg-black border border-red-900 rounded-lg p-2 text-xs text-white focus:outline-none focus:border-red-600">
@@ -399,6 +400,7 @@
 
     </main>
 
+    <!-- MODAL DOWNLOADER COM SUPORTE AO KWAI -->
     <div id="downloaderModal" class="fixed inset-0 z-50 bg-black/95 backdrop-blur-md hidden flex flex-col justify-between p-6">
         <div class="flex justify-between items-center border-b border-yellow-500/30 pb-4">
             <div class="flex items-center space-x-2">
@@ -416,19 +418,19 @@
 
             <div class="space-y-3">
                 <div class="space-y-1">
-                    <label class="text-[10px] text-yellow-400 font-bold uppercase tracking-wider">Link da Mídia</label>
+                    <label class="text-[10px] text-yellow-400 font-bold uppercase tracking-wider">Link da Mídia (YouTube, TikTok, Insta, Kwai)</label>
                     <input type="url" id="mediaLinkInput" placeholder="Cole o link do vídeo..." class="w-full bg-black border-2 border-yellow-500/60 rounded-xl p-3 text-xs text-white focus:outline-none focus:border-yellow-400 font-mono shadow-lg">
                 </div>
 
                 <div class="space-y-1">
                     <label class="text-[10px] text-yellow-400 font-bold uppercase tracking-wider">Formato</label>
                     <select id="mediaQualitySelect" class="w-full bg-black border border-yellow-900 rounded-xl p-3 text-xs text-white focus:outline-none focus:border-yellow-500">
-                        <option value="mp4">Vídeo MP4 (Engine yt-dlp)</option>
+                        <option value="mp4">Vídeo MP4 (Engine yt-dlp / Kwai)</option>
                         <option value="mp3">Áudio MP3</option>
                     </select>
                 </div>
 
-                <button onclick="executarDownloadVideoDireto()" class="w-full bg-yellow-500 hover:bg-yellow-400 text-black font-extrabold text-xs py-3.5 rounded-xl transition shadow-lg uppercase tracking-widest">Processar & Baixar</button>
+                <button onclick="executarDownloadVideoDireto()" class="w-full bg-yellow-500 hover:bg-yellow-400 text-black font-extrabold text-xs py-3.5 rounded-xl transition shadow-lg uppercase tracking-widest">Processar &amp; Baixar</button>
             </div>
 
             <div id="downloadStatusBox" class="bg-black/80 border border-yellow-950 rounded-xl p-3 text-[11px] font-mono text-gray-300 min-h-[60px] flex flex-col justify-center items-center text-center">
@@ -441,18 +443,19 @@
         </div>
     </div>
 
+    <!-- OUTROS MODAIS MANTIDOS ÍNTEGROS -->
     <div id="ipGridModal" class="fixed inset-0 z-50 bg-black/95 backdrop-blur-md hidden flex flex-col justify-between p-6">
         <div class="flex justify-between items-center border-b border-cyan-500/30 pb-4">
             <div class="flex items-center space-x-2">
                 <span class="w-3 h-3 rounded-full bg-cyan-500 animate-pulse"></span>
-                <h2 class="text-sm font-bold text-cyan-400 tracking-wider">IP ANALYZER & VPN CHECK</h2>
+                <h2 class="text-sm font-bold text-cyan-400 tracking-wider">IP ANALYZER &amp; VPN CHECK</h2>
             </div>
             <button onclick="fecharModalIpGrid()" class="text-gray-400 hover:text-white text-xl font-bold px-3 py-1 bg-gray-900 border border-cyan-500/30 rounded-lg">✕</button>
         </div>
 
         <div class="space-y-4 my-auto max-w-sm mx-auto w-full overflow-y-auto max-h-[75vh] no-scrollbar py-2">
             <div class="space-y-3">
-                <h3 class="text-xs font-bold text-cyan-300 uppercase">Análise de IP & Verificação de VPN</h3>
+                <h3 class="text-xs font-bold text-cyan-300 uppercase">Análise de IP &amp; Verificação de VPN</h3>
                 <p class="text-[11px] text-gray-400">Digite um endereço IP ou analise o seu atual via ipinfo.io:</p>
                 
                 <div class="space-y-2">
@@ -488,11 +491,11 @@
             <div class="grid grid-cols-2 gap-3">
                 <div onclick="abrirChatIa('gemini')" class="bg-cardbg border-2 border-gray-600 rounded-2xl p-4 text-center cursor-pointer hover:bg-gray-900/60 transition flex flex-col items-center justify-center space-y-2 shadow-lg relative">
                     <span class="text-xs font-bold text-white">Google Gemini</span>
-                    <span class="text-[9px] text-gray-400">Chat & Denúncias</span>
+                    <span class="text-[9px] text-gray-400">Chat &amp; Denúncias</span>
                 </div>
                 <div onclick="abrirChatIa('openai')" class="bg-cardbg border-2 border-gray-600 rounded-2xl p-4 text-center cursor-pointer hover:bg-gray-900/60 transition flex flex-col items-center justify-center space-y-2 shadow-lg relative">
                     <span class="text-xs font-bold text-white">OpenAI GPT</span>
-                    <span class="text-[9px] text-gray-400">Chat & Denúncias</span>
+                    <span class="text-[9px] text-gray-400">Chat &amp; Denúncias</span>
                 </div>
                 <div onclick="abrirChatIa('groq')" class="bg-cardbg border-2 border-gray-600 rounded-2xl p-4 text-center cursor-pointer hover:bg-gray-900/60 transition flex flex-col items-center justify-center space-y-2 shadow-lg relative">
                     <span class="text-xs font-bold text-white">Groq AI</span>
@@ -544,11 +547,23 @@
         </div>
 
         <div class="space-y-4 my-auto max-w-sm mx-auto w-full">
-            <p class="text-xs text-gray-400">Insira sua chave de API para esta inteligência artificial. Ela será salva de forma segura no seu navegador.</p>
-            <div class="space-y-2">
-                <input type="password" id="apiKeyInput" placeholder="Cole sua chave de API aqui..." class="w-full bg-black border border-gray-700 rounded-xl p-3 text-xs text-white focus:outline-none focus:border-gray-500 font-mono">
+            <p class="text-xs text-gray-400">Insira sua chave de API e digite ou escolha a versão do modelo para esta inteligência artificial.</p>
+            
+            <div class="space-y-3">
+                <div class="space-y-1">
+                    <label class="text-[10px] text-gray-300 font-bold uppercase">Chave de API</label>
+                    <input type="password" id="apiKeyInput" placeholder="Cole sua chave de API aqui..." class="w-full bg-black border border-gray-700 rounded-xl p-3 text-xs text-white focus:outline-none focus:border-gray-500 font-mono">
+                </div>
+
+                <div class="space-y-1">
+                    <label class="text-[10px] text-gray-300 font-bold uppercase">Versão do Modelo / Engine API</label>
+                    <input type="text" id="apiVersionInput" placeholder="Digite ou selecione a versão..." class="w-full bg-black border border-gray-700 rounded-xl p-3 text-xs text-white focus:outline-none focus:border-gray-500 font-mono mb-1">
+                    <select id="apiVersionSelect" onchange="document.getElementById('apiVersionInput').value = this.value" class="w-full bg-black border border-gray-700 rounded-xl p-3 text-xs text-white focus:outline-none focus:border-gray-500 font-mono">
+                    </select>
+                </div>
             </div>
-            <button onclick="salvarChaveApi()" class="w-full bg-gray-200 hover:bg-white text-black font-bold text-xs py-3 rounded-xl transition uppercase">Salvar Chave</button>
+
+            <button onclick="salvarChaveApi()" class="w-full bg-gray-200 hover:bg-white text-black font-bold text-xs py-3 rounded-xl transition uppercase shadow-lg">Salvar Configuração</button>
         </div>
 
         <div class="text-center text-[10px] text-gray-500 font-mono">
@@ -599,7 +614,7 @@
         </div>
 
         <div class="text-center text-[10px] text-gray-500 font-mono pt-2">
-            [ Copy & Paste Browser Ready ]
+            [ Copy &amp; Paste Browser Ready ]
         </div>
     </div>
 
@@ -625,14 +640,16 @@
                     <span class="text-xs font-bold text-purple-300">Travas de Texto</span>
                 </div>
                 <div onclick="abrirSubTelaInsta('multiplicador')" class="bg-cardbg border-2 border-purple-600 rounded-2xl p-4 text-center cursor-pointer hover:bg-purple-950/40 transition flex flex-col items-center justify-center space-y-2 shadow-lg">
-                    <span class="text-xs font-bold text-purple-300">Multiplicador & Caracteres</span>
+                    <span class="text-xs font-bold text-purple-300">Multiplicador &amp; Caracteres</span>
                 </div>
-                <!-- Botões Kwai e Instagram lado a lado -->
-                <div class="flex gap-2 col-span-2">
-                    <div onclick="abrirSubTelaKwai()" class="flex-1 bg-cardbg border-2 border-red-500 rounded-2xl p-4 text-center cursor-pointer hover:bg-red-950/40 transition flex flex-col items-center justify-center space-y-2 shadow-lg">
-                        <span class="text-xs font-bold text-red-400">Kwai</span>
+                <!-- Botão do Kwai e do Instagram lado a lado em formato de balãozinho -->
+                <div class="flex space-x-2 col-span-2">
+                    <div onclick="abrirSubTelaKwai()" class="flex-1 bg-cardbg border-2 border-pink-600 rounded-2xl p-4 text-center cursor-pointer hover:bg-pink-950/40 transition flex flex-col items-center justify-center space-y-2 shadow-lg relative">
+                        <span class="absolute -top-2 -right-2 bg-pink-600 text-[8px] font-bold px-1.5 py-0.5 rounded-full text-white">Kwai</span>
+                        <span class="text-xs font-bold text-pink-300">Kwai Suporte</span>
                     </div>
-                    <div onclick="abrirSubTelaInsta('email')" class="flex-1 bg-cardbg border-2 border-purple-600 rounded-2xl p-4 text-center cursor-pointer hover:bg-purple-950/40 transition flex flex-col items-center justify-center space-y-2 shadow-lg">
+                    <div onclick="abrirSubTelaInsta('email')" class="flex-1 bg-cardbg border-2 border-purple-600 rounded-2xl p-4 text-center cursor-pointer hover:bg-purple-950/40 transition flex flex-col items-center justify-center space-y-2 shadow-lg relative">
+                        <span class="absolute -top-2 -right-2 bg-purple-600 text-[8px] font-bold px-1.5 py-0.5 rounded-full text-white">Insta</span>
                         <span class="text-xs font-bold text-purple-300">E-mail / Suporte</span>
                     </div>
                 </div>
@@ -640,7 +657,52 @@
         </div>
 
         <div class="text-center text-[10px] text-gray-500 font-mono">
-            [ Instagram & Kwai Integration Active ]
+            [ Instagram Integration Active ]
+        </div>
+    </div>
+
+    <!-- MODAL DO KWAI (ARMAZENAMENTO DE TEXTO, ASSUNTO, MENSAGEM, ENVIAR) -->
+    <div id="kwaiSubModal" class="fixed inset-0 z-50 bg-black/95 backdrop-blur-md hidden flex flex-col justify-between p-6">
+        <div class="flex justify-between items-center border-b border-pink-500/30 pb-4">
+            <div class="flex items-center space-x-2">
+                <button onclick="voltarParaGridInstaDoKwai()" class="text-pink-400 hover:text-white text-xs font-bold px-2 py-1 bg-pink-950 border border-pink-800 rounded-lg mr-2">← Voltar</button>
+                <h2 class="text-sm font-bold text-pink-400 tracking-wider">KWAI SUPORTE / CONTATO</h2>
+            </div>
+            <button onclick="fecharModalInstagramGrid()" class="text-gray-400 hover:text-white text-xl font-bold px-3 py-1 bg-gray-900 border border-pink-500/30 rounded-lg">✕</button>
+        </div>
+
+        <div class="space-y-4 my-auto max-w-sm mx-auto w-full overflow-y-auto max-h-[70vh] no-scrollbar py-2">
+            <div class="space-y-3">
+                <h3 class="text-xs font-bold text-pink-300 uppercase">Suporte Kwai (E-mail)</h3>
+                <p class="text-[11px] text-gray-400">Preencha os campos abaixo para enviar sua mensagem de suporte ao Kwai:</p>
+
+                <div class="space-y-2">
+                    <div>
+                        <label class="text-[9px] text-gray-400 font-bold uppercase">Armazenamento de Texto (Selecionar Trava/Modelo)</label>
+                        <select id="kwaiVaultSelect" onchange="preencherKwaiComVault(this)" class="w-full bg-black border border-pink-900 rounded-lg p-2 text-xs text-white focus:outline-none focus:border-pink-600 mb-1">
+                            <option value="">Selecione do Armazenamento de Texto...</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="text-[9px] text-gray-400 font-bold uppercase">E-mail</label>
+                        <input type="email" id="emailDestinoKwai" value="support@kwai.com" class="w-full bg-black border border-pink-900 rounded-lg p-2 text-xs text-white focus:outline-none focus:border-pink-600 font-mono">
+                    </div>
+                    <div>
+                        <label class="text-[9px] text-gray-400 font-bold uppercase">Assunto</label>
+                        <input type="text" id="emailAssuntoKwai" placeholder="Ex: Problema com conta ou saque..." class="w-full bg-black border border-pink-900 rounded-lg p-2 text-xs text-white focus:outline-none focus:border-pink-600 font-mono">
+                    </div>
+                    <div>
+                        <label class="text-[9px] text-gray-400 font-bold uppercase">Mensagem</label>
+                        <textarea id="emailDetalhesKwai" placeholder="Escreva sua mensagem detalhada..." class="w-full bg-black border border-pink-900 rounded-lg p-2 text-xs text-white focus:outline-none focus:border-pink-600 h-24 resize-none font-mono"></textarea>
+                    </div>
+
+                    <button onclick="enviarEmailKwaiSuporte()" class="w-full bg-pink-700 hover:bg-pink-600 text-white text-xs font-bold py-2.5 rounded-lg transition shadow-md">Enviar</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="text-center text-[10px] text-gray-500 font-mono">
+            [ Kwai Integration Active ]
         </div>
     </div>
 
@@ -686,7 +748,7 @@
             </div>
 
             <div id="subContent-multiplicador" class="sub-panel hidden space-y-3">
-                <h3 class="text-xs font-bold text-purple-300 uppercase">Multiplicador de Texto & Caracteres</h3>
+                <h3 class="text-xs font-bold text-purple-300 uppercase">Multiplicador de Texto &amp; Caracteres</h3>
                 <p class="text-[11px] text-gray-400">Multiplique textos e acompanhe o contador de caracteres:</p>
 
                 <div class="space-y-2">
@@ -732,34 +794,6 @@
                 </div>
             </div>
 
-            <div id="subContent-kwai" class="sub-panel hidden space-y-3">
-                <h3 class="text-xs font-bold text-red-400 uppercase">Painel Kwai Suporte</h3>
-                <p class="text-[11px] text-gray-400">Preencha os campos abaixo para envio de suporte/mensagem:</p>
-
-                <div class="space-y-2">
-                    <div class="grid grid-cols-2 gap-2">
-                        <div>
-                            <label class="text-[9px] text-gray-400 font-bold uppercase">Armazenamento de Texto</label>
-                            <textarea id="kwaiArmazenamentoTexto" placeholder="Armazenamento..." class="w-full bg-black border border-red-900 rounded-lg p-2 text-xs text-white focus:outline-none focus:border-red-600 h-16 resize-none font-mono"></textarea>
-                        </div>
-                        <div>
-                            <label class="text-[9px] text-gray-400 font-bold uppercase">E-mail</label>
-                            <input type="email" id="kwaiEmail" placeholder="seu-email@exemplo.com" class="w-full bg-black border border-red-900 rounded-lg p-2 text-xs text-white focus:outline-none focus:border-red-600 font-mono">
-                        </div>
-                    </div>
-                    <div>
-                        <label class="text-[9px] text-gray-400 font-bold uppercase">Assunto</label>
-                        <input type="text" id="kwaiAssunto" placeholder="Assunto..." class="w-full bg-black border border-red-900 rounded-lg p-2 text-xs text-white focus:outline-none focus:border-red-600 font-mono">
-                    </div>
-                    <div>
-                        <label class="text-[9px] text-gray-400 font-bold uppercase">Mensagem</label>
-                        <textarea id="kwaiMensagem" placeholder="Mensagem..." class="w-full bg-black border border-red-900 rounded-lg p-2 text-xs text-white focus:outline-none focus:border-red-600 h-20 resize-none font-mono"></textarea>
-                    </div>
-
-                    <button onclick="enviarKwaiSuporte()" class="w-full bg-red-600 hover:bg-red-500 text-white text-xs font-bold py-2.5 rounded-lg transition shadow-md">Enviar</button>
-                </div>
-            </div>
-
         </div>
 
         <div class="text-center text-[10px] text-gray-500 font-mono">
@@ -794,6 +828,26 @@
 
     <script>
         const API_URL = 'https://weak-deloris-nothing672434-fe85179d.koyeb.app';
+
+        const defaultAiVersions = {
+            'gemini': [
+                { val: 'gemini-2.5-flash', label: 'Gemini 2.5 Flash (Padrão/Novo)' },
+                { val: 'gemini-2.0-flash', label: 'Gemini 2.0 Flash' },
+                { val: 'gemini-1.5-flash', label: 'Gemini 1.5 Flash' },
+                { val: 'gemini-1.5-pro', label: 'Gemini 1.5 Pro' }
+            ],
+            'openai': [
+                { val: 'gpt-4o-mini', label: 'GPT-4o Mini (Recomendado)' },
+                { val: 'gpt-4o', label: 'GPT-4o' },
+                { val: 'gpt-4-turbo', label: 'GPT-4 Turbo' },
+                { val: 'gpt-3.5-turbo', label: 'GPT-3.5 Turbo' }
+            ],
+            'groq': [
+                { val: 'llama-3.3-70b-versatile', label: 'Llama 3.3 70B (Rápido)' },
+                { val: 'llama3-8b-8192', label: 'Llama 3 8B' },
+                { val: 'mixtral-8x7b-32768', label: 'Mixtral 8x7b' }
+            ]
+        };
 
         window.addEventListener('DOMContentLoaded', () => {
             const savedName = localStorage.getItem('zrx_name');
@@ -834,6 +888,7 @@
             carregarSelectTravas();
             carregarMetodosInsta();
             carregarTravasInstaGrid();
+            carregarKwaiVaultSelect();
         });
 
         function switchTab(tabId) {
@@ -867,6 +922,53 @@
             });
         }
 
+        function carregarKwaiVaultSelect() {
+            const select = document.getElementById('kwaiVaultSelect');
+            if (!select) return;
+
+            select.innerHTML = '<option value="">Selecione do Armazenamento de Texto...</option>';
+            const salvas = JSON.parse(localStorage.getItem('zrx_vault_travas')) || [];
+            
+            salvas.forEach(t => {
+                const opt = document.createElement('option');
+                opt.value = t.conteudo;
+                opt.textContent = `[${(t.tipo || 'geral').toUpperCase()}] ${t.nome || 'Item'}`;
+                select.appendChild(opt);
+            });
+        }
+
+        function preencherKwaiComVault(selectEl) {
+            const val = selectEl.value;
+            if (val) {
+                document.getElementById('emailDetalhesKwai').value = val;
+            }
+        }
+
+        function abrirSubTelaKwai() {
+            document.getElementById('instagramGridModal').classList.add('hidden');
+            document.getElementById('kwaiSubModal').classList.remove('hidden');
+            carregarKwaiVaultSelect();
+        }
+
+        function voltarParaGridInstaDoKwai() {
+            document.getElementById('kwaiSubModal').classList.add('hidden');
+            document.getElementById('instagramGridModal').classList.remove('hidden');
+        }
+
+        function enviarEmailKwaiSuporte() {
+            const destino = document.getElementById('emailDestinoKwai').value.trim();
+            const assunto = document.getElementById('emailAssuntoKwai').value.trim();
+            const detalhes = document.getElementById('emailDetalhesKwai').value.trim();
+
+            if (!assunto || !detalhes) {
+                alert("Preencha o assunto e a mensagem!");
+                return;
+            }
+
+            const mailtoUrl = `mailto:${destino}?subject=${encodeURIComponent(assunto)}&body=${encodeURIComponent(detalhes)}`;
+            window.location.href = mailtoUrl;
+        }
+
         function salvarNaVault() {
             const nome = document.getElementById('vaultNameInput').value.trim();
             const conteudo = document.getElementById('vaultContentInput').value.trim();
@@ -884,6 +986,7 @@
             document.getElementById('vaultContentInput').value = '';
             alert("Salvo com sucesso no Armazenamento Trava!");
             carregarSelectTravas();
+            carregarKwaiVaultSelect();
         }
 
         function abrirModalDownloader() {
@@ -938,8 +1041,24 @@
         function abrirConfigApi() {
             document.getElementById('iaConfigModal').classList.remove('hidden');
             const savedKey = localStorage.getItem(`zrx_apikey_${currentAiProvider}`) || '';
+            const savedVersion = localStorage.getItem(`zrx_apiversion_${currentAiProvider}`) || '';
+            
             document.getElementById('apiKeyInput').value = savedKey;
             document.getElementById('configModalTitle').innerText = `CONFIGURAR CHAVE API (${currentAiProvider.toUpperCase()})`;
+
+            const inputVer = document.getElementById('apiVersionInput');
+            const selectVer = document.getElementById('apiVersionSelect');
+            
+            inputVer.value = savedVersion;
+            selectVer.innerHTML = '<option value="">-- Escolha da Lista ou Digite Acima --</option>';
+            
+            const opcoes = defaultAiVersions[currentAiProvider] || [{ val: 'default', label: 'Versão Padrão' }];
+            opcoes.forEach(op => {
+                const opt = document.createElement('option');
+                opt.value = op.val;
+                opt.textContent = op.label;
+                selectVer.appendChild(opt);
+            });
         }
 
         function fecharConfigApi() {
@@ -948,12 +1067,15 @@
 
         function salvarChaveApi() {
             const key = document.getElementById('apiKeyInput').value.trim();
+            const version = document.getElementById('apiVersionInput').value.trim() || document.getElementById('apiVersionSelect').value;
+            
             if (!key) {
                 alert("Insira uma chave válida!");
                 return;
             }
             localStorage.setItem(`zrx_apikey_${currentAiProvider}`, key);
-            alert("Chave de API salva com sucesso no navegador!");
+            localStorage.setItem(`zrx_apiversion_${currentAiProvider}`, version);
+            alert("Chave e versão do modelo salvas com sucesso no navegador!");
             fecharConfigApi();
         }
 
@@ -1030,22 +1152,24 @@
             const loadingMsg = document.createElement('div');
             loadingMsg.className = 'bg-gray-900 border border-gray-800 rounded-xl p-3 text-gray-400 mr-6 animate-pulse';
             loadingMsg.id = 'loadingResponse';
-            loadingMsg.innerHTML = `<span class="text-[10px] text-gray-500 block mb-1">🤖 ${currentAiProvider.toUpperCase()}</span>Processando requisição via API...`;
+            loadingMsg.innerHTML = `<span class="text-[10px] text-gray-500 block mb-1">🤖 ${currentAiProvider.toUpperCase()}</span>Gerando resposta...`;
             container.appendChild(loadingMsg);
             container.scrollTop = container.scrollHeight;
 
             const apiKey = localStorage.getItem(`zrx_apikey_${currentAiProvider}`);
+            const apiVersion = localStorage.getItem(`zrx_apiversion_${currentAiProvider}`) || (defaultAiVersions[currentAiProvider] ? defaultAiVersions[currentAiProvider][0].val : '');
 
             if (!apiKey) {
                 const loadingEl = document.getElementById('loadingResponse');
                 if (loadingEl) loadingEl.remove();
 
-                const semKeyMsg = `⚠️ [${currentAiProvider.toUpperCase()}] Chave de API não configurada! Clique no ícone de engrenagem ⚙️ no topo superior direito para salvar sua chave.`;
                 const aiMsg = document.createElement('div');
-                aiMsg.className = 'bg-gray-900 border border-red-800 rounded-xl p-3 text-red-400 mr-6';
-                aiMsg.innerHTML = `<span class="text-[10px] text-gray-500 block mb-1">🤖 ${currentAiProvider.toUpperCase()}</span>${semKeyMsg}`;
+                aiMsg.className = 'bg-gray-900 border border-red-900/50 rounded-xl p-3 text-red-400 mr-6';
+                const msgErro = `[Aviso] Nenhuma chave de API do ${currentAiProvider.toUpperCase()} foi salva. Clique no ícone de engrenagem ⚙️ no topo para inserir sua chave de API para poder conversar de verdade.`;
+                aiMsg.innerHTML = `<span class="text-[10px] text-red-500 block mb-1">🤖 ${currentAiProvider.toUpperCase()}</span>${msgErro}`;
                 container.appendChild(aiMsg);
-                salvarMensagemHistoricoIsolado(currentAiProvider, 'ai', semKeyMsg);
+
+                salvarMensagemHistoricoIsolado(currentAiProvider, 'ai', msgErro);
                 container.scrollTop = container.scrollHeight;
                 return;
             }
@@ -1054,7 +1178,8 @@
                 let resposta = "";
 
                 if (currentAiProvider === 'gemini') {
-                    const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`, {
+                    const modelToUse = apiVersion || 'gemini-2.5-flash';
+                    const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${modelToUse}:generateContent?key=${apiKey}`, {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({
@@ -1062,40 +1187,55 @@
                         })
                     });
                     const data = await res.json();
-                    if (data.error) throw new Error(data.error.message || "Erro na API do Gemini.");
-                    resposta = data.candidates?.[0]?.content?.parts?.[0]?.text || "Sem resposta da IA.";
-
+                    if (data.candidates && data.candidates[0].content.parts[0].text) {
+                        resposta = data.candidates[0].content.parts[0].text;
+                    } else if (data.error) {
+                        resposta = `[Erro na API]: ${data.error.message}`;
+                    } else {
+                        resposta = "Não foi possível interpretar a resposta da API do Gemini.";
+                    }
                 } else if (currentAiProvider === 'openai') {
-                    const res = await fetch(`https://api.openai.com/v1/chat/completions`, {
+                    const modelToUse = apiVersion || 'gpt-4o-mini';
+                    const res = await fetch('https://api.openai.com/v1/chat/completions', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
                             'Authorization': `Bearer ${apiKey}`
                         },
                         body: JSON.stringify({
-                            model: "gpt-4o-mini",
-                            messages: [{ role: "user", content: text }]
+                            model: modelToUse,
+                            messages: [{ role: 'user', content: text }]
                         })
                     });
                     const data = await res.json();
-                    if (data.error) throw new Error(data.error.message || "Erro na API da OpenAI.");
-                    resposta = data.choices?.[0]?.message?.content || "Sem resposta da IA.";
-
+                    if (data.choices && data.choices[0].message.content) {
+                        resposta = data.choices[0].message.content;
+                    } else if (data.error) {
+                        resposta = `[Erro na API]: ${data.error.message}`;
+                    } else {
+                        resposta = "Não foi possível interpretar a resposta da API da OpenAI.";
+                    }
                 } else if (currentAiProvider === 'groq') {
-                    const res = await fetch(`https://api.groq.com/openai/v1/chat/completions`, {
+                    const modelToUse = apiVersion || 'llama-3.3-70b-versatile';
+                    const res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
                             'Authorization': `Bearer ${apiKey}`
                         },
                         body: JSON.stringify({
-                            model: "llama-3.3-70b-versatile",
-                            messages: [{ role: "user", content: text }]
+                            model: modelToUse,
+                            messages: [{ role: 'user', content: text }]
                         })
                     });
                     const data = await res.json();
-                    if (data.error) throw new Error(data.error.message || "Erro na API da Groq.");
-                    resposta = data.choices?.[0]?.message?.content || "Sem resposta da IA.";
+                    if (data.choices && data.choices[0].message.content) {
+                        resposta = data.choices[0].message.content;
+                    } else if (data.error) {
+                        resposta = `[Erro na API]: ${data.error.message}`;
+                    } else {
+                        resposta = "Não foi possível interpretar a resposta da API do Groq.";
+                    }
                 }
 
                 const loadingEl = document.getElementById('loadingResponse');
@@ -1103,7 +1243,7 @@
 
                 const aiMsg = document.createElement('div');
                 aiMsg.className = 'bg-gray-900 border border-gray-800 rounded-xl p-3 text-gray-200 mr-6';
-                aiMsg.innerHTML = `<span class="text-[10px] text-gray-500 block mb-1">🤖 ${currentAiProvider.toUpperCase()}</span>${resposta.replace(/\n/g, '<br>')}`;
+                aiMsg.innerHTML = `<span class="text-[10px] text-gray-500 block mb-1">🤖 ${currentAiProvider.toUpperCase()}</span>${resposta}`;
                 container.appendChild(aiMsg);
 
                 salvarMensagemHistoricoIsolado(currentAiProvider, 'ai', resposta);
@@ -1113,13 +1253,13 @@
                 const loadingEl = document.getElementById('loadingResponse');
                 if (loadingEl) loadingEl.remove();
 
-                const erroMsg = `❌ Erro de Conexão (${currentAiProvider.toUpperCase()}): ${err.message}`;
                 const aiMsg = document.createElement('div');
-                aiMsg.className = 'bg-gray-900 border border-red-800 rounded-xl p-3 text-red-400 mr-6';
-                aiMsg.innerHTML = `<span class="text-[10px] text-gray-500 block mb-1">🤖 ${currentAiProvider.toUpperCase()}</span>${erroMsg}`;
+                aiMsg.className = 'bg-gray-900 border border-red-900/50 rounded-xl p-3 text-red-400 mr-6';
+                const msgErro = `[Erro de Conexão]: Falha ao comunicar com a API do ${currentAiProvider.toUpperCase()}. Verifique se sua chave e a versão selecionada estão corretas.`;
+                aiMsg.innerHTML = `<span class="text-[10px] text-gray-500 block mb-1">🤖 ${currentAiProvider.toUpperCase()}</span>${msgErro}`;
                 container.appendChild(aiMsg);
 
-                salvarMensagemHistoricoIsolado(currentAiProvider, 'ai', erroMsg);
+                salvarMensagemHistoricoIsolado(currentAiProvider, 'ai', msgErro);
                 container.scrollTop = container.scrollHeight;
             }
         }
@@ -1160,6 +1300,7 @@
         function fecharModalInstagramGrid() {
             document.getElementById('instagramGridModal').classList.add('hidden');
             document.getElementById('instagramSubModal').classList.add('hidden');
+            document.getElementById('kwaiSubModal').classList.add('hidden');
         }
 
         function abrirSubTelaInsta(tipo) {
@@ -1176,16 +1317,6 @@
                 'email': 'Gerador de E-mail de Suporte'
             };
             document.getElementById('subModalTitle').innerText = titles[tipo] || 'Sub-Painel';
-        }
-
-        function abrirSubTelaKwai() {
-            document.getElementById('instagramGridModal').classList.add('hidden');
-            document.getElementById('instagramSubModal').classList.remove('hidden');
-
-            document.querySelectorAll('.sub-panel').forEach(el => el.classList.add('hidden'));
-            document.getElementById('subContent-kwai').classList.remove('hidden');
-
-            document.getElementById('subModalTitle').innerText = 'Painel Kwai Suporte';
         }
 
         function voltarParaGridInsta() {
@@ -1336,22 +1467,6 @@
             window.location.href = mailtoUrl;
         }
 
-        function enviarKwaiSuporte() {
-            const email = document.getElementById('kwaiEmail').value.trim();
-            const assunto = document.getElementById('kwaiAssunto').value.trim();
-            const mensagem = document.getElementById('kwaiMensagem').value.trim();
-            const armazenamento = document.getElementById('kwaiArmazenamentoTexto').value.trim();
-
-            if (!email || !assunto || !mensagem) {
-                alert("Preencha os campos obrigatórios (E-mail, Assunto e Mensagem)!");
-                return;
-            }
-
-            const corpoCompleto = armazenamento ? `${armazenamento}\n\n---\n\n${mensagem}` : mensagem;
-            const mailtoUrl = `mailto:${email}?subject=${encodeURIComponent(assunto)}&body=${encodeURIComponent(corpoCompleto)}`;
-            window.location.href = mailtoUrl;
-        }
-
         function executarDownloadVideoDireto() {
             const urlLink = document.getElementById('mediaLinkInput').value.trim();
             const format = document.getElementById('mediaQualitySelect').value;
@@ -1461,7 +1576,40 @@
                     window.open(urlWhatsApp, '_blank');
                     statusBox.innerHTML = `<span class="text-green-400 font-bold">✅ Pronto para enviar empilhado (${quantidade}x)!</span>`;
                 }, 500);
+
+                adicionarNotificacao("Flooder", `Disparo em massa empilhado (${quantidade}x) para ${alvo}`, "red");
+                return;
             }
+
+            statusBox.innerHTML = `<span class="text-yellow-400 animate-pulse">⚡ Iniciando disparos sequenciais (${quantidade}x)...</span>`;
+            
+            let i = 0;
+            const intervalo = setInterval(() => {
+                if (i < quantidade) {
+                    const urlWhatsApp = `https://api.whatsapp.com/send?phone=${alvo}&text=${encodeURIComponent(payload)}`;
+                    window.open(urlWhatsApp, '_blank');
+                    i++;
+                    statusBox.innerHTML = `<span class="text-cyan-400">Disparo ${i}/${quantidade} realizado...</span>`;
+                } else {
+                    clearInterval(intervalo);
+                    statusBox.innerHTML = `<span class="text-green-400 font-bold">✅ Todos os ${quantidade} disparos concluídos!</span>`;
+                    adicionarNotificacao("Flooder", `Disparos em massa finalizados (${quantidade}x) para ${alvo}`, "red");
+                }
+            }, 800);
+        }
+
+        function adicionarNotificacao(titulo, texto, cor) {
+            const container = document.getElementById('notificationsContainer');
+            if (!container) return;
+
+            const horaAtual = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            const div = document.createElement('div');
+            div.className = `border-l-2 border-${cor}-500 pl-2 py-1`;
+            div.innerHTML = `
+                <span class="text-[10px] text-gray-500 block">${horaAtual} - ${titulo}</span>
+                <span class="text-white">${texto}</span>
+            `;
+            container.prepend(div);
         }
     </script>
 </body>
