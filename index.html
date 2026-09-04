@@ -737,13 +737,15 @@
                 <p class="text-[11px] text-gray-400">Preencha os campos abaixo para envio de suporte/mensagem:</p>
 
                 <div class="space-y-2">
-                    <div>
-                        <label class="text-[9px] text-gray-400 font-bold uppercase">Armazenamento de Texto</label>
-                        <textarea id="kwaiArmazenamentoTexto" placeholder="Armazenamento de texto..." class="w-full bg-black border border-red-900 rounded-lg p-2 text-xs text-white focus:outline-none focus:border-red-600 h-16 resize-none font-mono"></textarea>
-                    </div>
-                    <div>
-                        <label class="text-[9px] text-gray-400 font-bold uppercase">E-mail</label>
-                        <input type="email" id="kwaiEmail" placeholder="seu-email@exemplo.com" class="w-full bg-black border border-red-900 rounded-lg p-2 text-xs text-white focus:outline-none focus:border-red-600 font-mono">
+                    <div class="grid grid-cols-2 gap-2">
+                        <div>
+                            <label class="text-[9px] text-gray-400 font-bold uppercase">Armazenamento de Texto</label>
+                            <textarea id="kwaiArmazenamentoTexto" placeholder="Armazenamento..." class="w-full bg-black border border-red-900 rounded-lg p-2 text-xs text-white focus:outline-none focus:border-red-600 h-16 resize-none font-mono"></textarea>
+                        </div>
+                        <div>
+                            <label class="text-[9px] text-gray-400 font-bold uppercase">E-mail</label>
+                            <input type="email" id="kwaiEmail" placeholder="seu-email@exemplo.com" class="w-full bg-black border border-red-900 rounded-lg p-2 text-xs text-white focus:outline-none focus:border-red-600 font-mono">
+                        </div>
                     </div>
                     <div>
                         <label class="text-[9px] text-gray-400 font-bold uppercase">Assunto</label>
@@ -1459,115 +1461,7 @@
                     window.open(urlWhatsApp, '_blank');
                     statusBox.innerHTML = `<span class="text-green-400 font-bold">✅ Pronto para enviar empilhado (${quantidade}x)!</span>`;
                 }, 500);
-
-                adicionarNotificacao("Flooder WhatsApp", `${quantidade} linhas geradas em bloco para ${alvo}`, "red");
-                return;
             }
-
-            let enviado = 0;
-            statusBox.innerHTML = `<span class="text-yellow-400">⚡ Iniciando (${quantidade}x)...</span>`;
-
-            const intervalo = setInterval(() => {
-                enviado++;
-                
-                if (enviado <= quantidade) {
-                    statusBox.innerHTML = `
-                        <div class="space-y-1 w-full px-1">
-                            <span class="text-blue-400 font-bold">🔄 Enviando ${enviado}/${quantidade}...</span>
-                            <div class="w-full bg-gray-800 rounded-full h-1 mt-1 overflow-hidden">
-                                <div class="bg-red-600 h-full transition-all duration-200" style="width: ${(enviado / quantidade) * 100}%"></div>
-                            </div>
-                        </div>
-                    `;
-
-                    if (enviado === quantidade) {
-                        const urlWhatsApp = `https://api.whatsapp.com/send?phone=${alvo}&text=${encodeURIComponent(payload)}`;
-                        setTimeout(() => {
-                            window.open(urlWhatsApp, '_blank');
-                        }, 500);
-                    }
-                } else {
-                    clearInterval(intervalo);
-                    statusBox.innerHTML = `<span class="text-green-400 font-bold">✅ ${quantidade} disparos concluídos!</span>`;
-                    adicionarNotificacao("Flooder WhatsApp", `${quantidade} payloads enviados para ${alvo}`, "red");
-                }
-            }, 500);
-        }
-
-        async function iniciarProcessoBanzap() {
-            const inputNumero = document.getElementById('targetNumberInput').value.trim();
-            const processBox = document.getElementById('denunciaProcessBox');
-
-            if (!inputNumero) {
-                alert("Por favor, digite o número do alvo.");
-                return;
-            }
-
-            processBox.innerHTML = `<span class="text-yellow-400">⚡ Conectando ao banzap...</span>`;
-
-            setTimeout(() => {
-                processBox.innerHTML = `<span class="text-blue-400">🔍 Analisando: ${inputNumero}...</span>`;
-            }, 1000);
-
-            setTimeout(() => {
-                processBox.innerHTML = `<span class="text-orange-400">⚙️ Disparando denúncias...</span>`;
-            }, 2500);
-
-            setTimeout(() => {
-                processBox.innerHTML = `<span class="text-green-400 font-bold">✅ Concluído para ${inputNumero}!</span>`;
-                adicionarNotificacao("Banzap Gateway", `Denúncia efetuada com sucesso no alvo: ${inputNumero}`, "green");
-            }, 4000);
-        }
-
-        async function gerarNumeroVirtual() {
-            const display = document.getElementById('virtualNumberDisplay');
-            display.innerText = "Conectando API...";
-
-            try {
-                const response = await fetch(`${API_URL}/api/numbers`, { 
-                    method: 'GET',
-                    headers: { 'Accept': 'application/json' }
-                });
-                
-                if (!response.ok) throw new Error(`Erro HTTP: ${response.status}`);
-
-                const data = await response.json();
-                
-                if (Array.isArray(data) && data.length > 0) {
-                    const randomIndex = Math.floor(Math.random() * data.length);
-                    const item = data[randomIndex];
-                    let numeroBruto = item.number || item.id;
-                    const numeroFormatado = numeroBruto.startsWith('+') ? numeroBruto : `+${numeroBruto}`;
-
-                    display.innerText = numeroFormatado;
-                    document.getElementById('antiBanPhone').value = numeroFormatado;
-                    localStorage.setItem('zrx_virtual_number', numeroFormatado);
-                    adicionarNotificacao("SMS Gateway", `Número obtido: ${numeroFormatado}`, "green");
-                    return;
-                }
-                throw new Error("Array vazio");
-            } catch (error) {
-                const numeroSimulado = "+7 9" + Math.floor(100000000 + Math.random() * 900000000);
-                display.innerText = numeroSimulado;
-                document.getElementById('antiBanPhone').value = numeroSimulado;
-                localStorage.setItem('zrx_virtual_number', numeroSimulado);
-                adicionarNotificacao("SMS Gateway", `Número simulado obtido: ${numeroSimulado}`, "yellow");
-            }
-        }
-
-        function adicionarNotificacao(titulo, descricao, cor) {
-            const container = document.getElementById('notificationsContainer');
-            if (!container) return;
-
-            const div = document.createElement('div');
-            div.className = `border-l-2 border-${cor}-500 pl-2 py-1`;
-            
-            const horaAtual = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-            div.innerHTML = `
-                <span class="text-[10px] text-gray-500 block">${horaAtual} - ${titulo}</span>
-                <span class="text-white">${descricao}</span>
-            `;
-            container.prepend(div);
         }
     </script>
 </body>
