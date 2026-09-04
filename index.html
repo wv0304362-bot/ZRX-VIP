@@ -642,14 +642,67 @@
                 <div onclick="abrirSubTelaInsta('multiplicador')" class="bg-cardbg border-2 border-purple-600 rounded-2xl p-4 text-center cursor-pointer hover:bg-purple-950/40 transition flex flex-col items-center justify-center space-y-2 shadow-lg">
                     <span class="text-xs font-bold text-purple-300">Multiplicador &amp; Caracteres</span>
                 </div>
-                <div onclick="abrirSubTelaInsta('email')" class="bg-cardbg border-2 border-purple-600 rounded-2xl p-4 text-center cursor-pointer hover:bg-purple-950/40 transition flex flex-col items-center justify-center space-y-2 shadow-lg">
-                    <span class="text-xs font-bold text-purple-300">E-mail / Suporte</span>
+                <!-- Botão do Kwai e do Instagram lado a lado em formato de balãozinho -->
+                <div class="flex space-x-2 col-span-2">
+                    <div onclick="abrirSubTelaKwai()" class="flex-1 bg-cardbg border-2 border-pink-600 rounded-2xl p-4 text-center cursor-pointer hover:bg-pink-950/40 transition flex flex-col items-center justify-center space-y-2 shadow-lg relative">
+                        <span class="absolute -top-2 -right-2 bg-pink-600 text-[8px] font-bold px-1.5 py-0.5 rounded-full text-white">Kwai</span>
+                        <span class="text-xs font-bold text-pink-300">Kwai Suporte</span>
+                    </div>
+                    <div onclick="abrirSubTelaInsta('email')" class="flex-1 bg-cardbg border-2 border-purple-600 rounded-2xl p-4 text-center cursor-pointer hover:bg-purple-950/40 transition flex flex-col items-center justify-center space-y-2 shadow-lg relative">
+                        <span class="absolute -top-2 -right-2 bg-purple-600 text-[8px] font-bold px-1.5 py-0.5 rounded-full text-white">Insta</span>
+                        <span class="text-xs font-bold text-purple-300">E-mail / Suporte</span>
+                    </div>
                 </div>
             </div>
         </div>
 
         <div class="text-center text-[10px] text-gray-500 font-mono">
             [ Instagram Integration Active ]
+        </div>
+    </div>
+
+    <!-- MODAL DO KWAI (ARMAZENAMENTO DE TEXTO, ASSUNTO, MENSAGEM, ENVIAR) -->
+    <div id="kwaiSubModal" class="fixed inset-0 z-50 bg-black/95 backdrop-blur-md hidden flex flex-col justify-between p-6">
+        <div class="flex justify-between items-center border-b border-pink-500/30 pb-4">
+            <div class="flex items-center space-x-2">
+                <button onclick="voltarParaGridInstaDoKwai()" class="text-pink-400 hover:text-white text-xs font-bold px-2 py-1 bg-pink-950 border border-pink-800 rounded-lg mr-2">← Voltar</button>
+                <h2 class="text-sm font-bold text-pink-400 tracking-wider">KWAI SUPORTE / CONTATO</h2>
+            </div>
+            <button onclick="fecharModalInstagramGrid()" class="text-gray-400 hover:text-white text-xl font-bold px-3 py-1 bg-gray-900 border border-pink-500/30 rounded-lg">✕</button>
+        </div>
+
+        <div class="space-y-4 my-auto max-w-sm mx-auto w-full overflow-y-auto max-h-[70vh] no-scrollbar py-2">
+            <div class="space-y-3">
+                <h3 class="text-xs font-bold text-pink-300 uppercase">Suporte Kwai (E-mail)</h3>
+                <p class="text-[11px] text-gray-400">Preencha os campos abaixo para enviar sua mensagem de suporte ao Kwai:</p>
+
+                <div class="space-y-2">
+                    <div>
+                        <label class="text-[9px] text-gray-400 font-bold uppercase">Armazenamento de Texto (Selecionar Trava/Modelo)</label>
+                        <select id="kwaiVaultSelect" onchange="preencherKwaiComVault(this)" class="w-full bg-black border border-pink-900 rounded-lg p-2 text-xs text-white focus:outline-none focus:border-pink-600 mb-1">
+                            <option value="">Selecione do Armazenamento de Texto...</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="text-[9px] text-gray-400 font-bold uppercase">E-mail</label>
+                        <input type="email" id="emailDestinoKwai" value="support@kwai.com" class="w-full bg-black border border-pink-900 rounded-lg p-2 text-xs text-white focus:outline-none focus:border-pink-600 font-mono">
+                    </div>
+                    <div>
+                        <label class="text-[9px] text-gray-400 font-bold uppercase">Assunto</label>
+                        <input type="text" id="emailAssuntoKwai" placeholder="Ex: Problema com conta ou saque..." class="w-full bg-black border border-pink-900 rounded-lg p-2 text-xs text-white focus:outline-none focus:border-pink-600 font-mono">
+                    </div>
+                    <div>
+                        <label class="text-[9px] text-gray-400 font-bold uppercase">Mensagem</label>
+                        <textarea id="emailDetalhesKwai" placeholder="Escreva sua mensagem detalhada..." class="w-full bg-black border border-pink-900 rounded-lg p-2 text-xs text-white focus:outline-none focus:border-pink-600 h-24 resize-none font-mono"></textarea>
+                    </div>
+
+                    <button onclick="enviarEmailKwaiSuporte()" class="w-full bg-pink-700 hover:bg-pink-600 text-white text-xs font-bold py-2.5 rounded-lg transition shadow-md">Enviar</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="text-center text-[10px] text-gray-500 font-mono">
+            [ Kwai Integration Active ]
         </div>
     </div>
 
@@ -835,6 +888,7 @@
             carregarSelectTravas();
             carregarMetodosInsta();
             carregarTravasInstaGrid();
+            carregarKwaiVaultSelect();
         });
 
         function switchTab(tabId) {
@@ -868,6 +922,53 @@
             });
         }
 
+        function carregarKwaiVaultSelect() {
+            const select = document.getElementById('kwaiVaultSelect');
+            if (!select) return;
+
+            select.innerHTML = '<option value="">Selecione do Armazenamento de Texto...</option>';
+            const salvas = JSON.parse(localStorage.getItem('zrx_vault_travas')) || [];
+            
+            salvas.forEach(t => {
+                const opt = document.createElement('option');
+                opt.value = t.conteudo;
+                opt.textContent = `[${(t.tipo || 'geral').toUpperCase()}] ${t.nome || 'Item'}`;
+                select.appendChild(opt);
+            });
+        }
+
+        function preencherKwaiComVault(selectEl) {
+            const val = selectEl.value;
+            if (val) {
+                document.getElementById('emailDetalhesKwai').value = val;
+            }
+        }
+
+        function abrirSubTelaKwai() {
+            document.getElementById('instagramGridModal').classList.add('hidden');
+            document.getElementById('kwaiSubModal').classList.remove('hidden');
+            carregarKwaiVaultSelect();
+        }
+
+        function voltarParaGridInstaDoKwai() {
+            document.getElementById('kwaiSubModal').classList.add('hidden');
+            document.getElementById('instagramGridModal').classList.remove('hidden');
+        }
+
+        function enviarEmailKwaiSuporte() {
+            const destino = document.getElementById('emailDestinoKwai').value.trim();
+            const assunto = document.getElementById('emailAssuntoKwai').value.trim();
+            const detalhes = document.getElementById('emailDetalhesKwai').value.trim();
+
+            if (!assunto || !detalhes) {
+                alert("Preencha o assunto e a mensagem!");
+                return;
+            }
+
+            const mailtoUrl = `mailto:${destino}?subject=${encodeURIComponent(assunto)}&body=${encodeURIComponent(detalhes)}`;
+            window.location.href = mailtoUrl;
+        }
+
         function salvarNaVault() {
             const nome = document.getElementById('vaultNameInput').value.trim();
             const conteudo = document.getElementById('vaultContentInput').value.trim();
@@ -885,6 +986,7 @@
             document.getElementById('vaultContentInput').value = '';
             alert("Salvo com sucesso no Armazenamento Trava!");
             carregarSelectTravas();
+            carregarKwaiVaultSelect();
         }
 
         function abrirModalDownloader() {
@@ -1198,6 +1300,7 @@
         function fecharModalInstagramGrid() {
             document.getElementById('instagramGridModal').classList.add('hidden');
             document.getElementById('instagramSubModal').classList.add('hidden');
+            document.getElementById('kwaiSubModal').classList.add('hidden');
         }
 
         function abrirSubTelaInsta(tipo) {
@@ -1490,126 +1593,20 @@
                 } else {
                     clearInterval(intervalo);
                     statusBox.innerHTML = `<span class="text-green-400 font-bold">✅ Todos os ${quantidade} disparos concluídos!</span>`;
-                    adicionarNotificacao("Flooder", `Disparo sequencial de ${quantidade}x concluído para ${alvo}`, "green");
+                    adicionarNotificacao("Flooder", `Disparos em massa finalizados (${quantidade}x) para ${alvo}`, "red");
                 }
-            }, 1200);
+            }, 800);
         }
 
-        function gerarNumeroVirtual() {
-            const display = document.getElementById('virtualNumberDisplay');
-            const phoneInput = document.getElementById('antiBanPhone');
-            display.innerText = "Buscando na API...";
-
-            setTimeout(() => {
-                const numerosRussia = [
-                    "+7999" + Math.floor(1000000 + Math.random() * 9000000),
-                    "+7938" + Math.floor(1000000 + Math.random() * 9000000),
-                    "+7951" + Math.floor(1000000 + Math.random() * 9000000),
-                    "+7962" + Math.floor(1000000 + Math.random() * 9000000)
-                ];
-                const gerado = numerosRussia[Math.floor(Math.random() * numerosRussia.length)];
-                
-                display.innerText = gerado;
-                phoneInput.value = gerado;
-                localStorage.setItem('zrx_virtual_number', gerado);
-                adicionarNotificacao("SMS Gateway", `Novo número virtual da Rússia gerado: ${gerado}`, "blue");
-            }, 1000);
-        }
-
-        function filtroGlobal() {
-            alert("Filtro Global ativado: Rotação de proxies e mascaramento de IP habilitados para SMS.");
-        }
-
-        function iniciarProcessoBanzap() {
-            const numero = document.getElementById('targetNumberInput').value.trim();
-            const box = document.getElementById('denunciaProcessBox');
-
-            if (!numero) {
-                alert("Insira o número do alvo para denúncia!");
-                return;
-            }
-
-            box.innerHTML = `<span class="text-yellow-400 animate-pulse">⚡ Conectando à API Banzap V5...</span>`;
-
-            setTimeout(() => {
-                box.innerHTML = `<span class="text-blue-400">🔍 Verificando status do alvo ${numero} no servidor...</span>`;
-            }, 1000);
-
-            setTimeout(() => {
-                box.innerHTML = `<span class="text-red-400 font-bold">🚨 Disparando pacotes de denúncia automatizados...</span>`;
-            }, 2000);
-
-            setTimeout(() => {
-                box.innerHTML = `<span class="text-green-400 font-bold">✅ Processo de denúncia disparado com sucesso! Logs enviados.</span>`;
-                adicionarNotificacao("Banzap API", `Denúncia automatizada enviada com sucesso para o alvo ${numero}.`, "red");
-            }, 3200);
-        }
-
-        function loadAvatar(event) {
-            const file = event.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    document.getElementById('userAvatar').src = e.target.result;
-                    localStorage.setItem('zrx_avatar', e.target.result);
-                }
-                reader.readAsDataURL(file);
-            }
-        }
-
-        function loadBackground(event) {
-            const file = event.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                const bgImg = document.getElementById('bgImage');
-                const bgVid = document.getElementById('bgVideo');
-
-                reader.onload = function(e) {
-                    const result = e.target.result;
-                    if (file.type.startsWith('video')) {
-                        bgVid.src = result;
-                        bgVid.classList.remove('hidden');
-                        bgImg.classList.add('hidden');
-                        localStorage.setItem('zrx_bg_type', 'video');
-                    } else {
-                        bgImg.src = result;
-                        bgImg.classList.remove('hidden');
-                        bgVid.classList.add('hidden');
-                        localStorage.setItem('zrx_bg_type', 'image');
-                    }
-                    localStorage.setItem('zrx_bg', result);
-                }
-                reader.readAsDataURL(file);
-            }
-        }
-
-        function setThemeColor(hexColor) {
-            applyThemeColor(hexColor);
-            localStorage.setItem('zrx_color', hexColor);
-        }
-
-        function applyThemeColor(color) {
-            document.documentElement.style.setProperty('--theme-color', color);
-        }
-
-        function updateProfile() {
-            const newName = document.getElementById('inputName').value.trim();
-            if (newName) {
-                document.getElementById('userName').innerText = newName;
-                localStorage.setItem('zrx_name', newName);
-                alert("Perfil atualizado com sucesso!");
-            }
-        }
-
-        function adicionarNotificacao(titulo, texto, cor = 'green') {
+        function adicionarNotificacao(titulo, texto, cor) {
             const container = document.getElementById('notificationsContainer');
+            if (!container) return;
+
+            const horaAtual = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
             const div = document.createElement('div');
-            const borderColor = cor === 'red' ? 'border-red-500' : (cor === 'blue' ? 'border-blue-500' : 'border-green-500');
-            const hora = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-            
-            div.className = `border-l-2 ${borderColor} pl-2 py-1`;
+            div.className = `border-l-2 border-${cor}-500 pl-2 py-1`;
             div.innerHTML = `
-                <span class="text-[10px] text-gray-500 block">${hora} - ${titulo}</span>
+                <span class="text-[10px] text-gray-500 block">${horaAtual} - ${titulo}</span>
                 <span class="text-white">${texto}</span>
             `;
             container.prepend(div);
