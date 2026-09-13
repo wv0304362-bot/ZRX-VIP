@@ -3,1617 +3,424 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ZRX-VIP - Painel Operacional</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        darkbg: '#0a0a0a',
-                        cardbg: '#141414',
-                        accentred: '#dc2626',
-                        accentredhover: '#b91c1c',
-                        goldborder: '#eab308',
-                        instagrampurple: '#9333ea',
-                        cyanblue: '#06b6d4',
-                    }
-                }
-            }
-        }
-    </script>
+    <title>ZRX DESTROYER V5</title>
     <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
         body {
-            background-color: #0a0a0a;
+            background-color: #0b0f19;
             color: #ffffff;
-            font-family: system-ui, -apple-system, sans-serif;
-            overflow-x: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 10px;
         }
-        .no-scrollbar::-webkit-scrollbar {
+
+        .app-container {
+            width: 100%;
+            max-width: 420px;
+            background: #0f172a;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+            border: 1px solid #1e293b;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        /* Top Bar */
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+            background: #0f172a;
+            border-bottom: 1px solid #1e293b;
+        }
+
+        .menu-icon, .notif-icon {
+            font-size: 18px;
+            cursor: pointer;
+            color: #94a3b8;
+        }
+
+        .app-title {
+            font-weight: 800;
+            font-style: italic;
+            letter-spacing: 1px;
+            font-size: 1.1rem;
+            background: linear-gradient(90deg, #38bdf8, #818cf8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Banner Section */
+        .banner-container {
+            position: relative;
+            width: 100%;
+            height: 160px;
+            background: #1e293b;
+            overflow: hidden;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .banner-container img, .banner-container video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        .banner-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to bottom, rgba(15,23,42,0.2), rgba(15,23,42,0.8));
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 15px;
+            z-index: 2;
+        }
+
+        .banner-watermark {
+            font-size: 1.2rem;
+            font-weight: 900;
+            font-style: italic;
+            color: #ffffff;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+            letter-spacing: 0.5px;
+        }
+
+        .banner-sub {
+            font-size: 0.7rem;
+            color: #38bdf8;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .banner-upload-hint {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(0, 0, 0, 0.6);
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.65rem;
+            color: #cbd5e1;
+            z-index: 3;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        /* Profile Card Section */
+        .profile-section {
+            margin: -25px 15px 15px 15px;
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 14px;
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            z-index: 4;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        }
+
+        .avatar-container {
+            width: 65px;
+            height: 65px;
+            border-radius: 12px;
+            background: #0f172a;
+            border: 2px solid #38bdf8;
+            overflow: hidden;
+            position: relative;
+            cursor: pointer;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .avatar-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .avatar-placeholder {
+            font-size: 0.6rem;
+            text-align: center;
+            color: #94a3b8;
+            padding: 4px;
+        }
+
+        .profile-info {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .profile-name-input {
+            background: transparent;
+            border: none;
+            color: #ffffff;
+            font-size: 1rem;
+            font-weight: bold;
+            width: 100%;
+            outline: none;
+            border-bottom: 1px dashed rgba(255,255,255,0.2);
+            padding-bottom: 2px;
+        }
+
+        .profile-role {
+            font-size: 0.75rem;
+            color: #38bdf8;
+            background: rgba(56, 189, 248, 0.1);
+            padding: 3px 8px;
+            border-radius: 20px;
+            align-self: flex-start;
+            border: 1px solid rgba(56, 189, 248, 0.2);
+        }
+
+        /* Social Links Grid */
+        .social-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            padding: 0 15px 15px 15px;
+        }
+
+        .social-btn {
+            background: #1e293b;
+            border: 1px solid #334155;
+            border-radius: 12px;
+            padding: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            color: #ffffff;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.85rem;
+            transition: all 0.2s;
+        }
+
+        .social-btn:hover {
+            background: #334155;
+            border-color: #475569;
+        }
+
+        .social-btn.discord {
+            background: linear-gradient(135deg, #5865F2, #4752C4);
+            border: none;
+        }
+
+        /* Horizontal Carousel (Balãozinhos) */
+        .carousel-wrapper {
+            padding: 0 0 15px 15px;
+        }
+
+        .carousel-title {
+            font-size: 0.75rem;
+            color: #94a3b8;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .carousel-container {
+            display: flex;
+            gap: 10px;
+            overflow-x: auto;
+            padding-right: 15px;
+            scrollbar-width: none; /* Firefox */
+        }
+
+        .carousel-container::-webkit-scrollbar {
+            display: none; /* Chrome/Safari */
+        }
+
+        .carousel-card {
+            min-width: 140px;
+            background: #1e293b;
+            border: 1px solid #334155;
+            border-radius: 12px;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            cursor: pointer;
+            flex-shrink: 0;
+            transition: border-color 0.2s;
+        }
+
+        .carousel-card:hover {
+            border-color: #38bdf8;
+        }
+
+        .card-tag {
+            font-size: 0.65rem;
+            color: #38bdf8;
+            background: rgba(56, 189, 248, 0.1);
+            padding: 2px 6px;
+            border-radius: 4px;
+            align-self: flex-start;
+        }
+
+        .card-label {
+            font-size: 0.85rem;
+            font-weight: bold;
+            color: #f8fafc;
+        }
+
+        .card-desc {
+            font-size: 0.7rem;
+            color: #94a3b8;
+        }
+
+        /* Hidden File Inputs */
+        input[type="file"] {
             display: none;
-        }
-        .no-scrollbar {
-            -ms-overflow-style: none;
-            scrollbar-width: none;
         }
     </style>
 </head>
-<body class="flex flex-col min-h-screen pb-24 relative">
+<body>
 
-    <div id="bg-container" class="fixed inset-0 z-[-1] overflow-hidden opacity-25 pointer-events-none">
-        <img id="bgImage" src="https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?w=600" alt="Background" class="w-full h-full object-cover">
-        <video id="bgVideo" class="w-full h-full object-cover hidden" autoplay muted loop></video>
+    <div class="app-container">
+        
+        <!-- Top Navigation -->
+        <div class="top-bar">
+            <div class="menu-icon">☰</div>
+            <div class="app-title">ZRX DESTROYER</div>
+            <div class="notif-icon">🔔</div>
+        </div>
+
+        <!-- Banner Customizável -->
+        <div class="banner-container" onclick="document.getElementById('bannerInput').click()">
+            <div id="bannerMediaContainer" style="width:100%; height:100%; position:absolute; display:flex; align-items:center; justifyContent:center; background:#1e293b;">
+                <span style="font-size: 0.75rem; color: #64748b;">Toque para alterar imagem/vídeo</span>
+            </div>
+            <div class="banner-overlay">
+                <div class="banner-sub">CREATED BY USER</div>
+                <div class="banner-watermark">ZRX DESTROYER V5</div>
+            </div>
+            <div class="banner-upload-hint">Alterar Mídia</div>
+        </div>
+        <input type="file" id="bannerInput" accept="image/*,video/*" onchange="loadBanner(event)">
+
+        <!-- Profile Section -->
+        <div class="profile-section">
+            <div class="avatar-container" onclick="document.getElementById('avatarInput').click()">
+                <div id="avatarPreviewContainer" style="width:100%; height:100%; display:flex; align-items:center; justify-content:center;">
+                    <span class="avatar-placeholder">Foto PV</span>
+                </div>
+            </div>
+            <div class="profile-info">
+                <input type="text" class="profile-name-input" value="ZRX USER" placeholder="Seu Nome">
+                <div class="profile-role">ROLE: DEVELOPER</div>
+            </div>
+        </div>
+        <input type="file" id="avatarInput" accept="image/*" onchange="loadAvatar(event)">
+
+        <!-- Social Links (Apenas Discord requisitado) -->
+        <div class="social-grid">
+            <a href="https://discord.gg/pBRw54XR" target="_blank" class="social-btn discord">
+                <span>💬 Discord PV</span>
+            </a>
+            <a href="https://discord.gg/pBRw54XR" target="_blank" class="social-btn">
+                <span>👥 Comunidade</span>
+            </a>
+        </div>
+
+        <!-- Balãozinhos com rolagem horizontal -->
+        <div class="carousel-wrapper">
+            <div class="carousel-title">Opções Rápidas</div>
+            <div class="carousel-container">
+                <div class="carousel-card">
+                    <span class="card-tag">ONLINE</span>
+                    <div class="card-label">List Device</div>
+                    <div class="card-desc">Ver conexões ativas</div>
+                </div>
+                <div class="carousel-card">
+                    <span class="card-tag">PREMIUM</span>
+                    <div class="card-label">Upgrade Role</div>
+                    <div class="card-desc">Acessar recursos</div>
+                </div>
+                <div class="carousel-card">
+                    <span class="card-tag">CONFIG</span>
+                    <div class="card-label">Painel ZRX</div>
+                    <div class="card-desc">Ajustes do sistema</div>
+                </div>
+                <div class="carousel-card">
+                    <span class="card-tag">STATUS</span>
+                    <div class="card-label">Logs V5</div>
+                    <div class="card-desc">Histórico de ações</div>
+                </div>
+            </div>
+        </div>
+
     </div>
-
-    <header class="p-4 flex items-center justify-between border-b border-red-900/40 bg-cardbg/90 backdrop-blur">
-        <div class="flex items-center space-x-3">
-            <div class="relative">
-                <img id="userAvatar" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150" alt="Avatar" class="w-12 h-12 rounded-full object-cover border-2 border-accentred">
-                <span class="absolute bottom-0 right-0 w-3 h-3 bg-green-500 border-2 border-cardbg rounded-full"></span>
-            </div>
-            <div>
-                <h1 id="userName" class="font-bold text-sm tracking-wider">ZRX Operator</h1>
-                <span class="text-xs text-red-500 font-semibold bg-red-950/60 px-2 py-0.5 rounded border border-red-900/50">OWNER / VIP</span>
-            </div>
-        </div>
-        <div class="text-right">
-            <span class="text-[10px] text-gray-400 block">STATUS</span>
-            <span class="text-xs text-green-400 font-bold">ONLINE</span>
-        </div>
-    </header>
-
-    <main class="flex-1 p-4 max-w-md mx-auto w-full z-10">
-
-        <section id="tab-home" class="tab-content space-y-4">
-            <div class="relative rounded-2xl overflow-hidden border border-red-600/50 shadow-lg shadow-red-950/50 bg-black">
-                <div class="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent z-10"></div>
-                <img src="https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?w=600" alt="ZRX V5 Banner" class="w-full h-56 object-cover opacity-70">
-                <div class="absolute bottom-4 left-4 z-20">
-                    <span class="text-xs text-red-500 font-extrabold tracking-widest uppercase">Cybernetic Operative</span>
-                    <h2 class="text-2xl font-black italic tracking-wider text-white drop-shadow-[0_2px_4px_rgba(220,38,38,0.8)]">ZRX V5</h2>
-                    <p class="text-[11px] text-gray-300 mt-0.5">Engine v5.2.1 // Secure Connection</p>
-                </div>
-            </div>
-
-            <div class="bg-cardbg/90 border border-red-950 rounded-xl p-4 shadow-md backdrop-blur">
-                <div class="flex justify-between items-center mb-2">
-                    <span class="text-xs text-gray-400">ACTIVE UNTIL</span>
-                    <span class="text-xs text-red-400 font-mono">2099-12-31</span>
-                </div>
-                <div class="w-full bg-gray-800 h-2 rounded-full overflow-hidden">
-                    <div class="bg-accentred h-full w-full"></div>
-                </div>
-                <span class="text-[10px] text-gray-500 mt-1 block">100% Remaining - Lifetime License</span>
-            </div>
-
-            <div class="space-y-2 pt-2">
-                <div class="flex justify-between items-center px-1">
-                    <h3 class="text-xs font-bold text-gray-400 uppercase tracking-widest">Módulos Rápidos</h3>
-                    <span class="text-[10px] text-yellow-500 font-mono">Arraste para o lado -&gt;</span>
-                </div>
-
-                <div class="flex space-x-4 overflow-x-auto no-scrollbar py-2 snap-x">
-                    
-                    <div onclick="abrirModalDownloader()" class="min-w-[280px] w-[85%] max-w-[320px] bg-cardbg/95 border-2 border-goldborder rounded-2xl p-5 space-y-4 shadow-xl backdrop-blur shrink-0 snap-center flex flex-col justify-between cursor-pointer hover:bg-black/90 transition group">
-                        <div>
-                            <div class="flex justify-between items-start mb-3">
-                                <div class="w-10 h-10 rounded-xl bg-yellow-950/50 border border-yellow-600/50 flex items-center justify-center text-yellow-400 group-hover:scale-110 transition">
-                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
-                                </div>
-                                <span class="bg-yellow-950 text-yellow-400 text-[10px] font-bold px-2.5 py-1 rounded-full border border-yellow-800/50">★ YT-DLP ENGINE</span>
-                            </div>
-                            <h3 class="text-sm font-bold text-white tracking-wide">Video Downloader</h3>
-                            <span class="text-[10px] text-yellow-500 font-mono block mb-2">#UniversalExtract</span>
-                            <p class="text-xs text-gray-400">Baixe vídeos do YouTube, TikTok, Instagram e Kwai direto para a galeria.</p>
-                        </div>
-                        <div class="pt-2 border-t border-gray-800/60 flex justify-between items-center">
-                            <span class="text-[10px] text-yellow-500 font-mono">[ ABRIR TELA ]</span>
-                            <span class="text-xs text-yellow-400 font-bold group-hover:translate-x-1 transition">Acessar →</span>
-                        </div>
-                    </div>
-
-                    <div onclick="abrirModalIpGrid()" class="min-w-[280px] w-[85%] max-w-[320px] bg-cardbg/95 border-2 border-cyanblue rounded-2xl p-5 space-y-4 shadow-xl backdrop-blur shrink-0 snap-center flex flex-col justify-between cursor-pointer hover:bg-black/90 transition group">
-                        <div>
-                            <div class="flex justify-between items-start mb-3">
-                                <div class="w-10 h-10 rounded-xl bg-cyan-950/50 border border-cyan-600/50 flex items-center justify-center text-cyan-400 group-hover:scale-110 transition">
-                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
-                                </div>
-                                <span class="bg-cyan-950 text-cyan-400 text-[10px] font-bold px-2.5 py-1 rounded-full border border-cyan-800/50">🌐 IP &amp; TARGET</span>
-                            </div>
-                            <h3 class="text-sm font-bold text-white tracking-wide">IP Analyzer</h3>
-                            <span class="text-[10px] text-cyan-400 font-mono block mb-2">#IpTools</span>
-                            <p class="text-xs text-gray-400">Acesse o painel completo de busca de IP (ipinfo) e verificação de VPN.</p>
-                        </div>
-                        <div class="pt-2 border-t border-gray-800/60 flex justify-between items-center">
-                            <span class="text-[10px] text-cyan-400 font-mono">[ ABRIR TELA ]</span>
-                            <span class="text-xs text-cyan-300 font-bold group-hover:translate-x-1 transition">Acessar →</span>
-                        </div>
-                    </div>
-
-                    <div onclick="abrirModalIaGrid()" class="min-w-[280px] w-[85%] max-w-[320px] bg-cardbg/95 border-2 border-gray-500 rounded-2xl p-5 space-y-4 shadow-xl backdrop-blur shrink-0 snap-center flex flex-col justify-between cursor-pointer hover:bg-black/90 transition group">
-                        <div>
-                            <div class="flex justify-between items-start mb-3">
-                                <div class="w-10 h-10 rounded-xl bg-gray-900 border border-gray-600 flex items-center justify-center text-gray-300 group-hover:scale-110 transition">
-                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
-                                </div>
-                                <span class="bg-gray-900 text-gray-300 text-[10px] font-bold px-2.5 py-1 rounded-full border border-gray-700">🤖 MULTI-AI</span>
-                            </div>
-                            <h3 class="text-sm font-bold text-white tracking-wide">AI Central (Chat)</h3>
-                            <span class="text-[10px] text-gray-400 font-mono block mb-2">#Gemini #OpenAI #Groq #ChatGPT</span>
-                            <p class="text-xs text-gray-400">Acesse o painel 2x2 com as IAs para textos, denúncias e conversas livre.</p>
-                        </div>
-                        <div class="pt-2 border-t border-gray-800/60 flex justify-between items-center">
-                            <span class="text-[10px] text-gray-400 font-mono">[ ABRIR GRID ]</span>
-                            <span class="text-xs text-gray-300 font-bold group-hover:translate-x-1 transition">Acessar →</span>
-                        </div>
-                    </div>
-
-                    <div onclick="abrirModalInstagramGrid()" class="min-w-[280px] w-[85%] max-w-[320px] bg-cardbg/95 border-2 border-purple-600 rounded-2xl p-5 space-y-4 shadow-xl backdrop-blur shrink-0 snap-center flex flex-col justify-between cursor-pointer hover:bg-black/90 transition group">
-                        <div>
-                            <div class="flex justify-between items-start mb-3">
-                                <div class="w-10 h-10 rounded-xl bg-purple-950/50 border border-purple-600/50 flex items-center justify-center text-purple-400 group-hover:scale-110 transition">
-                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
-                                </div>
-                                <span class="bg-purple-950 text-purple-400 text-[10px] font-bold px-2.5 py-1 rounded-full border border-purple-800/50">🟣 INSTAGRAM GRID</span>
-                            </div>
-                            <h3 class="text-sm font-bold text-white tracking-wide">INSTAGRAM</h3>
-                            <span class="text-[10px] text-purple-400 font-mono block mb-2">#Grid2x2Tools</span>
-                            <p class="text-xs text-gray-400">Acesse o painel 2x2 com métodos, travas, multiplicadores e gerador de e-mail.</p>
-                        </div>
-                        <div class="pt-2 border-t border-gray-800/60 flex justify-between items-center">
-                            <span class="text-[10px] text-purple-400 font-mono">[ ABRIR GRID ]</span>
-                            <span class="text-xs text-purple-300 font-bold group-hover:translate-x-1 transition">Acessar →</span>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-        </section>
-
-        <!-- ABA WHATSAPP (MANTIDA COMPLETA COM TODAS AS APIS) -->
-        <section id="tab-whatsapp" class="tab-content hidden space-y-4">
-            <div>
-                <h2 class="text-lg font-bold text-red-500 border-l-4 border-red-600 pl-2">Central Operativa WhatsApp</h2>
-                <p class="text-xs text-gray-400 mt-1">Gerencie denúncias, números virtuais e disparos em massa.</p>
-            </div>
-
-            <div class="flex space-x-4 overflow-x-auto no-scrollbar py-2 snap-x">
-                
-                <div class="min-w-[280px] w-[85%] max-w-[320px] bg-cardbg/95 border border-red-950/80 rounded-2xl p-5 space-y-4 shadow-xl backdrop-blur shrink-0 snap-center flex flex-col justify-between">
-                    <div>
-                        <div class="flex justify-between items-start mb-3">
-                            <div class="w-10 h-10 rounded-xl bg-red-950/50 border border-red-900/50 flex items-center justify-center text-red-500">
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
-                            </div>
-                            <span class="bg-red-950 text-red-400 text-[10px] font-bold px-2.5 py-1 rounded-full border border-red-800/50">#BanzapAPI</span>
-                        </div>
-                        <h3 class="text-sm font-bold text-white tracking-wide">Processo de Denúncia</h3>
-                        <span class="text-[10px] text-gray-400 block mb-3">Insira o número com DDD (Ex: 5511999999999)</span>
-                        
-                        <div class="space-y-2">
-                            <input type="text" id="targetNumberInput" placeholder="+55 (XX) 9XXXX-XXXX" class="w-full bg-black border border-red-900 rounded-lg p-2.5 text-xs text-white focus:outline-none focus:border-red-600 font-mono">
-                        </div>
-
-                        <div id="denunciaProcessBox" class="bg-black/70 border border-red-900/40 rounded-lg p-3 my-3 text-[11px] font-mono text-gray-300 min-h-[75px] flex flex-col justify-center">
-                            <span class="text-gray-500 text-center">Aguardando inserção do número...</span>
-                        </div>
-                    </div>
-
-                    <div class="pt-2 border-t border-gray-800/60">
-                        <button onclick="iniciarProcessoBanzap()" class="w-full bg-accentred hover:bg-accentredhover text-white text-xs font-bold py-2.5 rounded-lg transition shadow-md text-center">Disparar Denúncia</button>
-                    </div>
-                </div>
-
-                <div class="min-w-[280px] w-[85%] max-w-[320px] bg-cardbg/95 border border-red-950/80 rounded-2xl p-5 space-y-3 shadow-xl backdrop-blur shrink-0 snap-center flex flex-col justify-between">
-                    <div>
-                        <div class="flex justify-between items-start mb-2">
-                            <div class="w-10 h-10 rounded-xl bg-red-950/50 border border-red-900/50 flex items-center justify-center text-red-500">
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
-                            </div>
-                            <span class="bg-red-950 text-red-400 text-[10px] font-bold px-2.5 py-1 rounded-full border border-red-800/50">#Flooder</span>
-                        </div>
-                        <h3 class="text-sm font-bold text-white tracking-wide">Disparador Automático</h3>
-                        <span class="text-[10px] text-gray-400 block mb-2">Envio em massa de travas</span>
-
-                        <div class="space-y-1 mb-2">
-                            <label class="text-[9px] text-gray-400 font-bold uppercase tracking-wider">Número do Alvo</label>
-                            <input type="text" id="floodAlvo" placeholder="Ex: 5511999999999" class="w-full bg-black border border-red-900 rounded-lg p-2 text-xs text-white focus:outline-none focus:border-red-600 font-mono">
-                        </div>
-
-                        <div class="space-y-1 mb-2">
-                            <label class="text-[9px] text-gray-400 font-bold uppercase tracking-wider">Nome / Trava do Armazenamento</label>
-                            <select id="floodTravaSelect" class="w-full bg-black border border-red-900 rounded-lg p-2 text-xs text-white focus:outline-none focus:border-red-600">
-                                <option value="">Selecione do Armazenamento...</option>
-                            </select>
-                            <input type="text" id="floodCustomText" placeholder="Ou digite/cole sua trava de texto aqui..." class="w-full mt-1 bg-black border border-red-900 rounded-lg p-2 text-xs text-white focus:outline-none focus:border-red-600 font-mono">
-                        </div>
-
-                        <div class="flex items-center space-x-2 my-2">
-                            <input type="checkbox" id="jogarTudoCheckbox" class="w-4 h-4 accent-red-600 bg-black border-red-900 rounded cursor-pointer">
-                            <label for="jogarTudoCheckbox" class="text-[10px] text-gray-300 font-semibold cursor-pointer">Jogar tudo de uma vez (disparo múltiplo instantâneo)</label>
-                        </div>
-
-                        <div class="space-y-1 mb-2">
-                            <div class="flex justify-between items-center">
-                                <label class="text-[9px] text-gray-400 font-bold uppercase tracking-wider">Quantidade</label>
-                                <span id="labelQtd" class="text-xs text-red-500 font-mono font-bold">10x</span>
-                            </div>
-                            <input type="range" id="floodQuantidade" min="1" max="100" value="10" oninput="document.getElementById('labelQtd').innerText = this.value + 'x'" class="w-full accent-red-600 bg-black cursor-pointer">
-                        </div>
-
-                        <div id="floodStatusBox" class="bg-black/70 border border-red-900/40 rounded-lg p-2 text-[10px] font-mono text-gray-300 min-h-[45px] flex flex-col justify-center items-center text-center">
-                            <span class="text-gray-500">Pronto para iniciar...</span>
-                        </div>
-                    </div>
-
-                    <div class="pt-2 border-t border-gray-800/60">
-                        <button onclick="iniciarDisparoEmMassa()" class="w-full bg-accentred hover:bg-accentredhover text-white text-xs font-bold py-2 rounded-lg transition shadow-md">Iniciar Disparos</button>
-                    </div>
-                </div>
-
-                <div class="min-w-[280px] w-[85%] max-w-[320px] bg-cardbg/95 border border-red-950/80 rounded-2xl p-5 space-y-4 shadow-xl backdrop-blur shrink-0 snap-center flex flex-col justify-between">
-                    <div>
-                        <div class="flex justify-between items-start mb-3">
-                            <div class="w-10 h-10 rounded-xl bg-red-950/50 border border-red-900/50 flex items-center justify-center text-red-500">
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"/></svg>
-                            </div>
-                            <span class="bg-blue-950 text-blue-400 text-[10px] font-bold px-2.5 py-1 rounded-full border border-blue-800/50">🇷🇺 RUSSIA ( ativo )</span>
-                        </div>
-                        <h3 class="text-sm font-bold text-white tracking-wide">Número Virtual SMS</h3>
-                        <span class="text-[10px] text-red-500 font-mono block mb-2">#FreeNumberAPI</span>
-                        
-                        <div class="bg-black/60 border border-red-900/40 rounded-lg p-2 text-center my-2">
-                            <span class="text-[10px] text-gray-400 block">NÚMERO ATUAL</span>
-                            <span id="virtualNumberDisplay" class="text-xs text-red-400 font-mono font-bold">Nenhum gerado</span>
-                        </div>
-                    </div>
-
-                    <div class="pt-2 border-t border-gray-800/60 grid grid-cols-2 gap-2">
-                        <button onclick="gerarNumeroVirtual()" class="bg-accentred hover:bg-accentredhover text-white text-[11px] font-bold py-2 px-2 rounded-lg transition shadow-md text-center">Gerar Número</button>
-                        <button onclick="filtroGlobal()" class="bg-gray-800 hover:bg-gray-700 text-gray-300 text-[11px] font-bold py-2 px-2 rounded-lg transition text-center border border-gray-700">Global</button>
-                    </div>
-                </div>
-
-                <div class="min-w-[280px] w-[85%] max-w-[320px] bg-cardbg/95 border border-red-950/80 rounded-2xl p-5 space-y-4 shadow-xl backdrop-blur shrink-0 snap-center flex flex-col justify-between">
-                    <div>
-                        <div class="flex justify-between items-start mb-3">
-                            <div class="w-10 h-10 rounded-xl bg-red-950/50 border border-red-900/50 flex items-center justify-center text-red-500">
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 2v1m0 16v2m-6-8a6 6 0 0112 0v1H6v-1zM5 16l-2 2m16-2l2 2"/></svg>
-                            </div>
-                            <span class="bg-green-950 text-green-400 text-[10px] font-bold px-2.5 py-1 rounded-full border border-green-800/50">● VAULT</span>
-                        </div>
-                        <h3 class="text-sm font-bold text-white tracking-wide">Armazenamento Trava</h3>
-                        <span class="text-[10px] text-red-500 font-mono block mb-2">#VaultStorage</span>
-                        <p class="text-xs text-gray-400 mb-2">Armazene trava de foto, localização, contato e texto.</p>
-                        
-                        <div class="space-y-2">
-                            <input type="text" id="vaultNameInput" placeholder="Nome da Trava..." class="w-full bg-black border border-red-900 rounded-lg p-2 text-xs text-white focus:outline-none focus:border-red-600">
-                            <textarea id="vaultContentInput" placeholder="Cole o conteúdo (texto, contato, coords, etc)..." class="w-full bg-black border border-red-900 rounded-lg p-2 text-xs text-white focus:outline-none focus:border-red-600 h-16 resize-none font-mono"></textarea>
-                        </div>
-                    </div>
-                    <div class="pt-2 border-t border-gray-800/60 flex justify-between items-center">
-                        <span class="text-[10px] text-gray-500 font-mono">[ SECURE ]</span>
-                        <button onclick="salvarNaVault()" class="bg-accentred hover:bg-accentredhover text-white text-xs font-bold px-4 py-2 rounded-lg transition shadow-md">Salvar</button>
-                    </div>
-                </div>
-
-                <div class="min-w-[280px] w-[85%] max-w-[320px] bg-cardbg/95 border border-red-950/80 rounded-2xl p-5 space-y-4 shadow-xl backdrop-blur shrink-0 snap-center flex flex-col justify-between">
-                    <div>
-                        <div class="flex justify-between items-start mb-3">
-                            <div class="w-10 h-10 rounded-xl bg-red-950/50 border border-red-900/50 flex items-center justify-center text-red-500">
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
-                            </div>
-                            <span id="shieldBadge" class="bg-gray-800 text-gray-400 text-[10px] font-bold px-2.5 py-1 rounded-full border border-gray-700 transition-all">○ WAITING</span>
-                        </div>
-                        <h3 class="text-sm font-bold text-white tracking-wide">Anti-Ban &amp; Blindagem</h3>
-                        <span class="text-[10px] text-red-500 font-mono block mb-2">#ShieldV5 (Accessibility Sync)</span>
-                        
-                        <div class="space-y-2 mb-2">
-                            <input type="text" id="antiBanPhone" placeholder="Seu Número (Ex: +551199999999)" class="w-full bg-black border border-red-900 rounded-lg p-2 text-xs text-white focus:outline-none focus:border-red-600 font-mono">
-                            <input type="email" id="antiBanEmail" placeholder="Seu E-mail Gmail..." class="w-full bg-black border border-red-900 rounded-lg p-2 text-xs text-white focus:outline-none focus:border-red-600 font-mono">
-                            <select id="antiBanDevice" class="w-full bg-black border border-red-900 rounded-lg p-2 text-xs text-white focus:outline-none focus:border-red-600">
-                                <option value="Android">Dispositivo: Android</option>
-                                <option value="iPhone">Dispositivo: iPhone</option>
-                                <option value="Web/Desktop">Dispositivo: Web / Desktop</option>
-                            </select>
-                            <textarea id="antiBanMsg" placeholder="Mensagem explicativa Anti-Ban..." class="w-full bg-black border border-red-900 rounded-lg p-2 text-xs text-white focus:outline-none focus:border-red-600 h-14 resize-none font-mono">Olá, minha conta foi banida indevidamente por engano no sistema anti-spam. Solicito a restauração imediata do acesso ao número.</textarea>
-                        </div>
-
-                        <div id="shieldStatusBox" class="bg-black/80 border border-red-900/40 rounded-lg p-2 text-[10px] font-mono text-gray-300 min-h-[40px] flex flex-col justify-center">
-                            <span class="text-gray-500 text-center">Aguardando disparo do balãozinho...</span>
-                        </div>
-                    </div>
-                    
-                    <div class="pt-2 border-t border-gray-800/60 flex justify-between items-center">
-                        <span id="shieldFooterTag" class="text-[10px] text-gray-500 font-mono">[ SYNC ]</span>
-                        <button onclick="ativarBlindagemAccessibility()" class="bg-accentred hover:bg-accentredhover text-white text-xs font-bold px-4 py-2 rounded-lg transition shadow-md">Disparar Link</button>
-                    </div>
-                </div>
-
-            </div>
-        </section>
-
-        <section id="tab-tools" class="tab-content hidden space-y-4">
-            <h2 class="text-lg font-bold text-red-500 border-l-4 border-red-600 pl-2">Ferramentas Avançadas</h2>
-            <div class="bg-cardbg/90 border border-red-950 rounded-xl p-4 space-y-3 backdrop-blur">
-                <div class="flex justify-between items-center border-b border-gray-800 pb-2">
-                    <span class="text-xs text-gray-300">Limpeza de Cache / IMEI</span>
-                    <button class="bg-red-950 text-red-400 border border-red-800 text-[10px] px-3 py-1 rounded">Executar</button>
-                </div>
-                <div class="flex justify-between items-center pb-2">
-                    <span class="text-xs text-gray-300">Logs de Conexão Proxy</span>
-                    <button class="bg-red-950 text-red-400 border border-red-800 text-[10px] px-3 py-1 rounded">Ver Logs</button>
-                </div>
-            </div>
-        </section>
-
-        <section id="tab-notifications" class="tab-content hidden space-y-3">
-            <h2 class="text-lg font-bold text-red-500 border-l-4 border-red-600 pl-2">Notificações &amp; SMS</h2>
-            <div id="notificationsContainer" class="bg-cardbg/90 border border-red-950 rounded-xl p-3 text-xs space-y-2 backdrop-blur">
-                <div class="border-l-2 border-green-500 pl-2 py-1">
-                    <span class="text-[10px] text-gray-500 block">14:28 - Sistema</span>
-                    <span class="text-white">Sessão inicializada com sucesso no ambiente.</span>
-                </div>
-                <div class="border-l-2 border-red-500 pl-2 py-1">
-                    <span class="text-[10px] text-gray-500 block">14:25 - SMS Gateway</span>
-                    <span class="text-white">Módulo Banzap carregado e pronto para operações.</span>
-                </div>
-            </div>
-        </section>
-
-        <section id="tab-support" class="tab-content hidden space-y-4">
-            <h2 class="text-lg font-bold text-red-500 border-l-4 border-red-600 pl-2">Configurações &amp; Suporte</h2>
-            
-            <div class="bg-cardbg/90 border border-red-950 rounded-xl p-4 space-y-3 backdrop-blur">
-                <h3 class="text-xs font-bold text-red-400 uppercase tracking-wider">Perfil &amp; Visual</h3>
-                <div>
-                    <label class="text-[10px] text-gray-400 block mb-1">Alterar Nome</label>
-                    <input type="text" id="inputName" placeholder="Novo nome..." class="w-full bg-black border border-red-900 rounded-lg p-2 text-xs text-white focus:outline-none focus:border-red-600">
-                </div>
-                <div>
-                    <label class="text-[10px] text-gray-400 block mb-1">Foto de Perfil (Direto da Galeria)</label>
-                    <input type="file" id="inputAvatarFile" accept="image/*" onchange="loadAvatar(event)" class="w-full bg-black border border-red-900 rounded-lg p-1.5 text-[11px] text-gray-300 file:mr-3 file:py-1 file:px-3 file:rounded-md file:border-0 file:text-[10px] file:font-bold file:bg-red-950 file:text-red-400 hover:file:bg-red-900">
-                </div>
-                <div>
-                    <label class="text-[10px] text-gray-400 block mb-1">Plano de Fundo - Foto ou Vídeo (Galeria)</label>
-                    <input type="file" id="inputBgFile" accept="image/*,video/*" onchange="loadBackground(event)" class="w-full bg-black border border-red-900 rounded-lg p-1.5 text-[11px] text-gray-300 file:mr-3 file:py-1 file:px-3 file:rounded-md file:border-0 file:text-[10px] file:font-bold file:bg-red-950 file:text-red-400 hover:file:bg-red-900">
-                </div>
-                <div>
-                    <label class="text-[10px] text-gray-400 block mb-1">Cor de Destaque do Tema</label>
-                    <div class="flex space-x-2 pt-1">
-                        <button onclick="setThemeColor('#dc2626')" class="w-6 h-6 rounded-full bg-red-600 border border-white/25 shadow"></button>
-                        <button onclick="setThemeColor('#2563eb')" class="w-6 h-6 rounded-full bg-blue-600 border border-white/25 shadow"></button>
-                        <button onclick="setThemeColor('#16a34a')" class="w-6 h-6 rounded-full bg-green-600 border border-white/25 shadow"></button>
-                        <button onclick="setThemeColor('#9333ea')" class="w-6 h-6 rounded-full bg-purple-600 border border-white/25 shadow"></button>
-                        <button onclick="setThemeColor('#ea580c')" class="w-6 h-6 rounded-full bg-orange-600 border border-white/25 shadow"></button>
-                    </div>
-                </div>
-                <button onclick="updateProfile()" class="w-full bg-accentred hover:bg-accentredhover text-white text-xs font-bold py-2 rounded-lg transition">Aplicar Alterações</button>
-            </div>
-
-            <div class="bg-cardbg/90 border border-red-950 rounded-xl p-4 space-y-2 backdrop-blur">
-                <h3 class="text-xs font-bold text-red-400 uppercase tracking-wider">Suporte Oficial ZRX</h3>
-                <p class="text-xs text-gray-300">Teve problemas com o painel ou precisa de suporte direto com o desenvolvedor?</p>
-                <a href="https://t.me/" target="_blank" class="block text-center bg-black border border-red-900 text-red-400 text-xs font-bold py-2 rounded-lg hover:bg-red-950/40 transition">Chamar no Suporte / Telegram</a>
-            </div>
-        </section>
-
-    </main>
-
-    <!-- MODAL DOWNLOADER COM SUPORTE AO KWAI -->
-    <div id="downloaderModal" class="fixed inset-0 z-50 bg-black/95 backdrop-blur-md hidden flex flex-col justify-between p-6">
-        <div class="flex justify-between items-center border-b border-yellow-500/30 pb-4">
-            <div class="flex items-center space-x-2">
-                <span class="w-3 h-3 rounded-full bg-yellow-500 animate-pulse"></span>
-                <h2 class="text-sm font-bold text-yellow-400 tracking-wider">ZRX YT-DLP EXTRACTOR</h2>
-            </div>
-            <button onclick="fecharModalDownloader()" class="text-gray-400 hover:text-white text-xl font-bold px-3 py-1 bg-gray-900 border border-yellow-500/30 rounded-lg">✕</button>
-        </div>
-
-        <div class="space-y-4 my-auto max-w-sm mx-auto w-full">
-            <div class="text-center space-y-1">
-                <h3 class="text-lg font-black text-white">Baixar via yt-dlp Engine</h3>
-                <p class="text-xs text-gray-400">Suporte universal para YouTube, TikTok, Instagram, Kwai e Pinterest.</p>
-            </div>
-
-            <div class="space-y-3">
-                <div class="space-y-1">
-                    <label class="text-[10px] text-yellow-400 font-bold uppercase tracking-wider">Link da Mídia (YouTube, TikTok, Insta, Kwai)</label>
-                    <input type="url" id="mediaLinkInput" placeholder="Cole o link do vídeo..." class="w-full bg-black border-2 border-yellow-500/60 rounded-xl p-3 text-xs text-white focus:outline-none focus:border-yellow-400 font-mono shadow-lg">
-                </div>
-
-                <div class="space-y-1">
-                    <label class="text-[10px] text-yellow-400 font-bold uppercase tracking-wider">Formato</label>
-                    <select id="mediaQualitySelect" class="w-full bg-black border border-yellow-900 rounded-xl p-3 text-xs text-white focus:outline-none focus:border-yellow-500">
-                        <option value="mp4">Vídeo MP4 (Engine yt-dlp / Kwai)</option>
-                        <option value="mp3">Áudio MP3</option>
-                    </select>
-                </div>
-
-                <button onclick="executarDownloadVideoDireto()" class="w-full bg-yellow-500 hover:bg-yellow-400 text-black font-extrabold text-xs py-3.5 rounded-xl transition shadow-lg uppercase tracking-widest">Processar &amp; Baixar</button>
-            </div>
-
-            <div id="downloadStatusBox" class="bg-black/80 border border-yellow-950 rounded-xl p-3 text-[11px] font-mono text-gray-300 min-h-[60px] flex flex-col justify-center items-center text-center">
-                <span class="text-gray-500">Aguardando comando yt-dlp...</span>
-            </div>
-        </div>
-
-        <div class="text-center text-[10px] text-gray-500 font-mono">
-            [ yt-dlp --upgrade active ]
-        </div>
-    </div>
-
-    <!-- OUTROS MODAIS MANTIDOS ÍNTEGROS -->
-    <div id="ipGridModal" class="fixed inset-0 z-50 bg-black/95 backdrop-blur-md hidden flex flex-col justify-between p-6">
-        <div class="flex justify-between items-center border-b border-cyan-500/30 pb-4">
-            <div class="flex items-center space-x-2">
-                <span class="w-3 h-3 rounded-full bg-cyan-500 animate-pulse"></span>
-                <h2 class="text-sm font-bold text-cyan-400 tracking-wider">IP ANALYZER &amp; VPN CHECK</h2>
-            </div>
-            <button onclick="fecharModalIpGrid()" class="text-gray-400 hover:text-white text-xl font-bold px-3 py-1 bg-gray-900 border border-cyan-500/30 rounded-lg">✕</button>
-        </div>
-
-        <div class="space-y-4 my-auto max-w-sm mx-auto w-full overflow-y-auto max-h-[75vh] no-scrollbar py-2">
-            <div class="space-y-3">
-                <h3 class="text-xs font-bold text-cyan-300 uppercase">Análise de IP &amp; Verificação de VPN</h3>
-                <p class="text-[11px] text-gray-400">Digite um endereço IP ou analise o seu atual via ipinfo.io:</p>
-                
-                <div class="space-y-2">
-                    <input type="text" id="ipInputTarget" placeholder="Digite o IP (Ex: 8.8.8.8) ou deixe em branco..." class="w-full bg-black border border-cyan-900 rounded-lg p-2.5 text-xs text-white focus:outline-none focus:border-cyan-600 font-mono">
-                    <button onclick="executarBuscaIpInfo()" class="w-full bg-cyan-700 hover:bg-cyan-600 text-white text-xs font-bold py-2.5 rounded-lg transition shadow-md">Consultar IP Analyzer</button>
-                </div>
-
-                <div id="ipResultContainer" class="space-y-2 max-h-56 overflow-y-auto no-scrollbar bg-black/80 border border-cyan-900/60 rounded-xl p-3 text-xs font-mono text-gray-300">
-                    <span class="text-gray-500 text-center block">Aguardando consulta...</span>
-                </div>
-            </div>
-        </div>
-
-        <div class="text-center text-[10px] text-gray-500 font-mono">
-            [ IP Analyzer Active ]
-        </div>
-    </div>
-
-    <div id="iaGridModal" class="fixed inset-0 z-50 bg-black/95 backdrop-blur-md hidden flex flex-col justify-between p-6">
-        <div class="flex justify-between items-center border-b border-gray-600/50 pb-4">
-            <div class="flex items-center space-x-2">
-                <span class="w-3 h-3 rounded-full bg-gray-400 animate-pulse"></span>
-                <h2 class="text-sm font-bold text-gray-200 tracking-wider">CENTRAL MULTI-AI</h2>
-            </div>
-            <button onclick="fecharModalIaGrid()" class="text-gray-400 hover:text-white text-xl font-bold px-3 py-1 bg-gray-900 border border-gray-600 rounded-lg">✕</button>
-        </div>
-
-        <div class="space-y-4 my-auto max-w-sm mx-auto w-full">
-            <div class="text-center space-y-1 mb-2">
-                <p class="text-[11px] text-gray-400">Selecione uma Inteligência Artificial ou obtenha chaves de API:</p>
-            </div>
-
-            <div class="grid grid-cols-2 gap-3">
-                <div onclick="abrirChatIa('gemini')" class="bg-cardbg border-2 border-gray-600 rounded-2xl p-4 text-center cursor-pointer hover:bg-gray-900/60 transition flex flex-col items-center justify-center space-y-2 shadow-lg relative">
-                    <span class="text-xs font-bold text-white">Google Gemini</span>
-                    <span class="text-[9px] text-gray-400">Chat &amp; Denúncias</span>
-                </div>
-                <div onclick="abrirChatIa('openai')" class="bg-cardbg border-2 border-gray-600 rounded-2xl p-4 text-center cursor-pointer hover:bg-gray-900/60 transition flex flex-col items-center justify-center space-y-2 shadow-lg relative">
-                    <span class="text-xs font-bold text-white">OpenAI GPT</span>
-                    <span class="text-[9px] text-gray-400">Chat &amp; Denúncias</span>
-                </div>
-                <div onclick="abrirChatIa('groq')" class="bg-cardbg border-2 border-gray-600 rounded-2xl p-4 text-center cursor-pointer hover:bg-gray-900/60 transition flex flex-col items-center justify-center space-y-2 shadow-lg relative">
-                    <span class="text-xs font-bold text-white">Groq AI</span>
-                    <span class="text-[9px] text-gray-400">Ultra Fast Text</span>
-                </div>
-                <div onclick="abrirModalLinksApi()" class="bg-cardbg border-2 border-gray-500 rounded-2xl p-3 text-center cursor-pointer hover:bg-gray-900/60 transition flex flex-col items-center justify-center space-y-1.5 shadow-lg">
-                    <span class="text-[11px] font-bold text-gray-300">Links para Chaves API</span>
-                    <span class="text-[9px] text-gray-400">Obter credenciais</span>
-                </div>
-            </div>
-        </div>
-
-        <div class="text-center text-[10px] text-gray-500 font-mono">
-            [ Multi-AI Integration Active ]
-        </div>
-    </div>
-
-    <div id="iaChatModal" class="fixed inset-0 z-50 bg-black/95 backdrop-blur-md hidden flex flex-col justify-between p-4 pb-8">
-        <div class="flex justify-between items-center border-b border-gray-700 pb-3">
-            <div class="flex items-center space-x-2">
-                <button onclick="voltarParaGridIa()" class="text-gray-300 hover:text-white text-xs font-bold px-2 py-1 bg-gray-900 border border-gray-700 rounded-lg mr-1">← Voltar</button>
-                <h2 id="iaChatTitle" class="text-sm font-bold text-white tracking-wider">CHAT IA</h2>
-            </div>
-            <div class="flex items-center space-x-2">
-                <button onclick="abrirConfigApi()" class="text-gray-300 hover:text-white p-1 bg-gray-900 border border-gray-700 rounded-lg text-xs" title="Configurar Chave API">⚙️</button>
-                <button onclick="fecharModalIaGrid()" class="text-gray-400 hover:text-white text-xl font-bold px-2.5 py-0.5 bg-gray-900 border border-gray-700 rounded-lg">✕</button>
-            </div>
-        </div>
-
-        <div id="iaChatMessages" class="flex-1 overflow-y-auto space-y-3 my-3 p-2 no-scrollbar text-xs font-mono">
-        </div>
-
-        <div class="space-y-2 pt-2 border-t border-gray-800 mb-6">
-            <div class="flex space-x-2">
-                <input type="text" id="iaInputMessage" placeholder="Digite sua mensagem, texto ou denúncia..." class="flex-1 bg-black border border-gray-700 rounded-xl p-3 text-xs text-white focus:outline-none focus:border-gray-500 font-mono">
-                <button onclick="enviarMensagemIa()" class="bg-gray-200 hover:bg-white text-black font-bold px-4 py-3 rounded-xl transition text-xs uppercase">Enviar</button>
-            </div>
-        </div>
-
-        <div class="text-center text-[9px] text-gray-500 font-mono pt-1">
-            [ Text Generation Only - Independent Sessions ]
-        </div>
-    </div>
-
-    <div id="iaConfigModal" class="fixed inset-0 z-50 bg-black/95 backdrop-blur-md hidden flex flex-col justify-between p-6">
-        <div class="flex justify-between items-center border-b border-gray-700 pb-4">
-            <h2 id="configModalTitle" class="text-sm font-bold text-white tracking-wider">CONFIGURAR CHAVE API</h2>
-            <button onclick="fecharConfigApi()" class="text-gray-400 hover:text-white text-xl font-bold px-3 py-1 bg-gray-900 border border-gray-700 rounded-lg">✕</button>
-        </div>
-
-        <div class="space-y-4 my-auto max-w-sm mx-auto w-full">
-            <p class="text-xs text-gray-400">Insira sua chave de API e digite ou escolha a versão do modelo para esta inteligência artificial.</p>
-            
-            <div class="space-y-3">
-                <div class="space-y-1">
-                    <label class="text-[10px] text-gray-300 font-bold uppercase">Chave de API</label>
-                    <input type="password" id="apiKeyInput" placeholder="Cole sua chave de API aqui..." class="w-full bg-black border border-gray-700 rounded-xl p-3 text-xs text-white focus:outline-none focus:border-gray-500 font-mono">
-                </div>
-
-                <div class="space-y-1">
-                    <label class="text-[10px] text-gray-300 font-bold uppercase">Versão do Modelo / Engine API</label>
-                    <input type="text" id="apiVersionInput" placeholder="Digite ou selecione a versão..." class="w-full bg-black border border-gray-700 rounded-xl p-3 text-xs text-white focus:outline-none focus:border-gray-500 font-mono mb-1">
-                    <select id="apiVersionSelect" onchange="document.getElementById('apiVersionInput').value = this.value" class="w-full bg-black border border-gray-700 rounded-xl p-3 text-xs text-white focus:outline-none focus:border-gray-500 font-mono">
-                    </select>
-                </div>
-            </div>
-
-            <button onclick="salvarChaveApi()" class="w-full bg-gray-200 hover:bg-white text-black font-bold text-xs py-3 rounded-xl transition uppercase shadow-lg">Salvar Configuração</button>
-        </div>
-
-        <div class="text-center text-[10px] text-gray-500 font-mono">
-            [ LocalStorage Secured ]
-        </div>
-    </div>
-
-    <div id="iaLinksModal" class="fixed inset-0 z-50 bg-black/95 backdrop-blur-md hidden flex flex-col justify-between p-6">
-        <div class="flex justify-between items-center border-b border-gray-700 pb-4">
-            <h2 class="text-sm font-bold text-white tracking-wider">OBTER CHAVES DE API</h2>
-            <button onclick="fecharModalLinksApi()" class="text-gray-400 hover:text-white text-xl font-bold px-3 py-1 bg-gray-900 border border-gray-700 rounded-lg">✕</button>
-        </div>
-
-        <div class="space-y-3 my-auto max-w-sm mx-auto w-full flex flex-col overflow-y-auto max-h-[75vh] no-scrollbar py-2">
-            <p class="text-[11px] text-gray-400 text-center mb-1">Copie o link abaixo e cole no navegador do Google:</p>
-
-            <div class="bg-cardbg border border-gray-700 p-3 rounded-xl space-y-2">
-                <span class="text-[10px] text-gray-300 font-bold block">Google Gemini API Studio</span>
-                <div class="flex items-center space-x-2">
-                    <input type="text" id="linkApi1" value="https://aistudio.google.com/" readonly class="w-full bg-black border border-gray-800 rounded-lg p-2 text-[11px] text-gray-300 font-mono select-all focus:outline-none">
-                    <button onclick="copiarLinkApi('linkApi1')" class="bg-gray-800 hover:bg-gray-700 text-white text-[10px] font-bold px-3 py-2 rounded-lg transition shrink-0">Copiar Link</button>
-                </div>
-            </div>
-
-            <div class="bg-cardbg border border-gray-700 p-3 rounded-xl space-y-2">
-                <span class="text-[10px] text-gray-300 font-bold block">OpenAI (ChatGPT) API Keys</span>
-                <div class="flex items-center space-x-2">
-                    <input type="text" id="linkApi2" value="https://platform.openai.com/api-keys" readonly class="w-full bg-black border border-gray-800 rounded-lg p-2 text-[11px] text-gray-300 font-mono select-all focus:outline-none">
-                    <button onclick="copiarLinkApi('linkApi2')" class="bg-gray-800 hover:bg-gray-700 text-white text-[10px] font-bold px-3 py-2 rounded-lg transition shrink-0">Copiar Link</button>
-                </div>
-            </div>
-
-            <div class="bg-cardbg border border-gray-700 p-3 rounded-xl space-y-2">
-                <span class="text-[10px] text-gray-300 font-bold block">Groq Console API Keys</span>
-                <div class="flex items-center space-x-2">
-                    <input type="text" id="linkApi3" value="https://console.groq.com/keys" readonly class="w-full bg-black border border-gray-800 rounded-lg p-2 text-[11px] text-gray-300 font-mono select-all focus:outline-none">
-                    <button onclick="copiarLinkApi('linkApi3')" class="bg-gray-800 hover:bg-gray-700 text-white text-[10px] font-bold px-3 py-2 rounded-lg transition shrink-0">Copiar Link</button>
-                </div>
-            </div>
-
-            <div class="bg-cardbg border border-gray-700 p-3 rounded-xl space-y-2">
-                <span class="text-[10px] text-gray-300 font-bold block">ChatGPT Web Interface</span>
-                <div class="flex items-center space-x-2">
-                    <input type="text" id="linkApi4" value="https://chatgpt.com/" readonly class="w-full bg-black border border-gray-800 rounded-lg p-2 text-[11px] text-gray-300 font-mono select-all focus:outline-none">
-                    <button onclick="copiarLinkApi('linkApi4')" class="bg-gray-800 hover:bg-gray-700 text-white text-[10px] font-bold px-3 py-2 rounded-lg transition shrink-0">Copiar Link</button>
-                </div>
-            </div>
-        </div>
-
-        <div class="text-center text-[10px] text-gray-500 font-mono pt-2">
-            [ Copy &amp; Paste Browser Ready ]
-        </div>
-    </div>
-
-    <div id="instagramGridModal" class="fixed inset-0 z-50 bg-black/95 backdrop-blur-md hidden flex flex-col justify-between p-6">
-        <div class="flex justify-between items-center border-b border-purple-500/30 pb-4">
-            <div class="flex items-center space-x-2">
-                <span class="w-3 h-3 rounded-full bg-purple-500 animate-pulse"></span>
-                <h2 class="text-sm font-bold text-purple-400 tracking-wider">INSTAGRAM</h2>
-            </div>
-            <button onclick="fecharModalInstagramGrid()" class="text-gray-400 hover:text-white text-xl font-bold px-3 py-1 bg-gray-900 border border-purple-500/30 rounded-lg">✕</button>
-        </div>
-
-        <div class="space-y-4 my-auto max-w-sm mx-auto w-full">
-            <div class="text-center space-y-1 mb-2">
-                <p class="text-[11px] text-gray-400">Selecione uma das opções abaixo para executar:</p>
-            </div>
-
-            <div class="grid grid-cols-2 gap-3">
-                <div onclick="abrirSubTelaInsta('metodos')" class="bg-cardbg border-2 border-purple-600 rounded-2xl p-4 text-center cursor-pointer hover:bg-purple-950/40 transition flex flex-col items-center justify-center space-y-2 shadow-lg">
-                    <span class="text-xs font-bold text-purple-300">Métodos Instagram</span>
-                </div>
-                <div onclick="abrirSubTelaInsta('travas')" class="bg-cardbg border-2 border-purple-600 rounded-2xl p-4 text-center cursor-pointer hover:bg-purple-950/40 transition flex flex-col items-center justify-center space-y-2 shadow-lg">
-                    <span class="text-xs font-bold text-purple-300">Travas de Texto</span>
-                </div>
-                <div onclick="abrirSubTelaInsta('multiplicador')" class="bg-cardbg border-2 border-purple-600 rounded-2xl p-4 text-center cursor-pointer hover:bg-purple-950/40 transition flex flex-col items-center justify-center space-y-2 shadow-lg">
-                    <span class="text-xs font-bold text-purple-300">Multiplicador &amp; Caracteres</span>
-                </div>
-                <div onclick="abrirSubTelaInsta('email')" class="bg-cardbg border-2 border-purple-600 rounded-2xl p-4 text-center cursor-pointer hover:bg-purple-950/40 transition flex flex-col items-center justify-center space-y-2 shadow-lg">
-                    <span class="text-xs font-bold text-purple-300">E-mail / Suporte</span>
-                </div>
-            </div>
-        </div>
-
-        <div class="text-center text-[10px] text-gray-500 font-mono">
-            [ Instagram Integration Active ]
-        </div>
-    </div>
-
-    <div id="instagramSubModal" class="fixed inset-0 z-50 bg-black/95 backdrop-blur-md hidden flex flex-col justify-between p-6">
-        <div class="flex justify-between items-center border-b border-purple-500/30 pb-4">
-            <div class="flex items-center space-x-2">
-                <button onclick="voltarParaGridInsta()" class="text-purple-400 hover:text-white text-xs font-bold px-2 py-1 bg-purple-950 border border-purple-800 rounded-lg mr-2">← Voltar</button>
-                <h2 id="subModalTitle" class="text-sm font-bold text-purple-400 tracking-wider">SUBTELA</h2>
-            </div>
-            <button onclick="fecharModalInstagramGrid()" class="text-gray-400 hover:text-white text-xl font-bold px-3 py-1 bg-gray-900 border border-purple-500/30 rounded-lg">✕</button>
-        </div>
-
-        <div class="space-y-4 my-auto max-w-sm mx-auto w-full overflow-y-auto max-h-[70vh] no-scrollbar py-2">
-            
-            <div id="subContent-metodos" class="sub-panel hidden space-y-3">
-                <h3 class="text-xs font-bold text-purple-300 uppercase">Métodos para Derrubar Conta</h3>
-                <p class="text-[11px] text-gray-400">Visualize e copie os métodos salvos ou adicione novos abaixo:</p>
-                
-                <div id="listaMetodosInsta" class="space-y-2 max-h-40 overflow-y-auto no-scrollbar bg-black/60 border border-purple-900/40 rounded-xl p-2">
-                    <span class="text-gray-500 text-xs block text-center py-2">Nenhum método cadastrado.</span>
-                </div>
-
-                <div class="space-y-2 pt-2 border-t border-purple-900/40">
-                    <input type="text" id="novoMetodoTitulo" placeholder="Título do Método..." class="w-full bg-black border border-purple-900 rounded-lg p-2 text-xs text-white focus:outline-none focus:border-purple-600">
-                    <textarea id="novoMetodoTexto" placeholder="Escreva o texto do método aqui..." class="w-full bg-black border border-purple-900 rounded-lg p-2 text-xs text-white focus:outline-none focus:border-purple-600 h-20 resize-none font-mono"></textarea>
-                    <button onclick="adicionarNovoMetodoInsta()" class="w-full bg-purple-700 hover:bg-purple-600 text-white text-xs font-bold py-2.5 rounded-lg transition shadow-md">Adicionar Novo Método</button>
-                </div>
-            </div>
-
-            <div id="subContent-travas" class="sub-panel hidden space-y-3">
-                <h3 class="text-xs font-bold text-purple-300 uppercase">Travas de Texto do Instagram</h3>
-                <p class="text-[11px] text-gray-400">Guarde e copie suas travas de texto rapidamente:</p>
-
-                <div id="listaTravasInsta" class="space-y-2 max-h-48 overflow-y-auto no-scrollbar bg-black/60 border border-purple-900/40 rounded-xl p-2">
-                    <span class="text-gray-500 text-xs block text-center py-2">Nenhuma trava salva.</span>
-                </div>
-
-                <div class="space-y-2 pt-2 border-t border-purple-900/40">
-                    <input type="text" id="novaTravaInstaTitulo" placeholder="Nome da Trava..." class="w-full bg-black border border-purple-900 rounded-lg p-2 text-xs text-white focus:outline-none focus:border-purple-600">
-                    <textarea id="novaTravaInstaTexto" placeholder="Cole a trava aqui..." class="w-full bg-black border border-purple-900 rounded-lg p-2 text-xs text-white focus:outline-none focus:border-purple-600 h-20 resize-none font-mono"></textarea>
-                    <button onclick="salvarTravaInstaGrid()" class="w-full bg-purple-700 hover:bg-purple-600 text-white text-xs font-bold py-2.5 rounded-lg transition shadow-md">Salvar Trava</button>
-                </div>
-            </div>
-
-            <div id="subContent-multiplicador" class="sub-panel hidden space-y-3">
-                <h3 class="text-xs font-bold text-purple-300 uppercase">Multiplicador de Texto &amp; Caracteres</h3>
-                <p class="text-[11px] text-gray-400">Multiplique textos e acompanhe o contador de caracteres:</p>
-
-                <div class="space-y-2">
-                    <textarea id="multiInputText" oninput="atualizarMultiplicador()" placeholder="Digite o texto..." class="w-full bg-black border border-purple-900 rounded-lg p-2.5 text-xs text-white focus:outline-none focus:border-purple-600 h-16 resize-none font-mono"></textarea>
-                    
-                    <div class="flex justify-between items-center text-xs text-gray-300 bg-black/60 p-2 rounded-lg border border-purple-900/40">
-                        <span>Caracteres: <strong id="charCounter" class="text-purple-400">0</strong></span>
-                        <span>Linhas geradas: <strong id="lineCounter" class="text-purple-400">0</strong></span>
-                    </div>
-
-                    <div class="space-y-1">
-                        <label class="text-[10px] text-purple-400 font-bold uppercase">Quantidade de Repetições</label>
-                        <input type="number" id="multiCountInput" value="100" min="1" max="1000" oninput="atualizarMultiplicador()" class="w-full bg-black border border-purple-900 rounded-lg p-2 text-xs text-white focus:outline-none focus:border-purple-600 font-mono">
-                    </div>
-
-                    <div id="multiResultBox" class="w-full bg-black border border-purple-900 rounded-lg p-2.5 text-[10px] text-gray-300 h-24 overflow-y-auto no-scrollbar font-mono select-all">
-                        <span class="text-gray-500">Resultado da multiplicação aparecerá aqui...</span>
-                    </div>
-
-                    <button onclick="copiarTextoMultiplicado()" class="w-full bg-purple-700 hover:bg-purple-600 text-white text-xs font-bold py-2.5 rounded-lg transition shadow-md">Copiar Texto Gerado</button>
-                </div>
-            </div>
-
-            <div id="subContent-email" class="sub-panel hidden space-y-3">
-                <h3 class="text-xs font-bold text-purple-300 uppercase">Gerador de E-mail de Suporte</h3>
-                <p class="text-[11px] text-gray-400">Preencha os campos para disparar direto para o app de e-mail:</p>
-
-                <div class="space-y-2">
-                    <div>
-                        <label class="text-[9px] text-gray-400 font-bold uppercase">E-mail de Destino</label>
-                        <input type="email" id="emailDestinoInsta" value="support@instagram.com" class="w-full bg-black border border-purple-900 rounded-lg p-2 text-xs text-white focus:outline-none focus:border-purple-600 font-mono">
-                    </div>
-                    <div>
-                        <label class="text-[9px] text-gray-400 font-bold uppercase">Assunto</label>
-                        <input type="text" id="emailAssuntoInsta" placeholder="Ex: Conta desativada por engano..." class="w-full bg-black border border-purple-900 rounded-lg p-2 text-xs text-white focus:outline-none focus:border-purple-600 font-mono">
-                    </div>
-                    <div>
-                        <label class="text-[9px] text-gray-400 font-bold uppercase">Detalhes / Mensagem</label>
-                        <textarea id="emailDetalhesInsta" placeholder="Escreva os detalhes do problema..." class="w-full bg-black border border-purple-900 rounded-lg p-2 text-xs text-white focus:outline-none focus:border-purple-600 h-24 resize-none font-mono"></textarea>
-                    </div>
-
-                    <button onclick="enviarEmailInstaSuporte()" class="w-full bg-purple-700 hover:bg-purple-600 text-white text-xs font-bold py-2.5 rounded-lg transition shadow-md">Enviar para Tela de E-mail</button>
-                </div>
-            </div>
-
-        </div>
-
-        <div class="text-center text-[10px] text-gray-500 font-mono">
-            [ Sub-Painel Ativo ]
-        </div>
-    </div>
-
-    <nav class="fixed bottom-0 left-0 right-0 bg-cardbg/95 border-t border-red-950 backdrop-blur px-2 py-2 z-50 max-w-md mx-auto">
-        <div class="flex justify-around items-center">
-            <button onclick="switchTab('home')" class="nav-btn flex flex-col items-center text-red-500 transition" data-target="home">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="m3 12 2-2m0 0 7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
-                <span class="text-[10px] mt-1 font-semibold">Home</span>
-            </button>
-            <button onclick="switchTab('whatsapp'); carregarSelectTravas();" class="nav-btn flex flex-col items-center text-gray-400 hover:text-red-500 transition" data-target="whatsapp">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
-                <span class="text-[10px] mt-1">WhatsApp</span>
-            </button>
-            <button onclick="switchTab('tools')" class="nav-btn flex flex-col items-center text-gray-400 hover:text-red-500 transition" data-target="tools">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
-                <span class="text-[10px] mt-1">Tools</span>
-            </button>
-            <button onclick="switchTab('notifications')" class="nav-btn flex flex-col items-center text-gray-400 hover:text-red-500 transition" data-target="notifications">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
-                <span class="text-[10px] mt-1">Info</span>
-            </button>
-            <button onclick="switchTab('support')" class="nav-btn flex flex-col items-center text-gray-400 hover:text-red-500 transition" data-target="support">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636l3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
-                <span class="text-[10px] mt-1">Suporte</span>
-            </button>
-        </div>
-    </nav>
 
     <script>
-        const API_URL = 'https://weak-deloris-nothing672434-fe85179d.koyeb.app';
-
-        const defaultAiVersions = {
-            'gemini': [
-                { val: 'gemini-2.5-flash', label: 'Gemini 2.5 Flash (Padrão/Novo)' },
-                { val: 'gemini-2.0-flash', label: 'Gemini 2.0 Flash' },
-                { val: 'gemini-1.5-flash', label: 'Gemini 1.5 Flash' },
-                { val: 'gemini-1.5-pro', label: 'Gemini 1.5 Pro' }
-            ],
-            'openai': [
-                { val: 'gpt-4o-mini', label: 'GPT-4o Mini (Recomendado)' },
-                { val: 'gpt-4o', label: 'GPT-4o' },
-                { val: 'gpt-4-turbo', label: 'GPT-4 Turbo' },
-                { val: 'gpt-3.5-turbo', label: 'GPT-3.5 Turbo' }
-            ],
-            'groq': [
-                { val: 'llama-3.3-70b-versatile', label: 'Llama 3.3 70B (Rápido)' },
-                { val: 'llama3-8b-8192', label: 'Llama 3 8B' },
-                { val: 'mixtral-8x7b-32768', label: 'Mixtral 8x7b' }
-            ]
-        };
-
-        window.addEventListener('DOMContentLoaded', () => {
-            const savedName = localStorage.getItem('zrx_name');
-            const savedAvatar = localStorage.getItem('zrx_avatar');
-            const savedBg = localStorage.getItem('zrx_bg');
-            const savedBgType = localStorage.getItem('zrx_bg_type');
-            const savedColor = localStorage.getItem('zrx_color');
-            const savedNumber = localStorage.getItem('zrx_virtual_number');
-
-            if (savedName) {
-                document.getElementById('userName').innerText = savedName;
-                document.getElementById('inputName').value = savedName;
-            }
-            if (savedAvatar) {
-                document.getElementById('userAvatar').src = savedAvatar;
-            }
-            if (savedBg) {
-                const bgImg = document.getElementById('bgImage');
-                const bgVid = document.getElementById('bgVideo');
-                if (savedBgType === 'video') {
-                    bgVid.src = savedBg;
-                    bgVid.classList.remove('hidden');
-                    bgImg.classList.add('hidden');
-                } else {
-                    bgImg.src = savedBg;
-                    bgImg.classList.remove('hidden');
-                    bgVid.classList.add('hidden');
-                }
-            }
-            if (savedColor) {
-                applyThemeColor(savedColor);
-            }
-            if (savedNumber) {
-                document.getElementById('virtualNumberDisplay').innerText = savedNumber;
-                document.getElementById('antiBanPhone').value = savedNumber;
-            }
-            
-            carregarSelectTravas();
-            carregarMetodosInsta();
-            carregarTravasInstaGrid();
-        });
-
-        function switchTab(tabId) {
-            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
-            document.getElementById('tab-' + tabId).classList.remove('hidden');
-
-            document.querySelectorAll('.nav-btn').forEach(btn => {
-                btn.classList.remove('text-red-500');
-                btn.classList.add('text-gray-400');
-            });
-            
-            const activeBtn = document.querySelector(`.nav-btn[data-target="${tabId}"]`);
-            if (activeBtn) {
-                activeBtn.classList.remove('text-gray-400');
-                activeBtn.classList.add('text-red-500');
-            }
-        }
-
-        function carregarSelectTravas() {
-            const select = document.getElementById('floodTravaSelect');
-            if (!select) return;
-            
-            select.innerHTML = '<option value="">Selecione do Armazenamento...</option>';
-            const salvas = JSON.parse(localStorage.getItem('zrx_vault_travas')) || [];
-            
-            salvas.forEach(t => {
-                const opt = document.createElement('option');
-                opt.value = t.conteudo;
-                opt.textContent = `[${(t.tipo || 'geral').toUpperCase()}] ${t.nome || 'Item'}`;
-                select.appendChild(opt);
-            });
-        }
-
-        function salvarNaVault() {
-            const nome = document.getElementById('vaultNameInput').value.trim();
-            const conteudo = document.getElementById('vaultContentInput').value.trim();
-
-            if (!nome || !conteudo) {
-                alert("Preencha o nome e o conteúdo da trava/armazenamento!");
-                return;
-            }
-
-            const salvas = JSON.parse(localStorage.getItem('zrx_vault_travas')) || [];
-            salvas.push({ nome, conteudo, tipo: 'geral' });
-            localStorage.setItem('zrx_vault_travas', JSON.stringify(salvas));
-
-            document.getElementById('vaultNameInput').value = '';
-            document.getElementById('vaultContentInput').value = '';
-            alert("Salvo com sucesso no Armazenamento Trava!");
-            carregarSelectTravas();
-        }
-
-        function abrirModalDownloader() {
-            document.getElementById('downloaderModal').classList.remove('hidden');
-        }
-
-        function fecharModalDownloader() {
-            document.getElementById('downloaderModal').classList.add('hidden');
-        }
-
-        function abrirModalIpGrid() {
-            document.getElementById('ipGridModal').classList.remove('hidden');
-        }
-
-        function fecharModalIpGrid() {
-            document.getElementById('ipGridModal').classList.add('hidden');
-        }
-
-        let currentAiProvider = 'gemini';
-
-        function abrirModalIaGrid() {
-            document.getElementById('iaGridModal').classList.remove('hidden');
-        }
-
-        function fecharModalIaGrid() {
-            document.getElementById('iaGridModal').classList.add('hidden');
-            document.getElementById('iaChatModal').classList.add('hidden');
-            document.getElementById('iaConfigModal').classList.add('hidden');
-            document.getElementById('iaLinksModal').classList.add('hidden');
-        }
-
-        function abrirChatIa(provider) {
-            currentAiProvider = provider;
-            document.getElementById('iaGridModal').classList.add('hidden');
-            document.getElementById('iaChatModal').classList.remove('hidden');
-            
-            const titles = {
-                'gemini': 'Google Gemini AI Chat',
-                'openai': 'OpenAI GPT Chat',
-                'groq': 'Groq Fast AI Chat'
-            };
-            document.getElementById('iaChatTitle').innerText = titles[provider] || 'AI Chat';
-
-            carregarHistoricoChatIsolado(provider);
-        }
-
-        function voltarParaGridIa() {
-            document.getElementById('iaChatModal').classList.add('hidden');
-            document.getElementById('iaGridModal').classList.remove('hidden');
-        }
-
-        function abrirConfigApi() {
-            document.getElementById('iaConfigModal').classList.remove('hidden');
-            const savedKey = localStorage.getItem(`zrx_apikey_${currentAiProvider}`) || '';
-            const savedVersion = localStorage.getItem(`zrx_apiversion_${currentAiProvider}`) || '';
-            
-            document.getElementById('apiKeyInput').value = savedKey;
-            document.getElementById('configModalTitle').innerText = `CONFIGURAR CHAVE API (${currentAiProvider.toUpperCase()})`;
-
-            const inputVer = document.getElementById('apiVersionInput');
-            const selectVer = document.getElementById('apiVersionSelect');
-            
-            inputVer.value = savedVersion;
-            selectVer.innerHTML = '<option value="">-- Escolha da Lista ou Digite Acima --</option>';
-            
-            const opcoes = defaultAiVersions[currentAiProvider] || [{ val: 'default', label: 'Versão Padrão' }];
-            opcoes.forEach(op => {
-                const opt = document.createElement('option');
-                opt.value = op.val;
-                opt.textContent = op.label;
-                selectVer.appendChild(opt);
-            });
-        }
-
-        function fecharConfigApi() {
-            document.getElementById('iaConfigModal').classList.add('hidden');
-        }
-
-        function salvarChaveApi() {
-            const key = document.getElementById('apiKeyInput').value.trim();
-            const version = document.getElementById('apiVersionInput').value.trim() || document.getElementById('apiVersionSelect').value;
-            
-            if (!key) {
-                alert("Insira uma chave válida!");
-                return;
-            }
-            localStorage.setItem(`zrx_apikey_${currentAiProvider}`, key);
-            localStorage.setItem(`zrx_apiversion_${currentAiProvider}`, version);
-            alert("Chave e versão do modelo salvas com sucesso no navegador!");
-            fecharConfigApi();
-        }
-
-        function abrirModalLinksApi() {
-            document.getElementById('iaGridModal').classList.add('hidden');
-            document.getElementById('iaLinksModal').classList.remove('hidden');
-        }
-
-        function fecharModalLinksApi() {
-            document.getElementById('iaLinksModal').classList.add('hidden');
-            document.getElementById('iaGridModal').classList.remove('hidden');
-        }
-
-        function copiarLinkApi(inputId) {
-            const inputElement = document.getElementById(inputId);
-            inputElement.select();
-            inputElement.setSelectionRange(0, 99999);
-            
-            navigator.clipboard.writeText(inputElement.value).then(() => {
-                alert("Link copiado com sucesso! Agora basta colar no navegador do Google.");
-            }).catch(() => {
-                alert("Erro ao copiar o link.");
-            });
-        }
-
-        function carregarHistoricoChatIsolado(provider) {
-            const container = document.getElementById('iaChatMessages');
+        // Função para carregar a imagem ou vídeo de fundo do topo
+        function loadBanner(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            const container = document.getElementById('bannerMediaContainer');
             container.innerHTML = '';
-
-            const historico = JSON.parse(localStorage.getItem(`zrx_chat_history_${provider}`)) || [
-                { sender: 'system', text: `Conectado ao ${provider.toUpperCase()}. Sessão isolada e independente para textos e denúncias.` }
-            ];
-
-            historico.forEach(msg => {
-                const div = document.createElement('div');
-                if (msg.sender === 'user') {
-                    div.className = 'bg-black border border-gray-800 rounded-xl p-3 text-white ml-6';
-                    div.innerHTML = `<span class="text-[10px] text-gray-500 block mb-1">👤 Você</span>${msg.text}`;
-                } else if (msg.sender === 'system') {
-                    div.className = 'bg-gray-900 border border-gray-800 rounded-xl p-3 text-gray-300';
-                    div.innerHTML = `<span class="text-[10px] text-gray-500 block mb-1">🤖 Sistema</span>${msg.text}`;
-                } else {
-                    div.className = 'bg-gray-900 border border-gray-800 rounded-xl p-3 text-gray-200 mr-6';
-                    div.innerHTML = `<span class="text-[10px] text-gray-500 block mb-1">🤖 ${provider.toUpperCase()}</span>${msg.text}`;
-                }
-                container.appendChild(div);
-            });
-            container.scrollTop = container.scrollHeight;
-        }
-
-        function salvarMensagemHistoricoIsolado(provider, sender, text) {
-            const key = `zrx_chat_history_${provider}`;
-            const historico = JSON.parse(localStorage.getItem(key)) || [];
-            historico.push({ sender, text });
-            localStorage.setItem(key, JSON.stringify(historico));
-        }
-
-        async function enviarMensagemIa() {
-            const input = document.getElementById('iaInputMessage');
-            const text = input.value.trim();
-            const container = document.getElementById('iaChatMessages');
-
-            if (!text) return;
-
-            const userMsg = document.createElement('div');
-            userMsg.className = 'bg-black border border-gray-800 rounded-xl p-3 text-white ml-6';
-            userMsg.innerHTML = `<span class="text-[10px] text-gray-500 block mb-1">👤 Você</span>${text}`;
-            container.appendChild(userMsg);
-
-            salvarMensagemHistoricoIsolado(currentAiProvider, 'user', text);
-            input.value = '';
-            container.scrollTop = container.scrollHeight;
-
-            const loadingMsg = document.createElement('div');
-            loadingMsg.className = 'bg-gray-900 border border-gray-800 rounded-xl p-3 text-gray-400 mr-6 animate-pulse';
-            loadingMsg.id = 'loadingResponse';
-            loadingMsg.innerHTML = `<span class="text-[10px] text-gray-500 block mb-1">🤖 ${currentAiProvider.toUpperCase()}</span>Gerando resposta...`;
-            container.appendChild(loadingMsg);
-            container.scrollTop = container.scrollHeight;
-
-            const apiKey = localStorage.getItem(`zrx_apikey_${currentAiProvider}`);
-            const apiVersion = localStorage.getItem(`zrx_apiversion_${currentAiProvider}`) || (defaultAiVersions[currentAiProvider] ? defaultAiVersions[currentAiProvider][0].val : '');
-
-            if (!apiKey) {
-                const loadingEl = document.getElementById('loadingResponse');
-                if (loadingEl) loadingEl.remove();
-
-                const aiMsg = document.createElement('div');
-                aiMsg.className = 'bg-gray-900 border border-red-900/50 rounded-xl p-3 text-red-400 mr-6';
-                const msgErro = `[Aviso] Nenhuma chave de API do ${currentAiProvider.toUpperCase()} foi salva. Clique no ícone de engrenagem ⚙️ no topo para inserir sua chave de API para poder conversar de verdade.`;
-                aiMsg.innerHTML = `<span class="text-[10px] text-red-500 block mb-1">🤖 ${currentAiProvider.toUpperCase()}</span>${msgErro}`;
-                container.appendChild(aiMsg);
-
-                salvarMensagemHistoricoIsolado(currentAiProvider, 'ai', msgErro);
-                container.scrollTop = container.scrollHeight;
-                return;
-            }
-
-            try {
-                let resposta = "";
-
-                if (currentAiProvider === 'gemini') {
-                    const modelToUse = apiVersion || 'gemini-2.5-flash';
-                    const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${modelToUse}:generateContent?key=${apiKey}`, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({
-                            contents: [{ parts: [{ text: text }] }]
-                        })
-                    });
-                    const data = await res.json();
-                    if (data.candidates && data.candidates[0].content.parts[0].text) {
-                        resposta = data.candidates[0].content.parts[0].text;
-                    } else if (data.error) {
-                        resposta = `[Erro na API]: ${data.error.message}`;
-                    } else {
-                        resposta = "Não foi possível interpretar a resposta da API do Gemini.";
-                    }
-                } else if (currentAiProvider === 'openai') {
-                    const modelToUse = apiVersion || 'gpt-4o-mini';
-                    const res = await fetch('https://api.openai.com/v1/chat/completions', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Authorization': `Bearer ${apiKey}`
-                        },
-                        body: JSON.stringify({
-                            model: modelToUse,
-                            messages: [{ role: 'user', content: text }]
-                        })
-                    });
-                    const data = await res.json();
-                    if (data.choices && data.choices[0].message.content) {
-                        resposta = data.choices[0].message.content;
-                    } else if (data.error) {
-                        resposta = `[Erro na API]: ${data.error.message}`;
-                    } else {
-                        resposta = "Não foi possível interpretar a resposta da API da OpenAI.";
-                    }
-                } else if (currentAiProvider === 'groq') {
-                    const modelToUse = apiVersion || 'llama-3.3-70b-versatile';
-                    const res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Authorization': `Bearer ${apiKey}`
-                        },
-                        body: JSON.stringify({
-                            model: modelToUse,
-                            messages: [{ role: 'user', content: text }]
-                        })
-                    });
-                    const data = await res.json();
-                    if (data.choices && data.choices[0].message.content) {
-                        resposta = data.choices[0].message.content;
-                    } else if (data.error) {
-                        resposta = `[Erro na API]: ${data.error.message}`;
-                    } else {
-                        resposta = "Não foi possível interpretar a resposta da API do Groq.";
-                    }
-                }
-
-                const loadingEl = document.getElementById('loadingResponse');
-                if (loadingEl) loadingEl.remove();
-
-                const aiMsg = document.createElement('div');
-                aiMsg.className = 'bg-gray-900 border border-gray-800 rounded-xl p-3 text-gray-200 mr-6';
-                aiMsg.innerHTML = `<span class="text-[10px] text-gray-500 block mb-1">🤖 ${currentAiProvider.toUpperCase()}</span>${resposta}`;
-                container.appendChild(aiMsg);
-
-                salvarMensagemHistoricoIsolado(currentAiProvider, 'ai', resposta);
-                container.scrollTop = container.scrollHeight;
-
-            } catch (err) {
-                const loadingEl = document.getElementById('loadingResponse');
-                if (loadingEl) loadingEl.remove();
-
-                const aiMsg = document.createElement('div');
-                aiMsg.className = 'bg-gray-900 border border-red-900/50 rounded-xl p-3 text-red-400 mr-6';
-                const msgErro = `[Erro de Conexão]: Falha ao comunicar com a API do ${currentAiProvider.toUpperCase()}. Verifique se sua chave e a versão selecionada estão corretas.`;
-                aiMsg.innerHTML = `<span class="text-[10px] text-gray-500 block mb-1">🤖 ${currentAiProvider.toUpperCase()}</span>${msgErro}`;
-                container.appendChild(aiMsg);
-
-                salvarMensagemHistoricoIsolado(currentAiProvider, 'ai', msgErro);
-                container.scrollTop = container.scrollHeight;
-            }
-        }
-
-        async function executarBuscaIpInfo() {
-            const ipInput = document.getElementById('ipInputTarget').value.trim();
-            const container = document.getElementById('ipResultContainer');
             
-            container.innerHTML = `<span class="text-cyan-400 animate-pulse">Consultando ipinfo.io...</span>`;
-
-            try {
-                const url = ipInput ? `https://ipinfo.io/${ipInput}/json` : `https://ipinfo.io/json`;
-                const response = await fetch(url);
-                const data = await response.json();
-
-                const isVpnOrHost = data.company || data.asn ? "Possível VPN/Hosting detectado" : "Conexão Residencial / Normal";
-
-                container.innerHTML = `
-                    <div class="space-y-1">
-                        <p><strong class="text-cyan-400">IP:</strong> ${data.ip || 'N/A'}</p>
-                        <p><strong class="text-cyan-400">Hostname:</strong> ${data.hostname || 'N/A'}</p>
-                        <p><strong class="text-cyan-400">Cidade/Região:</strong> ${data.city || 'N/A'} - ${data.region || 'N/A'}</p>
-                        <p><strong class="text-cyan-400">País:</strong> ${data.country || 'N/A'}</p>
-                        <p><strong class="text-cyan-400">Localização (GPS):</strong> ${data.loc || 'N/A'}</p>
-                        <p><strong class="text-cyan-400">Provedor/ASN:</strong> ${data.org || 'N/A'}</p>
-                        <p><strong class="text-yellow-400">Status VPN/Host:</strong> ${isVpnOrHost}</p>
-                    </div>
-                `;
-            } catch (error) {
-                container.innerHTML = `<span class="text-red-400">Erro ao consultar IP. Verifique a conexão.</span>`;
+            const fileURL = URL.createObjectURL(file);
+            if (file.type.startsWith('video/')) {
+                const video = document.createElement('video');
+                video.src = fileURL;
+                video.autoplay = true;
+                video.loop = true;
+                video.muted = true;
+                video.style.width = '100%';
+                video.style.height = '100%';
+                video.style.objectFit = 'cover';
+                container.appendChild(video);
+            } else {
+                const img = document.createElement('img');
+                img.src = fileURL;
+                img.style.width = '100%';
+                img.style.height = '100%';
+                img.style.objectFit = 'cover';
+                container.appendChild(img);
             }
         }
 
-        function abrirModalInstagramGrid() {
-            document.getElementById('instagramGridModal').classList.remove('hidden');
-        }
-
-        function fecharModalInstagramGrid() {
-            document.getElementById('instagramGridModal').classList.add('hidden');
-            document.getElementById('instagramSubModal').classList.add('hidden');
-        }
-
-        function abrirSubTelaInsta(tipo) {
-            document.getElementById('instagramGridModal').classList.add('hidden');
-            document.getElementById('instagramSubModal').classList.remove('hidden');
-
-            document.querySelectorAll('.sub-panel').forEach(el => el.classList.add('hidden'));
-            document.getElementById('subContent-' + tipo).classList.remove('hidden');
-
-            const titles = {
-                'metodos': 'Métodos para Derrubar Conta',
-                'travas': 'Travas de Texto do Instagram',
-                'multiplicador': 'Multiplicador & Contador',
-                'email': 'Gerador de E-mail de Suporte'
-            };
-            document.getElementById('subModalTitle').innerText = titles[tipo] || 'Sub-Painel';
-        }
-
-        function voltarParaGridInsta() {
-            document.getElementById('instagramSubModal').classList.add('hidden');
-            document.getElementById('instagramGridModal').classList.remove('hidden');
-        }
-
-        function carregarMetodosInsta() {
-            const container = document.getElementById('listaMetodosInsta');
-            if (!container) return;
-            
-            const metodos = JSON.parse(localStorage.getItem('zrx_insta_metodos')) || [];
-            if (metodos.length === 0) {
-                container.innerHTML = `<span class="text-gray-500 text-xs block text-center py-2">Nenhum método cadastrado.</span>`;
-                return;
-            }
-
-            container.innerHTML = '';
-            metodos.forEach((m) => {
-                const div = document.createElement('div');
-                div.className = 'bg-black/80 border border-purple-900/60 rounded-lg p-2.5 flex flex-col space-y-1';
-                div.innerHTML = `
-                    <div class="flex justify-between items-center">
-                        <span class="text-xs font-bold text-purple-300">${m.titulo}</span>
-                        <button onclick="copiarTextoDirect('${encodeURIComponent(m.texto)}')" class="bg-purple-950 text-purple-300 border border-purple-800 text-[10px] px-2 py-0.5 rounded hover:bg-purple-900">Copiar</button>
-                    </div>
-                    <p class="text-[10px] text-gray-300 font-mono truncate">${m.texto}</p>
-                `;
-                container.appendChild(div);
-            });
-        }
-
-        function adicionarNovoMetodoInsta() {
-            const titulo = document.getElementById('novoMetodoTitulo').value.trim();
-            const texto = document.getElementById('novoMetodoTexto').value.trim();
-
-            if (!titulo || !texto) {
-                alert("Preencha o título e o texto do método!");
-                return;
-            }
-
-            const metodos = JSON.parse(localStorage.getItem('zrx_insta_metodos')) || [];
-            metodos.push({ titulo, texto });
-            localStorage.setItem('zrx_insta_metodos', JSON.stringify(metodos));
-
-            document.getElementById('novoMetodoTitulo').value = '';
-            document.getElementById('novoMetodoTexto').value = '';
-            carregarMetodosInsta();
-            alert("Método adicionado com sucesso!");
-        }
-
-        function carregarTravasInstaGrid() {
-            const container = document.getElementById('listaTravasInsta');
-            if (!container) return;
-
-            const travas = JSON.parse(localStorage.getItem('zrx_insta_travas')) || [];
-            if (travas.length === 0) {
-                container.innerHTML = `<span class="text-gray-500 text-xs block text-center py-2">Nenhuma trava salva.</span>`;
-                return;
-            }
-
-            container.innerHTML = '';
-            travas.forEach((t) => {
-                const div = document.createElement('div');
-                div.className = 'bg-black/80 border border-purple-900/60 rounded-lg p-2.5 flex flex-col space-y-1';
-                div.innerHTML = `
-                    <div class="flex justify-between items-center">
-                        <span class="text-xs font-bold text-purple-300">${t.nome}</span>
-                        <button onclick="copiarTextoDirect('${encodeURIComponent(t.conteudo)}')" class="bg-purple-950 text-purple-300 border border-purple-800 text-[10px] px-2 py-0.5 rounded hover:bg-purple-900">Copiar</button>
-                    </div>
-                    <p class="text-[10px] text-gray-300 font-mono truncate">${t.conteudo}</p>
-                `;
-                container.appendChild(div);
-            });
-        }
-
-        function salvarTravaInstaGrid() {
-            const nome = document.getElementById('novaTravaInstaTitulo').value.trim();
-            const conteudo = document.getElementById('novaTravaInstaTexto').value.trim();
-
-            if (!nome || !conteudo) {
-                alert("Preencha o nome e o conteúdo da trava!");
-                return;
-            }
-
-            const travas = JSON.parse(localStorage.getItem('zrx_insta_travas')) || [];
-            travas.push({ nome, conteudo });
-            localStorage.setItem('zrx_insta_travas', JSON.stringify(travas));
-
-            document.getElementById('novaTravaInstaTitulo').value = '';
-            document.getElementById('novaTravaInstaTexto').value = '';
-            carregarTravasInstaGrid();
-            alert("Trava salva com sucesso!");
-        }
-
-        function atualizarMultiplicador() {
-            const texto = document.getElementById('multiInputText').value;
-            const qtd = parseInt(document.getElementById('multiCountInput').value) || 1;
-            const charCounter = document.getElementById('charCounter');
-            const lineCounter = document.getElementById('lineCounter');
-            const resultBox = document.getElementById('multiResultBox');
-
-            const resultado = Array(Math.min(qtd, 500)).fill(texto).join('\n');
-            const totalChars = texto.length * qtd;
-
-            charCounter.innerText = totalChars;
-            lineCounter.innerText = qtd;
-            resultBox.innerText = resultado || 'Resultado da multiplicação aparecerá aqui...';
-        }
-
-        function copiarTextoMultiplicado() {
-            const texto = document.getElementById('multiInputText').value;
-            const qtd = parseInt(document.getElementById('multiCountInput').value) || 1;
-            const resultado = Array(qtd).fill(texto).join('\n');
-
-            if (!texto) {
-                alert("Digite algum texto para multiplicar!");
-                return;
-            }
-
-            navigator.clipboard.writeText(resultado).then(() => {
-                alert("Texto multiplicado copiado para a área de transferência!");
-            }).catch(() => {
-                alert("Erro ao copiar texto.");
-            });
-        }
-
-        function copiarTextoDirect(encodedText) {
-            const decoded = decodeURIComponent(encodedText);
-            navigator.clipboard.writeText(decoded).then(() => {
-                alert("Copiado com sucesso!");
-            }).catch(() => {
-                alert("Erro ao copiar.");
-            });
-        }
-
-        function enviarEmailInstaSuporte() {
-            const destino = document.getElementById('emailDestinoInsta').value.trim();
-            const assunto = document.getElementById('emailAssuntoInsta').value.trim();
-            const detalhes = document.getElementById('emailDetalhesInsta').value.trim();
-
-            if (!assunto || !detalhes) {
-                alert("Preencha o assunto e os detalhes do e-mail!");
-                return;
-            }
-
-            const mailtoUrl = `mailto:${destino}?subject=${encodeURIComponent(assunto)}&body=${encodeURIComponent(detalhes)}`;
-            window.location.href = mailtoUrl;
-        }
-
-        function executarDownloadVideoDireto() {
-            const urlLink = document.getElementById('mediaLinkInput').value.trim();
-            const format = document.getElementById('mediaQualitySelect').value;
-            const statusBox = document.getElementById('downloadStatusBox');
-
-            if (!urlLink) {
-                alert("Insira a URL do vídeo!");
-                return;
-            }
-
-            statusBox.innerHTML = `<span class="text-yellow-400 animate-pulse">⚡ Inicializando yt-dlp core engine...</span>`;
-
-            setTimeout(() => {
-                statusBox.innerHTML = `<span class="text-blue-400">🔍 Extraindo streams (YouTube, TikTok, Insta, Kwai)...</span>`;
-            }, 1000);
-
-            setTimeout(() => {
-                statusBox.innerHTML = `<span class="text-green-400 font-bold">✅ Stream extraído! Baixando arquivo para a galeria...</span>`;
-                
-                fetch(`https://co.wuk.sh/api/json`, {
-                    method: 'POST',
-                    headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ url: urlLink, vQuality: 'max', filenamePattern: 'classic' })
-                })
-                .then(res => res.json())
-                .then(data => {
-                    const downloadUrl = data.url || data.stream;
-                    if (downloadUrl) {
-                        const a = document.createElement('a');
-                        a.href = downloadUrl;
-                        a.target = '_blank';
-                        a.download = `ZRX_Media_${Date.now()}.${format}`;
-                        document.body.appendChild(a);
-                        a.click();
-                        a.remove();
-                        setTimeout(() => fecharModalDownloader(), 1500);
-                    } else {
-                        window.open(`https://www.google.com/search?q=savefrom+${encodeURIComponent(urlLink)}`, '_blank');
-                        fecharModalDownloader();
-                    }
-                })
-                .catch(() => {
-                    window.open(`https://www.google.com/search?q=savefrom+${encodeURIComponent(urlLink)}`, '_blank');
-                    fecharModalDownloader();
-                });
-            }, 2200);
-        }
-
-        function ativarBlindagemAccessibility() {
-            const phone = document.getElementById('antiBanPhone').value.trim();
-            const email = document.getElementById('antiBanEmail').value.trim();
-            const badge = document.getElementById('shieldBadge');
-            const statusBox = document.getElementById('shieldStatusBox');
-            const footerTag = document.getElementById('shieldFooterTag');
-
-            if (!phone || !email) {
-                alert("Preencha pelo menos o número e o e-mail para gerar a solicitação anti-ban!");
-                return;
-            }
-
-            statusBox.innerHTML = `<span class="text-yellow-400">⚡ Sincronizando dados com o form de acessibilidade...</span>`;
-            badge.className = "bg-yellow-950 text-yellow-400 text-[10px] font-bold px-2.5 py-1 rounded-full border border-yellow-800/50 transition-all";
-            badge.innerText = "● ENCRYPTING";
-
-            setTimeout(() => {
-                statusBox.innerHTML = `<span class="text-blue-400">🛡️ Aplicando parâmetros EEA & Messenger...</span>`;
-            }, 1000);
-
-            setTimeout(() => {
-                statusBox.innerHTML = `<span class="text-green-400 font-bold">✅ Balãozinho gerado com sucesso! Abrindo link...</span>`;
-                badge.className = "bg-green-950 text-green-400 text-[10px] font-bold px-2.5 py-1 rounded-full border border-green-800/50 transition-all";
-                badge.innerText = "● SECURED";
-                footerTag.innerText = "[ ACTIVE ]";
-
-                const accessibilityUrl = `https://www.whatsapp.com/contact/?eea=1&subject=messenger&form_type=accessibility`;
-                window.open(accessibilityUrl, '_blank');
-
-                adicionarNotificacao("Shield V5", `Solicitação Anti-Ban gerada para ${phone} via link de acessibilidade.`, "green");
-            }, 2500);
-        }
-
-        function iniciarDisparoEmMassa() {
-            const alvo = document.getElementById('floodAlvo').value.trim();
-            const selectPayload = document.getElementById('floodTravaSelect').value;
-            const customPayload = document.getElementById('floodCustomText').value.trim();
-            const payload = customPayload || selectPayload;
-            const quantidade = parseInt(document.getElementById('floodQuantidade').value);
-            const jogarTudo = document.getElementById('jogarTudoCheckbox').checked;
-            const statusBox = document.getElementById('floodStatusBox');
-
-            if (!alvo) {
-                alert("Digite o número do alvo!");
-                return;
-            }
-            if (!payload) {
-                alert("Selecione uma trava do armazenamento ou digite uma trava de texto!");
-                return;
-            }
-
-            if (jogarTudo) {
-                statusBox.innerHTML = `<span class="text-green-400 font-bold">⚡ Gerando ${quantidade} linhas empilhadas...</span>`;
-                
-                const textoEmLinhas = Array(quantidade).fill(payload).join('\n');
-                const urlWhatsApp = `https://api.whatsapp.com/send?phone=${alvo}&text=${encodeURIComponent(textoEmLinhas)}`;
-                
-                setTimeout(() => {
-                    window.open(urlWhatsApp, '_blank');
-                    statusBox.innerHTML = `<span class="text-green-400 font-bold">✅ Pronto para enviar empilhado (${quantidade}x)!</span>`;
-                }, 500);
-
-                adicionarNotificacao("Flooder", `Disparo em massa empilhado (${quantidade}x) para ${alvo}`, "red");
-                return;
-            }
-
-            statusBox.innerHTML = `<span class="text-yellow-400 animate-pulse">⚡ Iniciando disparos sequenciais (${quantidade}x)...</span>`;
-            
-            let i = 0;
-            const intervalo = setInterval(() => {
-                if (i < quantidade) {
-                    const urlWhatsApp = `https://api.whatsapp.com/send?phone=${alvo}&text=${encodeURIComponent(payload)}`;
-                    window.open(urlWhatsApp, '_blank');
-                    i++;
-                    statusBox.innerHTML = `<span class="text-cyan-400">Disparo ${i}/${quantidade} realizado...</span>`;
-                } else {
-                    clearInterval(intervalo);
-                    statusBox.innerHTML = `<span class="text-green-400 font-bold">✅ Todos os ${quantidade} disparos concluídos!</span>`;
-                    adicionarNotificacao("Flooder", `Disparo sequencial de ${quantidade}x concluído para ${alvo}`, "green");
-                }
-            }, 1200);
-        }
-
-        function gerarNumeroVirtual() {
-            const display = document.getElementById('virtualNumberDisplay');
-            const phoneInput = document.getElementById('antiBanPhone');
-            display.innerText = "Buscando na API...";
-
-            setTimeout(() => {
-                const numerosRussia = [
-                    "+7999" + Math.floor(1000000 + Math.random() * 9000000),
-                    "+7938" + Math.floor(1000000 + Math.random() * 9000000),
-                    "+7951" + Math.floor(1000000 + Math.random() * 9000000),
-                    "+7962" + Math.floor(1000000 + Math.random() * 9000000)
-                ];
-                const gerado = numerosRussia[Math.floor(Math.random() * numerosRussia.length)];
-                
-                display.innerText = gerado;
-                phoneInput.value = gerado;
-                localStorage.setItem('zrx_virtual_number', gerado);
-                adicionarNotificacao("SMS Gateway", `Novo número virtual da Rússia gerado: ${gerado}`, "blue");
-            }, 1000);
-        }
-
-        function filtroGlobal() {
-            alert("Filtro Global ativado: Rotação de proxies e mascaramento de IP habilitados para SMS.");
-        }
-
-        function iniciarProcessoBanzap() {
-            const numero = document.getElementById('targetNumberInput').value.trim();
-            const box = document.getElementById('denunciaProcessBox');
-
-            if (!numero) {
-                alert("Insira o número do alvo para denúncia!");
-                return;
-            }
-
-            box.innerHTML = `<span class="text-yellow-400 animate-pulse">⚡ Conectando à API Banzap V5...</span>`;
-
-            setTimeout(() => {
-                box.innerHTML = `<span class="text-blue-400">🔍 Verificando status do alvo ${numero} no servidor...</span>`;
-            }, 1000);
-
-            setTimeout(() => {
-                box.innerHTML = `<span class="text-red-400 font-bold">🚨 Disparando pacotes de denúncia automatizados...</span>`;
-            }, 2000);
-
-            setTimeout(() => {
-                box.innerHTML = `<span class="text-green-400 font-bold">✅ Processo de denúncia disparado com sucesso! Logs enviados.</span>`;
-                adicionarNotificacao("Banzap API", `Denúncia automatizada enviada com sucesso para o alvo ${numero}.`, "red");
-            }, 3200);
-        }
-
+        // Função para carregar a foto de perfil do usuário
         function loadAvatar(event) {
             const file = event.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    document.getElementById('userAvatar').src = e.target.result;
-                    localStorage.setItem('zrx_avatar', e.target.result);
-                }
-                reader.readAsDataURL(file);
-            }
-        }
-
-        function loadBackground(event) {
-            const file = event.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                const bgImg = document.getElementById('bgImage');
-                const bgVid = document.getElementById('bgVideo');
-
-                reader.onload = function(e) {
-                    const result = e.target.result;
-                    if (file.type.startsWith('video')) {
-                        bgVid.src = result;
-                        bgVid.classList.remove('hidden');
-                        bgImg.classList.add('hidden');
-                        localStorage.setItem('zrx_bg_type', 'video');
-                    } else {
-                        bgImg.src = result;
-                        bgImg.classList.remove('hidden');
-                        bgVid.classList.add('hidden');
-                        localStorage.setItem('zrx_bg_type', 'image');
-                    }
-                    localStorage.setItem('zrx_bg', result);
-                }
-                reader.readAsDataURL(file);
-            }
-        }
-
-        function setThemeColor(hexColor) {
-            applyThemeColor(hexColor);
-            localStorage.setItem('zrx_color', hexColor);
-        }
-
-        function applyThemeColor(color) {
-            document.documentElement.style.setProperty('--theme-color', color);
-        }
-
-        function updateProfile() {
-            const newName = document.getElementById('inputName').value.trim();
-            if (newName) {
-                document.getElementById('userName').innerText = newName;
-                localStorage.setItem('zrx_name', newName);
-                alert("Perfil atualizado com sucesso!");
-            }
-        }
-
-        function adicionarNotificacao(titulo, texto, cor = 'green') {
-            const container = document.getElementById('notificationsContainer');
-            const div = document.createElement('div');
-            const borderColor = cor === 'red' ? 'border-red-500' : (cor === 'blue' ? 'border-blue-500' : 'border-green-500');
-            const hora = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            if (!file) return;
+            const container = document.getElementById('avatarPreviewContainer');
+            container.innerHTML = '';
             
-            div.className = `border-l-2 ${borderColor} pl-2 py-1`;
-            div.innerHTML = `
-                <span class="text-[10px] text-gray-500 block">${hora} - ${titulo}</span>
-                <span class="text-white">${texto}</span>
-            `;
-            container.prepend(div);
+            const fileURL = URL.createObjectURL(file);
+            const img = document.createElement('img');
+            img.src = fileURL;
+            img.style.width = '100%';
+            img.style.height = '100%';
+            img.style.objectFit = 'cover';
+            container.appendChild(img);
         }
     </script>
 </body>
 </html>
+	
