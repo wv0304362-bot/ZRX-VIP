@@ -120,7 +120,7 @@
             border: 1px solid rgba(255,255,255,0.15);
         }
 
-        /* Profile Card Section (Posicionado corretamente sem invadir o banner) */
+        /* Profile Section */
         .profile-section {
             margin: 16px 18px;
             background: rgba(30, 41, 59, 0.9);
@@ -221,7 +221,7 @@
             transform: scale(0.98);
         }
 
-        /* Horizontal Carousel (Sem emojis e largura fluida) */
+        /* Horizontal Carousel */
         .carousel-wrapper {
             padding: 0 0 20px 18px;
         }
@@ -255,8 +255,8 @@
         }
 
         .carousel-card {
-            min-width: 180px;
-            height: 115px;
+            min-width: 190px;
+            height: 125px;
             background: #1e293b;
             border: 1px solid #334155;
             border-radius: 16px;
@@ -289,6 +289,48 @@
             letter-spacing: 0.5px;
         }
 
+        /* Símbolos desenhados em CSS (Sem Emojis) */
+        .css-symbol {
+            width: 20px;
+            height: 20px;
+            display: inline-block;
+            position: relative;
+        }
+        /* Engrenagem */
+        .symbol-gear::before {
+            content: '';
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            border: 2px solid #38bdf8;
+            border-radius: 50%;
+            top: 4px;
+            left: 4px;
+            box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.3);
+        }
+        /* Multiplicador (Duas linhas paralelas com setas) */
+        .symbol-multi::before {
+            content: '';
+            position: absolute;
+            width: 14px;
+            height: 4px;
+            background: #38bdf8;
+            top: 5px;
+            left: 3px;
+            box-shadow: 0 6px 0 #38bdf8;
+        }
+        /* Armazenamento (Blocos empilhados) */
+        .symbol-storage::before {
+            content: '';
+            position: absolute;
+            width: 14px;
+            height: 5px;
+            background: #38bdf8;
+            top: 3px;
+            left: 3px;
+            box-shadow: 0 7px 0 #38bdf8;
+        }
+
         .card-content-bottom {
             display: flex;
             flex-direction: column;
@@ -304,6 +346,148 @@
         .card-desc {
             font-size: 0.7rem;
             color: #94a3b8;
+        }
+
+        /* Modais das Ferramentas */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(11, 15, 25, 0.85);
+            backdrop-filter: blur(8px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+            padding: 20px;
+        }
+
+        .modal-content {
+            background: #1e293b;
+            border: 1px solid #334155;
+            border-radius: 20px;
+            width: 100%;
+            max-width: 420px;
+            max-height: 90vh;
+            overflow-y: auto;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #334155;
+            padding-bottom: 12px;
+        }
+
+        .modal-title {
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: #38bdf8;
+        }
+
+        .modal-close {
+            background: transparent;
+            border: none;
+            color: #94a3b8;
+            font-size: 1.2rem;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .form-label {
+            font-size: 0.8rem;
+            color: #94a3b8;
+            font-weight: 600;
+        }
+
+        .form-input, .form-textarea {
+            background: #0f172a;
+            border: 1px solid #334155;
+            border-radius: 10px;
+            padding: 12px;
+            color: #ffffff;
+            font-size: 0.95rem;
+            outline: none;
+            width: 100%;
+        }
+
+        .form-input:focus, .form-textarea:focus {
+            border-color: #38bdf8;
+        }
+
+        .action-btn {
+            background: linear-gradient(135deg, #38bdf8, #0284c7);
+            border: none;
+            border-radius: 12px;
+            padding: 14px;
+            color: #ffffff;
+            font-weight: bold;
+            font-size: 0.95rem;
+            cursor: pointer;
+            text-align: center;
+            transition: opacity 0.2s;
+        }
+
+        .action-btn:active {
+            opacity: 0.8;
+        }
+
+        .counter-badge {
+            background: rgba(56, 189, 248, 0.15);
+            color: #38bdf8;
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-weight: bold;
+            text-align: center;
+            border: 1px solid rgba(56, 189, 248, 0.3);
+        }
+
+        /* Estilo Lista de Travas (Enigma style) */
+        .trava-item {
+            background: #0f172a;
+            border: 1px solid #334155;
+            border-radius: 12px;
+            padding: 14px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            transition: border-color 0.2s;
+        }
+
+        .trava-item:hover {
+            border-color: #38bdf8;
+        }
+
+        .trava-name {
+            font-weight: bold;
+            font-size: 0.95rem;
+            color: #f8fafc;
+        }
+
+        .trava-details-box {
+            background: #0b0f19;
+            border: 1px solid #334155;
+            border-radius: 10px;
+            padding: 12px;
+            font-family: monospace;
+            font-size: 0.8rem;
+            word-break: break-all;
+            max-height: 120px;
+            overflow-y: auto;
+            color: #cbd5e1;
         }
 
         /* Hidden File Inputs */
@@ -350,65 +534,164 @@
         </div>
         <input type="file" id="avatarInput" accept="image/*" onchange="loadAvatar(event)">
 
-        <!-- Discord Button (Centralizado e sem emojis) -->
+        <!-- Discord Button -->
         <div class="social-container">
             <a href="https://discord.gg/pBRw54XR" target="_blank" class="social-btn discord">
                 <span>Entrar no Discord PV</span>
             </a>
         </div>
 
-        <!-- Balãozinhos (Sem Emojis e com rolagem correta) -->
+        <!-- Balãozinhos com Ferramentas e Símbolos em CSS -->
         <div class="carousel-wrapper">
             <div class="carousel-title">Opções Rápidas</div>
             <div class="carousel-container">
-                <div class="carousel-card">
+                
+                <!-- Balão 1: Gerenciador de E-mails / Suporte -->
+                <div class="carousel-card" onclick="openModal('modalEmails')">
                     <div class="card-header-top">
-                        <span class="card-tag">ONLINE</span>
+                        <span class="card-tag">SUPORTE</span>
+                        <span class="css-symbol symbol-gear"></span>
                     </div>
                     <div class="card-content-bottom">
-                        <div class="card-label">List Device</div>
-                        <div class="card-desc">Ver conexões ativas</div>
+                        <div class="card-label">Painel de E-mails</div>
+                        <div class="card-desc">Gerenciar e enviar credenciais</div>
                     </div>
                 </div>
-                <div class="carousel-card">
+
+                <!-- Balão 2: Multiplicador de Texto -->
+                <div class="carousel-card" onclick="openModal('modalMultiplicador')">
                     <div class="card-header-top">
-                        <span class="card-tag">PREMIUM</span>
+                        <span class="card-tag">TEXTO</span>
+                        <span class="css-symbol symbol-multi"></span>
                     </div>
                     <div class="card-content-bottom">
-                        <div class="card-label">Upgrade Role</div>
-                        <div class="card-desc">Acessar recursos</div>
+                        <div class="card-label">Multiplicador</div>
+                        <div class="card-desc">Repetir texto e contar</div>
                     </div>
                 </div>
-                <div class="carousel-card">
+
+                <!-- Balão 3: Armazenamento de Travas -->
+                <div class="carousel-card" onclick="openModal('modalTrava')">
                     <div class="card-header-top">
-                        <span class="card-tag">CONFIG</span>
+                        <span class="card-tag">ENIGMA</span>
+                        <span class="css-symbol symbol-storage"></span>
                     </div>
                     <div class="card-content-bottom">
-                        <div class="card-label">Painel ZRX</div>
-                        <div class="card-desc">Ajustes do sistema</div>
+                        <div class="card-label">Storage Trava</div>
+                        <div class="card-desc">Gerenciar e compartilhar</div>
                     </div>
                 </div>
-                <div class="carousel-card">
-                    <div class="card-header-top">
-                        <span class="card-tag">STATUS</span>
-                    </div>
-                    <div class="card-content-bottom">
-                        <div class="card-label">Logs V5</div>
-                        <div class="card-desc">Histórico de ações</div>
-                    </div>
-                </div>
+
             </div>
         </div>
 
     </div>
 
+    <!-- MODAL 1: PAINEL DE E-MAILS (WhatsApp Suporte) -->
+    <div class="modal-overlay" id="modalEmails">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title">Painel de E-mails & Credenciais</div>
+                <button class="modal-close" onclick="closeModal('modalEmails')">&times;</button>
+            </div>
+            <div class="counter-badge" id="emailCounterDisplay">Total de E-mails Salvos: 0</div>
+            <div class="form-group">
+                <label class="form-label">E-mail do App</label>
+                <input type="email" class="form-input" id="inputEmail" placeholder="exemplo@gmail.com">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Senha de App</label>
+                <input type="password" class="form-input" id="inputSenha" placeholder="Sua senha de app">
+            </div>
+            <button class="action-btn" onclick="salvarEmail()">Salvar E-mail</button>
+            <hr style="border: 0; border-top: 1px solid #334155; margin: 4px 0;">
+            <div class="form-group">
+                <label class="form-label">Assunto</label>
+                <input type="text" class="form-input" id="inputAssunto" placeholder="Assunto da mensagem">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Mensagem</label>
+                <textarea class="form-textarea" id="inputMensagem" rows="3" placeholder="Mensagem adicional..."></textarea>
+            </div>
+            <button class="action-btn" style="background: linear-gradient(135deg, #22c55e, #16a34a);" onclick="enviarTudoWhatsApp()">Enviar Tudo para Suporte WhatsApp</button>
+        </div>
+    </div>
+
+    <!-- MODAL 2: MULTIPLICADOR DE TEXTO -->
+    <div class="modal-overlay" id="modalMultiplicador">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title">Multiplicador de Texto</div>
+                <button class="modal-close" onclick="closeModal('modalMultiplicador')">&times;</button>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Texto ou Símbolo</label>
+                <input type="text" class="form-input" id="multiText" placeholder="Digite o texto ou emoji..." oninput="executarMultiplicacao()">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Quantidade de Repetições</label>
+                <input type="number" class="form-input" id="multiCount" value="1000" min="1" max="10000" oninput="executarMultiplicacao()">
+            </div>
+            <div class="counter-badge" id="charCounterDisplay">Total de Caracteres: 0</div>
+            <div class="form-group">
+                <label class="form-label">Resultado:</label>
+                <textarea class="form-textarea" id="multiResult" rows="4" readonly style="font-family: monospace; font-size: 0.75rem;"></textarea>
+            </div>
+            <button class="action-btn" onclick="copiarTextoMultiplicado()">Copiar Texto Gerado</button>
+        </div>
+    </div>
+
+    <!-- MODAL 3: ARMAZENAMENTO DE TRAVAS (ENIGMA) -->
+    <div class="modal-overlay" id="modalTrava">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title">Armazenamento de Travas</div>
+                <button class="modal-close" onclick="closeModal('modalTrava')">&times;</button>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Adicionar Nova Trava</label>
+                <input type="text" class="form-input" id="novaTravaNome" placeholder="Nome da Trava">
+            </div>
+            <div class="form-group">
+                <textarea class="form-textarea" id="novaTravaConteudo" rows="2" placeholder="Cole o código/conteúdo da trava aqui..."></textarea>
+            </div>
+            <button class="action-btn" onclick="adicionarTrava()">Adicionar Trava</button>
+            <div class="carousel-title" style="margin-top: 10px;">Suas Travas Salvas</div>
+            <div id="listaTravasContainer" style="display: flex; flex-direction: column; gap: 8px; max-height: 200px; overflow-y: auto;">
+                <!-- Dinâmico -->
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL DETALHE DA TRAVA -->
+    <div class="modal-overlay" id="modalTravaDetalhe">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title" id="detalheTravaTitulo">Detalhes da Trava</div>
+                <button class="modal-close" onclick="closeModal('modalTravaDetalhe')">&times;</button>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Nome:</label>
+                <div id="detalheNome" style="font-weight: bold; color: #38bdf8;"></div>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Conteúdo Oculto (Visualização Segura):</label>
+                <div class="trava-details-box" id="detalheConteudo"></div>
+            </div>
+            <div style="display: flex; gap: 10px;">
+                <button class="action-btn" style="flex: 1;" onclick="copiarTravaDetalhe()">Copiar</button>
+                <button class="action-btn" style="flex: 1; background: linear-gradient(135deg, #22c55e, #16a34a);" onclick="compartilharWhatsAppTrava()">Compartilhar WhatsApp</button>
+            </div>
+        </div>
+    </div>
+
     <script>
+        // Funções Globais de Mídia e Modais
         function loadBanner(event) {
             const file = event.target.files[0];
             if (!file) return;
             const container = document.getElementById('bannerMediaContainer');
             container.innerHTML = '';
-            
             const fileURL = URL.createObjectURL(file);
             if (file.type.startsWith('video/')) {
                 const video = document.createElement('video');
@@ -435,7 +718,6 @@
             if (!file) return;
             const container = document.getElementById('avatarPreviewContainer');
             container.innerHTML = '';
-            
             const fileURL = URL.createObjectURL(file);
             const img = document.createElement('img');
             img.src = fileURL;
@@ -443,6 +725,141 @@
             img.style.height = '100%';
             img.style.objectFit = 'cover';
             container.appendChild(img);
+        }
+
+        function openModal(modalId) {
+            document.getElementById(modalId).style.display = 'flex';
+            if(modalId === 'modalMultiplicador') executarMultiplicacao();
+            if(modalId === 'modalTrava') renderizarTravas();
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+        }
+
+        // --- LÓGICA DO BALÃO 1: E-MAILS & SUPORTE WHATSAPP ---
+        let listaEmails = JSON.parse(localStorage.getItem('zrx_emails') || '[]');
+        atualizarContadorEmails();
+
+        function salvarEmail() {
+            const email = document.getElementById('inputEmail').value.trim();
+            const senha = document.getElementById('inputSenha').value.trim();
+            if(!email || !senha) {
+                alert('Preencha o e-mail e a senha de app!');
+                return;
+            }
+            listaEmails.push({ email, senha });
+            localStorage.setItem('zrx_emails', JSON.stringify(listaEmails));
+            document.getElementById('inputEmail').value = '';
+            document.getElementById('inputSenha').value = '';
+            atualizarContadorEmails();
+            alert('E-mail e senha salvos com sucesso!');
+        }
+
+        function atualizarContadorEmails() {
+            document.getElementById('emailCounterDisplay').innerText = `Total de E-mails Salvos: ${listaEmails.length}`;
+        }
+
+        function enviarTudoWhatsApp() {
+            const assunto = document.getElementById('inputAssunto').value.trim();
+            const mensagemExtra = document.getElementById('inputMensagem').value.trim();
+            
+            if(listaEmails.length === 0) {
+                alert('Nenhum e-mail cadastrado para enviar!');
+                return;
+            }
+
+            let textoFinal = `*RELATÓRIO DE E-MAILS - ZRX DESTROYER*\n\n`;
+            if(assunto) textoFinal += `*Assunto:* ${assunto}\n`;
+            if(mensagemExtra) textoFinal += `*Mensagem:* ${mensagemExtra}\n\n`;
+            
+            textoFinal += `*Lista de Credenciais (${listaEmails.length}):*\n`;
+            listaEmails.forEach((item, index) => {
+                textoFinal += `${index + 1}. E-mail: ${item.email} | Senha: ${item.senha}\n`;
+            });
+
+            // Números de suporte do WhatsApp oficiais / atuais
+            const numeroSuporte = "5511999999999"; // Substitua ou deixe configurado para disparar no link
+            const urlWp = `https://api.whatsapp.com/send?phone=${numeroSuporte}&text=${encodeURIComponent(textoFinal)}`;
+            window.open(urlWp, '_blank');
+        }
+
+        // --- LÓGICA DO BALÃO 2: MULTIPLICADOR DE TEXTO ---
+        function executarMultiplicacao() {
+            const texto = document.getElementById('multiText').value;
+            const count = parseInt(document.getElementById('multiCount').value) || 0;
+            
+            if(!texto || count <= 0) {
+                document.getElementById('multiResult').value = '';
+                document.getElementById('charCounterDisplay').innerText = `Total de Caracteres: 0`;
+                return;
+            }
+
+            const resultado = texto.repeat(count);
+            document.getElementById('multiResult').value = resultado;
+            document.getElementById('charCounterDisplay').innerText = `Total de Caracteres: ${resultado.length}`;
+        }
+
+        function copiarTextoMultiplicado() {
+            const textoGerado = document.getElementById('multiResult').value;
+            if(!textoGerado) return;
+            navigator.clipboard.writeText(textoGerado);
+            alert('Texto multiplicado copiado para a área de transferência!');
+        }
+
+        // --- LÓGICA DO BALÃO 3: ARMAZENAMENTO DE TRAVAS (ESTILO ENIGMA) ---
+        let listaTravas = JSON.parse(localStorage.getItem('zrx_travas') || '[{"nome": "Trava Crash V1", "conteudo": "Exemplo de codigo de trava 1..."}]');
+        let travaSelecionadaAtual = null;
+
+        function renderizarTravas() {
+            const container = document.getElementById('listaTravasContainer');
+            container.innerHTML = '';
+            if(listaTravas.length === 0) {
+                container.innerHTML = '<div style="color: #64748b; font-size: 0.8rem; text-align: center;">Nenhuma trava salva ainda.</div>';
+                return;
+            }
+            listaTravas.forEach((trava, index) => {
+                const item = document.createElement('div');
+                item.className = 'trava-item';
+                item.innerHTML = `<span class="trava-name">${trava.nome}</span> <span style="font-size:0.75rem; color:#38bdf8;">Ver Trava</span>`;
+                item.onclick = () => abrirDetalheTrava(index);
+                container.appendChild(item);
+            });
+        }
+
+        function adicionarTrava() {
+            const nome = document.getElementById('novaTravaNome').value.trim();
+            const conteudo = document.getElementById('novaTravaConteudo').value.trim();
+            if(!nome || !conteudo) {
+                alert('Preencha o nome e o conteúdo da trava!');
+                return;
+            }
+            listaTravas.push({ nome, conteudo });
+            localStorage.setItem('zrx_travas', JSON.stringify(listaTravas));
+            document.getElementById('novaTravaNome').value = '';
+            document.getElementById('novaTravaConteudo').value = '';
+            renderizarTravas();
+            alert('Trava adicionada com sucesso!');
+        }
+
+        function abrirDetalheTrava(index) {
+            travaSelecionadaAtual = listaTravas[index];
+            document.getElementById('detalheNome').innerText = travaSelecionadaAtual.nome;
+            document.getElementById('detalheConteudo').innerText = travaSelecionadaAtual.conteudo;
+            openModal('modalTravaDetalhe');
+        }
+
+        function copiarTravaDetalhe() {
+            if(!travaSelecionadaAtual) return;
+            navigator.clipboard.writeText(travaSelecionadaAtual.conteudo);
+            alert('Conteúdo da trava copiado!');
+        }
+
+        function compartilharWhatsAppTrava() {
+            if(!travaSelecionadaAtual) return;
+            const textoWp = `*Trava: ${travaSelecionadaAtual.nome}*\n\n${travaSelecionadaAtual.conteudo}`;
+            const urlWp = `https://api.whatsapp.com/send?text=${encodeURIComponent(textoWp)}`;
+            window.open(urlWp, '_blank');
         }
     </script>
 </body>
