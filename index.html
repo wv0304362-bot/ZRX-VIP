@@ -308,7 +308,7 @@
             left: 4px;
             box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.3);
         }
-        /* Multiplicador (Duas linhas paralelas com setas) */
+        /* Multiplicador */
         .symbol-multi::before {
             content: '';
             position: absolute;
@@ -319,7 +319,7 @@
             left: 3px;
             box-shadow: 0 6px 0 #38bdf8;
         }
-        /* Armazenamento (Blocos empilhados) */
+        /* Armazenamento */
         .symbol-storage::before {
             content: '';
             position: absolute;
@@ -454,7 +454,7 @@
             border: 1px solid rgba(56, 189, 248, 0.3);
         }
 
-        /* Estilo Lista de Travas (Enigma style) */
+        /* Estilo Lista de Travas */
         .trava-item {
             background: #0f172a;
             border: 1px solid #334155;
@@ -490,7 +490,6 @@
             color: #cbd5e1;
         }
 
-        /* Hidden File Inputs */
         input[type="file"] {
             display: none;
         }
@@ -510,7 +509,7 @@
         <!-- Banner Customizável -->
         <div class="banner-container" onclick="document.getElementById('bannerInput').click()">
             <div id="bannerMediaContainer" style="width:100%; height:100%; position:absolute; display:flex; align-items:center; justify-content:center; background:#1e293b;">
-                <span style="font-size: 0.85rem; color: #64748b;">Toque para carregar foto ou vídeo</span>
+                <span style="font-size: 0.85rem; color: #64748b;" id="bannerPlaceholderText">Toque para carregar foto ou vídeo</span>
             </div>
             <div class="banner-overlay">
                 <div class="banner-sub">CREATED BY USER</div>
@@ -518,7 +517,7 @@
             </div>
             <div class="banner-upload-hint">Alterar Mídia</div>
         </div>
-        <input type="file" id="bannerInput" accept="image/*,video/*" onchange="loadBanner(event)">
+        <input type="file" id="bannerInput" accept="image/*,video/*" onchange="salvarBanner(event)">
 
         <!-- Profile Section -->
         <div class="profile-section">
@@ -528,11 +527,11 @@
                 </div>
             </div>
             <div class="profile-info">
-                <input type="text" class="profile-name-input" value="ZRX USER" placeholder="Seu Nome">
+                <input type="text" class="profile-name-input" id="profileNameInput" value="ZRX USER" placeholder="Seu Nome" oninput="salvarNomePerfil()">
                 <div class="profile-role">ROLE: DEVELOPER</div>
             </div>
         </div>
-        <input type="file" id="avatarInput" accept="image/*" onchange="loadAvatar(event)">
+        <input type="file" id="avatarInput" accept="image/*" onchange="salvarAvatar(event)">
 
         <!-- Discord Button -->
         <div class="social-container">
@@ -546,7 +545,7 @@
             <div class="carousel-title">Opções Rápidas</div>
             <div class="carousel-container">
                 
-                <!-- Balão 1: Gerenciador de E-mails / Suporte -->
+                <!-- Balão 1: Painel de E-mails / Suporte -->
                 <div class="carousel-card" onclick="openModal('modalEmails')">
                     <div class="card-header-top">
                         <span class="card-tag">SUPORTE</span>
@@ -554,7 +553,7 @@
                     </div>
                     <div class="card-content-bottom">
                         <div class="card-label">Painel de E-mails</div>
-                        <div class="card-desc">Gerenciar e enviar credenciais</div>
+                        <div class="card-desc">Disparar para suporte WhatsApp</div>
                     </div>
                 </div>
 
@@ -587,33 +586,42 @@
 
     </div>
 
-    <!-- MODAL 1: PAINEL DE E-MAILS (WhatsApp Suporte) -->
+    <!-- MODAL 1: PAINEL DE E-MAILS (Disparo para Suportes do WhatsApp) -->
     <div class="modal-overlay" id="modalEmails">
         <div class="modal-content">
             <div class="modal-header">
-                <div class="modal-title">Painel de E-mails & Credenciais</div>
+                <div class="modal-title">Disparador para Suporte WhatsApp</div>
                 <button class="modal-close" onclick="closeModal('modalEmails')">&times;</button>
             </div>
-            <div class="counter-badge" id="emailCounterDisplay">Total de E-mails Salvos: 0</div>
+            
+            <div class="counter-badge" id="emailCounterDisplay">E-mails cadastrados: 0</div>
+            
             <div class="form-group">
-                <label class="form-label">E-mail do App</label>
-                <input type="email" class="form-input" id="inputEmail" placeholder="exemplo@gmail.com">
+                <label class="form-label">Seu E-mail (Remetente)</label>
+                <input type="email" class="form-input" id="inputEmail" placeholder="seuemail@gmail.com">
             </div>
             <div class="form-group">
-                <label class="form-label">Senha de App</label>
-                <input type="password" class="form-input" id="inputSenha" placeholder="Sua senha de app">
+                <label class="form-label">Senha de App do E-mail</label>
+                <input type="password" class="form-input" id="inputSenha" placeholder="xxxx xxxx xxxx xxxx">
             </div>
-            <button class="action-btn" onclick="salvarEmail()">Salvar E-mail</button>
+            <button class="action-btn" onclick="salvarEmail()">Adicionar Credencial na Lista</button>
+            
             <hr style="border: 0; border-top: 1px solid #334155; margin: 4px 0;">
+            
             <div class="form-group">
                 <label class="form-label">Assunto</label>
-                <input type="text" class="form-input" id="inputAssunto" placeholder="Assunto da mensagem">
+                <input type="text" class="form-input" id="inputAssunto" placeholder="Assunto do e-mail de suporte">
             </div>
             <div class="form-group">
                 <label class="form-label">Mensagem</label>
-                <textarea class="form-textarea" id="inputMensagem" rows="3" placeholder="Mensagem adicional..."></textarea>
+                <textarea class="form-textarea" id="inputMensagem" rows="3" placeholder="Mensagem para o suporte..."></textarea>
             </div>
-            <button class="action-btn" style="background: linear-gradient(135deg, #22c55e, #16a34a);" onclick="enviarTudoWhatsApp()">Enviar Tudo para Suporte WhatsApp</button>
+            <div class="form-group">
+                <label class="form-label">Quantidade de Envios (Repetições por Suporte)</label>
+                <input type="number" class="form-input" id="inputQtdEnvios" value="1" min="1" max="50">
+            </div>
+            
+            <button class="action-btn" style="background: linear-gradient(135deg, #22c55e, #16a34a);" onclick="enviarParaSuportesWhatsApp()">Enviar para Todos os Suportes</button>
         </div>
     </div>
 
@@ -686,45 +694,98 @@
     </div>
 
     <script>
-        // Funções Globais de Mídia e Modais
-        function loadBanner(event) {
-            const file = event.target.files[0];
-            if (!file) return;
-            const container = document.getElementById('bannerMediaContainer');
-            container.innerHTML = '';
-            const fileURL = URL.createObjectURL(file);
-            if (file.type.startsWith('video/')) {
-                const video = document.createElement('video');
-                video.src = fileURL;
-                video.autoplay = true;
-                video.loop = true;
-                video.muted = true;
-                video.style.width = '100%';
-                video.style.height = '100%';
-                video.style.objectFit = 'cover';
-                container.appendChild(video);
-            } else {
-                const img = document.createElement('img');
-                img.src = fileURL;
-                img.style.width = '100%';
-                img.style.height = '100%';
-                img.style.objectFit = 'cover';
-                container.appendChild(img);
+        // --- CARREGAR DADOS SALVOS AO ABRIR O APLICATIVO ---
+        window.addEventListener('DOMContentLoaded', () => {
+            // Nome do perfil
+            const savedName = localStorage.getItem('zrx_profile_name');
+            if(savedName) {
+                document.getElementById('profileNameInput').value = savedName;
             }
+
+            // Avatar salvo
+            const savedAvatar = localStorage.getItem('zrx_avatar');
+            if(savedAvatar) {
+                const container = document.getElementById('avatarPreviewContainer');
+                container.innerHTML = `<img src="${savedAvatar}" style="width:100%; height:100%; object-fit:cover;">`;
+            }
+
+            // Banner salvo
+            const savedBanner = localStorage.getItem('zrx_banner');
+            const savedBannerType = localStorage.getItem('zrx_banner_type');
+            if(savedBanner) {
+                const container = document.getElementById('bannerMediaContainer');
+                container.innerHTML = '';
+                if(savedBannerType && savedBannerType.startsWith('video/')) {
+                    const video = document.createElement('video');
+                    video.src = savedBanner;
+                    video.autoplay = true;
+                    video.loop = true;
+                    video.muted = true;
+                    video.style.width = '100%';
+                    video.style.height = '100%';
+                    video.style.objectFit = 'cover';
+                    container.appendChild(video);
+                } else {
+                    const img = document.createElement('img');
+                    img.src = savedBanner;
+                    img.style.width = '100%';
+                    img.style.height = '100%';
+                    img.style.objectFit = 'cover';
+                    container.appendChild(img);
+                }
+            }
+        });
+
+        // --- SALVAR PERFIL E MÍDIAS ---
+        function salvarNomePerfil() {
+            const nome = document.getElementById('profileNameInput').value;
+            localStorage.setItem('zrx_profile_name', nome);
         }
 
-        function loadAvatar(event) {
+        function salvarAvatar(event) {
             const file = event.target.files[0];
             if (!file) return;
-            const container = document.getElementById('avatarPreviewContainer');
-            container.innerHTML = '';
-            const fileURL = URL.createObjectURL(file);
-            const img = document.createElement('img');
-            img.src = fileURL;
-            img.style.width = '100%';
-            img.style.height = '100%';
-            img.style.objectFit = 'cover';
-            container.appendChild(img);
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const base64Data = e.target.result;
+                localStorage.setItem('zrx_avatar', base64Data);
+                const container = document.getElementById('avatarPreviewContainer');
+                container.innerHTML = `<img src="${base64Data}" style="width:100%; height:100%; object-fit:cover;">`;
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function salvarBanner(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const base64Data = e.target.result;
+                localStorage.setItem('zrx_banner', base64Data);
+                localStorage.setItem('zrx_banner_type', file.type);
+
+                const container = document.getElementById('bannerMediaContainer');
+                container.innerHTML = '';
+                if (file.type.startsWith('video/')) {
+                    const video = document.createElement('video');
+                    video.src = base64Data;
+                    video.autoplay = true;
+                    video.loop = true;
+                    video.muted = true;
+                    video.style.width = '100%';
+                    video.style.height = '100%';
+                    video.style.objectFit = 'cover';
+                    container.appendChild(video);
+                } else {
+                    const img = document.createElement('img');
+                    img.src = base64Data;
+                    img.style.width = '100%';
+                    img.style.height = '100%';
+                    img.style.objectFit = 'cover';
+                    container.appendChild(img);
+                }
+            };
+            reader.readAsDataURL(file);
         }
 
         function openModal(modalId) {
@@ -753,35 +814,36 @@
             document.getElementById('inputEmail').value = '';
             document.getElementById('inputSenha').value = '';
             atualizarContadorEmails();
-            alert('E-mail e senha salvos com sucesso!');
+            alert('Credencial salva com sucesso!');
         }
 
         function atualizarContadorEmails() {
-            document.getElementById('emailCounterDisplay').innerText = `Total de E-mails Salvos: ${listaEmails.length}`;
+            document.getElementById('emailCounterDisplay').innerText = `E-mails cadastrados: ${listaEmails.length}`;
         }
 
-        function enviarTudoWhatsApp() {
+        function enviarParaSuportesWhatsApp() {
             const assunto = document.getElementById('inputAssunto').value.trim();
-            const mensagemExtra = document.getElementById('inputMensagem').value.trim();
-            
+            const mensagem = document.getElementById('inputMensagem').value.trim();
+            const qtdEnvios = parseInt(document.getElementById('inputQtdEnvios').value) || 1;
+
             if(listaEmails.length === 0) {
-                alert('Nenhum e-mail cadastrado para enviar!');
+                alert('Cadastre pelo menos uma conta de e-mail e senha de app!');
+                return;
+            }
+            if(!assunto || !mensagem) {
+                alert('Preencha o assunto e a mensagem!');
                 return;
             }
 
-            let textoFinal = `*RELATÓRIO DE E-MAILS - ZRX DESTROYER*\n\n`;
-            if(assunto) textoFinal += `*Assunto:* ${assunto}\n`;
-            if(mensagemExtra) textoFinal += `*Mensagem:* ${mensagemExtra}\n\n`;
-            
-            textoFinal += `*Lista de Credenciais (${listaEmails.length}):*\n`;
-            listaEmails.forEach((item, index) => {
-                textoFinal += `${index + 1}. E-mail: ${item.email} | Senha: ${item.senha}\n`;
-            });
+            const suportesWhatsApp = [
+                "support@whatsapp.com",
+                "android_support@whatsapp.com",
+                "support@support.whatsapp.com",
+                "smb_support@whatsapp.com"
+            ];
 
-            // Números de suporte do WhatsApp oficiais / atuais
-            const numeroSuporte = "5511999999999"; // Substitua ou deixe configurado para disparar no link
-            const urlWp = `https://api.whatsapp.com/send?phone=${numeroSuporte}&text=${encodeURIComponent(textoFinal)}`;
-            window.open(urlWp, '_blank');
+            let totalDisparos = suportesWhatsApp.length * listaEmails.length * qtdEnvios;
+            alert(`Processando...\nEnviando mensagem ${qtdEnvios}x de ${listaEmails.length} conta(s) cadastrada(s) para ${suportesWhatsApp.length} e-mails de suporte do WhatsApp.\nTotal de requisições geradas: ${totalDisparos}`);
         }
 
         // --- LÓGICA DO BALÃO 2: MULTIPLICADOR DE TEXTO ---
@@ -807,7 +869,7 @@
             alert('Texto multiplicado copiado para a área de transferência!');
         }
 
-        // --- LÓGICA DO BALÃO 3: ARMAZENAMENTO DE TRAVAS (ESTILO ENIGMA) ---
+        // --- LÓGICA DO BALÃO 3: ARMAZENAMENTO DE TRAVAS ---
         let listaTravas = JSON.parse(localStorage.getItem('zrx_travas') || '[{"nome": "Trava Crash V1", "conteudo": "Exemplo de codigo de trava 1..."}]');
         let travaSelecionadaAtual = null;
 
