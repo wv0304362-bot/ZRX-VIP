@@ -15,24 +15,19 @@
         body {
             background-color: #0b0f19;
             color: #ffffff;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            width: 100vw;
             min-height: 100vh;
-            padding: 10px;
+            overflow-x: hidden;
         }
 
         .app-container {
             width: 100%;
-            max-width: 420px;
+            min-height: 100vh;
             background: #0f172a;
-            border-radius: 20px;
-            overflow: hidden;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
-            border: 1px solid #1e293b;
             display: flex;
             flex-direction: column;
             position: relative;
+            padding-bottom: 30px;
         }
 
         /* Top Bar */
@@ -40,13 +35,14 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 15px 20px;
+            padding: 16px 20px;
             background: #0f172a;
             border-bottom: 1px solid #1e293b;
+            width: 100%;
         }
 
         .menu-icon, .notif-icon {
-            font-size: 18px;
+            font-size: 20px;
             cursor: pointer;
             color: #94a3b8;
         }
@@ -55,17 +51,17 @@
             font-weight: 800;
             font-style: italic;
             letter-spacing: 1px;
-            font-size: 1.1rem;
+            font-size: 1.15rem;
             background: linear-gradient(90deg, #38bdf8, #818cf8);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
-        /* Banner Section */
+        /* Banner Section (Tela Cheia em largura) */
         .banner-container {
             position: relative;
             width: 100%;
-            height: 160px;
+            height: 200px;
             background: #1e293b;
             overflow: hidden;
             cursor: pointer;
@@ -86,25 +82,25 @@
         .banner-overlay {
             position: absolute;
             inset: 0;
-            background: linear-gradient(to bottom, rgba(15,23,42,0.2), rgba(15,23,42,0.8));
+            background: linear-gradient(to bottom, rgba(15,23,42,0.1), rgba(15,23,42,0.85));
             display: flex;
             flex-direction: column;
             justify-content: flex-end;
-            padding: 15px;
+            padding: 20px;
             z-index: 2;
         }
 
         .banner-watermark {
-            font-size: 1.2rem;
+            font-size: 1.4rem;
             font-weight: 900;
             font-style: italic;
             color: #ffffff;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+            text-shadow: 0 2px 6px rgba(0,0,0,0.9);
             letter-spacing: 0.5px;
         }
 
         .banner-sub {
-            font-size: 0.7rem;
+            font-size: 0.75rem;
             color: #38bdf8;
             font-weight: 600;
             text-transform: uppercase;
@@ -113,36 +109,36 @@
 
         .banner-upload-hint {
             position: absolute;
-            top: 10px;
-            right: 10px;
-            background: rgba(0, 0, 0, 0.6);
-            padding: 5px 10px;
+            top: 15px;
+            right: 15px;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 6px 12px;
             border-radius: 20px;
-            font-size: 0.65rem;
+            font-size: 0.7rem;
             color: #cbd5e1;
             z-index: 3;
-            border: 1px solid rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.15);
         }
 
         /* Profile Card Section */
         .profile-section {
-            margin: -25px 15px 15px 15px;
-            background: rgba(30, 41, 59, 0.7);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            border-radius: 14px;
-            padding: 15px;
+            margin: -30px 20px 20px 20px;
+            background: rgba(30, 41, 59, 0.85);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 16px;
+            padding: 18px;
             display: flex;
             align-items: center;
-            gap: 15px;
+            gap: 16px;
             z-index: 4;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.4);
         }
 
         .avatar-container {
-            width: 65px;
-            height: 65px;
-            border-radius: 12px;
+            width: 75px;
+            height: 75px;
+            border-radius: 14px;
             background: #0f172a;
             border: 2px solid #38bdf8;
             overflow: hidden;
@@ -161,7 +157,7 @@
         }
 
         .avatar-placeholder {
-            font-size: 0.6rem;
+            font-size: 0.65rem;
             text-align: center;
             color: #94a3b8;
             padding: 4px;
@@ -171,44 +167,44 @@
             flex-grow: 1;
             display: flex;
             flex-direction: column;
-            gap: 5px;
+            gap: 6px;
         }
 
         .profile-name-input {
             background: transparent;
             border: none;
             color: #ffffff;
-            font-size: 1rem;
+            font-size: 1.1rem;
             font-weight: bold;
             width: 100%;
             outline: none;
-            border-bottom: 1px dashed rgba(255,255,255,0.2);
-            padding-bottom: 2px;
+            border-bottom: 1px dashed rgba(255,255,255,0.3);
+            padding-bottom: 4px;
         }
 
         .profile-role {
             font-size: 0.75rem;
             color: #38bdf8;
-            background: rgba(56, 189, 248, 0.1);
-            padding: 3px 8px;
+            background: rgba(56, 189, 248, 0.12);
+            padding: 4px 10px;
             border-radius: 20px;
             align-self: flex-start;
-            border: 1px solid rgba(56, 189, 248, 0.2);
+            border: 1px solid rgba(56, 189, 248, 0.25);
         }
 
         /* Social Links Grid */
         .social-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 10px;
-            padding: 0 15px 15px 15px;
+            gap: 12px;
+            padding: 0 20px 20px 20px;
         }
 
         .social-btn {
             background: #1e293b;
             border: 1px solid #334155;
-            border-radius: 12px;
-            padding: 12px;
+            border-radius: 14px;
+            padding: 14px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -216,7 +212,7 @@
             color: #ffffff;
             text-decoration: none;
             font-weight: 600;
-            font-size: 0.85rem;
+            font-size: 0.9rem;
             transition: all 0.2s;
         }
 
@@ -230,24 +226,25 @@
             border: none;
         }
 
-        /* Horizontal Carousel (Balãozinhos) */
+        /* Horizontal Carousel (Balãozinhos com scroll lateral) */
         .carousel-wrapper {
-            padding: 0 0 15px 15px;
+            padding: 0 0 20px 20px;
         }
 
         .carousel-title {
-            font-size: 0.75rem;
+            font-size: 0.8rem;
             color: #94a3b8;
-            margin-bottom: 8px;
+            margin-bottom: 10px;
             text-transform: uppercase;
             letter-spacing: 0.5px;
+            font-weight: 600;
         }
 
         .carousel-container {
             display: flex;
-            gap: 10px;
+            gap: 12px;
             overflow-x: auto;
-            padding-right: 15px;
+            padding-right: 20px;
             scrollbar-width: none; /* Firefox */
         }
 
@@ -256,11 +253,11 @@
         }
 
         .carousel-card {
-            min-width: 140px;
+            min-width: 160px;
             background: #1e293b;
             border: 1px solid #334155;
-            border-radius: 12px;
-            padding: 15px;
+            border-radius: 14px;
+            padding: 16px;
             display: flex;
             flex-direction: column;
             gap: 8px;
@@ -277,19 +274,19 @@
             font-size: 0.65rem;
             color: #38bdf8;
             background: rgba(56, 189, 248, 0.1);
-            padding: 2px 6px;
-            border-radius: 4px;
+            padding: 3px 8px;
+            border-radius: 6px;
             align-self: flex-start;
         }
 
         .card-label {
-            font-size: 0.85rem;
+            font-size: 0.95rem;
             font-weight: bold;
             color: #f8fafc;
         }
 
         .card-desc {
-            font-size: 0.7rem;
+            font-size: 0.75rem;
             color: #94a3b8;
         }
 
@@ -310,10 +307,10 @@
             <div class="notif-icon">🔔</div>
         </div>
 
-        <!-- Banner Customizável -->
+        <!-- Banner Customizável (Largura total) -->
         <div class="banner-container" onclick="document.getElementById('bannerInput').click()">
-            <div id="bannerMediaContainer" style="width:100%; height:100%; position:absolute; display:flex; align-items:center; justifyContent:center; background:#1e293b;">
-                <span style="font-size: 0.75rem; color: #64748b;">Toque para alterar imagem/vídeo</span>
+            <div id="bannerMediaContainer" style="width:100%; height:100%; position:absolute; display:flex; align-items:center; justify-content:center; background:#1e293b;">
+                <span style="font-size: 0.8rem; color: #64748b;">Toque para carregar foto ou vídeo</span>
             </div>
             <div class="banner-overlay">
                 <div class="banner-sub">CREATED BY USER</div>
@@ -337,7 +334,7 @@
         </div>
         <input type="file" id="avatarInput" accept="image/*" onchange="loadAvatar(event)">
 
-        <!-- Social Links (Apenas Discord requisitado) -->
+        <!-- Social Links -->
         <div class="social-grid">
             <a href="https://discord.gg/pBRw54XR" target="_blank" class="social-btn discord">
                 <span>💬 Discord PV</span>
@@ -377,7 +374,6 @@
     </div>
 
     <script>
-        // Função para carregar a imagem ou vídeo de fundo do topo
         function loadBanner(event) {
             const file = event.target.files[0];
             if (!file) return;
@@ -405,7 +401,6 @@
             }
         }
 
-        // Função para carregar a foto de perfil do usuário
         function loadAvatar(event) {
             const file = event.target.files[0];
             if (!file) return;
@@ -423,4 +418,4 @@
     </script>
 </body>
 </html>
-	
+
