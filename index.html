@@ -507,7 +507,7 @@
             color: #cbd5e1;
         }
 
-        /* Estilo da Lista VCF Principal (Igual Imagem 1) */
+        /* Estilo da Lista VCF Principal */
         .vcf-list-item {
             background: #1e293b;
             border: 1px solid #334155;
@@ -561,7 +561,7 @@
             padding-top: 6px;
         }
 
-        /* Botão Flutuante + (Igual Imagem 1) */
+        /* Botão Flutuante + */
         .fab-btn {
             position: fixed;
             bottom: 25px;
@@ -801,10 +801,10 @@
     </div>
 
     <!-- ========================================================== -->
-    <!-- FLUXO VCF ATUALIZADO CONFORME SUAS IMAGENS -->
+    <!-- FLUXO VCF OTIMIZADO PARA ENVIO REAL DE CONTATO NO WHATSAPP -->
     <!-- ========================================================== -->
 
-    <!-- TELA 1: LISTAR .VCF (Igual à Imagem 1) -->
+    <!-- TELA 1: LISTAR .VCF -->
     <div class="modal-overlay" id="modalVcfList" style="display: none;">
         <div class="modal-content" style="height: 85vh; max-width: 450px;">
             <div class="modal-header">
@@ -817,12 +817,12 @@
                 <!-- Dinâmico -->
             </div>
 
-            <!-- Botão Flutuante + no canto inferior direito para abrir a tela de criar contato -->
+            <!-- Botão Flutuante + -->
             <button class="fab-btn" onclick="abrirCriarContatoVcf()">+</button>
         </div>
     </div>
 
-    <!-- TELA 2: CRIAR NOVO CONTATO (Igual à Imagem 3 - Todos os campos) -->
+    <!-- TELA 2: CRIAR NOVO CONTATO -->
     <div class="modal-overlay" id="modalVcfCriar" style="display: none; z-index: 110;">
         <div class="modal-content" style="height: 90vh; max-width: 450px;">
             <div class="modal-header" style="border-bottom: none; padding-bottom: 0;">
@@ -883,7 +883,7 @@
         </div>
     </div>
 
-    <!-- TELA 3: VISUALIZAR CÓDIGO VCF GERADO / COPIAR / WHATSAPP (Igual à Imagem 2 e Última Imagem) -->
+    <!-- TELA 3: VISUALIZAR / ENVIAR DIRETAMENTE PARA O WHATSAPP COMO CARTÃO DE CONTATO REAL -->
     <div class="modal-overlay" id="modalVcfDetalhe" style="display: none; z-index: 110;">
         <div class="modal-content" style="max-width: 450px;">
             <div class="modal-header">
@@ -892,15 +892,13 @@
             </div>
             
             <div class="form-group">
-                <label class="form-label">Estrutura do VCF Gerado:</label>
+                <label class="form-label">Prévia do Arquivo de Contato:</label>
                 <div class="trava-details-box" id="vcfDetalheConteudo" style="max-height: 180px;"></div>
             </div>
 
+            <!-- Botões de Copiar e Baixar removidos conforme solicitado. Apenas o envio direto limpo -->
             <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 5px;">
-                <button class="action-btn" onclick="copiarConteudoVcfSelecionado()">Copiar Código Completo</button>
-                <button class="action-btn" style="background: linear-gradient(135deg, #8b5cf6, #6d28d9);" onclick="baixarUnicoVcf()">Baixar Arquivo .vcf</button>
-                <!-- Botão de Segurar/Enviar diretamente para o WhatsApp -->
-                <button class="action-btn" style="background: linear-gradient(135deg, #22c55e, #16a34a);" onclick="enviarVcfWhatsAppDireto()">Segurar e Enviar no WhatsApp</button>
+                <button class="action-btn" style="background: linear-gradient(135deg, #22c55e, #16a34a); padding: 16px; font-size: 1.05rem;" onclick="enviarVcfWhatsAppReal()">Enviar Contato para o WhatsApp</button>
             </div>
         </div>
     </div>
@@ -1097,7 +1095,7 @@
         }
 
         // ==========================================================
-        // LÓGICA DO CRIADOR DE VCF (TELA LISTAR + CRIAR + WHATSAPP)
+        // LÓGICA DO CRIADOR DE VCF (ENVIO DIRETO DE ARQUIVO DE CONTATO)
         // ==========================================================
         let pacotesVcf = JSON.parse(localStorage.getItem('zrx_vcf_packages') || '[{"filename": "2026-08-15 23-10-25.vcf", "path": "/storage/emulated/150/Android/data/by.android.contactsvcf/files/Contact", "date": "29/08/2026 18:05", "conteudo": "BEGIN:VCARD\\nVERSION:3.0\\nFN:JARDIM DAS SOMBRAS\\nEND:VCARD"}]');
         let pacoteAtualSelecionado = null;
@@ -1127,7 +1125,6 @@
                         <span>${pacote.date}</span>
                     </div>
                 `;
-                // Clique simples ou segurar abre detalhes/ações
                 item.onclick = () => abrirDetalhePacoteVcf(index);
                 container.appendChild(item);
             });
@@ -1167,20 +1164,20 @@
                 return;
             }
 
-            // Montar formato VCF realista idêntico à imagem 2
+            // Uso estrito de quebras de linha \r\n exigidas pelo padrão vCard de contatos
             let vcfCompleto = "";
             for(let i = 1; i <= multiplicador; i++) {
                 let nomeFinal = multiplicador > 1 ? `${nome} [${i}]` : nome;
-                vcfCompleto += `BEGIN:VCARD\n`;
-                vcfCompleto += `VERSION:3.0\n`;
-                vcfCompleto += `N:${sobrenome};${nomeFinal};${meio};${pref};${sufixo}\n`;
-                vcfCompleto += `FN:${nomeFinal}\n`;
-                if(fonetico) vcfCompleto += `SOUND:${fonetico}\n`;
-                if(apelido) vcfCompleto += `NICKNAME:${apelido}\n`;
-                if(organizacao) vcfCompleto += `ORG:${organizacao}\n`;
-                if(titulo) vcfCompleto += `TITLE:${titulo}\n`;
-                vcfCompleto += `TEL;TYPE=CELL:${telefone}\n`;
-                vcfCompleto += `END:VCARD\n`;
+                vcfCompleto += `BEGIN:VCARD\r\n`;
+                vcfCompleto += `VERSION:3.0\r\n`;
+                vcfCompleto += `N:${sobrenome};${nomeFinal};${meio};${pref};${sufixo}\r\n`;
+                vcfCompleto += `FN:${nomeFinal}\r\n`;
+                if(fonetico) vcfCompleto += `SOUND:${fonetico}\r\n`;
+                if(apelido) vcfCompleto += `NICKNAME:${apelido}\r\n`;
+                if(organizacao) vcfCompleto += `ORG:${organizacao}\r\n`;
+                if(titulo) vcfCompleto += `TITLE:${titulo}\r\n`;
+                vcfCompleto += `TEL;TYPE=CELL:${telefone}\r\n`;
+                vcfCompleto += `END:VCARD\r\n`;
             }
 
             const dataAtual = new Date();
@@ -1208,29 +1205,29 @@
             openModal('modalVcfDetalhe');
         }
 
-        function copiarConteudoVcfSelecionado() {
+        // Função responsável por acionar o compartilhamento nativo de arquivo vCard (Gerando o balão de contato no WhatsApp)
+        async function enviarVcfWhatsAppReal() {
             if(!pacoteAtualSelecionado) return;
-            navigator.clipboard.writeText(pacoteAtualSelecionado.conteudo);
-            alert('Código VCF copiado para a área de transferência!');
-        }
 
-        function baixarUnicoVcf() {
-            if(!pacoteAtualSelecionado) return;
+            // Cria um arquivo Blob estruturado do tipo vcard nativo
             const blob = new Blob([pacoteAtualSelecionado.conteudo], { type: 'text/vcard;charset=utf-8;' });
-            const url = URL.createObjectURL(blob);
-            const link = document.createElement('a');
-            link.href = url;
-            link.setAttribute('download', pacoteAtualSelecionado.filename);
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-            alert('Arquivo VCF baixado!');
-        }
+            const file = new File([blob], pacoteAtualSelecionado.filename, { type: 'text/vcard' });
 
-        function enviarVcfWhatsAppDireto() {
-            if(!pacoteAtualSelecionado) return;
-            const textoWp = `*Arquivo VCF: ${pacoteAtualSelecionado.filename}*\n\n\`\`\`${pacoteAtualSelecionado.conteudo}\`\`\``;
-            window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(textoWp)}`, '_blank');
+            // Dispara o compartilhamento de arquivo real do sistema para o WhatsApp
+            if (navigator.canShare && navigator.canShare({ files: [file] })) {
+                try {
+                    await navigator.share({
+                        files: [file],
+                        title: 'Contato',
+                        text: 'Contato gerado por ZRX DESTROYER'
+                    });
+                    return;
+                } catch (error) {
+                    console.log('Compartilhamento cancelado pelo usuário.', error);
+                }
+            } else {
+                alert('O navegador deste dispositivo não suporta o envio direto de arquivos de contato. Certifique-se de acessar por um navegador moderno no celular.');
+            }
         }
     </script>
 </body>
