@@ -289,14 +289,13 @@
             letter-spacing: 0.5px;
         }
 
-        /* Símbolos desenhados em CSS (Sem Emojis) */
+        /* Símbolos desenhados em CSS */
         .css-symbol {
             width: 20px;
             height: 20px;
             display: inline-block;
             position: relative;
         }
-        /* Engrenagem */
         .symbol-gear::before {
             content: '';
             position: absolute;
@@ -308,7 +307,6 @@
             left: 4px;
             box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.3);
         }
-        /* Multiplicador */
         .symbol-multi::before {
             content: '';
             position: absolute;
@@ -319,7 +317,6 @@
             left: 3px;
             box-shadow: 0 6px 0 #38bdf8;
         }
-        /* Armazenamento */
         .symbol-storage::before {
             content: '';
             position: absolute;
@@ -330,7 +327,6 @@
             left: 3px;
             box-shadow: 0 7px 0 #38bdf8;
         }
-        /* VCF Symbol */
         .symbol-vcf::before {
             content: '';
             position: absolute;
@@ -511,6 +507,84 @@
             color: #cbd5e1;
         }
 
+        /* Estilo da Lista VCF Principal (Igual Imagem 1) */
+        .vcf-list-item {
+            background: #1e293b;
+            border: 1px solid #334155;
+            border-radius: 12px;
+            padding: 14px;
+            margin-bottom: 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            cursor: pointer;
+            position: relative;
+        }
+        .vcf-list-item:hover {
+            border-color: #38bdf8;
+        }
+        .vcf-item-top {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .vcf-item-avatar {
+            width: 36px;
+            height: 36px;
+            background: #475569;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: #fff;
+            flex-shrink: 0;
+        }
+        .vcf-item-title {
+            font-weight: bold;
+            font-size: 0.95rem;
+            color: #f8fafc;
+        }
+        .vcf-item-path {
+            font-size: 0.72rem;
+            color: #94a3b8;
+            font-family: monospace;
+            word-break: break-all;
+        }
+        .vcf-item-footer {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.7rem;
+            color: #64748b;
+            margin-top: 4px;
+            border-top: 1px solid rgba(255,255,255,0.05);
+            padding-top: 6px;
+        }
+
+        /* Botão Flutuante + (Igual Imagem 1) */
+        .fab-btn {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            width: 56px;
+            height: 56px;
+            background: #3b82f6;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            color: #ffffff;
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.5);
+            cursor: pointer;
+            z-index: 50;
+            border: none;
+            transition: transform 0.2s;
+        }
+        .fab-btn:active {
+            transform: scale(0.92);
+        }
+
         input[type="file"] {
             display: none;
         }
@@ -603,14 +677,14 @@
                 </div>
 
                 <!-- Balão 4: Criador de VCF (Contatos em Massa) -->
-                <div class="carousel-card" onclick="openModal('modalVcf')">
+                <div class="carousel-card" onclick="openModal('modalVcfList')">
                     <div class="card-header-top">
                         <span class="card-tag">VCF</span>
                         <span class="css-symbol symbol-vcf"></span>
                     </div>
                     <div class="card-content-bottom">
                         <div class="card-label">Criador VCF</div>
-                        <div class="card-desc">Contatos falsos e multiplicador</div>
+                        <div class="card-desc">Listar e criar em massa</div>
                     </div>
                 </div>
 
@@ -726,78 +800,111 @@
         </div>
     </div>
 
-    <!-- MODAL 4: CRIADOR DE VCF (MÚLTIPLOS CONTATOS E MULTIPLICADOR) -->
-    <div class="modal-overlay" id="modalVcf">
-        <div class="modal-content">
+    <!-- ========================================================== -->
+    <!-- FLUXO VCF ATUALIZADO CONFORME SUAS IMAGENS -->
+    <!-- ========================================================== -->
+
+    <!-- TELA 1: LISTAR .VCF (Igual à Imagem 1) -->
+    <div class="modal-overlay" id="modalVcfList" style="display: none;">
+        <div class="modal-content" style="height: 85vh; max-width: 450px;">
             <div class="modal-header">
-                <div class="modal-title">Criador de Contatos VCF</div>
-                <button class="modal-close" onclick="closeModal('modalVcf')">&times;</button>
-            </div>
-            
-            <div class="counter-badge" id="vcfCounterDisplay">Contatos na Base: 0</div>
-
-            <div class="form-group">
-                <label class="form-label">Nome do Contato Falso</label>
-                <input type="text" class="form-input" id="vcfNomeInput" placeholder="Ex: ZRX ⚡ CRASH 💣">
-            </div>
-            <div class="form-group">
-                <label class="form-label">Número de Telefone Base</label>
-                <input type="text" class="form-input" id="vcfTelInput" placeholder="Ex: +55 11 99999-9999">
-            </div>
-            <div class="form-group">
-                <label class="form-label">Payload / E-mail / Notas pesadas</label>
-                <textarea class="form-textarea" id="vcfPayloadInput" rows="2" placeholder="Caracteres ou notas extras..."></textarea>
-            </div>
-            
-            <button class="action-btn" onclick="adicionarContatoVcfLista()">Adicionar Contato à Lista</button>
-
-            <hr style="border: 0; border-top: 1px solid #334155; margin: 4px 0;">
-
-            <div class="form-group">
-                <label class="form-label">Multiplicador de Contatos em Massa</label>
-                <input type="number" class="form-input" id="vcfMultiplicadorQtd" value="100" min="1" max="5000" placeholder="Quantas vezes duplicar a lista">
+                <div class="modal-title" style="font-size: 1.3rem;">Listar .vcf</div>
+                <button class="modal-close" onclick="closeModal('modalVcfList')">&times;</button>
             </div>
 
-            <button class="action-btn" style="background: linear-gradient(135deg, #8b5cf6, #6d28d9);" onclick="multiplicarContatosLista()">Multiplicar/Gerar em Massa</button>
-
-            <div class="carousel-title" style="margin-top: 5px;">Contatos Cadastrados (Edição Global)</div>
-            <div id="listaContatosVcfContainer" style="display: flex; flex-direction: column; gap: 8px; max-height: 140px; overflow-y: auto;">
+            <!-- Lista de Arquivos/Pacotes VCF gerados -->
+            <div id="vcfPacotesContainer" style="flex-grow: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; padding-top: 4px;">
                 <!-- Dinâmico -->
             </div>
 
-            <div style="display: flex; gap: 10px; margin-top: 5px;">
-                <button class="action-btn" style="flex: 1;" onclick="baixarArquivoVcfFinal()">Baixar .VCF</button>
-                <button class="action-btn" style="flex: 1; background: linear-gradient(135deg, #22c55e, #16a34a);" onclick="copiarCodigoVcfFinal()">Copiar Código VCF</button>
+            <!-- Botão Flutuante + no canto inferior direito para abrir a tela de criar contato -->
+            <button class="fab-btn" onclick="abrirCriarContatoVcf()">+</button>
+        </div>
+    </div>
+
+    <!-- TELA 2: CRIAR NOVO CONTATO (Igual à Imagem 3 - Todos os campos) -->
+    <div class="modal-overlay" id="modalVcfCriar" style="display: none; z-index: 110;">
+        <div class="modal-content" style="height: 90vh; max-width: 450px;">
+            <div class="modal-header" style="border-bottom: none; padding-bottom: 0;">
+                <button style="background:none; border:none; color:#38bdf8; font-size:1.2rem; cursor:pointer;" onclick="closeModal('modalVcfCriar')">✕</button>
+                <div class="modal-title">Criar novo contato</div>
+                <button style="background:none; border:none; color:#38bdf8; font-weight:bold; font-size:0.95rem; cursor:pointer;" onclick="salvarNovoContatoCompleto()">CONCLUÍDO</button>
+            </div>
+
+            <div style="flex-grow: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 12px; padding: 10px 0;">
+                <div class="form-group">
+                    <label class="form-label">Prefixo do nome</label>
+                    <input type="text" class="form-input" id="vcf_pref" placeholder="Ex: Dr., Sr.">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Nome</label>
+                    <input type="text" class="form-input" id="vcf_nome" placeholder="Nome principal">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Nome do meio</label>
+                    <input type="text" class="form-input" id="vcf_meio" placeholder="Nome do meio">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Sobrenome</label>
+                    <input type="text" class="form-input" id="vcf_sobrenome" placeholder="Sobrenome">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Sufixo do nome</label>
+                    <input type="text" class="form-input" id="vcf_sufixo" placeholder="Ex: Jr, III">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Nome fonético</label>
+                    <input type="text" class="form-input" id="vcf_fonetico" placeholder="Pronúncia">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Apelido</label>
+                    <input type="text" class="form-input" id="vcf_apelido" placeholder="Apelido / Status ⚡">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Organização</label>
+                    <input type="text" class="form-input" id="vcf_organizacao" placeholder="Organização / Grupo">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Título</label>
+                    <input type="text" class="form-input" id="vcf_titulo" placeholder="Título / Cargo">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Telefone</label>
+                    <input type="text" class="form-input" id="vcf_telefone" placeholder="+55 11 99999-9999">
+                </div>
+
+                <hr style="border:0; border-top:1px solid #334155; margin: 10px 0;">
+
+                <div class="form-group">
+                    <label class="form-label">Multiplicar este contato em massa (Até 5000x)</label>
+                    <input type="number" class="form-input" id="vcf_multi" value="100" min="1" max="5000">
+                </div>
             </div>
         </div>
     </div>
 
-    <!-- MODAL DE EDIÇÃO INDIVIDUAL/GLOBAL DO CONTATO VCF -->
-    <div class="modal-overlay" id="modalVcfEditar">
-        <div class="modal-content">
+    <!-- TELA 3: VISUALIZAR CÓDIGO VCF GERADO / COPIAR / WHATSAPP (Igual à Imagem 2 e Última Imagem) -->
+    <div class="modal-overlay" id="modalVcfDetalhe" style="display: none; z-index: 110;">
+        <div class="modal-content" style="max-width: 450px;">
             <div class="modal-header">
-                <div class="modal-title">Editar Contato da Base</div>
-                <button class="modal-close" onclick="closeModal('modalVcfEditar')">&times;</button>
+                <div class="modal-title" id="vcfDetalheTitulo">Arquivo VCF</div>
+                <button class="modal-close" onclick="closeModal('modalVcfDetalhe')">&times;</button>
             </div>
-            <input type="hidden" id="editVcfIndex">
+            
             <div class="form-group">
-                <label class="form-label">Nome:</label>
-                <input type="text" class="form-input" id="editVcfNome">
+                <label class="form-label">Estrutura do VCF Gerado:</label>
+                <div class="trava-details-box" id="vcfDetalheConteudo" style="max-height: 180px;"></div>
             </div>
-            <div class="form-group">
-                <label class="form-label">Telefone:</label>
-                <input type="text" class="form-input" id="editVcfTel">
-            </div>
-            <div class="form-group">
-                <label class="form-label">Notas/Payload:</label>
-                <textarea class="form-textarea" id="editVcfPayload" rows="2"></textarea>
-            </div>
-            <div style="display: flex; gap: 10px;">
-                <button class="action-btn" style="flex: 1; background: linear-gradient(135deg, #22c55e, #16a34a);" onclick="salvarEdicaoContatoVcf()">Salvar Alteração</button>
-                <button class="action-btn" style="flex: 1; background: linear-gradient(135deg, #ef4444, #dc2626);" onclick="deletarContatoVcf()">Excluir</button>
+
+            <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 5px;">
+                <button class="action-btn" onclick="copiarConteudoVcfSelecionado()">Copiar Código Completo</button>
+                <button class="action-btn" style="background: linear-gradient(135deg, #8b5cf6, #6d28d9);" onclick="baixarUnicoVcf()">Baixar Arquivo .vcf</button>
+                <!-- Botão de Segurar/Enviar diretamente para o WhatsApp -->
+                <button class="action-btn" style="background: linear-gradient(135deg, #22c55e, #16a34a);" onclick="enviarVcfWhatsAppDireto()">Segurar e Enviar no WhatsApp</button>
             </div>
         </div>
     </div>
+
 
     <script>
         // --- CARREGAR DADOS SALVOS AO ABRIR O APLICATIVO ---
@@ -875,7 +982,7 @@
             document.getElementById(modalId).style.display = 'flex';
             if(modalId === 'modalMultiplicador') executarMultiplicacao();
             if(modalId === 'modalTrava') renderizarTravas();
-            if(modalId === 'modalVcf') renderizarListaContatosVcf();
+            if(modalId === 'modalVcfList') renderizarPacotesVcf();
         }
 
         function closeModal(modalId) {
@@ -989,131 +1096,141 @@
             window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(textoWp)}`, '_blank');
         }
 
-        // --- LÓGICA DO BALÃO 4: CRIADOR DE CONTATOS VCF EM MASSA ---
-        let listaContatosVcf = JSON.parse(localStorage.getItem('zrx_vcf_contacts') || '[{"nome": "ZRX ⚡ DESTROYER", "tel": "+55 11 99999-9999", "payload": "Crash Payload Data..."}]');
+        // ==========================================================
+        // LÓGICA DO CRIADOR DE VCF (TELA LISTAR + CRIAR + WHATSAPP)
+        // ==========================================================
+        let pacotesVcf = JSON.parse(localStorage.getItem('zrx_vcf_packages') || '[{"filename": "2026-08-15 23-10-25.vcf", "path": "/storage/emulated/150/Android/data/by.android.contactsvcf/files/Contact", "date": "29/08/2026 18:05", "conteudo": "BEGIN:VCARD\\nVERSION:3.0\\nFN:JARDIM DAS SOMBRAS\\nEND:VCARD"}]');
+        let pacoteAtualSelecionado = null;
 
-        function renderizarListaContatosVcf() {
-            const container = document.getElementById('listaContatosVcfContainer');
+        function renderizarPacotesVcf() {
+            const container = document.getElementById('vcfPacotesContainer');
             container.innerHTML = '';
-            document.getElementById('vcfCounterDisplay').innerText = `Contatos na Base: ${listaContatosVcf.length}`;
 
-            if(listaContatosVcf.length === 0) {
-                container.innerHTML = '<div style="color: #64748b; font-size: 0.8rem; text-align: center;">Nenhum contato adicionado.</div>';
+            if(pacotesVcf.length === 0) {
+                container.innerHTML = '<div style="color: #64748b; font-size: 0.85rem; text-align: center; margin-top: 40px;">Nenhum .vcf criado. Toque no botão + abaixo para criar.</div>';
                 return;
             }
 
-            listaContatosVcf.forEach((contato, index) => {
+            pacotesVcf.forEach((pacote, index) => {
                 const item = document.createElement('div');
-                item.className = 'trava-item';
-                item.innerHTML = `<span class="trava-name">${contato.nome}</span> <span style="font-size:0.75rem; color:#38bdf8;">Editar</span>`;
-                item.onclick = () => abrirEdicaoContatoVcf(index);
+                item.className = 'vcf-list-item';
+                item.innerHTML = `
+                    <div class="vcf-item-top">
+                        <div class="vcf-item-avatar">?</div>
+                        <div style="flex-grow:1; overflow:hidden;">
+                            <div class="vcf-item-title">${pacote.filename}</div>
+                            <div class="vcf-item-path">${pacote.path}</div>
+                        </div>
+                    </div>
+                    <div class="vcf-item-footer">
+                        <span>Não indexado</span>
+                        <span>${pacote.date}</span>
+                    </div>
+                `;
+                // Clique simples ou segurar abre detalhes/ações
+                item.onclick = () => abrirDetalhePacoteVcf(index);
                 container.appendChild(item);
             });
         }
 
-        function adicionarContatoVcfLista() {
-            const nome = document.getElementById('vcfNomeInput').value.trim();
-            const tel = document.getElementById('vcfTelInput').value.trim();
-            const payload = document.getElementById('vcfPayloadInput').value.trim();
+        function abrirCriarContatoVcf() {
+            document.getElementById('vcf_pref').value = '';
+            document.getElementById('vcf_nome').value = 'JARDIM DAS SOMBRAS';
+            document.getElementById('vcf_meio').value = '';
+            document.getElementById('vcf_sobrenome').value = '';
+            document.getElementById('vcf_sufixo').value = '';
+            document.getElementById('vcf_fonetico').value = '';
+            document.getElementById('vcf_apelido').value = '🔥CAIU FOI POR VMX ⚡WINCHESTER';
+            document.getElementById('vcf_organizacao').value = '🔥CAIU FOI POR VMX ⚡WINCHESTER';
+            document.getElementById('vcf_titulo').value = '🔥CAIU FOI POR VMX ⚡WINCHESTER';
+            document.getElementById('vcf_telefone').value = '00295322 //.//0029402 () //./5 N5 (//./) (//./5N6)';
+            document.getElementById('vcf_multi').value = '100';
 
-            if(!nome || !tel) {
-                alert('Preencha pelo menos o nome e o telefone do contato!');
+            openModal('modalVcfCriar');
+        }
+
+        function salvarNovoContatoCompleto() {
+            const pref = document.getElementById('vcf_pref').value.trim();
+            const nome = document.getElementById('vcf_nome').value.trim();
+            const meio = document.getElementById('vcf_meio').value.trim();
+            const sobrenome = document.getElementById('vcf_sobrenome').value.trim();
+            const sufixo = document.getElementById('vcf_sufixo').value.trim();
+            const fonetico = document.getElementById('vcf_fonetico').value.trim();
+            const apelido = document.getElementById('vcf_apelido').value.trim();
+            const organizacao = document.getElementById('vcf_organizacao').value.trim();
+            const titulo = document.getElementById('vcf_titulo').value.trim();
+            const telefone = document.getElementById('vcf_telefone').value.trim();
+            const multiplicador = parseInt(document.getElementById('vcf_multi').value) || 1;
+
+            if(!nome || !telefone) {
+                alert('Preencha pelo menos o Nome e o Telefone!');
                 return;
             }
 
-            listaContatosVcf.push({ nome, tel, payload });
-            localStorage.setItem('zrx_vcf_contacts', JSON.stringify(listaContatosVcf));
-            
-            document.getElementById('vcfNomeInput').value = '';
-            document.getElementById('vcfTelInput').value = '';
-            document.getElementById('vcfPayloadInput').value = '';
-            
-            renderizarListaContatosVcf();
-            alert('Contato adicionado à lista!');
-        }
-
-        function abrirEdicaoContatoVcf(index) {
-            const c = listaContatosVcf[index];
-            document.getElementById('editVcfIndex').value = index;
-            document.getElementById('editVcfNome').value = c.nome;
-            document.getElementById('editVcfTel').value = c.tel;
-            document.getElementById('editVcfPayload').value = c.payload;
-            openModal('modalVcfEditar');
-        }
-
-        function salvarEdicaoContatoVcf() {
-            const index = document.getElementById('editVcfIndex').value;
-            listaContatosVcf[index] = {
-                nome: document.getElementById('editVcfNome').value,
-                tel: document.getElementById('editVcfTel').value,
-                payload: document.getElementById('editVcfPayload').value
-            };
-            localStorage.setItem('zrx_vcf_contacts', JSON.stringify(listaContatosVcf));
-            closeModal('modalVcfEditar');
-            renderizarListaContatosVcf();
-            alert('Contato atualizado com sucesso!');
-        }
-
-        function deletarContatoVcf() {
-            const index = document.getElementById('editVcfIndex').value;
-            listaContatosVcf.splice(index, 1);
-            localStorage.setItem('zrx_vcf_contacts', JSON.stringify(listaContatosVcf));
-            closeModal('modalVcfEditar');
-            renderizarListaContatosVcf();
-            alert('Contato removido!');
-        }
-
-        function multiplicarContatosLista() {
-            if(listaContatosVcf.length === 0) {
-                alert('Adicione pelo menos um contato base antes de multiplicar!');
-                return;
-            }
-            const mult = parseInt(document.getElementById('vcfMultiplicadorQtd').value) || 10;
-            let novaLista = [];
-            
-            for(let i = 0; i < mult; i++) {
-                listaContatosVcf.forEach(c => {
-                    novaLista.push({
-                        nome: `${c.nome} [${i+1}]`,
-                        tel: c.tel,
-                        payload: c.payload
-                    });
-                });
+            // Montar formato VCF realista idêntico à imagem 2
+            let vcfCompleto = "";
+            for(let i = 1; i <= multiplicador; i++) {
+                let nomeFinal = multiplicador > 1 ? `${nome} [${i}]` : nome;
+                vcfCompleto += `BEGIN:VCARD\n`;
+                vcfCompleto += `VERSION:3.0\n`;
+                vcfCompleto += `N:${sobrenome};${nomeFinal};${meio};${pref};${sufixo}\n`;
+                vcfCompleto += `FN:${nomeFinal}\n`;
+                if(fonetico) vcfCompleto += `SOUND:${fonetico}\n`;
+                if(apelido) vcfCompleto += `NICKNAME:${apelido}\n`;
+                if(organizacao) vcfCompleto += `ORG:${organizacao}\n`;
+                if(titulo) vcfCompleto += `TITLE:${titulo}\n`;
+                vcfCompleto += `TEL;TYPE=CELL:${telefone}\n`;
+                vcfCompleto += `END:VCARD\n`;
             }
 
-            listaContatosVcf = novaLista;
-            localStorage.setItem('zrx_vcf_contacts', JSON.stringify(listaContatosVcf));
-            renderizarListaContatosVcf();
-            alert(`Sucesso! Base multiplicada. Agora o arquivo contém ${listaContatosVcf.length} contatos.`);
-        }
+            const dataAtual = new Date();
+            const dataStr = `${String(dataAtual.getDate()).padStart(2,'0')}/${String(dataAtual.getMonth()+1).padStart(2,'0')}/${dataAtual.getFullYear()} ${String(dataAtual.getHours()).padStart(2,'0')}:${String(dataAtual.getMinutes()).padStart(2,'0')}`;
+            const randomId = Math.floor(10 + Math.random() * 90);
+            const filename = `2026-09-${randomId} 21-43-${randomId}.vcf`;
 
-        function gerarTextoVcfFinal() {
-            let vcfString = "";
-            listaContatosVcf.forEach(c => {
-                vcfString += `BEGIN:VCARD\nVERSION:3.0\nFN:${c.nome}\nTEL;TYPE=CELL:${c.tel}\nNOTE:${c.payload}\nEND:VCARD\n`;
+            pacotesVcf.unshift({
+                filename: filename,
+                path: `/storage/emulated/150/Android/data/by.android.contactsvcf/files/Contact`,
+                date: dataStr,
+                conteudo: vcfCompleto
             });
-            return vcfString;
+
+            localStorage.setItem('zrx_vcf_packages', JSON.stringify(pacotesVcf));
+            closeModal('modalVcfCriar');
+            renderizarPacotesVcf();
+            alert(`Contato VCF criado e multiplicado ${multiplicador}x com sucesso!`);
         }
 
-        function baixarArquivoVcfFinal() {
-            if(listaContatosVcf.length === 0) { alert('Sua lista VCF está vazia!'); return; }
-            const vcfData = gerarTextoVcfFinal();
-            const blob = new Blob([vcfData], { type: 'text/vcard;charset=utf-8;' });
+        function abrirDetalhePacoteVcf(index) {
+            pacoteAtualSelecionado = pacotesVcf[index];
+            document.getElementById('vcfDetalheTitulo').innerText = pacoteAtualSelecionado.filename;
+            document.getElementById('vcfDetalheConteudo').innerText = pacoteAtualSelecionado.conteudo;
+            openModal('modalVcfDetalhe');
+        }
+
+        function copiarConteudoVcfSelecionado() {
+            if(!pacoteAtualSelecionado) return;
+            navigator.clipboard.writeText(pacoteAtualSelecionado.conteudo);
+            alert('Código VCF copiado para a área de transferência!');
+        }
+
+        function baixarUnicoVcf() {
+            if(!pacoteAtualSelecionado) return;
+            const blob = new Blob([pacoteAtualSelecionado.conteudo], { type: 'text/vcard;charset=utf-8;' });
             const url = URL.createObjectURL(blob);
-            
             const link = document.createElement('a');
             link.href = url;
-            link.setAttribute('download', 'zrx_mass_contacts.vcf');
+            link.setAttribute('download', pacoteAtualSelecionado.filename);
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
-            alert('Arquivo .vcf em massa baixado com sucesso!');
+            alert('Arquivo VCF baixado!');
         }
 
-        function copiarCodigoVcfFinal() {
-            if(listaContatosVcf.length === 0) { alert('Sua lista VCF está vazia!'); return; }
-            navigator.clipboard.writeText(gerarTextoVcfFinal());
-            alert('Código VCF completo copiado para a área de transferência!');
+        function enviarVcfWhatsAppDireto() {
+            if(!pacoteAtualSelecionado) return;
+            const textoWp = `*Arquivo VCF: ${pacoteAtualSelecionado.filename}*\n\n\`\`\`${pacoteAtualSelecionado.conteudo}\`\`\``;
+            window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(textoWp)}`, '_blank');
         }
     </script>
 </body>
