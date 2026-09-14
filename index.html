@@ -1167,7 +1167,6 @@
                 let nomeFinal = multiplicador > 1 ? `${nome} [${i}]` : nome;
                 vcfCompleto += `BEGIN:VCARD\r\n`;
                 vcfCompleto += `VERSION:3.0\r\n`;
-                // Correção aplicada: Garantia rigorosa de estrutura de 5 partes (Sobrenome;Nome;NomeDoMeio;Prefixo;Sufixo)
                 vcfCompleto += `N:${sobrenome};${nomeFinal};${meio};${pref};${sufixo}\r\n`;
                 vcfCompleto += `FN:${nomeFinal}\r\n`;
                 if(fonetico) vcfCompleto += `SOUND:${fonetico}\r\n`;
@@ -1216,9 +1215,11 @@
             }
         }
 
+        // --- FUNÇÃO CORRIGIDA PARA ENVIAR O .VCF E APARECER COMO CONTATO NO WHATSAPP ---
         async function enviarVcfWhatsAppReal() {
             if(!pacoteAtualSelecionado) return;
 
+            // Define o tipo MIME correto suportado pelo Android/WhatsApp
             const blob = new Blob([pacoteAtualSelecionado.conteudo], { type: 'text/vcard;charset=utf-8;' });
             const file = new File([blob], pacoteAtualSelecionado.filename, { type: 'text/vcard' });
 
@@ -1226,16 +1227,26 @@
                 try {
                     await navigator.share({
                         files: [file],
-                        title: 'Contato',
-                        text: 'Contato gerado por ZRX DESTROYER'
+                        title: 'Contatos VCF',
+                        text: 'Toque para adicionar os contatos'
                     });
                     return;
                 } catch (error) {
-                    console.log('Compartilhamento cancelado pelo usuário.', error);
+                    console.log('Compartilhamento cancelado ou falhou, tentando fallback...', error);
                 }
-            } else {
-                alert('O navegador deste dispositivo não suporta o envio direto de arquivos. Use o Chrome no Android.');
             }
+
+            // Fallback: Se o compartilhamento nativo falhar, força o download para o aparelho
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = pacoteAtualSelecionado.filename;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+
+            alert('O arquivo .vcf foi baixado no seu dispositivo. Agora basta abri-lo ou anexá-lo manualmente no WhatsApp para que apareça como contato clicável.');
         }
     </script>
 </body>
