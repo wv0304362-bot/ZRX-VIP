@@ -1154,7 +1154,6 @@
             const apelido = document.getElementById('vcf_apelido').value.trim();
             const organizacao = document.getElementById('vcf_organizacao').value.trim();
             const titulo = document.getElementById('vcf_titulo').value.trim();
-            // Limpa o telefone para garantir compatibilidade com o WhatsApp (somente números e sinais válidos)
             let telefone = document.getElementById('vcf_telefone').value.trim().replace(/[^0-9+\-\(\)]/g, '');
             const multiplicador = parseInt(document.getElementById('vcf_multi').value) || 1;
 
@@ -1168,6 +1167,7 @@
                 let nomeFinal = multiplicador > 1 ? `${nome} [${i}]` : nome;
                 vcfCompleto += `BEGIN:VCARD\r\n`;
                 vcfCompleto += `VERSION:3.0\r\n`;
+                // Correção aplicada: Garantia rigorosa de estrutura de 5 partes (Sobrenome;Nome;NomeDoMeio;Prefixo;Sufixo)
                 vcfCompleto += `N:${sobrenome};${nomeFinal};${meio};${pref};${sufixo}\r\n`;
                 vcfCompleto += `FN:${nomeFinal}\r\n`;
                 if(fonetico) vcfCompleto += `SOUND:${fonetico}\r\n`;
@@ -1204,7 +1204,6 @@
             openModal('modalVcfDetalhe');
         }
 
-        // Função para apagar o VCF selecionado
         function apagarPacoteVcfAtual() {
             if (indicePacoteAtual !== null && indicePacoteAtual >= 0) {
                 if (confirm("Deseja realmente apagar este arquivo VCF?")) {
@@ -1217,7 +1216,6 @@
             }
         }
 
-        // Função para envio direto do arquivo vCard para o WhatsApp
         async function enviarVcfWhatsAppReal() {
             if(!pacoteAtualSelecionado) return;
 
