@@ -327,25 +327,25 @@
             left: 3px;
             box-shadow: 0 7px 0 #38bdf8;
         }
-        .symbol-vcf::before {
+        .symbol-balloon::before {
             content: '';
             position: absolute;
-            width: 12px;
-            height: 16px;
+            width: 14px;
+            height: 12px;
             border: 2px solid #38bdf8;
-            border-radius: 3px;
-            top: 2px;
-            left: 4px;
+            border-radius: 4px;
+            top: 3px;
+            left: 3px;
         }
-        .symbol-vcf::after {
+        .symbol-balloon::after {
             content: '';
             position: absolute;
-            width: 6px;
-            height: 2px;
+            width: 4px;
+            height: 4px;
             background: #38bdf8;
-            top: 5px;
-            left: 7px;
-            box-shadow: 0 3px 0 #38bdf8;
+            bottom: 2px;
+            left: 6px;
+            transform: rotate(45deg);
         }
 
         .card-content-bottom {
@@ -471,7 +471,7 @@
             border: 1px solid rgba(56, 189, 248, 0.3);
         }
 
-        /* Estilo Lista de Travas / VCF */
+        /* Estilo Lista de Travas */
         .trava-item {
             background: #0f172a;
             border: 1px solid #334155;
@@ -507,82 +507,64 @@
             color: #cbd5e1;
         }
 
-        /* Estilo da Lista VCF Principal */
-        .vcf-list-item {
-            background: #1e293b;
-            border: 1px solid #334155;
+        /* Estilo WhatsApp Preview (Balão de Trava) */
+        .whatsapp-chat-preview {
+            background: #0b141a;
+            border: 1px solid #222d34;
             border-radius: 12px;
             padding: 14px;
-            margin-bottom: 10px;
             display: flex;
             flex-direction: column;
-            gap: 6px;
-            cursor: pointer;
+            gap: 8px;
             position: relative;
-        }
-        .vcf-list-item:hover {
-            border-color: #38bdf8;
-        }
-        .vcf-item-top {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-        .vcf-item-avatar {
-            width: 36px;
-            height: 36px;
-            background: #475569;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            color: #fff;
-            flex-shrink: 0;
-        }
-        .vcf-item-title {
-            font-weight: bold;
-            font-size: 0.95rem;
-            color: #f8fafc;
-        }
-        .vcf-item-path {
-            font-size: 0.72rem;
-            color: #94a3b8;
-            font-family: monospace;
-            word-break: break-all;
-        }
-        .vcf-item-footer {
-            display: flex;
-            justify-content: space-between;
-            font-size: 0.7rem;
-            color: #64748b;
-            margin-top: 4px;
-            border-top: 1px solid rgba(255,255,255,0.05);
-            padding-top: 6px;
+            overflow: hidden;
         }
 
-        /* Botão Flutuante + */
-        .fab-btn {
-            position: fixed;
-            bottom: 25px;
-            right: 25px;
-            width: 56px;
-            height: 56px;
-            background: #3b82f6;
-            border-radius: 50%;
+        .wa-bubble {
+            background: #005c4b;
+            border-radius: 7px;
+            border-top-left-radius: 0;
+            padding: 6px;
+            max-width: 85%;
+            align-self: flex-start;
+            box-shadow: 0 1px 0.5px rgba(0,0,0,0.3);
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .wa-media-box {
+            width: 100%;
+            height: 180px;
+            background: #111b21;
+            border-radius: 5px;
+            overflow: hidden;
+            position: relative;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 28px;
-            color: #ffffff;
-            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.5);
             cursor: pointer;
-            z-index: 50;
-            border: none;
-            transition: transform 0.2s;
         }
-        .fab-btn:active {
-            transform: scale(0.92);
+
+        .wa-media-box img, .wa-media-box video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .wa-caption {
+            font-size: 0.85rem;
+            color: #e9edef;
+            padding: 2px 4px;
+            word-break: break-all;
+            white-space: pre-wrap;
+        }
+
+        .wa-meta {
+            font-size: 0.65rem;
+            color: #8696a0;
+            align-self: flex-end;
+            padding-right: 4px;
         }
 
         input[type="file"] {
@@ -676,15 +658,15 @@
                     </div>
                 </div>
 
-                <!-- Balão 4: Criador de VCF (Contatos em Massa) -->
-                <div class="carousel-card" onclick="openModal('modalVcfList')">
+                <!-- Balão 4: Criador de Foto de Trava -->
+                <div class="carousel-card" onclick="openModal('modalFotoTrava')">
                     <div class="card-header-top">
-                        <span class="card-tag">VCF</span>
-                        <span class="css-symbol symbol-vcf"></span>
+                        <span class="card-tag">FOTO TRAVA</span>
+                        <span class="css-symbol symbol-balloon"></span>
                     </div>
                     <div class="card-content-bottom">
-                        <div class="card-label">Criador VCF</div>
-                        <div class="card-desc">Listar e criar em massa</div>
+                        <div class="card-label">Balãozinho Trava</div>
+                        <div class="card-desc">Criar preview com legenda de crash</div>
                     </div>
                 </div>
 
@@ -800,102 +782,38 @@
         </div>
     </div>
 
-    <!-- TELA 1: LISTAR .VCF -->
-    <div class="modal-overlay" id="modalVcfList" style="display: none;">
-        <div class="modal-content" style="height: 85vh; max-width: 450px;">
-            <div class="modal-header">
-                <div class="modal-title" style="font-size: 1.3rem;">Listar .vcf</div>
-                <button class="modal-close" onclick="closeModal('modalVcfList')">&times;</button>
-            </div>
-
-            <!-- Lista de Arquivos/Pacotes VCF gerados -->
-            <div id="vcfPacotesContainer" style="flex-grow: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; padding-top: 4px;">
-                <!-- Dinâmico -->
-            </div>
-
-            <!-- Botão Flutuante + -->
-            <button class="fab-btn" onclick="abrirCriarContatoVcf()">+</button>
-        </div>
-    </div>
-
-    <!-- TELA 2: CRIAR NOVO CONTATO -->
-    <div class="modal-overlay" id="modalVcfCriar" style="display: none; z-index: 110;">
-        <div class="modal-content" style="height: 90vh; max-width: 450px;">
-            <div class="modal-header" style="border-bottom: none; padding-bottom: 0;">
-                <button style="background:none; border:none; color:#38bdf8; font-size:1.2rem; cursor:pointer;" onclick="closeModal('modalVcfCriar')">✕</button>
-                <div class="modal-title">Criar novo contato</div>
-                <button style="background:none; border:none; color:#38bdf8; font-weight:bold; font-size:0.95rem; cursor:pointer;" onclick="salvarNovoContatoCompleto()">CONCLUÍDO</button>
-            </div>
-
-            <div style="flex-grow: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 12px; padding: 10px 0;">
-                <div class="form-group">
-                    <label class="form-label">Prefixo do nome</label>
-                    <input type="text" class="form-input" id="vcf_pref" placeholder="Ex: Dr., Sr.">
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Nome</label>
-                    <input type="text" class="form-input" id="vcf_nome" placeholder="Nome principal">
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Nome do meio</label>
-                    <input type="text" class="form-input" id="vcf_meio" placeholder="Nome do meio">
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Sobrenome</label>
-                    <input type="text" class="form-input" id="vcf_sobrenome" placeholder="Sobrenome">
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Sufixo do nome</label>
-                    <input type="text" class="form-input" id="vcf_sufixo" placeholder="Ex: Jr, III">
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Nome fonético</label>
-                    <input type="text" class="form-input" id="vcf_fonetico" placeholder="Pronúncia">
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Apelido</label>
-                    <input type="text" class="form-input" id="vcf_apelido" placeholder="Apelido / Status ⚡">
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Organização</label>
-                    <input type="text" class="form-input" id="vcf_organizacao" placeholder="Organização / Grupo">
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Título</label>
-                    <input type="text" class="form-input" id="vcf_titulo" placeholder="Título / Cargo">
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Telefone (Apenas números, +, ou -)</label>
-                    <input type="text" class="form-input" id="vcf_telefone" value="+55 11 99999-9999" placeholder="+55 11 99999-9999">
-                </div>
-
-                <hr style="border:0; border-top:1px solid #334155; margin: 10px 0;">
-
-                <div class="form-group">
-                    <label class="form-label">Multiplicar este contato em massa (Até 5000x)</label>
-                    <input type="number" class="form-input" id="vcf_multi" value="100" min="1" max="5000">
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- TELA 3: VISUALIZAR / ENVIAR OU APAGAR VCF -->
-    <div class="modal-overlay" id="modalVcfDetalhe" style="display: none; z-index: 110;">
+    <!-- MODAL 4: CRIADOR DE FOTO DE TRAVA (BALÃOZINHO WHATSAPP) -->
+    <div class="modal-overlay" id="modalFotoTrava">
         <div class="modal-content" style="max-width: 450px;">
             <div class="modal-header">
-                <div class="modal-title" id="vcfDetalheTitulo">Arquivo VCF</div>
-                <button class="modal-close" onclick="closeModal('modalVcfDetalhe')">&times;</button>
+                <div class="modal-title">Criador de Foto de Trava (Balãozinho)</div>
+                <button class="modal-close" onclick="closeModal('modalFotoTrava')">&times;</button>
             </div>
             
             <div class="form-group">
-                <label class="form-label">Prévia do Arquivo de Contato:</label>
-                <div class="trava-details-box" id="vcfDetalheConteudo" style="max-height: 180px;"></div>
+                <label class="form-label">Prévia no Chat do WhatsApp</label>
+                <div class="whatsapp-chat-preview">
+                    <div class="wa-bubble">
+                        <div class="wa-media-box" onclick="document.getElementById('fotoTravaInput').click()">
+                            <div id="fotoTravaPreviewContainer" style="width:100%; height:100%; display:flex; align-items:center; justify-content:center; color:#8696a0; font-size:0.75rem; text-align:center; padding:10px;">
+                                Toque para carregar a foto de trava
+                            </div>
+                        </div>
+                        <div class="wa-caption" id="waCaptionPreview">Legenda da trava ou código pesado aqui...</div>
+                        <div class="wa-meta">12:00 ✓✓</div>
+                    </div>
+                </div>
+            </div>
+            <input type="file" id="fotoTravaInput" accept="image/*" onchange="carregarFotoTrava(event)">
+
+            <div class="form-group">
+                <label class="form-label">Legenda / Código do Balãozinho</label>
+                <textarea class="form-textarea" id="inputLegendaTrava" rows="3" placeholder="Digite a legenda da foto ou insira o payload..." oninput="atualizarLegendaBalao()"></textarea>
             </div>
 
-            <!-- Botões de Ação Direta: Enviar e Apagar -->
-            <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 5px;">
-                <button class="action-btn" style="background: linear-gradient(135deg, #22c55e, #16a34a); padding: 14px; font-size: 1rem;" onclick="enviarVcfWhatsAppReal()">Enviar Contato para o WhatsApp</button>
-                <button class="action-btn" style="background: linear-gradient(135deg, #ef4444, #dc2626); padding: 14px; font-size: 1rem;" onclick="apagarPacoteVcfAtual()">Apagar este VCF</button>
+            <div style="display: flex; gap: 10px;">
+                <button class="action-btn" style="flex: 1;" onclick="copiarLegendaBalao()">Copiar Legenda</button>
+                <button class="action-btn" style="flex: 1; background: linear-gradient(135deg, #22c55e, #16a34a);" onclick="compartilharFotoTravaWp()">Enviar no WhatsApp</button>
             </div>
         </div>
     </div>
@@ -977,7 +895,6 @@
             document.getElementById(modalId).style.display = 'flex';
             if(modalId === 'modalMultiplicador') executarMultiplicacao();
             if(modalId === 'modalTrava') renderizarTravas();
-            if(modalId === 'modalVcfList') renderizarPacotesVcf();
         }
 
         function closeModal(modalId) {
@@ -1091,162 +1008,36 @@
             window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(textoWp)}`, '_blank');
         }
 
-        // ==========================================================
-        // LÓGICA DO CRIADOR DE VCF (ENVIO DIRETO E APAGAR)
-        // ==========================================================
-        let pacotesVcf = JSON.parse(localStorage.getItem('zrx_vcf_packages') || '[]');
-        let indicePacoteAtual = null;
-        let pacoteAtualSelecionado = null;
+        // --- LÓGICA DO BALÃO 4: CRIADOR DE FOTO DE TRAVA ---
+        let fotoTravaBase64 = null;
 
-        function renderizarPacotesVcf() {
-            const container = document.getElementById('vcfPacotesContainer');
-            container.innerHTML = '';
-
-            if(pacotesVcf.length === 0) {
-                container.innerHTML = '<div style="color: #64748b; font-size: 0.85rem; text-align: center; margin-top: 40px;">Nenhum .vcf criado. Toque no botão + abaixo para criar.</div>';
-                return;
-            }
-
-            pacotesVcf.forEach((pacote, index) => {
-                const item = document.createElement('div');
-                item.className = 'vcf-list-item';
-                item.innerHTML = `
-                    <div class="vcf-item-top">
-                        <div class="vcf-item-avatar">?</div>
-                        <div style="flex-grow:1; overflow:hidden;">
-                            <div class="vcf-item-title">${pacote.filename}</div>
-                            <div class="vcf-item-path">${pacote.path}</div>
-                        </div>
-                    </div>
-                    <div class="vcf-item-footer">
-                        <span>Pronto para envio</span>
-                        <span>${pacote.date}</span>
-                    </div>
-                `;
-                item.onclick = () => abrirDetalhePacoteVcf(index);
-                container.appendChild(item);
-            });
+        function carregarFotoTrava(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                fotoTravaBase64 = e.target.result;
+                document.getElementById('fotoTravaPreviewContainer').innerHTML = `<img src="${fotoTravaBase64}" style="width:100%; height:100%; object-fit:cover;">`;
+            };
+            reader.readAsDataURL(file);
         }
 
-        function abrirCriarContatoVcf() {
-            document.getElementById('vcf_pref').value = '';
-            document.getElementById('vcf_nome').value = 'ZRX CONTATO';
-            document.getElementById('vcf_meio').value = '';
-            document.getElementById('vcf_sobrenome').value = '';
-            document.getElementById('vcf_sufixo').value = '';
-            document.getElementById('vcf_fonetico').value = '';
-            document.getElementById('vcf_apelido').value = 'VIP';
-            document.getElementById('vcf_organizacao').value = 'ZRX TEAM';
-            document.getElementById('vcf_titulo').value = 'DEV';
-            document.getElementById('vcf_telefone').value = '+5511999999999';
-            document.getElementById('vcf_multi').value = '10';
-
-            openModal('modalVcfCriar');
+        function atualizarLegendaBalao() {
+            const texto = document.getElementById('inputLegendaTrava').value;
+            document.getElementById('waCaptionPreview').innerText = texto || 'Legenda da trava ou código pesado aqui...';
         }
 
-        function salvarNovoContatoCompleto() {
-            const pref = document.getElementById('vcf_pref').value.trim();
-            const nome = document.getElementById('vcf_nome').value.trim();
-            const meio = document.getElementById('vcf_meio').value.trim();
-            const sobrenome = document.getElementById('vcf_sobrenome').value.trim();
-            const sufixo = document.getElementById('vcf_sufixo').value.trim();
-            const fonetico = document.getElementById('vcf_fonetico').value.trim();
-            const apelido = document.getElementById('vcf_apelido').value.trim();
-            const organizacao = document.getElementById('vcf_organizacao').value.trim();
-            const titulo = document.getElementById('vcf_titulo').value.trim();
-            let telefone = document.getElementById('vcf_telefone').value.trim().replace(/[^0-9+\-\(\)]/g, '');
-            const multiplicador = parseInt(document.getElementById('vcf_multi').value) || 1;
-
-            if(!nome || !telefone) {
-                alert('Preencha pelo menos o Nome e um Telefone válido!');
-                return;
-            }
-
-            let vcfCompleto = "";
-            for(let i = 1; i <= multiplicador; i++) {
-                let nomeFinal = multiplicador > 1 ? `${nome} [${i}]` : nome;
-                vcfCompleto += `BEGIN:VCARD\r\n`;
-                vcfCompleto += `VERSION:3.0\r\n`;
-                vcfCompleto += `N:${sobrenome};${nomeFinal};${meio};${pref};${sufixo}\r\n`;
-                vcfCompleto += `FN:${nomeFinal}\r\n`;
-                if(fonetico) vcfCompleto += `SOUND:${fonetico}\r\n`;
-                if(apelido) vcfCompleto += `NICKNAME:${apelido}\r\n`;
-                if(organizacao) vcfCompleto += `ORG:${organizacao}\r\n`;
-                if(titulo) vcfCompleto += `TITLE:${titulo}\r\n`;
-                vcfCompleto += `TEL;TYPE=CELL:${telefone}\r\n`;
-                vcfCompleto += `END:VCARD\r\n`;
-            }
-
-            const dataAtual = new Date();
-            const dataStr = `${String(dataAtual.getDate()).padStart(2,'0')}/${String(dataAtual.getMonth()+1).padStart(2,'0')}/${dataAtual.getFullYear()} ${String(dataAtual.getHours()).padStart(2,'0')}:${String(dataAtual.getMinutes()).padStart(2,'0')}`;
-            const randomId = Math.floor(1000 + Math.random() * 9000);
-            const filename = `Contatos_${randomId}.vcf`;
-
-            pacotesVcf.unshift({
-                filename: filename,
-                path: `/storage/emulated/0/Download/${filename}`,
-                date: dataStr,
-                conteudo: vcfCompleto
-            });
-
-            localStorage.setItem('zrx_vcf_packages', JSON.stringify(pacotesVcf));
-            closeModal('modalVcfCriar');
-            renderizarPacotesVcf();
-            alert(`Contato VCF criado e multiplicado ${multiplicador}x com sucesso!`);
+        function copiarLegendaBalao() {
+            const texto = document.getElementById('inputLegendaTrava').value;
+            if(!texto) { alert('Digite uma legenda/código primeiro!'); return; }
+            navigator.clipboard.writeText(texto);
+            alert('Legenda copiada para a área de transferência!');
         }
 
-        function abrirDetalhePacoteVcf(index) {
-            indicePacoteAtual = index;
-            pacoteAtualSelecionado = pacotesVcf[index];
-            document.getElementById('vcfDetalheTitulo').innerText = pacoteAtualSelecionado.filename;
-            document.getElementById('vcfDetalheConteudo').innerText = pacoteAtualSelecionado.conteudo;
-            openModal('modalVcfDetalhe');
-        }
-
-        function apagarPacoteVcfAtual() {
-            if (indicePacoteAtual !== null && indicePacoteAtual >= 0) {
-                if (confirm("Deseja realmente apagar este arquivo VCF?")) {
-                    pacotesVcf.splice(indicePacoteAtual, 1);
-                    localStorage.setItem('zrx_vcf_packages', JSON.stringify(pacotesVcf));
-                    closeModal('modalVcfDetalhe');
-                    renderizarPacotesVcf();
-                    alert("Arquivo VCF apagado com sucesso!");
-                }
-            }
-        }
-
-        // --- FUNÇÃO CORRIGIDA PARA ENVIAR O .VCF E APARECER COMO CONTATO NO WHATSAPP ---
-        async function enviarVcfWhatsAppReal() {
-            if(!pacoteAtualSelecionado) return;
-
-            // Define o tipo MIME correto suportado pelo Android/WhatsApp
-            const blob = new Blob([pacoteAtualSelecionado.conteudo], { type: 'text/vcard;charset=utf-8;' });
-            const file = new File([blob], pacoteAtualSelecionado.filename, { type: 'text/vcard' });
-
-            if (navigator.canShare && navigator.canShare({ files: [file] })) {
-                try {
-                    await navigator.share({
-                        files: [file],
-                        title: 'Contatos VCF',
-                        text: 'Toque para adicionar os contatos'
-                    });
-                    return;
-                } catch (error) {
-                    console.log('Compartilhamento cancelado ou falhou, tentando fallback...', error);
-                }
-            }
-
-            // Fallback: Se o compartilhamento nativo falhar, força o download para o aparelho
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = pacoteAtualSelecionado.filename;
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            URL.revokeObjectURL(url);
-
-            alert('O arquivo .vcf foi baixado no seu dispositivo. Agora basta abri-lo ou anexá-lo manualmente no WhatsApp para que apareça como contato clicável.');
+        function compartilharFotoTravaWp() {
+            const texto = document.getElementById('inputLegendaTrava').value;
+            const urlWp = `https://api.whatsapp.com/send?text=${encodeURIComponent(texto)}`;
+            window.open(urlWp, '_blank');
         }
     </script>
 </body>
