@@ -800,10 +800,6 @@
         </div>
     </div>
 
-    <!-- ========================================================== -->
-    <!-- FLUXO VCF OTIMIZADO PARA ENVIO REAL DE CONTATO NO WHATSAPP -->
-    <!-- ========================================================== -->
-
     <!-- TELA 1: LISTAR .VCF -->
     <div class="modal-overlay" id="modalVcfList" style="display: none;">
         <div class="modal-content" style="height: 85vh; max-width: 450px;">
@@ -869,8 +865,8 @@
                     <input type="text" class="form-input" id="vcf_titulo" placeholder="Título / Cargo">
                 </div>
                 <div class="form-group">
-                    <label class="form-label">Telefone</label>
-                    <input type="text" class="form-input" id="vcf_telefone" placeholder="+55 11 99999-9999">
+                    <label class="form-label">Telefone (Apenas números, +, ou -)</label>
+                    <input type="text" class="form-input" id="vcf_telefone" value="+55 11 99999-9999" placeholder="+55 11 99999-9999">
                 </div>
 
                 <hr style="border:0; border-top:1px solid #334155; margin: 10px 0;">
@@ -883,7 +879,7 @@
         </div>
     </div>
 
-    <!-- TELA 3: VISUALIZAR / ENVIAR DIRETAMENTE PARA O WHATSAPP COMO CARTÃO DE CONTATO REAL -->
+    <!-- TELA 3: VISUALIZAR / ENVIAR OU APAGAR VCF -->
     <div class="modal-overlay" id="modalVcfDetalhe" style="display: none; z-index: 110;">
         <div class="modal-content" style="max-width: 450px;">
             <div class="modal-header">
@@ -896,9 +892,10 @@
                 <div class="trava-details-box" id="vcfDetalheConteudo" style="max-height: 180px;"></div>
             </div>
 
-            <!-- Botões de Copiar e Baixar removidos conforme solicitado. Apenas o envio direto limpo -->
+            <!-- Botões de Ação Direta: Enviar e Apagar -->
             <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 5px;">
-                <button class="action-btn" style="background: linear-gradient(135deg, #22c55e, #16a34a); padding: 16px; font-size: 1.05rem;" onclick="enviarVcfWhatsAppReal()">Enviar Contato para o WhatsApp</button>
+                <button class="action-btn" style="background: linear-gradient(135deg, #22c55e, #16a34a); padding: 14px; font-size: 1rem;" onclick="enviarVcfWhatsAppReal()">Enviar Contato para o WhatsApp</button>
+                <button class="action-btn" style="background: linear-gradient(135deg, #ef4444, #dc2626); padding: 14px; font-size: 1rem;" onclick="apagarPacoteVcfAtual()">Apagar este VCF</button>
             </div>
         </div>
     </div>
@@ -1095,9 +1092,10 @@
         }
 
         // ==========================================================
-        // LÓGICA DO CRIADOR DE VCF (ENVIO DIRETO DE ARQUIVO DE CONTATO)
+        // LÓGICA DO CRIADOR DE VCF (ENVIO DIRETO E APAGAR)
         // ==========================================================
-        let pacotesVcf = JSON.parse(localStorage.getItem('zrx_vcf_packages') || '[{"filename": "2026-08-15 23-10-25.vcf", "path": "/storage/emulated/150/Android/data/by.android.contactsvcf/files/Contact", "date": "29/08/2026 18:05", "conteudo": "BEGIN:VCARD\\nVERSION:3.0\\nFN:JARDIM DAS SOMBRAS\\nEND:VCARD"}]');
+        let pacotesVcf = JSON.parse(localStorage.getItem('zrx_vcf_packages') || '[]');
+        let indicePacoteAtual = null;
         let pacoteAtualSelecionado = null;
 
         function renderizarPacotesVcf() {
@@ -1121,7 +1119,7 @@
                         </div>
                     </div>
                     <div class="vcf-item-footer">
-                        <span>Não indexado</span>
+                        <span>Pronto para envio</span>
                         <span>${pacote.date}</span>
                     </div>
                 `;
@@ -1132,16 +1130,16 @@
 
         function abrirCriarContatoVcf() {
             document.getElementById('vcf_pref').value = '';
-            document.getElementById('vcf_nome').value = 'JARDIM DAS SOMBRAS';
+            document.getElementById('vcf_nome').value = 'ZRX CONTATO';
             document.getElementById('vcf_meio').value = '';
             document.getElementById('vcf_sobrenome').value = '';
             document.getElementById('vcf_sufixo').value = '';
             document.getElementById('vcf_fonetico').value = '';
-            document.getElementById('vcf_apelido').value = '🔥CAIU FOI POR VMX ⚡WINCHESTER';
-            document.getElementById('vcf_organizacao').value = '🔥CAIU FOI POR VMX ⚡WINCHESTER';
-            document.getElementById('vcf_titulo').value = '🔥CAIU FOI POR VMX ⚡WINCHESTER';
-            document.getElementById('vcf_telefone').value = '00295322 //.//0029402 () //./5 N5 (//./) (//./5N6)';
-            document.getElementById('vcf_multi').value = '100';
+            document.getElementById('vcf_apelido').value = 'VIP';
+            document.getElementById('vcf_organizacao').value = 'ZRX TEAM';
+            document.getElementById('vcf_titulo').value = 'DEV';
+            document.getElementById('vcf_telefone').value = '+5511999999999';
+            document.getElementById('vcf_multi').value = '10';
 
             openModal('modalVcfCriar');
         }
@@ -1156,15 +1154,15 @@
             const apelido = document.getElementById('vcf_apelido').value.trim();
             const organizacao = document.getElementById('vcf_organizacao').value.trim();
             const titulo = document.getElementById('vcf_titulo').value.trim();
-            const telefone = document.getElementById('vcf_telefone').value.trim();
+            // Limpa o telefone para garantir compatibilidade com o WhatsApp (somente números e sinais válidos)
+            let telefone = document.getElementById('vcf_telefone').value.trim().replace(/[^0-9+\-\(\)]/g, '');
             const multiplicador = parseInt(document.getElementById('vcf_multi').value) || 1;
 
             if(!nome || !telefone) {
-                alert('Preencha pelo menos o Nome e o Telefone!');
+                alert('Preencha pelo menos o Nome e um Telefone válido!');
                 return;
             }
 
-            // Uso estrito de quebras de linha \r\n exigidas pelo padrão vCard de contatos
             let vcfCompleto = "";
             for(let i = 1; i <= multiplicador; i++) {
                 let nomeFinal = multiplicador > 1 ? `${nome} [${i}]` : nome;
@@ -1182,12 +1180,12 @@
 
             const dataAtual = new Date();
             const dataStr = `${String(dataAtual.getDate()).padStart(2,'0')}/${String(dataAtual.getMonth()+1).padStart(2,'0')}/${dataAtual.getFullYear()} ${String(dataAtual.getHours()).padStart(2,'0')}:${String(dataAtual.getMinutes()).padStart(2,'0')}`;
-            const randomId = Math.floor(10 + Math.random() * 90);
-            const filename = `2026-09-${randomId} 21-43-${randomId}.vcf`;
+            const randomId = Math.floor(1000 + Math.random() * 9000);
+            const filename = `Contatos_${randomId}.vcf`;
 
             pacotesVcf.unshift({
                 filename: filename,
-                path: `/storage/emulated/150/Android/data/by.android.contactsvcf/files/Contact`,
+                path: `/storage/emulated/0/Download/${filename}`,
                 date: dataStr,
                 conteudo: vcfCompleto
             });
@@ -1199,21 +1197,33 @@
         }
 
         function abrirDetalhePacoteVcf(index) {
+            indicePacoteAtual = index;
             pacoteAtualSelecionado = pacotesVcf[index];
             document.getElementById('vcfDetalheTitulo').innerText = pacoteAtualSelecionado.filename;
             document.getElementById('vcfDetalheConteudo').innerText = pacoteAtualSelecionado.conteudo;
             openModal('modalVcfDetalhe');
         }
 
-        // Função responsável por acionar o compartilhamento nativo de arquivo vCard (Gerando o balão de contato no WhatsApp)
+        // Função para apagar o VCF selecionado
+        function apagarPacoteVcfAtual() {
+            if (indicePacoteAtual !== null && indicePacoteAtual >= 0) {
+                if (confirm("Deseja realmente apagar este arquivo VCF?")) {
+                    pacotesVcf.splice(indicePacoteAtual, 1);
+                    localStorage.setItem('zrx_vcf_packages', JSON.stringify(pacotesVcf));
+                    closeModal('modalVcfDetalhe');
+                    renderizarPacotesVcf();
+                    alert("Arquivo VCF apagado com sucesso!");
+                }
+            }
+        }
+
+        // Função para envio direto do arquivo vCard para o WhatsApp
         async function enviarVcfWhatsAppReal() {
             if(!pacoteAtualSelecionado) return;
 
-            // Cria um arquivo Blob estruturado do tipo vcard nativo
             const blob = new Blob([pacoteAtualSelecionado.conteudo], { type: 'text/vcard;charset=utf-8;' });
             const file = new File([blob], pacoteAtualSelecionado.filename, { type: 'text/vcard' });
 
-            // Dispara o compartilhamento de arquivo real do sistema para o WhatsApp
             if (navigator.canShare && navigator.canShare({ files: [file] })) {
                 try {
                     await navigator.share({
@@ -1226,7 +1236,7 @@
                     console.log('Compartilhamento cancelado pelo usuário.', error);
                 }
             } else {
-                alert('O navegador deste dispositivo não suporta o envio direto de arquivos de contato. Certifique-se de acessar por um navegador moderno no celular.');
+                alert('O navegador deste dispositivo não suporta o envio direto de arquivos. Use o Chrome no Android.');
             }
         }
     </script>
