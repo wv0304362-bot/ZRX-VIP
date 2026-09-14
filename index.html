@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ZRX DESTROYER V5</title>
+    <title>ZRX DESTROYER V5.2</title>
     <style>
         * {
             box-sizing: border-box;
@@ -330,6 +330,27 @@
             left: 3px;
             box-shadow: 0 7px 0 #38bdf8;
         }
+        /* VCF Symbol */
+        .symbol-vcf::before {
+            content: '';
+            position: absolute;
+            width: 12px;
+            height: 16px;
+            border: 2px solid #38bdf8;
+            border-radius: 3px;
+            top: 2px;
+            left: 4px;
+        }
+        .symbol-vcf::after {
+            content: '';
+            position: absolute;
+            width: 6px;
+            height: 2px;
+            background: #38bdf8;
+            top: 5px;
+            left: 7px;
+            box-shadow: 0 3px 0 #38bdf8;
+        }
 
         .card-content-bottom {
             display: flex;
@@ -454,7 +475,7 @@
             border: 1px solid rgba(56, 189, 248, 0.3);
         }
 
-        /* Estilo Lista de Travas */
+        /* Estilo Lista de Travas / VCF */
         .trava-item {
             background: #0f172a;
             border: 1px solid #334155;
@@ -513,7 +534,7 @@
             </div>
             <div class="banner-overlay">
                 <div class="banner-sub">CREATED BY USER</div>
-                <div class="banner-watermark">ZRX DESTROYER V5</div>
+                <div class="banner-watermark">ZRX DESTROYER V5.2</div>
             </div>
             <div class="banner-upload-hint">Alterar Mídia</div>
         </div>
@@ -581,12 +602,24 @@
                     </div>
                 </div>
 
+                <!-- Balão 4: Criador de VCF (Contatos em Massa) -->
+                <div class="carousel-card" onclick="openModal('modalVcf')">
+                    <div class="card-header-top">
+                        <span class="card-tag">VCF</span>
+                        <span class="css-symbol symbol-vcf"></span>
+                    </div>
+                    <div class="card-content-bottom">
+                        <div class="card-label">Criador VCF</div>
+                        <div class="card-desc">Contatos falsos e multiplicador</div>
+                    </div>
+                </div>
+
             </div>
         </div>
 
     </div>
 
-    <!-- MODAL 1: PAINEL DE E-MAILS (Disparo para Suportes do WhatsApp) -->
+    <!-- MODAL 1: PAINEL DE E-MAILS -->
     <div class="modal-overlay" id="modalEmails">
         <div class="modal-content">
             <div class="modal-header">
@@ -649,7 +682,7 @@
         </div>
     </div>
 
-    <!-- MODAL 3: ARMAZENAMENTO DE TRAVAS (ENIGMA) -->
+    <!-- MODAL 3: ARMAZENAMENTO DE TRAVAS -->
     <div class="modal-overlay" id="modalTrava">
         <div class="modal-content">
             <div class="modal-header">
@@ -693,23 +726,90 @@
         </div>
     </div>
 
+    <!-- MODAL 4: CRIADOR DE VCF (MÚLTIPLOS CONTATOS E MULTIPLICADOR) -->
+    <div class="modal-overlay" id="modalVcf">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title">Criador de Contatos VCF</div>
+                <button class="modal-close" onclick="closeModal('modalVcf')">&times;</button>
+            </div>
+            
+            <div class="counter-badge" id="vcfCounterDisplay">Contatos na Base: 0</div>
+
+            <div class="form-group">
+                <label class="form-label">Nome do Contato Falso</label>
+                <input type="text" class="form-input" id="vcfNomeInput" placeholder="Ex: ZRX ⚡ CRASH 💣">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Número de Telefone Base</label>
+                <input type="text" class="form-input" id="vcfTelInput" placeholder="Ex: +55 11 99999-9999">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Payload / E-mail / Notas pesadas</label>
+                <textarea class="form-textarea" id="vcfPayloadInput" rows="2" placeholder="Caracteres ou notas extras..."></textarea>
+            </div>
+            
+            <button class="action-btn" onclick="adicionarContatoVcfLista()">Adicionar Contato à Lista</button>
+
+            <hr style="border: 0; border-top: 1px solid #334155; margin: 4px 0;">
+
+            <div class="form-group">
+                <label class="form-label">Multiplicador de Contatos em Massa</label>
+                <input type="number" class="form-input" id="vcfMultiplicadorQtd" value="100" min="1" max="5000" placeholder="Quantas vezes duplicar a lista">
+            </div>
+
+            <button class="action-btn" style="background: linear-gradient(135deg, #8b5cf6, #6d28d9);" onclick="multiplicarContatosLista()">Multiplicar/Gerar em Massa</button>
+
+            <div class="carousel-title" style="margin-top: 5px;">Contatos Cadastrados (Edição Global)</div>
+            <div id="listaContatosVcfContainer" style="display: flex; flex-direction: column; gap: 8px; max-height: 140px; overflow-y: auto;">
+                <!-- Dinâmico -->
+            </div>
+
+            <div style="display: flex; gap: 10px; margin-top: 5px;">
+                <button class="action-btn" style="flex: 1;" onclick="baixarArquivoVcfFinal()">Baixar .VCF</button>
+                <button class="action-btn" style="flex: 1; background: linear-gradient(135deg, #22c55e, #16a34a);" onclick="copiarCodigoVcfFinal()">Copiar Código VCF</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL DE EDIÇÃO INDIVIDUAL/GLOBAL DO CONTATO VCF -->
+    <div class="modal-overlay" id="modalVcfEditar">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title">Editar Contato da Base</div>
+                <button class="modal-close" onclick="closeModal('modalVcfEditar')">&times;</button>
+            </div>
+            <input type="hidden" id="editVcfIndex">
+            <div class="form-group">
+                <label class="form-label">Nome:</label>
+                <input type="text" class="form-input" id="editVcfNome">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Telefone:</label>
+                <input type="text" class="form-input" id="editVcfTel">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Notas/Payload:</label>
+                <textarea class="form-textarea" id="editVcfPayload" rows="2"></textarea>
+            </div>
+            <div style="display: flex; gap: 10px;">
+                <button class="action-btn" style="flex: 1; background: linear-gradient(135deg, #22c55e, #16a34a);" onclick="salvarEdicaoContatoVcf()">Salvar Alteração</button>
+                <button class="action-btn" style="flex: 1; background: linear-gradient(135deg, #ef4444, #dc2626);" onclick="deletarContatoVcf()">Excluir</button>
+            </div>
+        </div>
+    </div>
+
     <script>
         // --- CARREGAR DADOS SALVOS AO ABRIR O APLICATIVO ---
         window.addEventListener('DOMContentLoaded', () => {
-            // Nome do perfil
             const savedName = localStorage.getItem('zrx_profile_name');
-            if(savedName) {
-                document.getElementById('profileNameInput').value = savedName;
-            }
+            if(savedName) document.getElementById('profileNameInput').value = savedName;
 
-            // Avatar salvo
             const savedAvatar = localStorage.getItem('zrx_avatar');
             if(savedAvatar) {
-                const container = document.getElementById('avatarPreviewContainer');
-                container.innerHTML = `<img src="${savedAvatar}" style="width:100%; height:100%; object-fit:cover;">`;
+                document.getElementById('avatarPreviewContainer').innerHTML = `<img src="${savedAvatar}" style="width:100%; height:100%; object-fit:cover;">`;
             }
 
-            // Banner salvo
             const savedBanner = localStorage.getItem('zrx_banner');
             const savedBannerType = localStorage.getItem('zrx_banner_type');
             if(savedBanner) {
@@ -718,19 +818,13 @@
                 if(savedBannerType && savedBannerType.startsWith('video/')) {
                     const video = document.createElement('video');
                     video.src = savedBanner;
-                    video.autoplay = true;
-                    video.loop = true;
-                    video.muted = true;
-                    video.style.width = '100%';
-                    video.style.height = '100%';
-                    video.style.objectFit = 'cover';
+                    video.autoplay = true; video.loop = true; video.muted = true;
+                    video.style.width = '100%'; video.style.height = '100%'; video.style.objectFit = 'cover';
                     container.appendChild(video);
                 } else {
                     const img = document.createElement('img');
                     img.src = savedBanner;
-                    img.style.width = '100%';
-                    img.style.height = '100%';
-                    img.style.objectFit = 'cover';
+                    img.style.width = '100%'; img.style.height = '100%'; img.style.objectFit = 'cover';
                     container.appendChild(img);
                 }
             }
@@ -738,8 +832,7 @@
 
         // --- SALVAR PERFIL E MÍDIAS ---
         function salvarNomePerfil() {
-            const nome = document.getElementById('profileNameInput').value;
-            localStorage.setItem('zrx_profile_name', nome);
+            localStorage.setItem('zrx_profile_name', document.getElementById('profileNameInput').value);
         }
 
         function salvarAvatar(event) {
@@ -747,10 +840,8 @@
             if (!file) return;
             const reader = new FileReader();
             reader.onload = function(e) {
-                const base64Data = e.target.result;
-                localStorage.setItem('zrx_avatar', base64Data);
-                const container = document.getElementById('avatarPreviewContainer');
-                container.innerHTML = `<img src="${base64Data}" style="width:100%; height:100%; object-fit:cover;">`;
+                localStorage.setItem('zrx_avatar', e.target.result);
+                document.getElementById('avatarPreviewContainer').innerHTML = `<img src="${e.target.result}" style="width:100%; height:100%; object-fit:cover;">`;
             };
             reader.readAsDataURL(file);
         }
@@ -760,28 +851,20 @@
             if (!file) return;
             const reader = new FileReader();
             reader.onload = function(e) {
-                const base64Data = e.target.result;
-                localStorage.setItem('zrx_banner', base64Data);
+                localStorage.setItem('zrx_banner', e.target.result);
                 localStorage.setItem('zrx_banner_type', file.type);
-
                 const container = document.getElementById('bannerMediaContainer');
                 container.innerHTML = '';
                 if (file.type.startsWith('video/')) {
                     const video = document.createElement('video');
-                    video.src = base64Data;
-                    video.autoplay = true;
-                    video.loop = true;
-                    video.muted = true;
-                    video.style.width = '100%';
-                    video.style.height = '100%';
-                    video.style.objectFit = 'cover';
+                    video.src = e.target.result;
+                    video.autoplay = true; video.loop = true; video.muted = true;
+                    video.style.width = '100%'; video.style.height = '100%'; video.style.objectFit = 'cover';
                     container.appendChild(video);
                 } else {
                     const img = document.createElement('img');
-                    img.src = base64Data;
-                    img.style.width = '100%';
-                    img.style.height = '100%';
-                    img.style.objectFit = 'cover';
+                    img.src = e.target.result;
+                    img.style.width = '100%'; img.style.height = '100%'; img.style.objectFit = 'cover';
                     container.appendChild(img);
                 }
             };
@@ -792,6 +875,7 @@
             document.getElementById(modalId).style.display = 'flex';
             if(modalId === 'modalMultiplicador') executarMultiplicacao();
             if(modalId === 'modalTrava') renderizarTravas();
+            if(modalId === 'modalVcf') renderizarListaContatosVcf();
         }
 
         function closeModal(modalId) {
@@ -805,10 +889,7 @@
         function salvarEmail() {
             const email = document.getElementById('inputEmail').value.trim();
             const senha = document.getElementById('inputSenha').value.trim();
-            if(!email || !senha) {
-                alert('Preencha o e-mail e a senha de app!');
-                return;
-            }
+            if(!email || !senha) { alert('Preencha o e-mail e a senha de app!'); return; }
             listaEmails.push({ email, senha });
             localStorage.setItem('zrx_emails', JSON.stringify(listaEmails));
             document.getElementById('inputEmail').value = '';
@@ -826,37 +907,25 @@
             const mensagem = document.getElementById('inputMensagem').value.trim();
             const qtdEnvios = parseInt(document.getElementById('inputQtdEnvios').value) || 1;
 
-            if(listaEmails.length === 0) {
-                alert('Cadastre pelo menos uma conta de e-mail e senha de app!');
-                return;
-            }
-            if(!assunto || !mensagem) {
-                alert('Preencha o assunto e a mensagem!');
-                return;
-            }
+            if(listaEmails.length === 0) { alert('Cadastre pelo menos uma conta de e-mail e senha!'); return; }
+            if(!assunto || !mensagem) { alert('Preencha o assunto e a mensagem!'); return; }
 
             const suportesWhatsApp = [
-                "support@whatsapp.com",
-                "android_support@whatsapp.com",
-                "support@support.whatsapp.com",
-                "smb_support@whatsapp.com"
+                "support@whatsapp.com", "android_support@whatsapp.com", "support@support.whatsapp.com", "smb_support@whatsapp.com"
             ];
-
             let totalDisparos = suportesWhatsApp.length * listaEmails.length * qtdEnvios;
-            alert(`Processando...\nEnviando mensagem ${qtdEnvios}x de ${listaEmails.length} conta(s) cadastrada(s) para ${suportesWhatsApp.length} e-mails de suporte do WhatsApp.\nTotal de requisições geradas: ${totalDisparos}`);
+            alert(`Processando...\nEnviando mensagem ${qtdEnvios}x de ${listaEmails.length} conta(s) para ${suportesWhatsApp.length} e-mails de suporte.\nTotal de requisições: ${totalDisparos}`);
         }
 
         // --- LÓGICA DO BALÃO 2: MULTIPLICADOR DE TEXTO ---
         function executarMultiplicacao() {
             const texto = document.getElementById('multiText').value;
             const count = parseInt(document.getElementById('multiCount').value) || 0;
-            
             if(!texto || count <= 0) {
                 document.getElementById('multiResult').value = '';
                 document.getElementById('charCounterDisplay').innerText = `Total de Caracteres: 0`;
                 return;
             }
-
             const resultado = texto.repeat(count);
             document.getElementById('multiResult').value = resultado;
             document.getElementById('charCounterDisplay').innerText = `Total de Caracteres: ${resultado.length}`;
@@ -866,7 +935,7 @@
             const textoGerado = document.getElementById('multiResult').value;
             if(!textoGerado) return;
             navigator.clipboard.writeText(textoGerado);
-            alert('Texto multiplicado copiado para a área de transferência!');
+            alert('Texto multiplicado copiado!');
         }
 
         // --- LÓGICA DO BALÃO 3: ARMAZENAMENTO DE TRAVAS ---
@@ -892,10 +961,7 @@
         function adicionarTrava() {
             const nome = document.getElementById('novaTravaNome').value.trim();
             const conteudo = document.getElementById('novaTravaConteudo').value.trim();
-            if(!nome || !conteudo) {
-                alert('Preencha o nome e o conteúdo da trava!');
-                return;
-            }
+            if(!nome || !conteudo) { alert('Preencha o nome e o conteúdo da trava!'); return; }
             listaTravas.push({ nome, conteudo });
             localStorage.setItem('zrx_travas', JSON.stringify(listaTravas));
             document.getElementById('novaTravaNome').value = '';
@@ -914,14 +980,140 @@
         function copiarTravaDetalhe() {
             if(!travaSelecionadaAtual) return;
             navigator.clipboard.writeText(travaSelecionadaAtual.conteudo);
-            alert('Conteúdo da trava copiado!');
+            alert('Conteúdo copiado!');
         }
 
         function compartilharWhatsAppTrava() {
             if(!travaSelecionadaAtual) return;
             const textoWp = `*Trava: ${travaSelecionadaAtual.nome}*\n\n${travaSelecionadaAtual.conteudo}`;
-            const urlWp = `https://api.whatsapp.com/send?text=${encodeURIComponent(textoWp)}`;
-            window.open(urlWp, '_blank');
+            window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(textoWp)}`, '_blank');
+        }
+
+        // --- LÓGICA DO BALÃO 4: CRIADOR DE CONTATOS VCF EM MASSA ---
+        let listaContatosVcf = JSON.parse(localStorage.getItem('zrx_vcf_contacts') || '[{"nome": "ZRX ⚡ DESTROYER", "tel": "+55 11 99999-9999", "payload": "Crash Payload Data..."}]');
+
+        function renderizarListaContatosVcf() {
+            const container = document.getElementById('listaContatosVcfContainer');
+            container.innerHTML = '';
+            document.getElementById('vcfCounterDisplay').innerText = `Contatos na Base: ${listaContatosVcf.length}`;
+
+            if(listaContatosVcf.length === 0) {
+                container.innerHTML = '<div style="color: #64748b; font-size: 0.8rem; text-align: center;">Nenhum contato adicionado.</div>';
+                return;
+            }
+
+            listaContatosVcf.forEach((contato, index) => {
+                const item = document.createElement('div');
+                item.className = 'trava-item';
+                item.innerHTML = `<span class="trava-name">${contato.nome}</span> <span style="font-size:0.75rem; color:#38bdf8;">Editar</span>`;
+                item.onclick = () => abrirEdicaoContatoVcf(index);
+                container.appendChild(item);
+            });
+        }
+
+        function adicionarContatoVcfLista() {
+            const nome = document.getElementById('vcfNomeInput').value.trim();
+            const tel = document.getElementById('vcfTelInput').value.trim();
+            const payload = document.getElementById('vcfPayloadInput').value.trim();
+
+            if(!nome || !tel) {
+                alert('Preencha pelo menos o nome e o telefone do contato!');
+                return;
+            }
+
+            listaContatosVcf.push({ nome, tel, payload });
+            localStorage.setItem('zrx_vcf_contacts', JSON.stringify(listaContatosVcf));
+            
+            document.getElementById('vcfNomeInput').value = '';
+            document.getElementById('vcfTelInput').value = '';
+            document.getElementById('vcfPayloadInput').value = '';
+            
+            renderizarListaContatosVcf();
+            alert('Contato adicionado à lista!');
+        }
+
+        function abrirEdicaoContatoVcf(index) {
+            const c = listaContatosVcf[index];
+            document.getElementById('editVcfIndex').value = index;
+            document.getElementById('editVcfNome').value = c.nome;
+            document.getElementById('editVcfTel').value = c.tel;
+            document.getElementById('editVcfPayload').value = c.payload;
+            openModal('modalVcfEditar');
+        }
+
+        function salvarEdicaoContatoVcf() {
+            const index = document.getElementById('editVcfIndex').value;
+            listaContatosVcf[index] = {
+                nome: document.getElementById('editVcfNome').value,
+                tel: document.getElementById('editVcfTel').value,
+                payload: document.getElementById('editVcfPayload').value
+            };
+            localStorage.setItem('zrx_vcf_contacts', JSON.stringify(listaContatosVcf));
+            closeModal('modalVcfEditar');
+            renderizarListaContatosVcf();
+            alert('Contato atualizado com sucesso!');
+        }
+
+        function deletarContatoVcf() {
+            const index = document.getElementById('editVcfIndex').value;
+            listaContatosVcf.splice(index, 1);
+            localStorage.setItem('zrx_vcf_contacts', JSON.stringify(listaContatosVcf));
+            closeModal('modalVcfEditar');
+            renderizarListaContatosVcf();
+            alert('Contato removido!');
+        }
+
+        function multiplicarContatosLista() {
+            if(listaContatosVcf.length === 0) {
+                alert('Adicione pelo menos um contato base antes de multiplicar!');
+                return;
+            }
+            const mult = parseInt(document.getElementById('vcfMultiplicadorQtd').value) || 10;
+            let novaLista = [];
+            
+            for(let i = 0; i < mult; i++) {
+                listaContatosVcf.forEach(c => {
+                    novaLista.push({
+                        nome: `${c.nome} [${i+1}]`,
+                        tel: c.tel,
+                        payload: c.payload
+                    });
+                });
+            }
+
+            listaContatosVcf = novaLista;
+            localStorage.setItem('zrx_vcf_contacts', JSON.stringify(listaContatosVcf));
+            renderizarListaContatosVcf();
+            alert(`Sucesso! Base multiplicada. Agora o arquivo contém ${listaContatosVcf.length} contatos.`);
+        }
+
+        function gerarTextoVcfFinal() {
+            let vcfString = "";
+            listaContatosVcf.forEach(c => {
+                vcfString += `BEGIN:VCARD\nVERSION:3.0\nFN:${c.nome}\nTEL;TYPE=CELL:${c.tel}\nNOTE:${c.payload}\nEND:VCARD\n`;
+            });
+            return vcfString;
+        }
+
+        function baixarArquivoVcfFinal() {
+            if(listaContatosVcf.length === 0) { alert('Sua lista VCF está vazia!'); return; }
+            const vcfData = gerarTextoVcfFinal();
+            const blob = new Blob([vcfData], { type: 'text/vcard;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            
+            const link = document.createElement('a');
+            link.href = url;
+            link.setAttribute('download', 'zrx_mass_contacts.vcf');
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            alert('Arquivo .vcf em massa baixado com sucesso!');
+        }
+
+        function copiarCodigoVcfFinal() {
+            if(listaContatosVcf.length === 0) { alert('Sua lista VCF está vazia!'); return; }
+            navigator.clipboard.writeText(gerarTextoVcfFinal());
+            alert('Código VCF completo copiado para a área de transferência!');
         }
     </script>
 </body>
