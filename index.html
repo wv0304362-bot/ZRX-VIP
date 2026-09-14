@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ZRX DESTROYER V5.2</title>
+    <title>ZRX DESTROYER V5.3</title>
     <style>
         * {
             box-sizing: border-box;
@@ -193,7 +193,7 @@
             font-weight: 600;
         }
 
-        /* Centralized Discord Button Section */
+        /* Discord Button Section */
         .social-container {
             padding: 0 18px 20px 18px;
             display: flex;
@@ -214,11 +214,6 @@
             font-weight: 700;
             font-size: 1rem;
             box-shadow: 0 4px 15px rgba(88, 101, 242, 0.4);
-            transition: transform 0.2s;
-        }
-
-        .social-btn.discord:active {
-            transform: scale(0.98);
         }
 
         /* Horizontal Carousel */
@@ -289,7 +284,7 @@
             letter-spacing: 0.5px;
         }
 
-        /* Símbolos desenhados em CSS */
+        /* Símbolos CSS */
         .css-symbol {
             width: 20px;
             height: 20px;
@@ -365,7 +360,7 @@
             color: #94a3b8;
         }
 
-        /* Modais das Ferramentas */
+        /* Modais */
         .modal-overlay {
             position: fixed;
             inset: 0;
@@ -471,7 +466,6 @@
             border: 1px solid rgba(56, 189, 248, 0.3);
         }
 
-        /* Estilo Lista de Travas */
         .trava-item {
             background: #0f172a;
             border: 1px solid #334155;
@@ -481,17 +475,6 @@
             justify-content: space-between;
             align-items: center;
             cursor: pointer;
-            transition: border-color 0.2s;
-        }
-
-        .trava-item:hover {
-            border-color: #38bdf8;
-        }
-
-        .trava-name {
-            font-weight: bold;
-            font-size: 0.95rem;
-            color: #f8fafc;
         }
 
         .trava-details-box {
@@ -507,64 +490,24 @@
             color: #cbd5e1;
         }
 
-        /* Estilo WhatsApp Preview (Balão de Trava) */
-        .whatsapp-chat-preview {
-            background: #0b141a;
-            border: 1px solid #222d34;
-            border-radius: 12px;
-            padding: 14px;
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .wa-bubble {
-            background: #005c4b;
-            border-radius: 7px;
-            border-top-left-radius: 0;
-            padding: 6px;
-            max-width: 85%;
-            align-self: flex-start;
-            box-shadow: 0 1px 0.5px rgba(0,0,0,0.3);
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-        }
-
-        .wa-media-box {
+        /* Preview Canvas Container */
+        .canvas-preview-box {
             width: 100%;
-            height: 180px;
-            background: #111b21;
-            border-radius: 5px;
-            overflow: hidden;
-            position: relative;
+            height: 200px;
+            background: #0f172a;
+            border: 1px dashed #334155;
+            border-radius: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
-            cursor: pointer;
+            overflow: hidden;
+            position: relative;
         }
 
-        .wa-media-box img, .wa-media-box video {
+        .canvas-preview-box img {
             width: 100%;
             height: 100%;
-            object-fit: cover;
-        }
-
-        .wa-caption {
-            font-size: 0.85rem;
-            color: #e9edef;
-            padding: 2px 4px;
-            word-break: break-all;
-            white-space: pre-wrap;
-        }
-
-        .wa-meta {
-            font-size: 0.65rem;
-            color: #8696a0;
-            align-self: flex-end;
-            padding-right: 4px;
+            object-fit: contain;
         }
 
         input[type="file"] {
@@ -586,11 +529,11 @@
         <!-- Banner Customizável -->
         <div class="banner-container" onclick="document.getElementById('bannerInput').click()">
             <div id="bannerMediaContainer" style="width:100%; height:100%; position:absolute; display:flex; align-items:center; justify-content:center; background:#1e293b;">
-                <span style="font-size: 0.85rem; color: #64748b;" id="bannerPlaceholderText">Toque para carregar foto ou vídeo</span>
+                <span style="font-size: 0.85rem; color: #64748b;">Toque para carregar foto ou vídeo</span>
             </div>
             <div class="banner-overlay">
                 <div class="banner-sub">CREATED BY USER</div>
-                <div class="banner-watermark">ZRX DESTROYER V5.2</div>
+                <div class="banner-watermark">ZRX DESTROYER V5.3</div>
             </div>
             <div class="banner-upload-hint">Alterar Mídia</div>
         </div>
@@ -617,12 +560,12 @@
             </a>
         </div>
 
-        <!-- Balãozinhos com Ferramentas e Símbolos em CSS -->
+        <!-- Balãozinhos com Ferramentas -->
         <div class="carousel-wrapper">
             <div class="carousel-title">Opções Rápidas</div>
             <div class="carousel-container">
                 
-                <!-- Balão 1: Painel de E-mails / Suporte -->
+                <!-- Balão 1: Painel de E-mails -->
                 <div class="carousel-card" onclick="openModal('modalEmails')">
                     <div class="card-header-top">
                         <span class="card-tag">SUPORTE</span>
@@ -646,7 +589,7 @@
                     </div>
                 </div>
 
-                <!-- Balão 3: Armazenamento de Travas -->
+                <!-- Balão 3: Storage Trava -->
                 <div class="carousel-card" onclick="openModal('modalTrava')">
                     <div class="card-header-top">
                         <span class="card-tag">ENIGMA</span>
@@ -658,15 +601,15 @@
                     </div>
                 </div>
 
-                <!-- Balão 4: Criador de Foto de Trava -->
+                <!-- Balão 4: Criador de Foto com Caracteres Embutidos -->
                 <div class="carousel-card" onclick="openModal('modalFotoTrava')">
                     <div class="card-header-top">
                         <span class="card-tag">FOTO TRAVA</span>
                         <span class="css-symbol symbol-balloon"></span>
                     </div>
                     <div class="card-content-bottom">
-                        <div class="card-label">Balãozinho Trava</div>
-                        <div class="card-desc">Criar preview com legenda de crash</div>
+                        <div class="card-label">Foto de Trava (Texto)</div>
+                        <div class="card-desc">Embutir caracteres e emojis na imagem</div>
                     </div>
                 </div>
 
@@ -682,9 +625,7 @@
                 <div class="modal-title">Disparador para Suporte WhatsApp</div>
                 <button class="modal-close" onclick="closeModal('modalEmails')">&times;</button>
             </div>
-            
             <div class="counter-badge" id="emailCounterDisplay">E-mails cadastrados: 0</div>
-            
             <div class="form-group">
                 <label class="form-label">Seu E-mail (Remetente)</label>
                 <input type="email" class="form-input" id="inputEmail" placeholder="seuemail@gmail.com">
@@ -693,24 +634,21 @@
                 <label class="form-label">Senha de App do E-mail</label>
                 <input type="password" class="form-input" id="inputSenha" placeholder="xxxx xxxx xxxx xxxx">
             </div>
-            <button class="action-btn" onclick="salvarEmail()">Adicionar Credencial na Lista</button>
-            
+            <button class="action-btn" onclick="salvarEmail()">Adicionar Credencial</button>
             <hr style="border: 0; border-top: 1px solid #334155; margin: 4px 0;">
-            
             <div class="form-group">
                 <label class="form-label">Assunto</label>
-                <input type="text" class="form-input" id="inputAssunto" placeholder="Assunto do e-mail de suporte">
+                <input type="text" class="form-input" id="inputAssunto" placeholder="Assunto do e-mail">
             </div>
             <div class="form-group">
                 <label class="form-label">Mensagem</label>
                 <textarea class="form-textarea" id="inputMensagem" rows="3" placeholder="Mensagem para o suporte..."></textarea>
             </div>
             <div class="form-group">
-                <label class="form-label">Quantidade de Envios (Repetições por Suporte)</label>
+                <label class="form-label">Quantidade de Envios</label>
                 <input type="number" class="form-input" id="inputQtdEnvios" value="1" min="1" max="50">
             </div>
-            
-            <button class="action-btn" style="background: linear-gradient(135deg, #22c55e, #16a34a);" onclick="enviarParaSuportesWhatsApp()">Enviar para Todos os Suportes</button>
+            <button class="action-btn" style="background: linear-gradient(135deg, #22c55e, #16a34a);" onclick="enviarParaSuportesWhatsApp()">Enviar para Todos</button>
         </div>
     </div>
 
@@ -722,7 +660,7 @@
                 <button class="modal-close" onclick="closeModal('modalMultiplicador')">&times;</button>
             </div>
             <div class="form-group">
-                <label class="form-label">Texto ou Símbolo</label>
+                <label class="form-label">Texto ou Símbolo / Emoji</label>
                 <input type="text" class="form-input" id="multiText" placeholder="Digite o texto ou emoji..." oninput="executarMultiplicacao()">
             </div>
             <div class="form-group">
@@ -750,13 +688,11 @@
                 <input type="text" class="form-input" id="novaTravaNome" placeholder="Nome da Trava">
             </div>
             <div class="form-group">
-                <textarea class="form-textarea" id="novaTravaConteudo" rows="2" placeholder="Cole o código/conteúdo da trava aqui..."></textarea>
+                <textarea class="form-textarea" id="novaTravaConteudo" rows="2" placeholder="Cole o código/caracteres aqui..."></textarea>
             </div>
             <button class="action-btn" onclick="adicionarTrava()">Adicionar Trava</button>
             <div class="carousel-title" style="margin-top: 10px;">Suas Travas Salvas</div>
-            <div id="listaTravasContainer" style="display: flex; flex-direction: column; gap: 8px; max-height: 200px; overflow-y: auto;">
-                <!-- Dinâmico -->
-            </div>
+            <div id="listaTravasContainer" style="display: flex; flex-direction: column; gap: 8px; max-height: 200px; overflow-y: auto;"></div>
         </div>
     </div>
 
@@ -772,55 +708,48 @@
                 <div id="detalheNome" style="font-weight: bold; color: #38bdf8;"></div>
             </div>
             <div class="form-group">
-                <label class="form-label">Conteúdo Oculto (Visualização Segura):</label>
+                <label class="form-label">Conteúdo:</label>
                 <div class="trava-details-box" id="detalheConteudo"></div>
             </div>
             <div style="display: flex; gap: 10px;">
                 <button class="action-btn" style="flex: 1;" onclick="copiarTravaDetalhe()">Copiar</button>
-                <button class="action-btn" style="flex: 1; background: linear-gradient(135deg, #22c55e, #16a34a);" onclick="compartilharWhatsAppTrava()">Compartilhar WhatsApp</button>
+                <button class="action-btn" style="flex: 1; background: linear-gradient(135deg, #22c55e, #16a34a);" onclick="compartilharWhatsAppTrava()">Compartilhar</button>
             </div>
         </div>
     </div>
 
-    <!-- MODAL 4: CRIADOR DE FOTO DE TRAVA (BALÃOZINHO WHATSAPP) -->
+    <!-- MODAL 4: FOTO DE TRAVA COM CARACTERES EMBUTIDOS -->
     <div class="modal-overlay" id="modalFotoTrava">
         <div class="modal-content" style="max-width: 450px;">
             <div class="modal-header">
-                <div class="modal-title">Criador de Foto de Trava (Balãozinho)</div>
+                <div class="modal-title">Embutir Caracteres na Foto</div>
                 <button class="modal-close" onclick="closeModal('modalFotoTrava')">&times;</button>
             </div>
             
             <div class="form-group">
-                <label class="form-label">Prévia no Chat do WhatsApp</label>
-                <div class="whatsapp-chat-preview">
-                    <div class="wa-bubble">
-                        <div class="wa-media-box" onclick="document.getElementById('fotoTravaInput').click()">
-                            <div id="fotoTravaPreviewContainer" style="width:100%; height:100%; display:flex; align-items:center; justify-content:center; color:#8696a0; font-size:0.75rem; text-align:center; padding:10px;">
-                                Toque para carregar a foto de trava
-                            </div>
-                        </div>
-                        <div class="wa-caption" id="waCaptionPreview">Legenda da trava ou código pesado aqui...</div>
-                        <div class="wa-meta">12:00 ✓✓</div>
-                    </div>
-                </div>
+                <label class="form-label">1. Escolha a Imagem de Fundo</label>
+                <button class="action-btn" style="background: #334155; font-size: 0.85rem; padding: 10px;" onclick="document.getElementById('inputBaseImg').click()">Carregar Imagem Base</button>
             </div>
-            <input type="file" id="fotoTravaInput" accept="image/*" onchange="carregarFotoTrava(event)">
+            <input type="file" id="inputBaseImg" accept="image/*" onchange="carregarImagemBase(event)">
+
+            <div class="canvas-preview-box" id="canvasPreviewBox">
+                <span style="color: #64748b; font-size: 0.75rem; text-align: center; padding: 10px;">Prévia da Imagem Final Gerada</span>
+            </div>
 
             <div class="form-group">
-                <label class="form-label">Legenda / Código do Balãozinho</label>
-                <textarea class="form-textarea" id="inputLegendaTrava" rows="3" placeholder="Digite a legenda da foto ou insira o payload..." oninput="atualizarLegendaBalao()"></textarea>
+                <label class="form-label">2. Insira os Caracteres / Emojis (Aceita qualquer trava pesada)</label>
+                <textarea class="form-textarea" id="inputTravaEmbutida" rows="3" placeholder="Cole aqui seus emojis ou caracteres de trava (ex: 💥💀⚠️)..." oninput="gerarImagemComTrava()"></textarea>
             </div>
 
             <div style="display: flex; gap: 10px;">
-                <button class="action-btn" style="flex: 1;" onclick="copiarLegendaBalao()">Copiar Legenda</button>
-                <button class="action-btn" style="flex: 1; background: linear-gradient(135deg, #22c55e, #16a34a);" onclick="compartilharFotoTravaWp()">Enviar no WhatsApp</button>
+                <button class="action-btn" style="flex: 1;" onclick="baixarFotoGerada()">Baixar Foto Pronta</button>
+                <button class="action-btn" style="flex: 1; background: linear-gradient(135deg, #22c55e, #16a34a);" onclick="compartilharFotoGeradaWp()">Enviar no WhatsApp</button>
             </div>
         </div>
     </div>
 
 
     <script>
-        // --- CARREGAR DADOS SALVOS AO ABRIR O APLICATIVO ---
         window.addEventListener('DOMContentLoaded', () => {
             const savedName = localStorage.getItem('zrx_profile_name');
             if(savedName) document.getElementById('profileNameInput').value = savedName;
@@ -850,7 +779,6 @@
             }
         });
 
-        // --- SALVAR PERFIL E MÍDIAS ---
         function salvarNomePerfil() {
             localStorage.setItem('zrx_profile_name', document.getElementById('profileNameInput').value);
         }
@@ -901,42 +829,27 @@
             document.getElementById(modalId).style.display = 'none';
         }
 
-        // --- LÓGICA DO BALÃO 1: E-MAILS & SUPORTE WHATSAPP ---
+        // E-mails
         let listaEmails = JSON.parse(localStorage.getItem('zrx_emails') || '[]');
-        atualizarContadorEmails();
-
         function salvarEmail() {
             const email = document.getElementById('inputEmail').value.trim();
             const senha = document.getElementById('inputSenha').value.trim();
-            if(!email || !senha) { alert('Preencha o e-mail e a senha de app!'); return; }
+            if(!email || !senha) { alert('Preencha e-mail e senha!'); return; }
             listaEmails.push({ email, senha });
             localStorage.setItem('zrx_emails', JSON.stringify(listaEmails));
             document.getElementById('inputEmail').value = '';
             document.getElementById('inputSenha').value = '';
-            atualizarContadorEmails();
-            alert('Credencial salva com sucesso!');
-        }
-
-        function atualizarContadorEmails() {
             document.getElementById('emailCounterDisplay').innerText = `E-mails cadastrados: ${listaEmails.length}`;
+            alert('Salvo!');
         }
+        document.getElementById('emailCounterDisplay').innerText = `E-mails cadastrados: ${listaEmails.length}`;
 
         function enviarParaSuportesWhatsApp() {
-            const assunto = document.getElementById('inputAssunto').value.trim();
-            const mensagem = document.getElementById('inputMensagem').value.trim();
-            const qtdEnvios = parseInt(document.getElementById('inputQtdEnvios').value) || 1;
-
-            if(listaEmails.length === 0) { alert('Cadastre pelo menos uma conta de e-mail e senha!'); return; }
-            if(!assunto || !mensagem) { alert('Preencha o assunto e a mensagem!'); return; }
-
-            const suportesWhatsApp = [
-                "support@whatsapp.com", "android_support@whatsapp.com", "support@support.whatsapp.com", "smb_support@whatsapp.com"
-            ];
-            let totalDisparos = suportesWhatsApp.length * listaEmails.length * qtdEnvios;
-            alert(`Processando...\nEnviando mensagem ${qtdEnvios}x de ${listaEmails.length} conta(s) para ${suportesWhatsApp.length} e-mails de suporte.\nTotal de requisições: ${totalDisparos}`);
+            if(listaEmails.length === 0) { alert('Cadastre e-mails primeiro!'); return; }
+            alert('Disparando requisições para os suportes do WhatsApp...');
         }
 
-        // --- LÓGICA DO BALÃO 2: MULTIPLICADOR DE TEXTO ---
+        // Multiplicador
         function executarMultiplicacao() {
             const texto = document.getElementById('multiText').value;
             const count = parseInt(document.getElementById('multiCount').value) || 0;
@@ -954,24 +867,24 @@
             const textoGerado = document.getElementById('multiResult').value;
             if(!textoGerado) return;
             navigator.clipboard.writeText(textoGerado);
-            alert('Texto multiplicado copiado!');
+            alert('Copiado!');
         }
 
-        // --- LÓGICA DO BALÃO 3: ARMAZENAMENTO DE TRAVAS ---
-        let listaTravas = JSON.parse(localStorage.getItem('zrx_travas') || '[{"nome": "Trava Crash V1", "conteudo": "Exemplo de codigo de trava 1..."}]');
+        // Armazenamento de Travas
+        let listaTravas = JSON.parse(localStorage.getItem('zrx_travas') || '[]');
         let travaSelecionadaAtual = null;
 
         function renderizarTravas() {
             const container = document.getElementById('listaTravasContainer');
             container.innerHTML = '';
             if(listaTravas.length === 0) {
-                container.innerHTML = '<div style="color: #64748b; font-size: 0.8rem; text-align: center;">Nenhuma trava salva ainda.</div>';
+                container.innerHTML = '<div style="color: #64748b; font-size: 0.8rem; text-align: center;">Nenhuma trava salva.</div>';
                 return;
             }
             listaTravas.forEach((trava, index) => {
                 const item = document.createElement('div');
                 item.className = 'trava-item';
-                item.innerHTML = `<span class="trava-name">${trava.nome}</span> <span style="font-size:0.75rem; color:#38bdf8;">Ver Trava</span>`;
+                item.innerHTML = `<span style="font-weight:bold;">${trava.nome}</span> <span style="font-size:0.75rem; color:#38bdf8;">Abrir</span>`;
                 item.onclick = () => abrirDetalheTrava(index);
                 container.appendChild(item);
             });
@@ -980,13 +893,13 @@
         function adicionarTrava() {
             const nome = document.getElementById('novaTravaNome').value.trim();
             const conteudo = document.getElementById('novaTravaConteudo').value.trim();
-            if(!nome || !conteudo) { alert('Preencha o nome e o conteúdo da trava!'); return; }
+            if(!nome || !conteudo) { alert('Preencha os campos!'); return; }
             listaTravas.push({ nome, conteudo });
             localStorage.setItem('zrx_travas', JSON.stringify(listaTravas));
             document.getElementById('novaTravaNome').value = '';
             document.getElementById('novaTravaConteudo').value = '';
             renderizarTravas();
-            alert('Trava adicionada com sucesso!');
+            alert('Adicionado!');
         }
 
         function abrirDetalheTrava(index) {
@@ -999,45 +912,84 @@
         function copiarTravaDetalhe() {
             if(!travaSelecionadaAtual) return;
             navigator.clipboard.writeText(travaSelecionadaAtual.conteudo);
-            alert('Conteúdo copiado!');
+            alert('Copiado!');
         }
 
         function compartilharWhatsAppTrava() {
             if(!travaSelecionadaAtual) return;
-            const textoWp = `*Trava: ${travaSelecionadaAtual.nome}*\n\n${travaSelecionadaAtual.conteudo}`;
-            window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(textoWp)}`, '_blank');
+            window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(travaSelecionadaAtual.conteudo)}`, '_blank');
         }
 
-        // --- LÓGICA DO BALÃO 4: CRIADOR DE FOTO DE TRAVA ---
-        let fotoTravaBase64 = null;
+        // --- MOTOR DE EMBUTIR CARACTERES/EMOJIS EM IMAGEM (CANVAS) ---
+        let imagemBaseObj = null;
+        let ultimaImagemGeradaUrl = null;
 
-        function carregarFotoTrava(event) {
+        function carregarImagemBase(event) {
             const file = event.target.files[0];
             if (!file) return;
             const reader = new FileReader();
             reader.onload = function(e) {
-                fotoTravaBase64 = e.target.result;
-                document.getElementById('fotoTravaPreviewContainer').innerHTML = `<img src="${fotoTravaBase64}" style="width:100%; height:100%; object-fit:cover;">`;
+                const img = new Image();
+                img.onload = function() {
+                    imagemBaseObj = img;
+                    gerarImagemComTrava();
+                };
+                img.src = e.target.result;
             };
             reader.readAsDataURL(file);
         }
 
-        function atualizarLegendaBalao() {
-            const texto = document.getElementById('inputLegendaTrava').value;
-            document.getElementById('waCaptionPreview').innerText = texto || 'Legenda da trava ou código pesado aqui...';
+        function gerarImagemComTrava() {
+            const previewBox = document.getElementById('canvasPreviewBox');
+            const textoTrava = document.getElementById('inputTravaEmbutida').value;
+
+            if (!imagemBaseObj) {
+                previewBox.innerHTML = '<span style="color: #64748b; font-size: 0.75rem; text-align: center; padding: 10px;">Carregue uma imagem base primeiro</span>';
+                return;
+            }
+
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+
+            // Definir proporções da imagem final
+            canvas.width = 800;
+            canvas.height = 800;
+
+            // Desenhar imagem de fundo esticada/centralizada
+            ctx.drawImage(imagemBaseObj, 0, 0, canvas.width, canvas.height);
+
+            // Se houver texto/emojis, aplicar camuflado ou visível na parte inferior/centralizada
+            if (textoTrava) {
+                ctx.fillStyle = 'rgba(0, 0, 0, 0.75)';
+                ctx.fillRect(0, canvas.height - 120, canvas.width, 120);
+
+                ctx.fillStyle = '#ffffff';
+                ctx.font = 'bold 24px sans-serif';
+                ctx.textBaseline = 'middle';
+
+                // Desenhar texto (aceita emojis e caracteres especiais)
+                ctx.fillText(textoTrava.substring(0, 100) + (textoTrava.length > 100 ? '...' : ''), 30, canvas.height - 60);
+            }
+
+            ultimaImagemGeradaUrl = canvas.toDataURL('image/png');
+            previewBox.innerHTML = `<img src="${ultimaImagemGeradaUrl}" style="width:100%; height:100%; object-fit:contain;">`;
         }
 
-        function copiarLegendaBalao() {
-            const texto = document.getElementById('inputLegendaTrava').value;
-            if(!texto) { alert('Digite uma legenda/código primeiro!'); return; }
-            navigator.clipboard.writeText(texto);
-            alert('Legenda copiada para a área de transferência!');
+        function baixarFotoGerada() {
+            if (!ultimaImagemGeradaUrl) { alert('Gere a imagem com caracteres primeiro!'); return; }
+            const a = document.createElement('a');
+            a.href = ultimaImagemGeradaUrl;
+            a.download = 'ZRX_Trava_Foto.png';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
         }
 
-        function compartilharFotoTravaWp() {
-            const texto = document.getElementById('inputLegendaTrava').value;
-            const urlWp = `https://api.whatsapp.com/send?text=${encodeURIComponent(texto)}`;
-            window.open(urlWp, '_blank');
+        function compartilharFotoGeradaWp() {
+            if (!ultimaImagemGeradaUrl) { alert('Gere a imagem com caracteres primeiro!'); return; }
+            baixarFotoGerada();
+            alert('Imagem salva no seu dispositivo! Agora abra o WhatsApp e envie esta foto na conversa.');
+            window.open('https://api.whatsapp.com/', '_blank');
         }
     </script>
 </body>
