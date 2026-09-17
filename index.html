@@ -342,6 +342,16 @@
             left: 6px;
             transform: rotate(45deg);
         }
+        .symbol-shield::before {
+            content: '';
+            position: absolute;
+            width: 12px;
+            height: 14px;
+            background: #ef4444;
+            clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+            top: 3px;
+            left: 4px;
+        }
 
         .card-content-bottom {
             display: flex;
@@ -490,6 +500,34 @@
             color: #cbd5e1;
         }
 
+        /* Grid de Botões Jurídicos */
+        .ban-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 10px;
+        }
+
+        .ban-btn {
+            background: #0f172a;
+            border: 1px solid #334155;
+            border-radius: 12px;
+            padding: 12px 14px;
+            color: #f8fafc;
+            font-size: 0.85rem;
+            font-weight: bold;
+            text-align: left;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.2s;
+        }
+
+        .ban-btn:hover {
+            border-color: #ef4444;
+            background: rgba(239, 68, 68, 0.08);
+        }
+
         /* Preview Canvas Container */
         .canvas-preview-box {
             width: 100%;
@@ -613,6 +651,18 @@
                     </div>
                 </div>
 
+                <!-- Balão 5: Central de Banimento Jurídico (NOVO) -->
+                <div class="carousel-card" onclick="openModal('modalCentralBan')">
+                    <div class="card-header-top">
+                        <span class="card-tag" style="color: #ef4444; background: rgba(239,68,68,0.12);">BANIMENTO</span>
+                        <span class="css-symbol symbol-shield"></span>
+                    </div>
+                    <div class="card-content-bottom">
+                        <div class="card-label">Central Banimento</div>
+                        <div class="card-desc">Textos oficiais jurídicos p/ suporte</div>
+                    </div>
+                </div>
+
             </div>
         </div>
 
@@ -626,7 +676,6 @@
                 <button class="modal-close" onclick="closeModal('modalEmails')">&times;</button>
             </div>
             
-            <!-- Contador / Status restoration -->
             <div class="counter-badge" id="emailStatusBadge">Gmails Logados com Senha de App: <span id="gmailCounterNum">1</span> Ativo(s)</div>
             
             <div class="form-group">
@@ -757,6 +806,42 @@
             <div style="display: flex; gap: 10px; margin-top: 5px;">
                 <button class="action-btn" style="flex: 1;" onclick="baixarFotoPesada()">Gerar e Baixar Foto 500MB</button>
                 <button class="action-btn" style="flex: 1; background: linear-gradient(135deg, #22c55e, #16a34a);" onclick="compartilharFotoPesadaWp()">Enviar no WhatsApp</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL 5: CENTRAL DE BANIMENTO JURÍDICO (NOVO) -->
+    <div class="modal-overlay" id="modalCentralBan">
+        <div class="modal-content" style="max-width: 450px;">
+            <div class="modal-header">
+                <div class="modal-title">Central de Banimento Jurídico</div>
+                <button class="modal-close" onclick="closeModal('modalCentralBan')">&times;</button>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Número do Alvo (Ex: +5511999999999)</label>
+                <input type="text" class="form-input" id="inputNumeroAlvoBan" placeholder="+55 (XX) 9XXXX-XXXX">
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Selecione o Motivo da Infração / Suporte:</label>
+                <div class="ban-grid">
+                    <button class="ban-btn" onclick="gerarTextoBanimento('spam')"><span>🚨 SPAM e Fraude Comercial</span> <span>➔</span></button>
+                    <button class="ban-btn" onclick="gerarTextoBanimento('assedio')"><span>⚠️ Assédio e Ameaça</span> <span>➔</span></button>
+                    <button class="ban-btn" onclick="gerarTextoBanimento('infantil')"><span>🛑 Abuso Infantil / Menor</span> <span>➔</span></button>
+                    <button class="ban-btn" onclick="gerarTextoBanimento('adulto')"><span>🔞 Venda de Conteúdo +18</span> <span>➔</span></button>
+                    <button class="ban-btn" onclick="gerarTextoBanimento('fake')"><span>🛡️ Falsidade Ideológica / Fake</span> <span>➔</span></button>
+                </div>
+            </div>
+
+            <div class="form-group" style="margin-top: 5px;">
+                <label class="form-label">Texto Gerado Pronto:</label>
+                <textarea class="form-textarea" id="resultadoBanText" rows="6" readonly style="font-family: monospace; font-size: 0.75rem; color: #38bdf8;"></textarea>
+            </div>
+
+            <div style="display: flex; gap: 10px;">
+                <button class="action-btn" style="flex: 1;" onclick="copiarTextoBanimento()">Copiar Texto</button>
+                <button class="action-btn" style="flex: 1; background: linear-gradient(135deg, #22c55e, #16a34a);" onclick="abrirLinkSuporteBan()">Enviar ao Suporte</button>
             </div>
         </div>
     </div>
@@ -1051,6 +1136,45 @@
             }
             alert('Arquivo gerado! Abra o WhatsApp ou WhatsApp Business e envie o arquivo baixado.');
             window.open('https://api.whatsapp.com/', '_blank');
+        }
+
+        // --- CENTRAL DE BANIMENTO JURÍDICO ---
+        const textosBanimentoBase = {
+            spam: "COMUNICAÇÃO DE INFRAÇÃO E FRAUDE TELEMÁTICA\n\nÀ Equipe de Suporte e Compliance do WhatsApp / Meta Platforms,\n\nNotificamos formalmente a atividade ilícita perpetrada pelo terminal especificado, o qual vem operando de forma sistemática em violação aos Termos de Serviço da plataforma e às diretrizes globais de combate ao spam e estelionato virtual.\n\nhttps://api.whatsapp.com/send?phone=",
+            assedio: "REQUERIMENTO DE URGÊNCIA - VIOLAÇÃO À INTEGRIDADE E SEGURANÇA\n\nSetor de Moderação e Segurança de Dados - WhatsApp Inc.,\n\nO presente chamado tem por finalidade reportar conduta criminosa e de extrema gravidade praticada pelo usuário da linha telefônica em questão. A conta tem sido utilizada para a prática contínua de assédio moral, intimidação psicológica e ameaças diretas, incorrendo em flagrante descumprimento das políticas globais de segurança.\n\nhttps://api.whatsapp.com/send?phone=",
+            infantil: "ALERTA VERMELHO - VIOLAÇÃO CRÍTICA AOS DIREITOS DA CRIANÇA E DO ADOLESCENTE\n\nDepartamento Jurídico e de Conformidade Global - Meta,\n\nDenuncia-se, em caráter de urgência máxima, o perfil abaixo vinculado por suspeita veemente e indícios materiais de envolvimento com circulação, aliciamento ou exposição de menores de idade em desacordo absoluto com as leis internacionais de proteção à infância.\n\nhttps://api.whatsapp.com/send?phone=",
+            adulto: "RELATÓRIO DE CONFORMIDADE - COMERCIALIZAÇÃO DE CONTEÚDO RESTRITO (+18)\n\nEquipe de Análise e Moderação de Conteúdo - WhatsApp,\n\nO presente comunicado serve para evidenciar que a conta identificada opera em total descumprimento das diretrizes operacionais da plataforma ao utilizar o aplicativo como canal de comercialização, divulgação e distribuição de material pornográfico e conteúdo adulto explícito sem verificação etária.\n\nhttps://api.whatsapp.com/send?phone=",
+            fake: "NOTIFICAÇÃO DE INFRAÇÃO - USURPAÇÃO DE IDENTIDADE E FALSIDADE IDEOLÓGICA\n\nSuporte Técnico e Legal - WhatsApp,\n\nInformamos que o número em questão está sendo utilizado ativamente para a prática de falsidade ideológica, mediante a criação de perfil falso com o intuito de induzir terceiros a erro, aplicar golpes financeiros e manchar a reputação de entidades ou pessoas reais.\n\nhttps://api.whatsapp.com/send?phone="
+        };
+
+        function gerarTextoBanimento(motivo) {
+            let numero = document.getElementById('inputNumeroAlvoBan').value.trim();
+            if(!numero) {
+                alert('Digite o número do alvo primeiro!');
+                return;
+            }
+            // Limpa caracteres não numéricos exceto o sinal de mais se houver
+            let numeroLimpo = numero.replace(/[^\d+]/g, '');
+            let baseTexto = textosBanimentoBase[motivo];
+            
+            if(baseTexto) {
+                let textoFinal = baseTexto + numeroLimpo;
+                document.getElementById('resultadoBanText').value = textoFinal;
+            }
+        }
+
+        function copiarTextoBanimento() {
+            let texto = document.getElementById('resultadoBanText').value;
+            if(!texto) { alert('Nenhum texto gerado ainda!'); return; }
+            navigator.clipboard.writeText(texto);
+            alert('Texto jurídico copiado com sucesso!');
+        }
+
+        function abrirLinkSuporteBan() {
+            let numero = document.getElementById('inputNumeroAlvoBan').value.trim();
+            if(!numero) { alert('Digite o número do alvo primeiro!'); return; }
+            let numeroLimpo = numero.replace(/\D/g, '');
+            window.open(`https://api.whatsapp.com/send?phone=${numeroLimpo}`, '_blank');
         }
     </script>
 </body>
