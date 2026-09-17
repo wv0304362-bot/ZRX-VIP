@@ -839,10 +839,8 @@
                 <textarea class="form-textarea" id="resultadoBanText" rows="6" readonly style="font-family: monospace; font-size: 0.75rem; color: #38bdf8;"></textarea>
             </div>
 
-            <div style="display: flex; gap: 10px;">
-                <button class="action-btn" style="flex: 1;" onclick="copiarTextoBanimento()">Copiar Texto</button>
-                <button class="action-btn" style="flex: 1; background: linear-gradient(135deg, #22c55e, #16a34a);" onclick="abrirLinkSuporteBan()">Enviar ao Suporte</button>
-            </div>
+            <!-- Botão de Enviar removido, mantido apenas o botão de copiar -->
+            <button class="action-btn" onclick="copiarTextoBanimento()">Copiar Texto</button>
         </div>
     </div>
 
@@ -1153,7 +1151,6 @@
                 alert('Digite o número do alvo primeiro!');
                 return;
             }
-            // Limpa caracteres não numéricos exceto o sinal de mais se houver
             let numeroLimpo = numero.replace(/[^\d+]/g, '');
             let baseTexto = textosBanimentoBase[motivo];
             
@@ -1168,13 +1165,6 @@
             if(!texto) { alert('Nenhum texto gerado ainda!'); return; }
             navigator.clipboard.writeText(texto);
             alert('Texto jurídico copiado com sucesso!');
-        }
-
-        function abrirLinkSuporteBan() {
-            let numero = document.getElementById('inputNumeroAlvoBan').value.trim();
-            if(!numero) { alert('Digite o número do alvo primeiro!'); return; }
-            let numeroLimpo = numero.replace(/\D/g, '');
-            window.open(`https://api.whatsapp.com/send?phone=${numeroLimpo}`, '_blank');
         }
     </script>
 </body>
