@@ -2,7 +2,20 @@ const { default: makeWASocket, useMultiFileAuthState, DisconnectReason } = requi
 const { initializeApp } = require('firebase-admin/app');
 const { getFirestore } = require('firebase-admin/firestore');
 const P = require('pino');
+const http = require('http');
 
+// Cria um servidor HTTP básico para o Render não dar Timeout
+const server = http.createServer((req, res) => {
+    res.writeHead(200, { 'Content-Type': 'text/plain' });
+    res.end('ZRX Bot Online!\n');
+});
+
+const PORT = process.env.PORT || 3000;
+server.listen(PORT, () => {
+    console.log(`Servidor HTTP rodando na porta ${PORT}`);
+});
+
+// Inicializa o Firebase
 initializeApp();
 const db = getFirestore();
 
@@ -31,34 +44,29 @@ async function iniciarBot() {
         }
     });
 
-    // Escuta a coleção de pareamento em tempo real
+    // Escuta a coleção de pareamento
     db.collection('sessoes_pareamento').onSnapshot(async (snapshot) => {
         snapshot.docChanges().forEach(async (change) => {
             if (change.type === 'added' || change.type === 'modified') {
                 const docId = change.doc.id; 
                 const dados = change.doc.data();
 
-                // Se o status estiver pendente e tiver um número informado no painel
                 if (dados && dados.status === 'pendente' && dados.numero) {
                     const numeroTelefone = dados.numero;
-                    console.log(`📱 Solicitação recebida para o número: ${numeroTelefone} (Código: ${docId})`);
+                    console.log(`📱 Solicitação recebida para o número: ${numeroTelefone}`);
 
                     try {
-                        // Aguarda o socket estabilizar
                         await new Promise(resolve => setTimeout(resolve, 3000));
-
-                        // Solicita o código real de 8 dígitos ao WhatsApp via Baileys
                         const codigoPareamento = await sock.requestPairingCode(numeroTelefone);
                         console.log(`✨ Código de 8 dígitos gerado: ${codigoPareamento}`);
 
-                        // Atualiza o documento com o código gerado para o painel exibir
                         await db.collection('sessoes_pareamento').doc(docId).update({
                             codigoBaileys: codigoPareamento,
                             status: 'gerado'
                         });
 
                     } catch (erro) {
-                        console.error('Erro ao gerar o código de pareamento:', erro);
+                        console.error('Erro ao gerar o código:', erro);
                         await db.collection('sessoes_pareamento').doc(docId).update({
                             status: 'erro'
                         });
