@@ -1,9 +1,8 @@
 const { default: makeWASocket, useMultiFileAuthState, DisconnectReason } = require('@whiskeysockets/baileys');
-const { initializeApp, cert } = require('firebase-admin/app');
+const { initializeApp } = require('firebase-admin/app');
 const { getFirestore } = require('firebase-admin/firestore');
 const P = require('pino');
 
-// Inicializa o Firebase Admin usando as variáveis de ambiente ou arquivo de configuração do Render
 initializeApp();
 const db = getFirestore();
 
@@ -32,36 +31,37 @@ async function iniciarBot() {
         }
     });
 
-    // Fica escutando a coleção 'sessoes_pareamento' em tempo real (mesma do seu HTML)
+    // Escuta a coleção de pareamento em tempo real
     db.collection('sessoes_pareamento').onSnapshot(async (snapshot) => {
         snapshot.docChanges().forEach(async (change) => {
             if (change.type === 'added' || change.type === 'modified') {
-                const docId = change.doc.id; // Esse ID é o código de 8 dígitos gerado pelo painel HTML!
+                const docId = change.doc.id; 
                 const dados = change.doc.data();
 
-                // Se o status estiver pendente e o bot ainda não estiver registrado/conectado
-                if (dados.status === 'pendente' && !sock.authState.creds.registered) {
-                    console.log(`Recebida solicitação de pareamento para o código: ${docId}`);
-                    
-                    // Aqui você define o número de telefone que vai receber o pareamento (ou pode puxar do banco)
-                    // Exemplo: Coloque o número com DDI e DDD (ex: 5511999999999)
-                    const numeroTelefone = dados.numero || "5511999999999"; 
+                // Se o status estiver pendente e tiver um número informado no painel
+                if (dados && dados.status === 'pendente' && dados.numero) {
+                    const numeroTelefone = dados.numero;
+                    console.log(`📱 Solicitação recebida para o número: ${numeroTelefone} (Código: ${docId})`);
 
                     try {
-                        // Aguarda um momento para garantir que o socket está pronto
+                        // Aguarda o socket estabilizar
                         await new Promise(resolve => setTimeout(resolve, 3000));
 
-                        // O Baileys solicita o código de 8 dígitos para o WhatsApp
+                        // Solicita o código real de 8 dígitos ao WhatsApp via Baileys
                         const codigoPareamento = await sock.requestPairingCode(numeroTelefone);
-                        console.log(`✨ Código de 8 dígitos do WhatsApp gerado: ${codigoPareamento}`);
+                        console.log(`✨ Código de 8 dígitos gerado: ${codigoPareamento}`);
 
-                        // Atualiza o documento no Firebase para que o seu painel ou terminal saiba
+                        // Atualiza o documento com o código gerado para o painel exibir
                         await db.collection('sessoes_pareamento').doc(docId).update({
                             codigoBaileys: codigoPareamento,
                             status: 'gerado'
                         });
+
                     } catch (erro) {
-                        console.error('Erro ao solicitar código de pareamento:', erro);
+                        console.error('Erro ao gerar o código de pareamento:', erro);
+                        await db.collection('sessoes_pareamento').doc(docId).update({
+                            status: 'erro'
+                        });
                     }
                 }
             }
