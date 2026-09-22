@@ -690,7 +690,7 @@
 
     </div>
 
-    <!-- MODAL 1: PAINEL DE E-MAILS (RAJADA AUTOMÁTICA REAL) -->
+    <!-- MODAL 1: PAINEL DE E-MAILS -->
     <div class="modal-overlay" id="modalEmails">
         <div class="modal-content">
             <div class="modal-header">
@@ -865,7 +865,7 @@
         </div>
     </div>
 
-    <!-- MODAL 6: PAREAMENTO FIREBASE (CÓDIGO 8 DÍGITOS, ADICIONAR E DELETAR NÚMERO) -->
+    <!-- MODAL 6: PAREAMENTO FIREBASE (CÓDIGO 8 DÍGITOS REAIS, ADICIONAR E DELETAR NÚMERO) -->
     <div class="modal-overlay" id="modalPareamentoFirebase">
         <div class="modal-content" style="max-width: 450px;">
             <div class="modal-header">
@@ -878,7 +878,7 @@
                 <label class="form-label">1. Código de Pareamento (8 Dígitos)</label>
                 <div class="counter-badge" style="font-size: 1.3rem; letter-spacing: 2px; padding: 12px; background: #0f172a;" id="displayCodigoPareamento">--------</div>
             </div>
-            <button class="action-btn" onclick="iniciarSessaoPareamento()">Gerar Novo Código Firebase</button>
+            <button class="action-btn" onclick="window.iniciarSessaoPareamento()">Gerar Novo Código Firebase</button>
 
             <hr style="border: 0; border-top: 1px solid #334155; margin: 4px 0;">
 
@@ -887,14 +887,14 @@
                 <label class="form-label">2. Cadastrar / Salvar Número no Banco</label>
                 <input type="text" class="form-input" id="inputNumeroSalvarBD" placeholder="Ex: 5511999999999">
             </div>
-            <button class="action-btn" style="background: linear-gradient(135deg, #22c55e, #16a34a);" onclick="salvarNumeroNoFirestore()">Salvar Número no Banco</button>
+            <button class="action-btn" style="background: linear-gradient(135deg, #22c55e, #16a34a);" onclick="window.salvarNumeroNoFirestore()">Salvar Número no Banco</button>
 
             <!-- Bloco para Deletar Número -->
             <div class="form-group" style="margin-top: 5px;">
                 <label class="form-label">3. Deletar Número do Banco</label>
                 <input type="text" class="form-input" id="inputNumeroDeletarBD" placeholder="Ex: 5511999999999">
             </div>
-            <button class="action-btn" style="background: linear-gradient(135deg, #ef4444, #dc2626);" onclick="deletarNumeroDoFirestore()">Deletar Número do Banco</button>
+            <button class="action-btn" style="background: linear-gradient(135deg, #ef4444, #dc2626);" onclick="window.deletarNumeroDoFirestore()">Deletar Número do Banco</button>
         </div>
     </div>
 
@@ -957,7 +957,6 @@
             }
 
             try {
-                // Salva o número na coleção "numeros_autorizados" usando o próprio número como ID do documento
                 await setDoc(doc(db, "numeros_autorizados", numero), {
                     numero: numero,
                     cadastradoEm: new Date().toISOString()
@@ -979,7 +978,6 @@
             }
 
             try {
-                // Deleta o documento correspondente ao número na coleção "numeros_autorizados"
                 await deleteDoc(doc(db, "numeros_autorizados", numero));
                 alert(`Número ${numero} deletado do Firestore com sucesso!`);
                 document.getElementById("inputNumeroDeletarBD").value = "";
