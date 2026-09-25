@@ -28,22 +28,26 @@
             display: flex;
             flex-direction: column;
             position: relative;
+            overflow: hidden;
         }
 
         .view-section {
-            flex: 1;
+            position: absolute;
+            top: 0;
+            left: 0;
             width: 100%;
+            height: calc(100vh - 75px); /* Deixa espaço exato para a dock */
             overflow-y: auto;
             display: none;
-            padding-bottom: 80px; /* Espaço para a dock bar */
+            flex-direction: column;
+            padding-bottom: 20px;
         }
 
         .view-section.active {
             display: flex;
-            flex-direction: column;
         }
 
-        /* --- BARRA DE NAVEGAÇÃO INFERIOR --- */
+        /* --- BARRA DE NAVEGAÇÃO INFERIOR FIXA --- */
         .cyber-dock {
             position: absolute;
             bottom: 0;
@@ -56,7 +60,7 @@
             display: flex;
             align-items: center;
             justify-content: space-around;
-            z-index: 1000;
+            z-index: 3000;
             padding: 0 20px;
         }
 
@@ -179,6 +183,7 @@
             display: flex;
             flex-direction: column;
             gap: 16px;
+            padding-bottom: 30px;
         }
 
         .profile-card {
@@ -234,7 +239,6 @@
         .profile-info { flex-grow: 1; }
         .name-wrapper { display: flex; align-items: center; gap: 8px; margin-bottom: 2px; }
         .profile-info h2 { font-size: 1.05rem; color: #f8fafc; }
-        .edit-icon { width: 14px; height: 14px; fill: #94a3b8; cursor: pointer; }
         
         .profile-tag-id {
             font-size: 0.8rem;
@@ -294,6 +298,7 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
+            flex-shrink: 0;
         }
         .chat-title { font-size: 1rem; font-weight: 700; color: #38bdf8; }
         
@@ -360,6 +365,7 @@
             border-top: 1px solid #334155;
             display: flex;
             gap: 8px;
+            flex-shrink: 0;
         }
 
         /* --- TELA DE PERFIL --- */
@@ -386,7 +392,7 @@
             inset: 0;
             background: rgba(5, 8, 15, 0.85);
             backdrop-filter: blur(8px);
-            z-index: 2000;
+            z-index: 4000;
             display: none;
             align-items: center;
             justify-content: center;
@@ -577,14 +583,14 @@
             </div>
         </div>
 
-        <!-- ================= DOCK NAVIGATION BAR ================= -->
+        <!-- ================= DOCK NAVIGATION BAR (FIXA EMBAIXO) ================= -->
         <nav class="cyber-dock">
             <button class="dock-item" id="dock-btn-chat" onclick="mudarAba('chat')">
                 <svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM6 9h12v2H6V9zm8 5H6v-2h8v2zm4-6H6V6h12v2z"/></svg>
                 <span>CHATE</span>
             </button>
 
-            <div class="dock-center-btn" onclick="mudarAba('home')">
+            <div class="dock-center-btn" id="dock-btn-home" onclick="mudarAba('home')">
                 <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
             </div>
 
@@ -616,14 +622,12 @@
         let mapaDetalhe = null;
         let currentTargetId = localStorage.getItem('currentTargetId') || "alvo01";
 
-        // Inicialização ao carregar a página
         window.onload = function() {
             verificarInstalacaoPerfil();
             carregarDadosInterface();
             escutarMensagensChat();
         };
 
-        // Regra de Instalação: Se não tiver nome ou ID configurado, força o cadastro inicial
         function verificarInstalacaoPerfil() {
             let nome = localStorage.getItem('userName');
             let tagId = localStorage.getItem('userTagId');
@@ -667,8 +671,6 @@
 
             localStorage.setItem('userName', nome);
             localStorage.setItem('userTagId', tagId);
-            
-            // Sincroniza o perfil no Firebase na pasta /perfis/{id_limpo}
             sincronizarPerfilFirebase(nome, tagId, "");
 
             fecharModalDireto();
@@ -695,7 +697,6 @@
             if (savedBanner) aplicarBanner(savedBanner, savedBannerType === 'video');
         }
 
-        // --- SISTEMA DE ABAS (DOCK) ---
         function mudarAba(aba) {
             document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
             document.querySelectorAll('.dock-item').forEach(el => el.classList.remove('active'));
@@ -711,7 +712,6 @@
             }
         }
 
-        // --- SALVAR PERFIL ---
         async function salvarPerfilUsuario() {
             const novoNome = document.getElementById('profile-edit-name').value.trim();
             let novaTag = document.getElementById('profile-edit-tag').value.trim();
@@ -750,7 +750,6 @@
             }
         }
 
-        // --- BUSCAR PERFIL POR ID ---
         function abrirBuscaPerfilPorId() {
             const modal = document.getElementById('app-modal');
             document.getElementById('modal-title').textContent = "Buscar Perfil por @ID";
@@ -758,7 +757,7 @@
 
             document.getElementById('modal-body').innerHTML = `
                 <div style="font-size: 0.8rem; color: #94a3b8;">Digite o ID do usuário (com ou sem @):</div>
-                <div class="search-box-container">
+                <div class="search-box-container" style="display: flex; gap: 8px;">
                     <input type="text" id="search-id-input" class="custom-input" placeholder="@usuario">
                     <button class="custom-btn" onclick="executarBuscaPerfil()">Buscar</button>
                 </div>
@@ -801,7 +800,6 @@
             }
         }
 
-        // --- SISTEMA DE CHAT INTEGRADO AO FIREBASE ---
         async function enviarMensagemChat() {
             const input = document.getElementById('chat-input-text');
             const texto = input.value.trim();
@@ -825,13 +823,13 @@
                     body: JSON.stringify(novaMsg)
                 });
                 input.value = "";
+                atualizarMensagensChat();
             } catch (e) {
                 alert("Erro ao enviar mensagem para o chat.");
             }
         }
 
         function escutarMensagensChat() {
-            // Requisição periódica leve para atualizar o chat em tempo real sem servidor dedicado
             setInterval(atualizarMensagensChat, 3000);
             atualizarMensagensChat();
         }
@@ -877,7 +875,6 @@
             }
         }
 
-        // --- BANNER, AVATAR E FUNÇÕES AUXILIARES DO PAINEL ---
         function carregarBanner(event) {
             event.stopPropagation();
             const file = event.target.files[0];
@@ -920,7 +917,6 @@
                 const fileURL = e.target.result;
                 localStorage.setItem('userAvatar', fileURL);
                 aplicarAvatar(fileURL);
-                // Sincroniza alteração do avatar no perfil do Firebase
                 let nome = localStorage.getItem('userName');
                 let tagId = localStorage.getItem('userTagId');
                 let bio = localStorage.getItem('userBio') || "";
