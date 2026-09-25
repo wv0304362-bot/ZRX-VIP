@@ -2,1007 +2,1077 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ZRX DESTROYER V5.3</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Painel Cyber</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
     <style>
         * {
-            box-sizing: border-box;
             margin: 0;
             padding: 0;
+            box-sizing: border-box;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
-        body {
-            background-color: #0b0f19;
-            color: #ffffff;
-            width: 100vw;
-            min-height: 100vh;
-            overflow-x: hidden;
+        html, body {
+            width: 100%;
+            height: 100%;
+            background-color: #090d16;
+            color: #f8fafc;
+            overflow: hidden;
         }
 
         .app-container {
             width: 100%;
-            min-height: 100vh;
+            height: 100vh;
             background: #0f172a;
             display: flex;
             flex-direction: column;
             position: relative;
-            padding-bottom: 40px;
         }
 
-        /* Top Bar */
-        .top-bar {
+        .view-section {
+            flex: 1;
+            width: 100%;
+            overflow-y: auto;
+            display: none;
+            padding-bottom: 80px; /* Espaço para a dock bar */
+        }
+
+        .view-section.active {
             display: flex;
-            justify-content: space-between;
+            flex-direction: column;
+        }
+
+        /* --- BARRA DE NAVEGAÇÃO INFERIOR --- */
+        .cyber-dock {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 75px;
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(16px);
+            border-top: 1px solid rgba(56, 189, 248, 0.2);
+            display: flex;
             align-items: center;
-            padding: 18px 22px;
-            background: #0f172a;
-            border-bottom: 1px solid #1e293b;
-            width: 100%;
+            justify-content: space-around;
+            z-index: 1000;
+            padding: 0 20px;
         }
 
-        .menu-icon, .notif-icon {
-            font-size: 22px;
+        .dock-item {
+            background: none;
+            border: none;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
             cursor: pointer;
-            color: #94a3b8;
+            color: #64748b;
+            transition: all 0.2s ease;
+            gap: 4px;
         }
 
-        .app-title {
-            font-weight: 800;
-            font-style: italic;
-            letter-spacing: 1px;
-            font-size: 1.25rem;
-            background: linear-gradient(90deg, #38bdf8, #818cf8);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+        .dock-item svg {
+            width: 24px;
+            height: 24px;
+            fill: #64748b;
+            transition: fill 0.2s;
         }
 
-        /* Banner Section */
-        .banner-container {
+        .dock-item span {
+            font-size: 0.65rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        .dock-item.active {
+            color: #38bdf8;
+        }
+
+        .dock-item.active svg {
+            fill: #38bdf8;
+        }
+
+        /* Botão Central Brilhante (Casinha) */
+        .dock-center-btn {
             position: relative;
-            width: 100%;
-            height: 200px;
-            background: #1e293b;
-            overflow: hidden;
-            cursor: pointer;
+            top: -15px;
+            width: 58px;
+            height: 58px;
+            background: linear-gradient(135deg, #0284c7, #38bdf8);
+            border-radius: 50%;
+            border: 3px solid #0f172a;
             display: flex;
             align-items: center;
             justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 0 20px rgba(56, 189, 248, 0.6), inset 0 0 10px rgba(255, 255, 255, 0.4);
+            transition: transform 0.2s, box-shadow 0.2s;
         }
 
-        .banner-container img, .banner-container video {
+        .dock-center-btn svg {
+            width: 26px;
+            height: 26px;
+            fill: #ffffff;
+        }
+
+        .dock-center-btn:active {
+            transform: scale(0.92);
+        }
+
+        /* --- ESTILOS DO PAINEL / HOME --- */
+        .banner-container {
+            width: 100%;
+            height: 210px;
+            background: #1e293b;
+            position: relative;
+            overflow: hidden;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        .banner-container img, 
+        .banner-container video {
             width: 100%;
             height: 100%;
             object-fit: cover;
             position: absolute;
-            top: 0;
-            left: 0;
+            inset: 0;
+            z-index: 1;
         }
 
         .banner-overlay {
             position: absolute;
             inset: 0;
-            background: linear-gradient(to bottom, rgba(15,23,42,0.1), rgba(15,23,42,0.85));
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-end;
-            padding: 16px 22px;
+            background: linear-gradient(to bottom, rgba(15, 23, 42, 0.2), rgba(15, 23, 42, 0.95));
+            pointer-events: none;
             z-index: 2;
         }
 
-        .banner-watermark {
-            font-size: 1.3rem;
-            font-weight: 900;
-            font-style: italic;
-            color: #ffffff;
-            text-shadow: 0 2px 6px rgba(0,0,0,0.9);
-            letter-spacing: 0.5px;
-        }
-
-        .banner-sub {
-            font-size: 0.75rem;
-            color: #38bdf8;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .banner-upload-hint {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            background: rgba(0, 0, 0, 0.7);
-            padding: 6px 14px;
-            border-radius: 20px;
-            font-size: 0.75rem;
-            color: #cbd5e1;
-            z-index: 3;
-            border: 1px solid rgba(255,255,255,0.15);
-        }
-
-        /* Profile Section */
-        .profile-section {
-            margin: 16px 18px;
-            background: rgba(30, 41, 59, 0.9);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 18px;
-            padding: 18px;
-            display: flex;
-            align-items: center;
-            gap: 16px;
-            z-index: 4;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.4);
-        }
-
-        .avatar-container {
-            width: 75px;
-            height: 75px;
-            border-radius: 14px;
-            background: #0f172a;
-            border: 2px solid #38bdf8;
-            overflow: hidden;
+        .banner-upload-btn {
             position: relative;
-            cursor: pointer;
-            flex-shrink: 0;
+            z-index: 3;
+            background: rgba(15, 23, 42, 0.7);
+            border: 2px dashed #38bdf8;
+            border-radius: 50%;
+            width: 64px;
+            height: 64px;
             display: flex;
             align-items: center;
             justify-content: center;
+            cursor: pointer;
+            backdrop-filter: blur(4px);
         }
 
-        .avatar-container img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
+        .banner-upload-btn.hidden { display: none; }
+        .banner-upload-btn svg { width: 32px; height: 32px; fill: #38bdf8; }
 
-        .avatar-placeholder {
-            font-size: 0.7rem;
-            text-align: center;
-            color: #94a3b8;
-            padding: 4px;
-        }
-
-        .profile-info {
-            flex-grow: 1;
+        .content-body {
+            padding: 16px;
+            margin-top: -35px;
+            position: relative;
+            z-index: 4;
             display: flex;
             flex-direction: column;
-            gap: 6px;
+            gap: 16px;
         }
 
-        .profile-name-input {
-            background: transparent;
-            border: none;
-            color: #ffffff;
-            font-size: 1.15rem;
-            font-weight: bold;
-            width: 100%;
-            outline: none;
-            border-bottom: 1px dashed rgba(255,255,255,0.3);
-            padding-bottom: 2px;
-        }
-
-        .profile-role {
-            font-size: 0.75rem;
-            color: #38bdf8;
-            background: rgba(56, 189, 248, 0.12);
-            padding: 4px 10px;
-            border-radius: 20px;
-            align-self: flex-start;
-            border: 1px solid rgba(56, 189, 248, 0.25);
-            font-weight: 600;
-        }
-
-        /* Discord Button Section */
-        .social-container {
-            padding: 0 18px 20px 18px;
-            display: flex;
-            justify-content: center;
-        }
-
-        .social-btn.discord {
-            width: 100%;
-            background: linear-gradient(135deg, #5865F2, #4752C4);
-            border: none;
-            border-radius: 16px;
-            padding: 15px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #ffffff;
-            text-decoration: none;
-            font-weight: 700;
-            font-size: 1rem;
-            box-shadow: 0 4px 15px rgba(88, 101, 242, 0.4);
-        }
-
-        /* Horizontal Carousel */
-        .carousel-wrapper {
-            padding: 0 0 20px 18px;
-        }
-
-        .carousel-title {
-            font-size: 0.85rem;
-            color: #94a3b8;
-            margin-bottom: 12px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            font-weight: 700;
-        }
-
-        .carousel-container {
-            display: flex;
-            gap: 14px;
-            overflow-x: auto;
-            padding-right: 18px;
-            padding-bottom: 5px;
-            scrollbar-width: thin;
-            scrollbar-color: #334155 transparent;
-        }
-
-        .carousel-container::-webkit-scrollbar {
-            height: 6px;
-        }
-
-        .carousel-container::-webkit-scrollbar-thumb {
-            background: #334155;
-            border-radius: 10px;
-        }
-
-        .carousel-card {
-            min-width: 190px;
-            height: 125px;
-            background: #1e293b;
-            border: 1px solid #334155;
+        .profile-card {
+            background: rgba(30, 41, 59, 0.85);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(56, 189, 248, 0.3);
             border-radius: 16px;
             padding: 16px;
             display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            cursor: pointer;
-            flex-shrink: 0;
-            transition: border-color 0.2s;
-        }
-
-        .carousel-card:hover {
-            border-color: #38bdf8;
-        }
-
-        .card-header-top {
-            display: flex;
-            justify-content: space-between;
             align-items: center;
+            gap: 14px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
         }
 
-        .card-tag {
-            font-size: 0.65rem;
-            color: #38bdf8;
-            background: rgba(56, 189, 248, 0.12);
-            padding: 3px 8px;
-            border-radius: 6px;
-            font-weight: 700;
-            letter-spacing: 0.5px;
-        }
-
-        /* Símbolos CSS */
-        .css-symbol {
-            width: 20px;
-            height: 20px;
-            display: inline-block;
+        .profile-avatar-container {
             position: relative;
+            width: 65px;
+            height: 65px;
+            flex-shrink: 0;
         }
-        .symbol-gear::before {
-            content: '';
-            position: absolute;
-            width: 12px;
-            height: 12px;
+
+        .profile-avatar {
+            width: 100%;
+            height: 100%;
+            border-radius: 14px;
+            background: #1e293b;
+            overflow: hidden;
             border: 2px solid #38bdf8;
-            border-radius: 50%;
-            top: 4px;
-            left: 4px;
-            box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.3);
-        }
-        .symbol-multi::before {
-            content: '';
-            position: absolute;
-            width: 14px;
-            height: 4px;
-            background: #38bdf8;
-            top: 5px;
-            left: 3px;
-            box-shadow: 0 6px 0 #38bdf8;
-        }
-        .symbol-storage::before {
-            content: '';
-            position: absolute;
-            width: 14px;
-            height: 5px;
-            background: #38bdf8;
-            top: 3px;
-            left: 3px;
-            box-shadow: 0 7px 0 #38bdf8;
-        }
-        .symbol-shield::before {
-            content: '';
-            position: absolute;
-            width: 12px;
-            height: 14px;
-            background: #ef4444;
-            clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
-            top: 3px;
-            left: 4px;
-        }
-
-        .card-content-bottom {
             display: flex;
-            flex-direction: column;
-            gap: 3px;
-        }
-
-        .card-label {
-            font-size: 0.95rem;
-            font-weight: bold;
-            color: #f8fafc;
-        }
-
-        .card-desc {
-            font-size: 0.7rem;
-            color: #94a3b8;
-        }
-
-        /* Modais */
-        .modal-overlay {
-            position: fixed;
-            inset: 0;
-            background: rgba(11, 15, 25, 0.85);
-            backdrop-filter: blur(8px);
-            display: none;
             align-items: center;
             justify-content: center;
-            z-index: 100;
-            padding: 20px;
         }
 
-        .modal-content {
-            background: #1e293b;
+        .profile-avatar img { width: 100%; height: 100%; object-fit: cover; }
+        .profile-avatar svg { width: 28px; height: 28px; fill: #64748b; }
+
+        .avatar-upload-overlay {
+            position: absolute;
+            bottom: -4px;
+            right: -4px;
+            background: #0284c7;
+            border: 2px solid #0f172a;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+        .avatar-upload-overlay svg { width: 14px; height: 14px; fill: #ffffff; }
+
+        .profile-info { flex-grow: 1; }
+        .name-wrapper { display: flex; align-items: center; gap: 8px; margin-bottom: 2px; }
+        .profile-info h2 { font-size: 1.05rem; color: #f8fafc; }
+        .edit-icon { width: 14px; height: 14px; fill: #94a3b8; cursor: pointer; }
+        
+        .profile-tag-id {
+            font-size: 0.8rem;
+            color: #38bdf8;
+            font-weight: 600;
+            margin-bottom: 4px;
+            display: block;
+        }
+
+        .profile-badge {
+            display: inline-block;
+            font-size: 0.7rem;
+            background: rgba(2, 132, 199, 0.25);
+            color: #38bdf8;
+            padding: 3px 8px;
+            border-radius: 6px;
+            border: 1px solid rgba(2, 132, 199, 0.4);
+            font-weight: 600;
+        }
+
+        .grid-2x2 {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+
+        .action-card {
+            background: rgba(30, 41, 59, 0.6);
             border: 1px solid #334155;
-            border-radius: 20px;
-            width: 100%;
-            max-width: 420px;
-            max-height: 90vh;
+            border-radius: 16px;
+            padding: 18px 14px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .action-card:active { transform: scale(0.96); border-color: #38bdf8; }
+
+        .action-icon-wrapper {
+            width: 36px; height: 36px;
+            background: rgba(56, 189, 248, 0.1);
+            border-radius: 10px;
+            display: flex; align-items: center; justify-content: center;
+            margin-bottom: 12px;
+            border: 1px solid rgba(56, 189, 248, 0.2);
+        }
+        .action-icon-wrapper svg { width: 20px; height: 20px; fill: #38bdf8; }
+        .action-title { font-size: 0.9rem; font-weight: 600; color: #e2e8f0; margin-bottom: 2px; }
+        .action-desc { font-size: 0.75rem; color: #94a3b8; }
+
+        /* --- TELA DE CHAT --- */
+        .chat-header {
+            padding: 16px;
+            background: #1e293b;
+            border-bottom: 1px solid #334155;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .chat-title { font-size: 1rem; font-weight: 700; color: #38bdf8; }
+        
+        .chat-messages {
+            flex: 1;
+            padding: 16px;
             overflow-y: auto;
-            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .chat-message-item {
+            background: rgba(30, 41, 59, 0.7);
+            border: 1px solid #334155;
+            border-radius: 12px;
+            padding: 10px 12px;
+            max-width: 85%;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .chat-msg-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .chat-msg-avatar {
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            background: #0f172a;
+            overflow: hidden;
+            border: 1px solid #38bdf8;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .chat-msg-avatar img { width: 100%; height: 100%; object-fit: cover; }
+        .chat-msg-avatar svg { width: 14px; height: 14px; fill: #64748b; }
+
+        .chat-msg-userinfo {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .chat-msg-name { font-size: 0.8rem; font-weight: bold; color: #f8fafc; }
+        .chat-msg-id { font-size: 0.65rem; color: #38bdf8; }
+
+        .chat-msg-text {
+            font-size: 0.85rem;
+            color: #cbd5e1;
+            word-break: break-word;
+            margin-top: 4px;
+            padding-left: 34px;
+        }
+
+        .chat-input-bar {
+            padding: 12px;
+            background: #1e293b;
+            border-top: 1px solid #334155;
+            display: flex;
+            gap: 8px;
+        }
+
+        /* --- TELA DE PERFIL --- */
+        .profile-edit-body {
+            padding: 20px;
             display: flex;
             flex-direction: column;
             gap: 16px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.6);
         }
-
-        .modal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid #334155;
-            padding-bottom: 12px;
-        }
-
-        .modal-title {
-            font-size: 1.1rem;
-            font-weight: bold;
-            color: #38bdf8;
-        }
-
-        .modal-close {
-            background: transparent;
-            border: none;
-            color: #94a3b8;
-            font-size: 1.2rem;
-            cursor: pointer;
-            font-weight: bold;
-        }
-
-        .form-group {
+        .input-group {
             display: flex;
             flex-direction: column;
             gap: 6px;
         }
-
-        .form-label {
+        .input-group label {
             font-size: 0.8rem;
             color: #94a3b8;
             font-weight: 600;
         }
 
-        .form-input, .form-textarea, .form-select {
-            background: #0f172a;
-            border: 1px solid #334155;
-            border-radius: 10px;
-            padding: 12px;
-            color: #ffffff;
-            font-size: 0.95rem;
-            outline: none;
-            width: 100%;
-        }
-
-        .form-input:focus, .form-textarea:focus, .form-select:focus {
-            border-color: #38bdf8;
-        }
-
-        .action-btn {
-            background: linear-gradient(135deg, #38bdf8, #0284c7);
-            border: none;
-            border-radius: 12px;
-            padding: 14px;
-            color: #ffffff;
-            font-weight: bold;
-            font-size: 0.95rem;
-            cursor: pointer;
-            text-align: center;
-            transition: opacity 0.2s;
-        }
-
-        .action-btn:active {
-            opacity: 0.8;
-        }
-
-        .counter-badge {
-            background: rgba(56, 189, 248, 0.15);
-            color: #38bdf8;
-            padding: 8px 12px;
-            border-radius: 8px;
-            font-size: 0.85rem;
-            font-weight: bold;
-            text-align: center;
-            border: 1px solid rgba(56, 189, 248, 0.3);
-        }
-
-        .trava-item {
-            background: #0f172a;
-            border: 1px solid #334155;
-            border-radius: 12px;
-            padding: 14px;
-            display: flex;
-            justify-content: space-between;
+        /* --- MODAIS COMUNS --- */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(5, 8, 15, 0.85);
+            backdrop-filter: blur(8px);
+            z-index: 2000;
+            display: none;
             align-items: center;
-            cursor: pointer;
+            justify-content: center;
+            padding: 16px;
         }
-
-        .trava-details-box {
-            background: #0b0f19;
-            border: 1px solid #334155;
-            border-radius: 10px;
-            padding: 12px;
-            font-family: monospace;
-            font-size: 0.8rem;
-            word-break: break-all;
-            max-height: 120px;
+        .modal-overlay.active { display: flex; }
+        .modal-content {
+            background: #1e293b;
+            border: 1px solid #38bdf8;
+            border-radius: 16px;
+            width: 100%;
+            max-width: 450px;
+            max-height: 85vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+        }
+        .modal-header {
+            padding: 16px;
+            background: #0f172a;
+            border-bottom: 1px solid #334155;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .modal-title { font-size: 1rem; font-weight: 600; color: #38bdf8; }
+        .modal-close { background: none; border: none; color: #94a3b8; font-size: 1.2rem; cursor: pointer; }
+        .modal-body {
+            padding: 16px;
             overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            font-size: 0.85rem;
             color: #cbd5e1;
         }
 
-        /* Grid de Botões Jurídicos */
-        .ban-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 10px;
-        }
-
-        .ban-btn {
+        .custom-input {
+            width: 100%;
             background: #0f172a;
             border: 1px solid #334155;
-            border-radius: 12px;
-            padding: 12px 14px;
+            border-radius: 8px;
+            padding: 10px 12px;
             color: #f8fafc;
-            font-size: 0.85rem;
-            font-weight: bold;
-            text-align: left;
+            font-size: 0.9rem;
+            outline: none;
+        }
+        .custom-input:focus { border-color: #38bdf8; }
+
+        .custom-btn {
+            background: #0284c7;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            padding: 10px 16px;
+            font-weight: 600;
             cursor: pointer;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            transition: all 0.2s;
+            transition: background 0.2s;
         }
+        .custom-btn:active { background: #0369a1; }
 
-        .ban-btn:hover {
-            border-color: #ef4444;
-            background: rgba(239, 68, 68, 0.08);
+        .hidden-input { display: none; }
+        .info-row {
+            display: flex; justify-content: space-between; padding: 10px 12px;
+            background: rgba(15, 23, 42, 0.6); border-radius: 8px; border: 1px solid #334155;
         }
-
-        input[type="file"] {
-            display: none;
-        }
+        .info-label { color: #94a3b8; font-weight: 500; }
+        .info-value { color: #38bdf8; font-weight: 600; text-align: right; }
+        #mapa-ip, #mapa-log-detalhe { width: 100%; height: 200px; border-radius: 10px; border: 1px solid #334155; z-index: 1; margin-top: 6px; }
     </style>
 </head>
 <body>
 
     <div class="app-container">
-        
-        <!-- Top Navigation -->
-        <div class="top-bar">
-            <div class="menu-icon">☰</div>
-            <div class="app-title">ZRX DESTROYER</div>
-            <div class="notif-icon">🔔</div>
-        </div>
 
-        <!-- Banner Customizável -->
-        <div class="banner-container" onclick="document.getElementById('bannerInput').click()">
-            <div id="bannerMediaContainer" style="width:100%; height:100%; position:absolute; display:flex; align-items:center; justify-content:center; background:#1e293b;">
-                <span style="font-size: 0.85rem; color: #64748b;">Toque para carregar foto ou vídeo</span>
-            </div>
-            <div class="banner-overlay">
-                <div class="banner-sub">CREATED BY USER</div>
-                <div class="banner-watermark">ZRX DESTROYER V5.3</div>
-            </div>
-            <div class="banner-upload-hint">Alterar Mídia</div>
-        </div>
-        <input type="file" id="bannerInput" accept="image/*,video/*" onchange="salvarBanner(event)">
-
-        <!-- Profile Section -->
-        <div class="profile-section">
-            <div class="avatar-container" onclick="document.getElementById('avatarInput').click()">
-                <div id="avatarPreviewContainer" style="width:100%; height:100%; display:flex; align-items:center; justify-content:center;">
-                    <span class="avatar-placeholder">Foto PV</span>
+        <!-- ================= SECTION 1: HOME / PAINEL ================= -->
+        <div id="section-home" class="view-section active">
+            <div class="banner-container" id="banner-container" onclick="document.getElementById('banner-file-input').click()">
+                <div class="banner-overlay"></div>
+                <div class="banner-upload-btn" id="banner-upload-btn">
+                    <svg viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
                 </div>
+                <input type="file" id="banner-file-input" class="hidden-input" accept="image/*,video/*" onchange="carregarBanner(event)">
             </div>
-            <div class="profile-info">
-                <input type="text" class="profile-name-input" id="profileNameInput" value="ZRX USER" placeholder="Seu Nome" oninput="salvarNomePerfil()">
-                <div class="profile-role">ROLE: DEVELOPER</div>
-            </div>
-        </div>
-        <input type="file" id="avatarInput" accept="image/*" onchange="salvarAvatar(event)">
 
-        <!-- Discord Button -->
-        <div class="social-container">
-            <a href="https://discord.gg/pBRw54XR" target="_blank" class="social-btn discord">
-                <span>Entrar no Discord PV</span>
-            </a>
-        </div>
-
-        <!-- Balãozinhos com Ferramentas -->
-        <div class="carousel-wrapper">
-            <div class="carousel-title">Opções Rápidas</div>
-            <div class="carousel-container">
-                
-                <!-- Balão 1: Painel de E-mails -->
-                <div class="carousel-card" onclick="openModal('modalEmails')">
-                    <div class="card-header-top">
-                        <span class="card-tag">SUPORTE</span>
-                        <span class="css-symbol symbol-gear"></span>
+            <div class="content-body">
+                <div class="profile-card">
+                    <div class="profile-avatar-container">
+                        <div class="profile-avatar" id="profile-avatar">
+                            <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+                        </div>
+                        <div class="avatar-upload-overlay" onclick="document.getElementById('avatar-file-input').click()">
+                            <svg viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
+                        </div>
+                        <input type="file" id="avatar-file-input" class="hidden-input" accept="image/*" onchange="carregarAvatar(event)">
                     </div>
-                    <div class="card-content-bottom">
-                        <div class="card-label">Painel de E-mails</div>
-                        <div class="card-desc">Rajada automática p/ suporte</div>
+
+                    <div class="profile-info">
+                        <div class="name-wrapper">
+                            <h2 id="user-name">DEFINIR NOME</h2>
+                        </div>
+                        <span id="user-tag-id" class="profile-tag-id">@seu_id</span>
+                        <span class="profile-badge">ROLE: USER</span>
                     </div>
                 </div>
 
-                <!-- Balão 2: Multiplicador de Texto -->
-                <div class="carousel-card" onclick="openModal('modalMultiplicador')">
-                    <div class="card-header-top">
-                        <span class="card-tag">TEXTO</span>
-                        <span class="css-symbol symbol-multi"></span>
+                <div class="grid-2x2">
+                    <div class="action-card" onclick="abrirBuscaIP()">
+                        <div class="action-icon-wrapper">
+                            <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+                        </div>
+                        <div>
+                            <div class="action-title">Busca de IP</div>
+                            <div class="action-desc">Consultar IP de terceiros</div>
+                        </div>
                     </div>
-                    <div class="card-content-bottom">
-                        <div class="card-label">Multiplicador</div>
-                        <div class="card-desc">Repetir texto e contar</div>
+
+                    <div class="action-card" onclick="abrirCapturaRemota()">
+                        <div class="action-icon-wrapper">
+                            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
+                        </div>
+                        <div>
+                            <div class="action-title">Captura Remota</div>
+                            <div class="action-desc">Câmera, Áudio e Mapa</div>
+                        </div>
+                    </div>
+
+                    <div class="action-card" onclick="abrirBuscaLink()">
+                        <div class="action-icon-wrapper">
+                            <svg viewBox="0 0 24 24"><path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"/></svg>
+                        </div>
+                        <div>
+                            <div class="action-title">Busca via Link</div>
+                            <div class="action-desc">Grabify Logs</div>
+                        </div>
+                    </div>
+
+                    <div class="action-card" onclick="abrirBuscaPerfilPorId()">
+                        <div class="action-icon-wrapper">
+                            <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+                        </div>
+                        <div>
+                            <div class="action-title">Buscar Perfil</div>
+                            <div class="action-desc">Encontrar por @ID</div>
+                        </div>
                     </div>
                 </div>
-
-                <!-- Balão 3: Storage Trava -->
-                <div class="carousel-card" onclick="openModal('modalTrava')">
-                    <div class="card-header-top">
-                        <span class="card-tag">ENIGMA</span>
-                        <span class="css-symbol symbol-storage"></span>
-                    </div>
-                    <div class="card-content-bottom">
-                        <div class="card-label">Storage Trava</div>
-                        <div class="card-desc">Gerenciar e compartilhar</div>
-                    </div>
-                </div>
-
-                <!-- Balão 5: Central de Banimento Jurídico -->
-                <div class="carousel-card" onclick="openModal('modalCentralBan')">
-                    <div class="card-header-top">
-                        <span class="card-tag" style="color: #ef4444; background: rgba(239,68,68,0.12);">BANIMENTO</span>
-                        <span class="css-symbol symbol-shield"></span>
-                    </div>
-                    <div class="card-content-bottom">
-                        <div class="card-label">Central Banimento</div>
-                        <div class="card-desc">Textos oficiais jurídicos p/ suporte</div>
-                    </div>
-                </div>
-
             </div>
         </div>
 
-    </div>
-
-    <!-- MODAL 1: PAINEL DE E-MAILS -->
-    <div class="modal-overlay" id="modalEmails">
-        <div class="modal-content">
-            <div class="modal-header">
-                <div class="modal-title">Rajada de E-mails Suporte WhatsApp</div>
-                <button class="modal-close" onclick="closeModal('modalEmails')">&times;</button>
+        <!-- ================= SECTION 2: CHAT ================= -->
+        <div id="section-chat" class="view-section">
+            <div class="chat-header">
+                <span class="chat-title">Chat Global & Comunicação</span>
+                <button class="custom-btn" style="padding: 4px 10px; font-size: 0.75rem;" onclick="abrirBuscaPerfilPorId()">Buscar Alvo por ID</button>
             </div>
             
-            <div class="counter-badge" id="emailStatusBadge">Gmails Logados com Senha de App: <span id="gmailCounterNum">1</span> Ativo(s)</div>
-            
-            <div class="form-group">
-                <label class="form-label">Seu E-mail (Gmail Remetente)</label>
-                <input type="email" class="form-input" id="inputEmail" placeholder="seuemail@gmail.com" oninput="salvarCredenciaisApp()">
-            </div>
-            <div class="form-group">
-                <label class="form-label">Senha de App do Gmail (16 dígitos)</label>
-                <input type="password" class="form-input" id="inputSenha" placeholder="xxxx xxxx xxxx xxxx" oninput="salvarCredenciaisApp()">
+            <div class="chat-messages" id="chat-messages-container">
+                <div style="text-align: center; color: #64748b; font-size: 0.8rem; margin-top: 20px;">Carregando conversas do Firebase...</div>
             </div>
 
-            <hr style="border: 0; border-top: 1px solid #334155; margin: 4px 0;">
-
-            <div class="form-group">
-                <label class="form-label">Quantidade de Disparos (Limite de 100 Rajadas)</label>
-                <input type="number" class="form-input" id="inputQuantidadeRajada" value="10" min="1" max="100">
-            </div>
-
-            <div class="form-group">
-                <label class="form-label">Assunto da Denúncia</label>
-                <input type="text" class="form-input" id="inputAssunto" value="Denúncia de Violação de Termos - Conta WhatsApp" placeholder="Assunto do e-mail">
-            </div>
-
-            <div class="form-group">
-                <label class="form-label">Mensagem / Relatório</label>
-                <textarea class="form-textarea" id="inputMensagem" rows="3" placeholder="Descreva a infração...">Olá equipe de suporte do WhatsApp, venho por meio deste relatar contas violando os termos...</textarea>
-            </div>
-
-            <button class="action-btn" style="background: linear-gradient(135deg, #22c55e, #16a34a);" onclick="executarRajadaEmailsReal()">Disparar Rajada Real Automática</button>
-        </div>
-    </div>
-
-    <!-- MODAL 2: MULTIPLICADOR DE TEXTO -->
-    <div class="modal-overlay" id="modalMultiplicador">
-        <div class="modal-content">
-            <div class="modal-header">
-                <div class="modal-title">Multiplicador de Texto</div>
-                <button class="modal-close" onclick="closeModal('modalMultiplicador')">&times;</button>
-            </div>
-            <div class="form-group">
-                <label class="form-label">Texto ou Símbolo / Emoji</label>
-                <input type="text" class="form-input" id="multiText" placeholder="Digite o texto ou emoji..." oninput="executarMultiplicacao()">
-            </div>
-            <div class="form-group">
-                <label class="form-label">Quantidade de Repetições</label>
-                <input type="number" class="form-input" id="multiCount" value="1000" min="1" max="10000" oninput="executarMultiplicacao()">
-            </div>
-            <div class="counter-badge" id="charCounterDisplay">Total de Caracteres: 0</div>
-            <div class="form-group">
-                <label class="form-label">Resultado:</label>
-                <textarea class="form-textarea" id="multiResult" rows="4" readonly style="font-family: monospace; font-size: 0.75rem;"></textarea>
-            </div>
-            <button class="action-btn" onclick="copiarTextoMultiplicado()">Copiar Texto Gerado</button>
-        </div>
-    </div>
-
-    <!-- MODAL 3: ARMAZENAMENTO DE TRAVAS -->
-    <div class="modal-overlay" id="modalTrava">
-        <div class="modal-content">
-            <div class="modal-header">
-                <div class="modal-title">Armazenamento de Travas</div>
-                <button class="modal-close" onclick="closeModal('modalTrava')">&times;</button>
-            </div>
-            <div class="form-group">
-                <label class="form-label">Adicionar Nova Trava</label>
-                <input type="text" class="form-input" id="novaTravaNome" placeholder="Nome da Trava">
-            </div>
-            <div class="form-group">
-                <textarea class="form-textarea" id="novaTravaConteudo" rows="2" placeholder="Cole o código/caracteres aqui..."></textarea>
-            </div>
-            <button class="action-btn" onclick="adicionarTrava()">Adicionar Trava</button>
-            <div class="carousel-title" style="margin-top: 10px;">Suas Travas Salvas</div>
-            <div id="listaTravasContainer" style="display: flex; flex-direction: column; gap: 8px; max-height: 200px; overflow-y: auto;"></div>
-        </div>
-    </div>
-
-    <!-- MODAL DETALHE DA TRAVA -->
-    <div class="modal-overlay" id="modalTravaDetalhe">
-        <div class="modal-content">
-            <div class="modal-header">
-                <div class="modal-title" id="detalheTravaTitulo">Detalhes da Trava</div>
-                <button class="modal-close" onclick="closeModal('modalTravaDetalhe')">&times;</button>
-            </div>
-            <div class="form-group">
-                <label class="form-label">Nome:</label>
-                <div id="detalheNome" style="font-weight: bold; color: #38bdf8;"></div>
-            </div>
-            <div class="form-group">
-                <label class="form-label">Conteúdo:</label>
-                <div class="trava-details-box" id="detalheConteudo"></div>
-            </div>
-            <div style="display: flex; gap: 10px;">
-                <button class="action-btn" style="flex: 1;" onclick="copiarTravaDetalhe()">Copiar</button>
-                <button class="action-btn" style="flex: 1; background: linear-gradient(135deg, #22c55e, #16a34a);" onclick="compartilharWhatsAppTrava()">Compartilhar</button>
+            <div class="chat-input-bar">
+                <input type="text" id="chat-input-text" class="custom-input" placeholder="Digite sua mensagem..." onkeypress="if(event.key === 'Enter') enviarMensagemChat()">
+                <button class="custom-btn" onclick="enviarMensagemChat()">Enviar</button>
             </div>
         </div>
-    </div>
 
-    <!-- MODAL 5: CENTRAL DE BANIMENTO JURÍDICO -->
-    <div class="modal-overlay" id="modalCentralBan">
-        <div class="modal-content" style="max-width: 450px;">
-            <div class="modal-header">
-                <div class="modal-title">Central de Banimento Jurídico</div>
-                <button class="modal-close" onclick="closeModal('modalCentralBan')">&times;</button>
+        <!-- ================= SECTION 3: PERFIL ================= -->
+        <div id="section-profile" class="view-section">
+            <div class="chat-header">
+                <span class="chat-title">Configurações de Perfil</span>
             </div>
-
-            <div class="form-group">
-                <label class="form-label">Número do Alvo (Ex: +5511999999999)</label>
-                <input type="text" class="form-input" id="inputNumeroAlvoBan" placeholder="+55 (XX) 9XXXX-XXXX">
-            </div>
-
-            <div class="form-group">
-                <label class="form-label">Selecione o Motivo da Infração / Suporte:</label>
-                <div class="ban-grid">
-                    <button class="ban-btn" onclick="gerarTextoBanimento('spam')"><span>🚨 SPAM e Fraude Comercial</span> <span>➔</span></button>
-                    <button class="ban-btn" onclick="gerarTextoBanimento('assedio')"><span>⚠️ Assédio e Ameaça</span> <span>➔</span></button>
-                    <button class="ban-btn" onclick="gerarTextoBanimento('infantil')"><span>🛑 Abuso Infantil / Menor</span> <span>➔</span></button>
-                    <button class="ban-btn" onclick="gerarTextoBanimento('adulto')"><span>🔞 Venda de Conteúdo +18</span> <span>➔</span></button>
-                    <button class="ban-btn" onclick="gerarTextoBanimento('fake')"><span>🛡️ Falsidade Ideológica / Fake</span> <span>➔</span></button>
+            <div class="profile-edit-body">
+                <div class="input-group">
+                    <label>Seu Nome de Exibição:</label>
+                    <input type="text" id="profile-edit-name" class="custom-input" placeholder="Seu nome">
                 </div>
+                <div class="input-group">
+                    <label>Seu ID Único (Obrigatório começar com @):</label>
+                    <input type="text" id="profile-edit-tag" class="custom-input" placeholder="@exemplo">
+                </div>
+                <div class="input-group">
+                    <label>Sua Biografia:</label>
+                    <textarea id="profile-edit-bio" class="custom-input" rows="3" placeholder="Escreva algo sobre você..."></textarea>
+                </div>
+                <button class="custom-btn" onclick="salvarPerfilUsuario()">Salvar Alterações</button>
+            </div>
+        </div>
+
+        <!-- ================= DOCK NAVIGATION BAR ================= -->
+        <nav class="cyber-dock">
+            <button class="dock-item" id="dock-btn-chat" onclick="mudarAba('chat')">
+                <svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM6 9h12v2H6V9zm8 5H6v-2h8v2zm4-6H6V6h12v2z"/></svg>
+                <span>CHATE</span>
+            </button>
+
+            <div class="dock-center-btn" onclick="mudarAba('home')">
+                <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
             </div>
 
-            <div class="form-group" style="margin-top: 5px;">
-                <label class="form-label">Texto Gerado Pronto:</label>
-                <textarea class="form-textarea" id="resultadoBanText" rows="6" readonly style="font-family: monospace; font-size: 0.75rem; color: #38bdf8;"></textarea>
-            </div>
+            <button class="dock-item" id="dock-btn-profile" onclick="mudarAba('profile')">
+                <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+                <span>PERFIL</span>
+            </button>
+        </nav>
 
-            <button class="action-btn" onclick="copiarTextoBanimento()">Copiar Texto</button>
+    </div>
+
+    <!-- ================= MODAL GERAL ================= -->
+    <div class="modal-overlay" id="app-modal" onclick="fecharModal(event)">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <span class="modal-title" id="modal-title">Painel de Dados</span>
+                <button class="modal-close" onclick="fecharModalDireto()">&times;</button>
+            </div>
+            <div class="modal-body" id="modal-body"></div>
         </div>
     </div>
 
+    <!-- SCRIPT DO LEAFLET E LÓGICA DO PAINEL / FIREBASE -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
     <script>
-        window.addEventListener('DOMContentLoaded', () => {
-            const savedName = localStorage.getItem('zrx_profile_name');
-            if(savedName) document.getElementById('profileNameInput').value = savedName;
+        const FIREBASE_DB_URL = "https://linkapi1-zrx-default-rtdb.firebaseio.com";
+        let mapaIP = null;
+        let marcadorIP = null;
+        let mapaDetalhe = null;
+        let currentTargetId = localStorage.getItem('currentTargetId') || "alvo01";
 
-            const savedAvatar = localStorage.getItem('zrx_avatar');
-            if(savedAvatar) {
-                document.getElementById('avatarPreviewContainer').innerHTML = `<img src="${savedAvatar}" style="width:100%; height:100%; object-fit:cover;">`;
-            }
+        // Inicialização ao carregar a página
+        window.onload = function() {
+            verificarInstalacaoPerfil();
+            carregarDadosInterface();
+            escutarMensagensChat();
+        };
 
-            const savedBanner = localStorage.getItem('zrx_banner');
-            const savedBannerType = localStorage.getItem('zrx_banner_type');
-            if(savedBanner) {
-                const container = document.getElementById('bannerMediaContainer');
-                container.innerHTML = '';
-                if(savedBannerType && savedBannerType.startsWith('video/')) {
-                    const video = document.createElement('video');
-                    video.src = savedBanner;
-                    video.autoplay = true; video.loop = true; video.muted = true;
-                    video.style.width = '100%'; video.style.height = '100%'; video.style.objectFit = 'cover';
-                    container.appendChild(video);
-                } else {
-                    const img = document.createElement('img');
-                    img.src = savedBanner;
-                    img.style.width = '100%'; img.style.height = '100%'; img.style.objectFit = 'cover';
-                    container.appendChild(img);
-                }
-            }
+        // Regra de Instalação: Se não tiver nome ou ID configurado, força o cadastro inicial
+        function verificarInstalacaoPerfil() {
+            let nome = localStorage.getItem('userName');
+            let tagId = localStorage.getItem('userTagId');
 
-            const savedEmail = localStorage.getItem('zrx_user_email');
-            const savedSenhaApp = localStorage.getItem('zrx_user_senha_app');
-            if(savedEmail) {
-                document.getElementById('inputEmail').value = savedEmail;
-                atualizarContadorGmails(true);
-            }
-            if(savedSenhaApp) document.getElementById('inputSenha').value = savedSenhaApp;
-        });
-
-        function salvarNomePerfil() {
-            localStorage.setItem('zrx_profile_name', document.getElementById('profileNameInput').value);
-        }
-
-        function salvarAvatar(event) {
-            const file = event.target.files[0];
-            if (!file) return;
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                localStorage.setItem('zrx_avatar', e.target.result);
-                document.getElementById('avatarPreviewContainer').innerHTML = `<img src="${e.target.result}" style="width:100%; height:100%; object-fit:cover;">`;
-            };
-            reader.readAsDataURL(file);
-        }
-
-        function salvarBanner(event) {
-            const file = event.target.files[0];
-            if (!file) return;
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                localStorage.setItem('zrx_banner', e.target.result);
-                localStorage.setItem('zrx_banner_type', file.type);
-                const container = document.getElementById('bannerMediaContainer');
-                container.innerHTML = '';
-                if (file.type.startsWith('video/')) {
-                    const video = document.createElement('video');
-                    video.src = e.target.result;
-                    video.autoplay = true; video.loop = true; video.muted = true;
-                    video.style.width = '100%'; video.style.height = '100%'; video.style.objectFit = 'cover';
-                    container.appendChild(video);
-                } else {
-                    const img = document.createElement('img');
-                    img.src = e.target.result;
-                    img.style.width = '100%'; img.style.height = '100%'; img.style.objectFit = 'cover';
-                    container.appendChild(img);
-                }
-            };
-            reader.readAsDataURL(file);
-        }
-
-        function openModal(modalId) {
-            document.getElementById(modalId).style.display = 'flex';
-            if(modalId === 'modalMultiplicador') executarMultiplicacao();
-            if(modalId === 'modalTrava') renderizarTravas();
-        }
-
-        function closeModal(modalId) {
-            document.getElementById(modalId).style.display = 'none';
-        }
-
-        function salvarCredenciaisApp() {
-            const email = document.getElementById('inputEmail').value.trim();
-            const senha = document.getElementById('inputSenha').value.trim();
-            localStorage.setItem('zrx_user_email', email);
-            localStorage.setItem('zrx_user_senha_app', senha);
-            atualizarContadorGmails(email.length > 0);
-        }
-
-        function atualizarContadorGmails(temEmail) {
-            const numEl = document.getElementById('gmailCounterNum');
-            if(numEl) {
-                numEl.innerText = temEmail ? "1" : "0";
+            if (!nome || !tagId || !tagId.startsWith('@')) {
+                abrirModalInstalacao();
             }
         }
 
-        function executarRajadaEmailsReal() {
-            const remetente = document.getElementById('inputEmail').value.trim();
-            const senhaApp = document.getElementById('inputSenha').value.trim();
-            const qtdRajadas = parseInt(document.getElementById('inputQuantidadeRajada').value) || 1;
-            const assunto = document.getElementById('inputAssunto').value.trim();
-            const mensagemBase = document.getElementById('inputMensagem').value.trim();
+        function abrirModalInstalacao() {
+            const modal = document.getElementById('app-modal');
+            document.getElementById('modal-title').textContent = "Configuração Inicial do Painel";
+            modal.classList.add('active');
 
-            if(!remetente || !senhaApp) {
-                alert('Por favor, preencha o seu e-mail e a Senha de App do Gmail!');
+            document.getElementById('modal-body').innerHTML = `
+                <div style="font-size: 0.85rem; color: #94a3b8; margin-bottom: 4px;">Bem-vindo! Para usar o chat e o painel, defina suas credenciais:</div>
+                <div class="input-group">
+                    <label>Seu Nome:</label>
+                    <input type="text" id="setup-name" class="custom-input" placeholder="Ex: CyberUser">
+                </div>
+                <div class="input-group">
+                    <label>Seu ID (Obrigatório começar com @):</label>
+                    <input type="text" id="setup-tag" class="custom-input" placeholder="Ex: @usuario01" value="@">
+                </div>
+                <button class="custom-btn" style="margin-top: 8px;" onclick="salvarInstalacaoInicial()">Concluir Configuração</button>
+            `;
+        }
+
+        function salvarInstalacaoInicial() {
+            const nome = document.getElementById('setup-name').value.trim();
+            let tagId = document.getElementById('setup-tag').value.trim();
+
+            if (!nome) {
+                alert("Por favor, digite um nome válido.");
+                return;
+            }
+            if (!tagId.startsWith('@') || tagId.length < 2) {
+                alert("O ID deve começar obrigatoriamente com o caractere @ (Ex: @hacker).");
                 return;
             }
 
-            if(qtdRajadas > 100) {
-                alert('O limite máximo permitido por rajada é de 100 disparos!');
+            localStorage.setItem('userName', nome);
+            localStorage.setItem('userTagId', tagId);
+            
+            // Sincroniza o perfil no Firebase na pasta /perfis/{id_limpo}
+            sincronizarPerfilFirebase(nome, tagId, "");
+
+            fecharModalDireto();
+            carregarDadosInterface();
+            alert("Perfil configurado com sucesso!");
+        }
+
+        function carregarDadosInterface() {
+            const savedName = localStorage.getItem('userName') || "DEFINIR NOME";
+            const savedTag = localStorage.getItem('userTagId') || "@seu_id";
+            
+            document.getElementById('user-name').textContent = savedName;
+            document.getElementById('user-tag-id').textContent = savedTag;
+            
+            document.getElementById('profile-edit-name').value = savedName === "DEFINIR NOME" ? "" : savedName;
+            document.getElementById('profile-edit-tag').value = savedTag;
+            document.getElementById('profile-edit-bio').value = localStorage.getItem('userBio') || "";
+
+            const savedAvatar = localStorage.getItem('userAvatar');
+            if (savedAvatar) aplicarAvatar(savedAvatar);
+
+            const savedBanner = localStorage.getItem('userBanner');
+            const savedBannerType = localStorage.getItem('userBannerType');
+            if (savedBanner) aplicarBanner(savedBanner, savedBannerType === 'video');
+        }
+
+        // --- SISTEMA DE ABAS (DOCK) ---
+        function mudarAba(aba) {
+            document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.dock-item').forEach(el => el.classList.remove('active'));
+
+            if (aba === 'home') {
+                document.getElementById('section-home').classList.add('active');
+            } else if (aba === 'chat') {
+                document.getElementById('section-chat').classList.add('active');
+                document.getElementById('dock-btn-chat').classList.add('active');
+            } else if (aba === 'profile') {
+                document.getElementById('section-profile').classList.add('active');
+                document.getElementById('dock-btn-profile').classList.add('active');
+            }
+        }
+
+        // --- SALVAR PERFIL ---
+        async function salvarPerfilUsuario() {
+            const novoNome = document.getElementById('profile-edit-name').value.trim();
+            let novaTag = document.getElementById('profile-edit-tag').value.trim();
+            const novaBio = document.getElementById('profile-edit-bio').value.trim();
+
+            if (!novoNome || !novaTag) {
+                alert("Preencha o nome e o ID.");
+                return;
+            }
+            if (!novaTag.startsWith('@')) {
+                alert("O ID precisa começar obrigatoriamente com @.");
                 return;
             }
 
-            const listaSuportes = [
-                "support@whatsapp.com",
-                "smb_support@support.whatsapp.com",
-                "android_support@whatsapp.com",
-                "support@support.whatsapp.com",
-                "accessibility@support.whatsapp.com"
-            ];
+            localStorage.setItem('userName', novoNome);
+            localStorage.setItem('userTagId', novaTag);
+            localStorage.setItem('userBio', novaBio);
 
-            alert(`Iniciando rajada real: ${qtdRajadas} disparos automáticos para todos os suportes (${listaSuportes.length} endereços simultâneos). Total de e-mails em andamento...`);
+            await sincronizarPerfilFirebase(novoNome, novaTag, novaBio);
 
-            let disparosRealizados = 0;
-            const intervalo = setInterval(() => {
-                if(disparosRealizados >= qtdRajadas) {
-                    clearInterval(intervalo);
-                    alert(`Rajada concluída! ${qtdRajadas * listaSuportes.length} e-mails gerados e disparados em lote real via conta: ${remetente}`);
+            carregarDadosInterface();
+            alert("Perfil atualizado com sucesso!");
+            mudarAba('home');
+        }
+
+        async function sincronizarPerfilFirebase(nome, tagId, bio) {
+            try {
+                let cleanKey = tagId.replace('@', '');
+                let avatar = localStorage.getItem('userAvatar') || "";
+                await fetch(`${FIREBASE_DB_URL}/perfis/${cleanKey}.json`, {
+                    method: 'PUT',
+                    body: JSON.stringify({ nome, tagId, bio, avatar, timestamp: Date.now() })
+                });
+            } catch (e) {
+                console.error("Erro ao sincronizar perfil:", e);
+            }
+        }
+
+        // --- BUSCAR PERFIL POR ID ---
+        function abrirBuscaPerfilPorId() {
+            const modal = document.getElementById('app-modal');
+            document.getElementById('modal-title').textContent = "Buscar Perfil por @ID";
+            modal.classList.add('active');
+
+            document.getElementById('modal-body').innerHTML = `
+                <div style="font-size: 0.8rem; color: #94a3b8;">Digite o ID do usuário (com ou sem @):</div>
+                <div class="search-box-container">
+                    <input type="text" id="search-id-input" class="custom-input" placeholder="@usuario">
+                    <button class="custom-btn" onclick="executarBuscaPerfil()">Buscar</button>
+                </div>
+                <div id="perfil-search-result" style="margin-top: 8px;"></div>
+            `;
+        }
+
+        async function executarBuscaPerfil() {
+            let queryId = document.getElementById('search-id-input').value.trim().replace('@', '');
+            const resultBox = document.getElementById('perfil-search-result');
+            if (!queryId) return;
+
+            resultBox.innerHTML = `<div style="text-align: center; color: #94a3b8; padding: 10px;">Buscando perfil...</div>`;
+
+            try {
+                let response = await fetch(`${FIREBASE_DB_URL}/perfis/${queryId}.json`);
+                let perfil = await response.json();
+
+                if (!perfil) {
+                    resultBox.innerHTML = `<div style="color: #ef4444; text-align: center; padding: 10px;">Nenhum usuário encontrado com este ID.</div>`;
                     return;
                 }
 
-                listaSuportes.forEach((suporteDestino, index) => {
-                    const mensagemFinal = `${mensagemBase}\n\n[Rajada ID: ${disparosRealizados + 1}/${qtdRajadas}]\n[Remetente Automatizado]: ${remetente}`;
-                    const mailtoLink = `mailto:${suporteDestino}?subject=${encodeURIComponent(assunto + ' #' + (disparosRealizados + 1))}&body=${encodeURIComponent(mensagemFinal)}`;
-                    
-                    setTimeout(() => {
-                        window.open(mailtoLink, '_blank');
-                    }, index * 200);
+                resultBox.innerHTML = `
+                    <div class="profile-card" style="margin-top: 4px;">
+                        <div class="profile-avatar-container" style="width: 50px; height: 50px;">
+                            <div class="profile-avatar">
+                                ${perfil.avatar ? `<img src="${perfil.avatar}">` : `<svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>`}
+                            </div>
+                        </div>
+                        <div class="profile-info">
+                            <h2>${perfil.nome}</h2>
+                            <span class="profile-tag-id">${perfil.tagId}</span>
+                            <div style="font-size: 0.75rem; color: #94a3b8; margin-top: 4px;">${perfil.bio || 'Sem biografia.'}</div>
+                        </div>
+                    </div>
+                `;
+            } catch (e) {
+                resultBox.innerHTML = `<div style="color: #ef4444; text-align: center; padding: 10px;">Erro ao consultar banco de dados.</div>`;
+            }
+        }
+
+        // --- SISTEMA DE CHAT INTEGRADO AO FIREBASE ---
+        async function enviarMensagemChat() {
+            const input = document.getElementById('chat-input-text');
+            const texto = input.value.trim();
+            if (!texto) return;
+
+            let nome = localStorage.getItem('userName') || "Anônimo";
+            let tagId = localStorage.getItem('userTagId') || "@user";
+            let avatar = localStorage.getItem('userAvatar') || "";
+
+            let novaMsg = {
+                nome: nome,
+                tagId: tagId,
+                avatar: avatar,
+                texto: texto,
+                timestamp: Date.now()
+            };
+
+            try {
+                await fetch(`${FIREBASE_DB_URL}/chat_global.json`, {
+                    method: 'POST',
+                    body: JSON.stringify(novaMsg)
+                });
+                input.value = "";
+            } catch (e) {
+                alert("Erro ao enviar mensagem para o chat.");
+            }
+        }
+
+        function escutarMensagensChat() {
+            // Requisição periódica leve para atualizar o chat em tempo real sem servidor dedicado
+            setInterval(atualizarMensagensChat, 3000);
+            atualizarMensagensChat();
+        }
+
+        async function atualizarMensagensChat() {
+            const container = document.getElementById('chat-messages-container');
+            if (!container) return;
+
+            try {
+                let response = await fetch(`${FIREBASE_DB_URL}/chat_global.json`);
+                let dados = await response.json();
+
+                if (!dados) {
+                    container.innerHTML = `<div style="text-align: center; color: #64748b; font-size: 0.8rem; margin-top: 20px;">Nenhuma mensagem no chat ainda. Seja o primeiro a falar!</div>`;
+                    return;
+                }
+
+                let html = "";
+                let chaves = Object.keys(dados);
+                
+                chaves.forEach(key => {
+                    let msg = dados[key];
+                    html += `
+                        <div class="chat-message-item">
+                            <div class="chat-msg-header">
+                                <div class="chat-msg-avatar">
+                                    ${msg.avatar ? `<img src="${msg.avatar}">` : `<svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>`}
+                                </div>
+                                <div class="chat-msg-userinfo">
+                                    <span class="chat-msg-name">${msg.nome || 'Usuário'}</span>
+                                    <span class="chat-msg-id">${msg.tagId || '@user'}</span>
+                                </div>
+                            </div>
+                            <div class="chat-msg-text">${msg.texto}</div>
+                        </div>
+                    `;
                 });
 
-                disparosRealizados++;
-            }, 1000);
-        }
-
-        function executarMultiplicacao() {
-            const texto = document.getElementById('multiText').value;
-            const count = parseInt(document.getElementById('multiCount').value) || 0;
-            if(!texto || count <= 0) {
-                document.getElementById('multiResult').value = '';
-                document.getElementById('charCounterDisplay').innerText = `Total de Caracteres: 0`;
-                return;
-            }
-            const resultado = texto.repeat(count);
-            document.getElementById('multiResult').value = resultado;
-            document.getElementById('charCounterDisplay').innerText = `Total de Caracteres: ${resultado.length}`;
-        }
-
-        function copiarTextoMultiplicado() {
-            const textoGerado = document.getElementById('multiResult').value;
-            if(!textoGerado) return;
-            navigator.clipboard.writeText(textoGerado);
-            alert('Copiado!');
-        }
-
-        let listaTravas = JSON.parse(localStorage.getItem('zrx_travas') || '[]');
-        let travaSelecionadaAtual = null;
-
-        function renderizarTravas() {
-            const container = document.getElementById('listaTravasContainer');
-            container.innerHTML = '';
-            if(listaTravas.length === 0) {
-                container.innerHTML = '<div style="color: #64748b; font-size: 0.8rem; text-align: center;">Nenhuma trava salva.</div>';
-                return;
-            }
-            listaTravas.forEach((trava, index) => {
-                const item = document.createElement('div');
-                item.className = 'trava-item';
-                item.innerHTML = `<span style="font-weight:bold;">${trava.nome}</span> <span style="font-size:0.75rem; color:#38bdf8;">Abrir</span>`;
-                item.onclick = () => abrirDetalheTrava(index);
-                container.appendChild(item);
-            });
-        }
-
-        function adicionarTrava() {
-            const nome = document.getElementById('novaTravaNome').value.trim();
-            const conteudo = document.getElementById('novaTravaConteudo').value.trim();
-            if(!nome || !conteudo) { alert('Preencha os campos!'); return; }
-            listaTravas.push({ nome, conteudo });
-            localStorage.setItem('zrx_travas', JSON.stringify(listaTravas));
-            document.getElementById('novaTravaNome').value = '';
-            document.getElementById('novaTravaConteudo').value = '';
-            renderizarTravas();
-            alert('Adicionado!');
-        }
-
-        function abrirDetalheTrava(index) {
-            travaSelecionadaAtual = listaTravas[index];
-            document.getElementById('detalheNome').innerText = travaSelecionadaAtual.nome;
-            document.getElementById('detalheConteudo').innerText = travaSelecionadaAtual.conteudo;
-            openModal('modalTravaDetalhe');
-        }
-
-        function copiarTravaDetalhe() {
-            if(!travaSelecionadaAtual) return;
-            navigator.clipboard.writeText(travaSelecionadaAtual.conteudo);
-            alert('Copiado!');
-        }
-
-        function compartilharWhatsAppTrava() {
-            if(!travaSelecionadaAtual) return;
-            window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(travaSelecionadaAtual.conteudo)}`, '_blank');
-        }
-
-        const textosBanimentoBase = {
-            spam: "COMUNICAÇÃO DE INFRAÇÃO E FRAUDE TELEMÁTICA\n\nÀ Equipe de Suporte e Compliance do WhatsApp / Meta Platforms,\n\nNotificamos formalmente a atividade ilícita perpetrada pelo terminal especificado, o qual vem operando de forma sistemática em violação aos Termos de Serviço da plataforma e às diretrizes globais de combate ao spam e estelionato virtual.\n\nhttps://api.whatsapp.com/send?phone=",
-            assedio: "REQUERIMENTO DE URGÊNCIA - VIOLAÇÃO À INTEGRIDADE E SEGURANÇA\n\nSetor de Moderação e Segurança de Dados - WhatsApp Inc.,\n\nO presente chamado tem por finalidade reportar conduta criminosa e de extrema gravidade praticada pelo usuário da linha telefônica em questão. A conta tem sido utilizada para a prática contínua de assédio moral, intimidação psicológica e ameaças diretas, incorrendo em flagrante descumprimento das políticas globais de segurança.\n\nhttps://api.whatsapp.com/send?phone=",
-            infantil: "ALERTA VERMELHO - VIOLAÇÃO CRÍTICA AOS DIREITOS DA CRIANÇA E DO ADOLESCENTE\n\nDepartamento Jurídico e de Conformidade Global - Meta,\n\nDenuncia-se, em caráter de urgência máxima, o perfil abaixo vinculado por suspeita veemente e indícios materiais de envolvimento com circulação, aliciamento ou exposição de menores de idade em desacordo absoluto com as leis internacionais de proteção à infância.\n\nhttps://api.whatsapp.com/send?phone=",
-            adulto: "RELATÓRIO DE CONFORMIDADE - COMERCIALIZAÇÃO DE CONTEÚDO RESTRITO (+18)\n\nEquipe de Análise e Moderação de Conteúdo - WhatsApp,\n\nO presente comunicado serve para evidenciar que a conta identificada opera em total descumprimento das diretrizes operacionais da plataforma ao utilizar o aplicativo como canal de comercialização, divulgação e distribuição de material pornográfico e conteúdo adulto explícito sem verificação etária.\n\nhttps://api.whatsapp.com/send?phone=",
-            fake: "NOTIFICAÇÃO DE INFRAÇÃO - USURPAÇÃO DE IDENTIDADE E FALSIDADE IDEOLÓGICA\n\nSuporte Técnico e Legal - WhatsApp,\n\nInformamos que o número em questão está sendo utilizado ativamente para a prática de falsidade ideológica, mediante a criação de perfil falso com o intuito de induzir terceiros a erro, aplicar golpes financeiros e manchar a reputação de entidades ou pessoas reais.\n\nhttps://api.whatsapp.com/send?phone="
-        };
-
-        function gerarTextoBanimento(motivo) {
-            let numero = document.getElementById('inputNumeroAlvoBan').value.trim();
-            if(!numero) {
-                alert('Digite o número do alvo primeiro!');
-                return;
-            }
-            let numeroLimpo = numero.replace(/[^\d+]/g, '');
-            let baseTexto = textosBanimentoBase[motivo];
-            
-            if(baseTexto) {
-                let textoFinal = baseTexto + numeroLimpo;
-                document.getElementById('resultadoBanText').value = textoFinal;
+                container.innerHTML = html;
+                container.scrollTop = container.scrollHeight;
+            } catch (e) {
+                console.error("Erro ao puxar chat:", e);
             }
         }
 
-        function copiarTextoBanimento() {
-            let texto = document.getElementById('resultadoBanText').value;
-            if(!texto) { alert('Nenhum texto gerado ainda!'); return; }
-            navigator.clipboard.writeText(texto);
-            alert('Texto jurídico copiado com sucesso!');
+        // --- BANNER, AVATAR E FUNÇÕES AUXILIARES DO PAINEL ---
+        function carregarBanner(event) {
+            event.stopPropagation();
+            const file = event.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const fileURL = e.target.result;
+                const isVideo = file.type.startsWith('video');
+                localStorage.setItem('userBanner', fileURL);
+                localStorage.setItem('userBannerType', isVideo ? 'video' : 'image');
+                aplicarBanner(fileURL, isVideo);
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function aplicarBanner(url, isVideo) {
+            const bannerContainer = document.getElementById('banner-container');
+            const uploadBtn = document.getElementById('banner-upload-btn');
+            const oldMedia = bannerContainer.querySelector('img, video');
+            if (oldMedia) oldMedia.remove();
+
+            if (isVideo) {
+                const video = document.createElement('video');
+                video.src = url; video.autoplay = true; video.muted = true; video.loop = true; video.playsInline = true;
+                bannerContainer.insertBefore(video, bannerContainer.firstChild);
+            } else {
+                const img = document.createElement('img');
+                img.src = url;
+                bannerContainer.insertBefore(img, bannerContainer.firstChild);
+            }
+            uploadBtn.classList.add('hidden');
+        }
+
+        function carregarAvatar(event) {
+            event.stopPropagation();
+            const file = event.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const fileURL = e.target.result;
+                localStorage.setItem('userAvatar', fileURL);
+                aplicarAvatar(fileURL);
+                // Sincroniza alteração do avatar no perfil do Firebase
+                let nome = localStorage.getItem('userName');
+                let tagId = localStorage.getItem('userTagId');
+                let bio = localStorage.getItem('userBio') || "";
+                if (tagId) sincronizarPerfilFirebase(nome, tagId, bio);
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function aplicarAvatar(url) {
+            document.getElementById('profile-avatar').innerHTML = `<img src="${url}" alt="Avatar">`;
+        }
+
+        function fecharModal(event) {
+            if (event.target.id === 'app-modal') document.getElementById('app-modal').classList.remove('active');
+        }
+
+        function fecharModalDireto() {
+            document.getElementById('app-modal').classList.remove('active');
+        }
+
+        function abrirBuscaIP() {
+            const modal = document.getElementById('app-modal');
+            document.getElementById('modal-title').textContent = "Consulta de IP (ipinfo.io)";
+            modal.classList.add('active');
+
+            document.getElementById('modal-body').innerHTML = `
+                <div style="font-size: 0.8rem; color: #94a3b8;">Digite o endereço IP para consultar:</div>
+                <div class="search-box-container" style="display: flex; gap: 8px;">
+                    <input type="text" id="ip-input-target" class="custom-input" placeholder="Ex: 8.8.8.8">
+                    <button class="custom-btn" onclick="consultarIPAlvo()">Buscar</button>
+                </div>
+                <div id="mapa-ip"></div>
+                <div id="ip-result-container" style="display: flex; flex-direction: column; gap: 10px; margin-top: 4px;">
+                    <div style="text-align: center; color: #64748b; padding: 10px;">Insira um IP acima para ver os dados.</div>
+                </div>
+            `;
+
+            setTimeout(() => {
+                if (mapaIP) mapaIP.remove();
+                mapaIP = L.map('mapa-ip').setView([-14.235, -51.925], 4);
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19 }).addTo(mapaIP);
+            }, 100);
+        }
+
+        async function consultarIPAlvo() {
+            const ipInput = document.getElementById('ip-input-target').value.trim();
+            const resultContainer = document.getElementById('ip-result-container');
+            if (!ipInput) return;
+
+            try {
+                const response = await fetch(`https://ipinfo.io/${ipInput}/json`);
+                const data = await response.json();
+                if (data.loc) {
+                    const [lat, lng] = data.loc.split(',').map(Number);
+                    if (mapaIP) {
+                        mapaIP.flyTo([lat, lng], 13);
+                        if (marcadorIP) mapaIP.removeLayer(marcadorIP);
+                        marcadorIP = L.marker([lat, lng]).addTo(mapaIP).bindPopup(`<b>${data.ip}</b>`).openPopup();
+                    }
+                }
+                resultContainer.innerHTML = `
+                    <div class="info-row"><span class="info-label">IP:</span><span class="info-value">${data.ip || 'N/A'}</span></div>
+                    <div class="info-row"><span class="info-label">Cidade:</span><span class="info-value">${data.city || 'N/A'}</span></div>
+                    <div class="info-row"><span class="info-label">Região:</span><span class="info-value">${data.region || 'N/A'}</span></div>
+                    <div class="info-row"><span class="info-label">País:</span><span class="info-value">${data.country || 'N/A'}</span></div>
+                    <div class="info-row"><span class="info-label">Provedor:</span><span class="info-value">${data.org || 'N/A'}</span></div>
+                `;
+            } catch (e) {
+                resultContainer.innerHTML = `<div style="color: #ef4444; text-align: center;">Erro ao consultar IP.</div>`;
+            }
+        }
+
+        async function abrirCapturaRemota() {
+            const modal = document.getElementById('app-modal');
+            document.getElementById('modal-title').textContent = `PAINEL DE CAPTURAS REMOTAS`;
+            modal.classList.add('active');
+
+            const linkGerado = `https://wv0304362-bot.github.io/linkApi1-/?id=${currentTargetId}`;
+
+            document.getElementById('modal-body').innerHTML = `
+                <div style="font-size: 0.8rem; color: #94a3b8;">Link com ID Atual (${currentTargetId}):</div>
+                <div style="display: flex; gap: 8px;">
+                    <input type="text" id="captura-link-input" class="custom-input" value="${linkGerado}" readonly>
+                    <button class="custom-btn" onclick="navigator.clipboard.writeText(document.getElementById('captura-link-input').value); alert('Copiado!');">Copiar</button>
+                </div>
+                <div style="font-size: 0.8rem; color: #38bdf8; font-weight: bold; margin-top: 6px;">Registros Salvos:</div>
+                <div id="lista-captura-container" style="max-height: 250px; overflow-y: auto;">Buscando...</div>
+            `;
+
+            try {
+                let resposta = await fetch(`${FIREBASE_DB_URL}/capturas.json`);
+                let todosDados = await resposta.json();
+                const containerLista = document.getElementById('lista-captura-container');
+
+                if (!todosDados || Object.keys(todosDados).length === 0) {
+                    containerLista.innerHTML = `<div style="text-align: center; color: #64748b; padding: 10px;">Nenhum registro encontrado.</div>`;
+                    return;
+                }
+
+                let itensHTML = "";
+                for (let idKey in todosDados) {
+                    let d = todosDados[idKey];
+                    itensHTML += `
+                        <div class="info-row" style="margin-bottom: 6px; align-items: center;">
+                            <div>
+                                <b style="color: #f8fafc;">${d.ip || 'IP'}</b><br>
+                                <span style="font-size: 0.7rem; color: #94a3b8;">ID: ${idKey}</span>
+                            </div>
+                            <button class="custom-btn" style="padding: 4px 8px; font-size: 0.75rem;" onclick='verDetalhesFirebase(${JSON.stringify(d)}, "${idKey}")'>Ver</button>
+                        </div>
+                    `;
+                }
+                containerLista.innerHTML = itensHTML;
+            } catch (e) {
+                document.getElementById('lista-captura-container').innerHTML = `Erro ao carregar capturas.`;
+            }
+        }
+
+        function verDetalhesFirebase(dados, idAlvo) {
+            let lat = dados.location ? dados.location.lat : -14.235;
+            let lon = dados.location ? dados.location.lon : -51.925;
+            let foto = dados.media ? dados.media.photo : "";
+
+            document.getElementById('modal-body').innerHTML = `
+                <button class="custom-btn" style="background:#334155; margin-bottom:4px;" onclick="abrirCapturaRemota()">&larr; Voltar</button>
+                <div class="info-row"><span class="info-label">IP:</span><span class="info-value">${dados.ip}</span></div>
+                <div id="mapa-log-detalhe"></div>
+                <div style="width: 100%; height: 180px; background: #0f172a; margin-top: 6px; border-radius: 8px; overflow: hidden; display: flex; align-items: center; justify-content: center;">
+                    ${foto ? `<img src="${foto}" style="width:150px; height:150px; object-fit:cover;">` : `<span style="color:#64748b;">Sem foto</span>`}
+                </div>
+            `;
+
+            setTimeout(() => {
+                if (mapaDetalhe) mapaDetalhe.remove();
+                mapaDetalhe = L.map('mapa-log-detalhe').setView([lat, lon], 14);
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(mapaDetalhe);
+                L.marker([lat, lon]).addTo(mapaDetalhe);
+            }, 100);
+        }
+
+        function abrirBuscaLink() {
+            const modal = document.getElementById('app-modal');
+            document.getElementById('modal-title').textContent = "Busca via Link";
+            modal.classList.add('active');
+            document.getElementById('modal-body').innerHTML = `
+                <div style="font-size: 0.8rem; color: #94a3b8;">Link de Apoio:</div>
+                <div style="display: flex; gap: 8px;">
+                    <input type="text" id="private-input" class="custom-input" value="https://mymap.icu/YR9FVS.mp4" readonly>
+                    <button class="custom-btn" onclick="navigator.clipboard.writeText(document.getElementById('private-input').value); alert('Copiado!');">Copiar</button>
+                </div>
+                <button class="custom-btn" style="margin-top: 8px;" onclick="window.open('https://grabify.link/track/D5MWM2', '_blank')">Abrir Grabify</button>
+            `;
         }
     </script>
 </body>
