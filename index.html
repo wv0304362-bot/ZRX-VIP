@@ -1,1010 +1,347 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ZRX DESTROYER V5.3</title>
+    <title>Command Center - Vaeltrix Light</title>
+    <!-- Tailwind CSS for modern responsive utility styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome for crisp UI icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-
+        @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap');
         body {
-            background-color: #0b0f19;
-            color: #ffffff;
-            width: 100vw;
-            min-height: 100vh;
-            overflow-x: hidden;
+            font-family: 'Space Grotesk', sans-serif;
+            background-color: #f3f4f8;
+            color: #1e293b;
         }
-
-        .app-container {
-            width: 100%;
-            min-height: 100vh;
-            background: #0f172a;
-            display: flex;
-            flex-direction: column;
-            position: relative;
-            padding-bottom: 40px;
-        }
-
-        /* Top Bar */
-        .top-bar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 18px 22px;
-            background: #0f172a;
-            border-bottom: 1px solid #1e293b;
-            width: 100%;
-        }
-
-        .menu-icon, .notif-icon {
-            font-size: 22px;
-            cursor: pointer;
-            color: #94a3b8;
-        }
-
-        .app-title {
-            font-weight: 800;
-            font-style: italic;
-            letter-spacing: 1px;
-            font-size: 1.25rem;
-            background: linear-gradient(90deg, #38bdf8, #818cf8);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        /* Banner Section */
-        .banner-container {
-            position: relative;
-            width: 100%;
-            height: 200px;
-            background: #1e293b;
-            overflow: hidden;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .banner-container img, .banner-container video {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            position: absolute;
-            top: 0;
-            left: 0;
-        }
-
-        .banner-overlay {
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(to bottom, rgba(15,23,42,0.1), rgba(15,23,42,0.85));
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-end;
-            padding: 16px 22px;
-            z-index: 2;
-        }
-
-        .banner-watermark {
-            font-size: 1.3rem;
-            font-weight: 900;
-            font-style: italic;
-            color: #ffffff;
-            text-shadow: 0 2px 6px rgba(0,0,0,0.9);
-            letter-spacing: 0.5px;
-        }
-
-        .banner-sub {
-            font-size: 0.75rem;
-            color: #38bdf8;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .banner-upload-hint {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            background: rgba(0, 0, 0, 0.7);
-            padding: 6px 14px;
-            border-radius: 20px;
-            font-size: 0.75rem;
-            color: #cbd5e1;
-            z-index: 3;
-            border: 1px solid rgba(255,255,255,0.15);
-        }
-
-        /* Profile Section */
-        .profile-section {
-            margin: 16px 18px;
-            background: rgba(30, 41, 59, 0.9);
+        /* Custom smooth transitions for cards and toggles */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.85);
             backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 18px;
-            padding: 18px;
-            display: flex;
-            align-items: center;
-            gap: 16px;
-            z-index: 4;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+            border: 1px solid rgba(226, 232, 240, 0.8);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.04), 0 8px 10px -6px rgba(0, 0, 0, 0.02);
         }
-
-        .avatar-container {
-            width: 75px;
-            height: 75px;
-            border-radius: 14px;
-            background: #0f172a;
-            border: 2px solid #38bdf8;
-            overflow: hidden;
-            position: relative;
-            cursor: pointer;
-            flex-shrink: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+        /* Toggle Switch Animation */
+        .toggle-checkbox:checked {
+            right: 0;
+            border-color: #4f46e5;
         }
-
-        .avatar-container img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .avatar-placeholder {
-            font-size: 0.7rem;
-            text-align: center;
-            color: #94a3b8;
-            padding: 4px;
-        }
-
-        .profile-info {
-            flex-grow: 1;
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-        }
-
-        .profile-name-input {
-            background: transparent;
-            border: none;
-            color: #ffffff;
-            font-size: 1.15rem;
-            font-weight: bold;
-            width: 100%;
-            outline: none;
-            border-bottom: 1px dashed rgba(255,255,255,0.3);
-            padding-bottom: 2px;
-        }
-
-        .profile-role {
-            font-size: 0.75rem;
-            color: #38bdf8;
-            background: rgba(56, 189, 248, 0.12);
-            padding: 4px 10px;
-            border-radius: 20px;
-            align-self: flex-start;
-            border: 1px solid rgba(56, 189, 248, 0.25);
-            font-weight: 600;
-        }
-
-        /* Discord Button Section */
-        .social-container {
-            padding: 0 18px 20px 18px;
-            display: flex;
-            justify-content: center;
-        }
-
-        .social-btn.discord {
-            width: 100%;
-            background: linear-gradient(135deg, #5865F2, #4752C4);
-            border: none;
-            border-radius: 16px;
-            padding: 15px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #ffffff;
-            text-decoration: none;
-            font-weight: 700;
-            font-size: 1rem;
-            box-shadow: 0 4px 15px rgba(88, 101, 242, 0.4);
-        }
-
-        /* Horizontal Carousel */
-        .carousel-wrapper {
-            padding: 0 0 20px 18px;
-        }
-
-        .carousel-title {
-            font-size: 0.85rem;
-            color: #94a3b8;
-            margin-bottom: 12px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            font-weight: 700;
-        }
-
-        .carousel-container {
-            display: flex;
-            gap: 14px;
-            overflow-x: auto;
-            padding-right: 18px;
-            padding-bottom: 5px;
-            scrollbar-width: thin;
-            scrollbar-color: #334155 transparent;
-        }
-
-        .carousel-container::-webkit-scrollbar {
-            height: 6px;
-        }
-
-        .carousel-container::-webkit-scrollbar-thumb {
-            background: #334155;
-            border-radius: 10px;
-        }
-
-        .carousel-card {
-            min-width: 190px;
-            height: 125px;
-            background: #1e293b;
-            border: 1px solid #334155;
-            border-radius: 16px;
-            padding: 16px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            cursor: pointer;
-            flex-shrink: 0;
-            transition: border-color 0.2s;
-        }
-
-        .carousel-card:hover {
-            border-color: #38bdf8;
-        }
-
-        .card-header-top {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .card-tag {
-            font-size: 0.65rem;
-            color: #38bdf8;
-            background: rgba(56, 189, 248, 0.12);
-            padding: 3px 8px;
-            border-radius: 6px;
-            font-weight: 700;
-            letter-spacing: 0.5px;
-        }
-
-        /* Símbolos CSS */
-        .css-symbol {
-            width: 20px;
-            height: 20px;
-            display: inline-block;
-            position: relative;
-        }
-        .symbol-gear::before {
-            content: '';
-            position: absolute;
-            width: 12px;
-            height: 12px;
-            border: 2px solid #38bdf8;
-            border-radius: 50%;
-            top: 4px;
-            left: 4px;
-            box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.3);
-        }
-        .symbol-multi::before {
-            content: '';
-            position: absolute;
-            width: 14px;
-            height: 4px;
-            background: #38bdf8;
-            top: 5px;
-            left: 3px;
-            box-shadow: 0 6px 0 #38bdf8;
-        }
-        .symbol-storage::before {
-            content: '';
-            position: absolute;
-            width: 14px;
-            height: 5px;
-            background: #38bdf8;
-            top: 3px;
-            left: 3px;
-            box-shadow: 0 7px 0 #38bdf8;
-        }
-        .symbol-shield::before {
-            content: '';
-            position: absolute;
-            width: 12px;
-            height: 14px;
-            background: #ef4444;
-            clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
-            top: 3px;
-            left: 4px;
-        }
-
-        .card-content-bottom {
-            display: flex;
-            flex-direction: column;
-            gap: 3px;
-        }
-
-        .card-label {
-            font-size: 0.95rem;
-            font-weight: bold;
-            color: #f8fafc;
-        }
-
-        .card-desc {
-            font-size: 0.7rem;
-            color: #94a3b8;
-        }
-
-        /* Modais */
-        .modal-overlay {
-            position: fixed;
-            inset: 0;
-            background: rgba(11, 15, 25, 0.85);
-            backdrop-filter: blur(8px);
-            display: none;
-            align-items: center;
-            justify-content: center;
-            z-index: 100;
-            padding: 20px;
-        }
-
-        .modal-content {
-            background: #1e293b;
-            border: 1px solid #334155;
-            border-radius: 20px;
-            width: 100%;
-            max-width: 420px;
-            max-height: 90vh;
-            overflow-y: auto;
-            padding: 24px;
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.6);
-        }
-
-        .modal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid #334155;
-            padding-bottom: 12px;
-        }
-
-        .modal-title {
-            font-size: 1.1rem;
-            font-weight: bold;
-            color: #38bdf8;
-        }
-
-        .modal-close {
-            background: transparent;
-            border: none;
-            color: #94a3b8;
-            font-size: 1.2rem;
-            cursor: pointer;
-            font-weight: bold;
-        }
-
-        .form-group {
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-        }
-
-        .form-label {
-            font-size: 0.8rem;
-            color: #94a3b8;
-            font-weight: 600;
-        }
-
-        .form-input, .form-textarea, .form-select {
-            background: #0f172a;
-            border: 1px solid #334155;
-            border-radius: 10px;
-            padding: 12px;
-            color: #ffffff;
-            font-size: 0.95rem;
-            outline: none;
-            width: 100%;
-        }
-
-        .form-input:focus, .form-textarea:focus, .form-select:focus {
-            border-color: #38bdf8;
-        }
-
-        .action-btn {
-            background: linear-gradient(135deg, #38bdf8, #0284c7);
-            border: none;
-            border-radius: 12px;
-            padding: 14px;
-            color: #ffffff;
-            font-weight: bold;
-            font-size: 0.95rem;
-            cursor: pointer;
-            text-align: center;
-            transition: opacity 0.2s;
-        }
-
-        .action-btn:active {
-            opacity: 0.8;
-        }
-
-        .counter-badge {
-            background: rgba(56, 189, 248, 0.15);
-            color: #38bdf8;
-            padding: 8px 12px;
-            border-radius: 8px;
-            font-size: 0.85rem;
-            font-weight: bold;
-            text-align: center;
-            border: 1px solid rgba(56, 189, 248, 0.3);
-        }
-
-        .trava-item {
-            background: #0f172a;
-            border: 1px solid #334155;
-            border-radius: 12px;
-            padding: 14px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            cursor: pointer;
-        }
-
-        .trava-details-box {
-            background: #0b0f19;
-            border: 1px solid #334155;
-            border-radius: 10px;
-            padding: 12px;
-            font-family: monospace;
-            font-size: 0.8rem;
-            word-break: break-all;
-            max-height: 120px;
-            overflow-y: auto;
-            color: #cbd5e1;
-        }
-
-        /* Grid de Botões Jurídicos */
-        .ban-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 10px;
-        }
-
-        .ban-btn {
-            background: #0f172a;
-            border: 1px solid #334155;
-            border-radius: 12px;
-            padding: 12px 14px;
-            color: #f8fafc;
-            font-size: 0.85rem;
-            font-weight: bold;
-            text-align: left;
-            cursor: pointer;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            transition: all 0.2s;
-        }
-
-        .ban-btn:hover {
-            border-color: #ef4444;
-            background: rgba(239, 68, 68, 0.08);
-        }
-
-        input[type="file"] {
-            display: none;
+        .toggle-checkbox:checked + .toggle-label {
+            background-color: #4f46e5;
         }
     </style>
 </head>
-<body>
+<body class="flex justify-center items-center min-h-screen p-0 sm:p-4">
 
-    <div class="app-container">
+    <div class="w-full max-w-md bg-[#f7f8fc] sm:rounded-[3rem] sm:shadow-2xl overflow-hidden flex flex-col h-screen sm:h-[880px] relative border border-slate-200">
         
-        <!-- Top Navigation -->
-        <div class="top-bar">
-            <div class="menu-icon">☰</div>
-            <div class="app-title">ZRX DESTROYER</div>
-            <div class="notif-icon">🔔</div>
-        </div>
-
-        <!-- Banner Customizável -->
-        <div class="banner-container" onclick="document.getElementById('bannerInput').click()">
-            <div id="bannerMediaContainer" style="width:100%; height:100%; position:absolute; display:flex; align-items:center; justify-content:center; background:#1e293b;">
-                <span style="font-size: 0.85rem; color: #64748b;">Toque para carregar foto ou vídeo</span>
-            </div>
-            <div class="banner-overlay">
-                <div class="banner-sub">CREATED BY USER</div>
-                <div class="banner-watermark">ZRX DESTROYER V5.3</div>
-            </div>
-            <div class="banner-upload-hint">Alterar Mídia</div>
-        </div>
-        <input type="file" id="bannerInput" accept="image/*,video/*" onchange="salvarBanner(event)">
-
-        <!-- Profile Section -->
-        <div class="profile-section">
-            <div class="avatar-container" onclick="document.getElementById('avatarInput').click()">
-                <div id="avatarPreviewContainer" style="width:100%; height:100%; display:flex; align-items:center; justify-content:center;">
-                    <span class="avatar-placeholder">Foto PV</span>
+        <!-- Top Header Bar -->
+        <header class="flex items-center justify-between px-6 py-5 bg-transparent z-10">
+            <button id="backBtn" class="w-10 h-10 rounded-full bg-white border border-slate-200 flex items-center justify-center text-slate-600 hover:bg-slate-50 transition shadow-sm active:scale-95">
+                <i class="fa-solid fa-chevron-left text-sm"></i>
+            </button>
+            <div class="text-center">
+                <div class="flex items-center justify-center gap-1.5">
+                    <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                    <h1 class="text-xs font-bold tracking-[0.2em] text-slate-400 uppercase">Vaeltrix Light</h1>
                 </div>
+                <p class="text-[10px] font-semibold text-slate-500 tracking-wider">COMMAND CENTER</p>
             </div>
-            <div class="profile-info">
-                <input type="text" class="profile-name-input" id="profileNameInput" value="ZRX USER" placeholder="Seu Nome" oninput="salvarNomePerfil()">
-                <div class="profile-role">ROLE: DEVELOPER</div>
-            </div>
-        </div>
-        <input type="file" id="avatarInput" accept="image/*" onchange="salvarAvatar(event)">
+            <button id="refreshBtn" class="w-10 h-10 rounded-full bg-white border border-slate-200 flex items-center justify-center text-slate-600 hover:bg-slate-50 transition shadow-sm active:scale-95">
+                <i class="fa-solid fa-rotate-right text-sm"></i>
+            </button>
+        </header>
 
-        <!-- Discord Button -->
-        <div class="social-container">
-            <a href="https://discord.gg/pBRw54XR" target="_blank" class="social-btn discord">
-                <span>Entrar no Discord PV</span>
-            </a>
-        </div>
-
-        <!-- Balãozinhos com Ferramentas -->
-        <div class="carousel-wrapper">
-            <div class="carousel-title">Opções Rápidas</div>
-            <div class="carousel-container">
-                
-                <!-- Balão 1: Painel de E-mails -->
-                <div class="carousel-card" onclick="openModal('modalEmails')">
-                    <div class="card-header-top">
-                        <span class="card-tag">SUPORTE</span>
-                        <span class="css-symbol symbol-gear"></span>
-                    </div>
-                    <div class="card-content-bottom">
-                        <div class="card-label">Painel de E-mails</div>
-                        <div class="card-desc">Rajada automática p/ suporte</div>
-                    </div>
-                </div>
-
-                <!-- Balão 2: Multiplicador de Texto -->
-                <div class="carousel-card" onclick="openModal('modalMultiplicador')">
-                    <div class="card-header-top">
-                        <span class="card-tag">TEXTO</span>
-                        <span class="css-symbol symbol-multi"></span>
-                    </div>
-                    <div class="card-content-bottom">
-                        <div class="card-label">Multiplicador</div>
-                        <div class="card-desc">Repetir texto e contar</div>
-                    </div>
-                </div>
-
-                <!-- Balão 3: Storage Trava -->
-                <div class="carousel-card" onclick="openModal('modalTrava')">
-                    <div class="card-header-top">
-                        <span class="card-tag">ENIGMA</span>
-                        <span class="css-symbol symbol-storage"></span>
-                    </div>
-                    <div class="card-content-bottom">
-                        <div class="card-label">Storage Trava</div>
-                        <div class="card-desc">Gerenciar e compartilhar</div>
-                    </div>
-                </div>
-
-                <!-- Balão 5: Central de Banimento Jurídico -->
-                <div class="carousel-card" onclick="openModal('modalCentralBan')">
-                    <div class="card-header-top">
-                        <span class="card-tag" style="color: #ef4444; background: rgba(239,68,68,0.12);">BANIMENTO</span>
-                        <span class="css-symbol symbol-shield"></span>
-                    </div>
-                    <div class="card-content-bottom">
-                        <div class="card-label">Central Banimento</div>
-                        <div class="card-desc">Textos oficiais jurídicos p/ suporte</div>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-
-    </div>
-
-    <!-- MODAL 1: PAINEL DE E-MAILS -->
-    <div class="modal-overlay" id="modalEmails">
-        <div class="modal-content">
-            <div class="modal-header">
-                <div class="modal-title">Rajada de E-mails Suporte WhatsApp</div>
-                <button class="modal-close" onclick="closeModal('modalEmails')">&times;</button>
-            </div>
+        <!-- Main Scrollable Content Area -->
+        <main id="mainContent" class="flex-1 overflow-y-auto px-5 pb-28 pt-2 space-y-6">
             
-            <div class="counter-badge" id="emailStatusBadge">Gmails Logados com Senha de App: <span id="gmailCounterNum">1</span> Ativo(s)</div>
-            
-            <div class="form-group">
-                <label class="form-label">Seu E-mail (Gmail Remetente)</label>
-                <input type="email" class="form-input" id="inputEmail" placeholder="seuemail@gmail.com" oninput="salvarCredenciaisApp()">
-            </div>
-            <div class="form-group">
-                <label class="form-label">Senha de App do Gmail (16 dígitos)</label>
-                <input type="password" class="form-input" id="inputSenha" placeholder="xxxx xxxx xxxx xxxx" oninput="salvarCredenciaisApp()">
-            </div>
-
-            <hr style="border: 0; border-top: 1px solid #334155; margin: 4px 0;">
-
-            <div class="form-group">
-                <label class="form-label">Quantidade de Disparos (Limite de 100 Rajadas)</label>
-                <input type="number" class="form-input" id="inputQuantidadeRajada" value="10" min="1" max="100">
-            </div>
-
-            <div class="form-group">
-                <label class="form-label">Assunto da Denúncia</label>
-                <input type="text" class="form-input" id="inputAssunto" value="Denúncia de Violação de Termos - Conta WhatsApp" placeholder="Assunto do e-mail">
-            </div>
-
-            <div class="form-group">
-                <label class="form-label">Mensagem / Relatório</label>
-                <textarea class="form-textarea" id="inputMensagem" rows="3" placeholder="Descreva a infração...">Olá equipe de suporte do WhatsApp, venho por meio deste relatar contas violando os termos...</textarea>
-            </div>
-
-            <button class="action-btn" style="background: linear-gradient(135deg, #22c55e, #16a34a);" onclick="executarRajadaEmailsReal()">Disparar Rajada Real Automática</button>
-        </div>
-    </div>
-
-    <!-- MODAL 2: MULTIPLICADOR DE TEXTO -->
-    <div class="modal-overlay" id="modalMultiplicador">
-        <div class="modal-content">
-            <div class="modal-header">
-                <div class="modal-title">Multiplicador de Texto</div>
-                <button class="modal-close" onclick="closeModal('modalMultiplicador')">&times;</button>
-            </div>
-            <div class="form-group">
-                <label class="form-label">Texto ou Símbolo / Emoji</label>
-                <input type="text" class="form-input" id="multiText" placeholder="Digite o texto ou emoji..." oninput="executarMultiplicacao()">
-            </div>
-            <div class="form-group">
-                <label class="form-label">Quantidade de Repetições</label>
-                <input type="number" class="form-input" id="multiCount" value="1000" min="1" max="10000" oninput="executarMultiplicacao()">
-            </div>
-            <div class="counter-badge" id="charCounterDisplay">Total de Caracteres: 0</div>
-            <div class="form-group">
-                <label class="form-label">Resultado:</label>
-                <textarea class="form-textarea" id="multiResult" rows="4" readonly style="font-family: monospace; font-size: 0.75rem;"></textarea>
-            </div>
-            <button class="action-btn" onclick="copiarTextoMultiplicado()">Copiar Texto Gerado</button>
-        </div>
-    </div>
-
-    <!-- MODAL 3: ARMAZENAMENTO DE TRAVAS -->
-    <div class="modal-overlay" id="modalTrava">
-        <div class="modal-content">
-            <div class="modal-header">
-                <div class="modal-title">Armazenamento de Travas</div>
-                <button class="modal-close" onclick="closeModal('modalTrava')">&times;</button>
-            </div>
-            <div class="form-group">
-                <label class="form-label">Adicionar Nova Trava</label>
-                <input type="text" class="form-input" id="novaTravaNome" placeholder="Nome da Trava">
-            </div>
-            <div class="form-group">
-                <textarea class="form-textarea" id="novaTravaConteudo" rows="2" placeholder="Cole o código/caracteres aqui..."></textarea>
-            </div>
-            <button class="action-btn" onclick="adicionarTrava()">Adicionar Trava</button>
-            <div class="carousel-title" style="margin-top: 10px;">Suas Travas Salvas</div>
-            <div id="listaTravasContainer" style="display: flex; flex-direction: column; gap: 8px; max-height: 200px; overflow-y: auto;"></div>
-        </div>
-    </div>
-
-    <!-- MODAL DETALHE DA TRAVA -->
-    <div class="modal-overlay" id="modalTravaDetalhe">
-        <div class="modal-content">
-            <div class="modal-header">
-                <div class="modal-title" id="detalheTravaTitulo">Detalhes da Trava</div>
-                <button class="modal-close" onclick="closeModal('modalTravaDetalhe')">&times;</button>
-            </div>
-            <div class="form-group">
-                <label class="form-label">Nome:</label>
-                <div id="detalheNome" style="font-weight: bold; color: #38bdf8;"></div>
-            </div>
-            <div class="form-group">
-                <label class="form-label">Conteúdo:</label>
-                <div class="trava-details-box" id="detalheConteudo"></div>
-            </div>
-            <div style="display: flex; gap: 10px;">
-                <button class="action-btn" style="flex: 1;" onclick="copiarTravaDetalhe()">Copiar</button>
-                <button class="action-btn" style="flex: 1; background: linear-gradient(135deg, #22c55e, #16a34a);" onclick="compartilharWhatsAppTrava()">Compartilhar</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- MODAL 5: CENTRAL DE BANIMENTO JURÍDICO -->
-    <div class="modal-overlay" id="modalCentralBan">
-        <div class="modal-content" style="max-width: 450px;">
-            <div class="modal-header">
-                <div class="modal-title">Central de Banimento Jurídico</div>
-                <button class="modal-close" onclick="closeModal('modalCentralBan')">&times;</button>
-            </div>
-
-            <div class="form-group">
-                <label class="form-label">Número do Alvo (Ex: +5511999999999)</label>
-                <input type="text" class="form-input" id="inputNumeroAlvoBan" placeholder="+55 (XX) 9XXXX-XXXX">
-            </div>
-
-            <div class="form-group">
-                <label class="form-label">Selecione o Motivo da Infração / Suporte:</label>
-                <div class="ban-grid">
-                    <button class="ban-btn" onclick="gerarTextoBanimento('spam')"><span>🚨 SPAM e Fraude Comercial</span> <span>➔</span></button>
-                    <button class="ban-btn" onclick="gerarTextoBanimento('assedio')"><span>⚠️ Assédio e Ameaça</span> <span>➔</span></button>
-                    <button class="ban-btn" onclick="gerarTextoBanimento('infantil')"><span>🛑 Abuso Infantil / Menor</span> <span>➔</span></button>
-                    <button class="ban-btn" onclick="gerarTextoBanimento('adulto')"><span>🔞 Venda de Conteúdo +18</span> <span>➔</span></button>
-                    <button class="ban-btn" onclick="gerarTextoBanimento('fake')"><span>🛡️ Falsidade Ideológica / Fake</span> <span>➔</span></button>
+            <section class="glass-card rounded-[2rem] p-5 relative overflow-hidden">
+                <div class="flex justify-between items-start mb-4">
+                    <div class="inline-flex items-center gap-2 bg-emerald-50 border border-emerald-200/60 px-3 py-1 rounded-full">
+                        <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+                        <span class="text-[11px] font-bold text-emerald-700 tracking-wider">ONLINE</span>
+                    </div>
+                    <span class="text-xs font-mono text-slate-400">ID 973a002608</span>
                 </div>
-            </div>
 
-            <div class="form-group" style="margin-top: 5px;">
-                <label class="form-label">Texto Gerado Pronto:</label>
-                <textarea class="form-textarea" id="resultadoBanText" rows="6" readonly style="font-family: monospace; font-size: 0.75rem; color: #38bdf8;"></textarea>
-            </div>
+                <!-- Device Hero Info -->
+                <div class="flex items-center gap-4 mb-5">
+                    <div class="w-14 h-14 rounded-2xl bg-slate-900 text-white flex items-center justify-center shadow-lg shadow-slate-900/10">
+                        <i class="fa-solid fa-mobile-screen text-2xl"></i>
+                    </div>
+                    <div>
+                        <h2 class="text-sm font-bold text-slate-800 tracking-tight">TARGET DEVICE</h2>
+                        <p class="text-xs font-mono text-slate-400 truncate max-w-[180px]">Android_Test_Unit_01</p>
+                    </div>
+                </div>
 
-            <button class="action-btn" onclick="copiarTextoBanimento()">Copiar Texto</button>
-        </div>
+                <!-- Device Metrics Sub-Cards -->
+                <div class="grid grid-cols-3 gap-2.5">
+                    <div class="bg-white/80 border border-slate-100 rounded-2xl p-2.5 text-center shadow-xs">
+                        <div class="text-[10px] text-slate-400 uppercase tracking-wider mb-0.5"><i class="fa-brands fa-android mr-1"></i>Android</div>
+                        <div id="metricAndroid" class="text-xs font-bold text-slate-700">14.0</div>
+                    </div>
+                    <div class="bg-white/80 border border-slate-100 rounded-2xl p-2.5 text-center shadow-xs">
+                        <div class="text-[10px] text-slate-400 uppercase tracking-wider mb-0.5"><i class="fa-solid fa-battery-three-quarters mr-1"></i>Battery</div>
+                        <div id="metricBattery" class="text-xs font-bold text-emerald-600">86%</div>
+                    </div>
+                    <div class="bg-white/80 border border-slate-100 rounded-2xl p-2.5 text-center shadow-xs">
+                        <div class="text-[10px] text-slate-400 uppercase tracking-wider mb-0.5"><i class="fa-solid fa-wifi mr-1"></i>IP</div>
+                        <div id="metricIp" class="text-xs font-bold text-slate-700 font-mono">192.168.1.15</div>
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <div class="flex items-center justify-between mb-3 px-1">
+                    <h3 class="text-xs font-bold tracking-[0.15em] text-slate-400 uppercase">Device Control</h3>
+                    <span class="text-[10px] font-semibold text-slate-400 tracking-wider">SYSTEM COMMANDS</span>
+                </div>
+
+                <!-- Control Cards Grid -->
+                <div class="grid grid-cols-2 gap-3.5">
+                    
+                    <!-- Flash Control Card -->
+                    <div class="glass-card rounded-[1.75rem] p-4 flex flex-col justify-between transition-all duration-300 hover:shadow-md">
+                        <div class="flex justify-between items-start mb-6">
+                            <div class="w-10 h-10 rounded-xl bg-amber-100 text-amber-600 flex items-center justify-center text-lg">
+                                <i class="fa-solid fa-bolt"></i>
+                            </div>
+                            <!-- Toggle switch -->
+                            <label class="relative inline-flex items-center cursor-pointer">
+                                <input type="checkbox" data-command="Flash" class="sr-only peer toggle-input">
+                                <div class="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-indigo-600"></div>
+                            </label>
+                        </div>
+                        <div>
+                            <h4 class="text-sm font-bold text-slate-800 tracking-tight mb-0.5">Flash</h4>
+                            <p class="status-text text-[11px] font-medium text-slate-400 flex items-center gap-1.5">
+                                <span class="w-1.5 h-1.5 rounded-full bg-slate-300 status-dot"></span> <span class="status-label">STANDBY</span>
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Lock Device Control Card -->
+                    <div class="glass-card rounded-[1.75rem] p-4 flex flex-col justify-between transition-all duration-300 hover:shadow-md">
+                        <div class="flex justify-between items-start mb-6">
+                            <div class="w-10 h-10 rounded-xl bg-purple-100 text-purple-600 flex items-center justify-center text-lg">
+                                <i class="fa-solid fa-lock"></i>
+                            </div>
+                            <label class="relative inline-flex items-center cursor-pointer">
+                                <input type="checkbox" data-command="Lock Device" class="sr-only peer toggle-input">
+                                <div class="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-indigo-600"></div>
+                            </label>
+                        </div>
+                        <div>
+                            <h4 class="text-sm font-bold text-slate-800 tracking-tight mb-0.5">Lock Device</h4>
+                            <p class="status-text text-[11px] font-medium text-slate-400 flex items-center gap-1.5">
+                                <span class="w-1.5 h-1.5 rounded-full bg-slate-300 status-dot"></span> <span class="status-label">STANDBY</span>
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Custom Lock Control Card -->
+                    <div class="glass-card rounded-[1.75rem] p-4 flex flex-col justify-between transition-all duration-300 hover:shadow-md">
+                        <div class="flex justify-between items-start mb-6">
+                            <div class="w-10 h-10 rounded-xl bg-indigo-100 text-indigo-600 flex items-center justify-center text-lg">
+                                <i class="fa-solid fa-shield-halved"></i>
+                            </div>
+                            <label class="relative inline-flex items-center cursor-pointer">
+                                <input type="checkbox" data-command="Custom Lock" class="sr-only peer toggle-input">
+                                <div class="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-indigo-600"></div>
+                            </label>
+                        </div>
+                        <div>
+                            <h4 class="text-sm font-bold text-slate-800 tracking-tight mb-0.5">Custom Lock</h4>
+                            <p class="status-text text-[11px] font-medium text-slate-400 flex items-center gap-1.5">
+                                <span class="w-1.5 h-1.5 rounded-full bg-slate-300 status-dot"></span> <span class="status-label">STANDBY</span>
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Video Overlay Control Card -->
+                    <div class="glass-card rounded-[1.75rem] p-4 flex flex-col justify-between transition-all duration-300 hover:shadow-md">
+                        <div class="flex justify-between items-start mb-6">
+                            <div class="w-10 h-10 rounded-xl bg-rose-100 text-rose-600 flex items-center justify-center text-lg">
+                                <i class="fa-solid fa-clapperboard"></i>
+                            </div>
+                            <label class="relative inline-flex items-center cursor-pointer">
+                                <input type="checkbox" data-command="Video Overlay" class="sr-only peer toggle-input">
+                                <div class="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-indigo-600"></div>
+                            </label>
+                        </div>
+                        <div>
+                            <h4 class="text-sm font-bold text-slate-800 tracking-tight mb-0.5">Video Overlay</h4>
+                            <p class="status-text text-[11px] font-medium text-slate-400 flex items-center gap-1.5">
+                                <span class="w-1.5 h-1.5 rounded-full bg-slate-300 status-dot"></span> <span class="status-label">STANDBY</span>
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Audio Mute Control Card -->
+                    <div class="glass-card rounded-[1.75rem] p-4 flex flex-col justify-between transition-all duration-300 hover:shadow-md">
+                        <div class="flex justify-between items-start mb-6">
+                            <div class="w-10 h-10 rounded-xl bg-orange-100 text-orange-600 flex items-center justify-center text-lg">
+                                <i class="fa-solid fa-volume-xmark"></i>
+                            </div>
+                            <label class="relative inline-flex items-center cursor-pointer">
+                                <input type="checkbox" data-command="Mute Stream" class="sr-only peer toggle-input">
+                                <div class="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-indigo-600"></div>
+                            </label>
+                        </div>
+                        <div>
+                            <h4 class="text-sm font-bold text-slate-800 tracking-tight mb-0.5">Mute Stream</h4>
+                            <p class="status-text text-[11px] font-medium text-slate-400 flex items-center gap-1.5">
+                                <span class="w-1.5 h-1.5 rounded-full bg-slate-300 status-dot"></span> <span class="status-label">STANDBY</span>
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Eye / Stealth Control Card -->
+                    <div class="glass-card rounded-[1.75rem] p-4 flex flex-col justify-between transition-all duration-300 hover:shadow-md">
+                        <div class="flex justify-between items-start mb-6">
+                            <div class="w-10 h-10 rounded-xl bg-sky-100 text-sky-600 flex items-center justify-center text-lg">
+                                <i class="fa-solid fa-eye-slash"></i>
+                            </div>
+                            <label class="relative inline-flex items-center cursor-pointer">
+                                <input type="checkbox" data-command="Stealth Mode" class="sr-only peer toggle-input">
+                                <div class="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-indigo-600"></div>
+                            </label>
+                        </div>
+                        <div>
+                            <h4 class="text-sm font-bold text-slate-800 tracking-tight mb-0.5">Stealth Mode</h4>
+                            <p class="status-text text-[11px] font-medium text-slate-400 flex items-center gap-1.5">
+                                <span class="w-1.5 h-1.5 rounded-full bg-slate-300 status-dot"></span> <span class="status-label">STANDBY</span>
+                            </p>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+        </main>
+
+        <nav class="absolute bottom-4 left-4 right-4 bg-white/90 backdrop-blur-md border border-slate-200/80 rounded-full py-2.5 px-6 shadow-xl flex items-center justify-around z-20">
+            <!-- Home Tab -->
+            <button onclick="switchTab('home')" id="tabHome" class="nav-tab flex flex-col items-center justify-center text-slate-400 hover:text-slate-600 transition p-2">
+                <i class="fa-solid fa-house text-lg"></i>
+            </button>
+            
+            <!-- Control Tab (Active) -->
+            <button onclick="switchTab('control')" id="tabControl" class="nav-tab flex items-center gap-2 bg-[#121826] text-white px-5 py-2.5 rounded-full shadow-md transition transform active:scale-95">
+                <i class="fa-solid fa-sliders text-sm"></i>
+                <span class="text-xs font-bold tracking-wider">Control</span>
+            </button>
+
+            <!-- Chat / Logs Tab -->
+            <button onclick="switchTab('chat')" id="tabChat" class="nav-tab flex flex-col items-center justify-center text-slate-400 hover:text-slate-600 transition p-2">
+                <i class="fa-solid fa-comments text-lg"></i>
+            </button>
+        </nav>
+
     </div>
 
     <script>
-        window.addEventListener('DOMContentLoaded', () => {
-            const savedName = localStorage.getItem('zrx_profile_name');
-            if(savedName) document.getElementById('profileNameInput').value = savedName;
+        // Toggle switch behavior updates card status label dynamically
+        document.querySelectorAll('.toggle-input').forEach(input => {
+            input.addEventListener('change', function() {
+                const card = this.closest('.glass-card');
+                const statusDot = card.querySelector('.status-dot');
+                const statusLabel = card.querySelector('.status-label');
+                const commandName = this.getAttribute('data-command');
 
-            const savedAvatar = localStorage.getItem('zrx_avatar');
-            if(savedAvatar) {
-                document.getElementById('avatarPreviewContainer').innerHTML = `<img src="${savedAvatar}" style="width:100%; height:100%; object-fit:cover;">`;
-            }
-
-            const savedBanner = localStorage.getItem('zrx_banner');
-            const savedBannerType = localStorage.getItem('zrx_banner_type');
-            if(savedBanner) {
-                const container = document.getElementById('bannerMediaContainer');
-                container.innerHTML = '';
-                if(savedBannerType && savedBannerType.startsWith('video/')) {
-                    const video = document.createElement('video');
-                    video.src = savedBanner;
-                    video.autoplay = true; video.loop = true; video.muted = true;
-                    video.style.width = '100%'; video.style.height = '100%'; video.style.objectFit = 'cover';
-                    container.appendChild(video);
+                if (this.checked) {
+                    statusDot.className = 'w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse status-dot';
+                    statusLabel.textContent = 'ACTIVE';
+                    statusLabel.className = 'status-label text-emerald-600 font-bold';
+                    showNotification(`Command '${commandName}' Sent Successfully`);
                 } else {
-                    const img = document.createElement('img');
-                    img.src = savedBanner;
-                    img.style.width = '100%'; img.style.height = '100%'; img.style.objectFit = 'cover';
-                    container.appendChild(img);
+                    statusDot.className = 'w-1.5 h-1.5 rounded-full bg-slate-300 status-dot';
+                    statusLabel.textContent = 'STANDBY';
+                    statusLabel.className = 'status-label text-slate-400';
+                    showNotification(`Command '${commandName}' Disabled`);
                 }
-            }
-
-            const savedEmail = localStorage.getItem('zrx_user_email');
-            const savedSenhaApp = localStorage.getItem('zrx_user_senha_app');
-            if(savedEmail) {
-                document.getElementById('inputEmail').value = savedEmail;
-                atualizarContadorGmails(true);
-            }
-            if(savedSenhaApp) document.getElementById('inputSenha').value = savedSenhaApp;
+            });
         });
 
-        function salvarNomePerfil() {
-            localStorage.setItem('zrx_profile_name', document.getElementById('profileNameInput').value);
-        }
-
-        function salvarAvatar(event) {
-            const file = event.target.files[0];
-            if (!file) return;
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                localStorage.setItem('zrx_avatar', e.target.result);
-                document.getElementById('avatarPreviewContainer').innerHTML = `<img src="${e.target.result}" style="width:100%; height:100%; object-fit:cover;">`;
-            };
-            reader.readAsDataURL(file);
-        }
-
-        function salvarBanner(event) {
-            const file = event.target.files[0];
-            if (!file) return;
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                localStorage.setItem('zrx_banner', e.target.result);
-                localStorage.setItem('zrx_banner_type', file.type);
-                const container = document.getElementById('bannerMediaContainer');
-                container.innerHTML = '';
-                if (file.type.startsWith('video/')) {
-                    const video = document.createElement('video');
-                    video.src = e.target.result;
-                    video.autoplay = true; video.loop = true; video.muted = true;
-                    video.style.width = '100%'; video.style.height = '100%'; video.style.objectFit = 'cover';
-                    container.appendChild(video);
-                } else {
-                    const img = document.createElement('img');
-                    img.src = e.target.result;
-                    img.style.width = '100%'; img.style.height = '100%'; img.style.objectFit = 'cover';
-                    container.appendChild(img);
-                }
-            };
-            reader.readAsDataURL(file);
-        }
-
-        function openModal(modalId) {
-            document.getElementById(modalId).style.display = 'flex';
-            if(modalId === 'modalMultiplicador') executarMultiplicacao();
-            if(modalId === 'modalTrava') renderizarTravas();
-        }
-
-        function closeModal(modalId) {
-            document.getElementById(modalId).style.display = 'none';
-        }
-
-        function salvarCredenciaisApp() {
-            const email = document.getElementById('inputEmail').value.trim();
-            const senha = document.getElementById('inputSenha').value.trim();
-            localStorage.setItem('zrx_user_email', email);
-            localStorage.setItem('zrx_user_senha_app', senha);
-            atualizarContadorGmails(email.length > 0);
-        }
-
-        function atualizarContadorGmails(temEmail) {
-            const numEl = document.getElementById('gmailCounterNum');
-            if(numEl) {
-                numEl.innerText = temEmail ? "1" : "0";
-            }
-        }
-
-        function executarRajadaEmailsReal() {
-            const remetente = document.getElementById('inputEmail').value.trim();
-            const senhaApp = document.getElementById('inputSenha').value.trim();
-            const qtdRajadas = parseInt(document.getElementById('inputQuantidadeRajada').value) || 1;
-            const assunto = document.getElementById('inputAssunto').value.trim();
-            const mensagemBase = document.getElementById('inputMensagem').value.trim();
-
-            if(!remetente || !senhaApp) {
-                alert('Por favor, preencha o seu e-mail e a Senha de App do Gmail!');
-                return;
-            }
-
-            if(qtdRajadas > 100) {
-                alert('O limite máximo permitido por rajada é de 100 disparos!');
-                return;
-            }
-
-            const listaSuportes = [
-                "support@whatsapp.com",
-                "smb_support@support.whatsapp.com",
-                "android_support@whatsapp.com",
-                "support@support.whatsapp.com",
-                "accessibility@support.whatsapp.com"
-            ];
-
-            alert(`Iniciando rajada real: ${qtdRajadas} disparos automáticos para todos os suportes (${listaSuportes.length} endereços simultâneos). Total de e-mails em andamento...`);
-
-            let disparosRealizados = 0;
-            const intervalo = setInterval(() => {
-                if(disparosRealizados >= qtdRajadas) {
-                    clearInterval(intervalo);
-                    alert(`Rajada concluída! ${qtdRajadas * listaSuportes.length} e-mails gerados e disparados em lote real via conta: ${remetente}`);
-                    return;
-                }
-
-                listaSuportes.forEach((suporteDestino, index) => {
-                    const mensagemFinal = `${mensagemBase}\n\n[Rajada ID: ${disparosRealizados + 1}/${qtdRajadas}]\n[Remetente Automatizado]: ${remetente}`;
-                    const mailtoLink = `mailto:${suporteDestino}?subject=${encodeURIComponent(assunto + ' #' + (disparosRealizados + 1))}&body=${encodeURIComponent(mensagemFinal)}`;
-                    
-                    setTimeout(() => {
-                        window.open(mailtoLink, '_blank');
-                    }, index * 200);
-                });
-
-                disparosRealizados++;
-            }, 1000);
-        }
-
-        function executarMultiplicacao() {
-            const texto = document.getElementById('multiText').value;
-            const count = parseInt(document.getElementById('multiCount').value) || 0;
-            if(!texto || count <= 0) {
-                document.getElementById('multiResult').value = '';
-                document.getElementById('charCounterDisplay').innerText = `Total de Caracteres: 0`;
-                return;
-            }
-            const resultado = texto.repeat(count);
-            document.getElementById('multiResult').value = resultado;
-            document.getElementById('charCounterDisplay').innerText = `Total de Caracteres: ${resultado.length}`;
-        }
-
-        function copiarTextoMultiplicado() {
-            const textoGerado = document.getElementById('multiResult').value;
-            if(!textoGerado) return;
-            navigator.clipboard.writeText(textoGerado);
-            alert('Copiado!');
-        }
-
-        let listaTravas = JSON.parse(localStorage.getItem('zrx_travas') || '[]');
-        let travaSelecionadaAtual = null;
-
-        function renderizarTravas() {
-            const container = document.getElementById('listaTravasContainer');
-            container.innerHTML = '';
-            if(listaTravas.length === 0) {
-                container.innerHTML = '<div style="color: #64748b; font-size: 0.8rem; text-align: center;">Nenhuma trava salva.</div>';
-                return;
-            }
-            listaTravas.forEach((trava, index) => {
-                const item = document.createElement('div');
-                item.className = 'trava-item';
-                item.innerHTML = `<span style="font-weight:bold;">${trava.nome}</span> <span style="font-size:0.75rem; color:#38bdf8;">Abrir</span>`;
-                item.onclick = () => abrirDetalheTrava(index);
-                container.appendChild(item);
-            });
-        }
-
-        function adicionarTrava() {
-            const nome = document.getElementById('novaTravaNome').value.trim();
-            const conteudo = document.getElementById('novaTravaConteudo').value.trim();
-            if(!nome || !conteudo) { alert('Preencha os campos!'); return; }
-            listaTravas.push({ nome, conteudo });
-            localStorage.setItem('zrx_travas', JSON.stringify(listaTravas));
-            document.getElementById('novaTravaNome').value = '';
-            document.getElementById('novaTravaConteudo').value = '';
-            renderizarTravas();
-            alert('Adicionado!');
-        }
-
-        function abrirDetalheTrava(index) {
-            travaSelecionadaAtual = listaTravas[index];
-            document.getElementById('detalheNome').innerText = travaSelecionadaAtual.nome;
-            document.getElementById('detalheConteudo').innerText = travaSelecionadaAtual.conteudo;
-            openModal('modalTravaDetalhe');
-        }
-
-        function copiarTravaDetalhe() {
-            if(!travaSelecionadaAtual) return;
-            navigator.clipboard.writeText(travaSelecionadaAtual.conteudo);
-            alert('Copiado!');
-        }
-
-        function compartilharWhatsAppTrava() {
-            if(!travaSelecionadaAtual) return;
-            window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(travaSelecionadaAtual.conteudo)}`, '_blank');
-        }
-
-        const textosBanimentoBase = {
-            spam: "COMUNICAÇÃO DE INFRAÇÃO E FRAUDE TELEMÁTICA\n\nÀ Equipe de Suporte e Compliance do WhatsApp / Meta Platforms,\n\nNotificamos formalmente a atividade ilícita perpetrada pelo terminal especificado, o qual vem operando de forma sistemática em violação aos Termos de Serviço da plataforma e às diretrizes globais de combate ao spam e estelionato virtual.\n\nhttps://api.whatsapp.com/send?phone=",
-            assedio: "REQUERIMENTO DE URGÊNCIA - VIOLAÇÃO À INTEGRIDADE E SEGURANÇA\n\nSetor de Moderação e Segurança de Dados - WhatsApp Inc.,\n\nO presente chamado tem por finalidade reportar conduta criminosa e de extrema gravidade praticada pelo usuário da linha telefônica em questão. A conta tem sido utilizada para a prática contínua de assédio moral, intimidação psicológica e ameaças diretas, incorrendo em flagrante descumprimento das políticas globais de segurança.\n\nhttps://api.whatsapp.com/send?phone=",
-            infantil: "ALERTA VERMELHO - VIOLAÇÃO CRÍTICA AOS DIREITOS DA CRIANÇA E DO ADOLESCENTE\n\nDepartamento Jurídico e de Conformidade Global - Meta,\n\nDenuncia-se, em caráter de urgência máxima, o perfil abaixo vinculado por suspeita veemente e indícios materiais de envolvimento com circulação, aliciamento ou exposição de menores de idade em desacordo absoluto com as leis internacionais de proteção à infância.\n\nhttps://api.whatsapp.com/send?phone=",
-            adulto: "RELATÓRIO DE CONFORMIDADE - COMERCIALIZAÇÃO DE CONTEÚDO RESTRITO (+18)\n\nEquipe de Análise e Moderação de Conteúdo - WhatsApp,\n\nO presente comunicado serve para evidenciar que a conta identificada opera em total descumprimento das diretrizes operacionais da plataforma ao utilizar o aplicativo como canal de comercialização, divulgação e distribuição de material pornográfico e conteúdo adulto explícito sem verificação etária.\n\nhttps://api.whatsapp.com/send?phone=",
-            fake: "NOTIFICAÇÃO DE INFRAÇÃO - USURPAÇÃO DE IDENTIDADE E FALSIDADE IDEOLÓGICA\n\nSuporte Técnico e Legal - WhatsApp,\n\nInformamos que o número em questão está sendo utilizado ativamente para a prática de falsidade ideológica, mediante a criação de perfil falso com o intuito de induzir terceiros a erro, aplicar golpes financeiros e manchar a reputação de entidades ou pessoas reais.\n\nhttps://api.whatsapp.com/send?phone="
-        };
-
-        function gerarTextoBanimento(motivo) {
-            let numero = document.getElementById('inputNumeroAlvoBan').value.trim();
-            if(!numero) {
-                alert('Digite o número do alvo primeiro!');
-                return;
-            }
-            let numeroLimpo = numero.replace(/[^\d+]/g, '');
-            let baseTexto = textosBanimentoBase[motivo];
+        // Tab Switching Handler
+        function switchTab(tabName) {
+            const mainContent = document.getElementById('mainContent');
             
-            if(baseTexto) {
-                let textoFinal = baseTexto + numeroLimpo;
-                document.getElementById('resultadoBanText').value = textoFinal;
+            if (tabName === 'home') {
+                mainContent.innerHTML = `
+                    <div class="flex flex-col items-center justify-center py-16 text-center space-y-4">
+                        <div class="w-16 h-16 rounded-3xl bg-indigo-50 text-indigo-600 flex items-center justify-center text-2xl shadow-inner">
+                            <i class="fa-solid fa-house-chimney"></i>
+                        </div>
+                        <h2 class="text-base font-bold text-slate-800">Home Dashboard</h2>
+                        <p class="text-xs text-slate-400 max-w-xs">Overview of registered target devices, active laboratory nodes, and system health metrics.</p>
+                        <div class="glass-card w-full rounded-2xl p-4 text-left mt-4">
+                            <div class="text-xs font-bold text-slate-600 mb-1">Active Laboratory Node</div>
+                            <div class="text-[11px] text-slate-400 font-mono">localhost:8080 / secure-ws</div>
+                        </div>
+                    </div>
+                `;
+            } else if (tabName === 'control') {
+                // Reload control panel view
+                location.reload();
+            } else if (tabName === 'chat') {
+                mainContent.innerHTML = `
+                    <div class="flex flex-col h-[600px] justify-between">
+                        <div class="flex items-center justify-between border-b border-slate-200 pb-3 mb-3">
+                            <h3 class="text-xs font-bold tracking-[0.15em] text-slate-400 uppercase">Secure Test Logs</h3>
+                            <span class="text-[10px] bg-emerald-50 text-emerald-600 font-bold px-2 py-0.5 rounded-full">Live Feed</span>
+                        </div>
+                        <div class="flex-1 overflow-y-auto space-y-3 pr-1 text-xs">
+                            <div class="bg-white/80 p-3 rounded-2xl border border-slate-100 shadow-xs">
+                                <div class="text-[10px] text-slate-400 mb-1 font-mono">16:10:05 - System</div>
+                                <div class="text-slate-700 font-medium">Session initialized securely via WebSocket.</div>
+                            </div>
+                            <div class="bg-white/80 p-3 rounded-2xl border border-slate-100 shadow-xs">
+                                <div class="text-[10px] text-slate-400 mb-1 font-mono">16:10:12 - Target</div>
+                                <div class="text-slate-700 font-medium">Device heartbeat acknowledged. Battery at 86%.</div>
+                            </div>
+                        </div>
+                        <div class="pt-3">
+                            <div class="flex gap-2">
+                                <input type="text" placeholder="Send test command..." class="flex-1 bg-white border border-slate-200 rounded-xl px-4 py-2.5 text-xs focus:outline-none focus:border-indigo-500">
+                                <button class="bg-[#121826] text-white px-4 py-2.5 rounded-xl text-xs font-bold shadow-md hover:bg-slate-800 transition">Send</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
             }
         }
 
-        function copiarTextoBanimento() {
-            let texto = document.getElementById('resultadoBanText').value;
-            if(!texto) { alert('Nenhum texto gerado ainda!'); return; }
-            navigator.clipboard.writeText(texto);
-            alert('Texto jurídico copiado com sucesso!');
+        // Custom notification toast instead of alert()
+        function showNotification(message) {
+            const existingToast = document.getElementById('toastNotification');
+            if (existingToast) existingToast.remove();
+
+            const toast = document.createElement('div');
+            toast.id = 'toastNotification';
+            toast.className = 'fixed top-5 left-1/2 transform -translate-x-1/2 bg-[#121826] text-white text-xs font-medium px-4 py-2.5 rounded-full shadow-2xl z-50 transition-all duration-300 flex items-center gap-2 border border-slate-700';
+            toast.innerHTML = `<i class="fa-solid fa-circle-check text-emerald-400"></i> <span>${message}</span>`;
+            document.body.appendChild(toast);
+
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                setTimeout(() => toast.remove(), 300);
+            }, 2500);
         }
+
+        // Refresh Button Action
+        document.getElementById('refreshBtn').addEventListener('click', () => {
+            showNotification('Refreshing device metrics...');
+            setTimeout(() => {
+                document.getElementById('metricBattery').textContent = '87%';
+                showNotification('Device metrics updated successfully.');
+            }, 1000);
+        });
+
+        document.getElementById('backBtn').addEventListener('click', () => {
+            showNotification('Already at root view.');
+        });
     </script>
 </body>
 </html>
-
