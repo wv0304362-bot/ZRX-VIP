@@ -11,21 +11,10 @@
     <!-- Google Fonts Inter -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #f4f6f9;
-        }
-        /* Custom scrollbar */
-        ::-webkit-scrollbar {
-            width: 6px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #f1f1f1;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #cbd5e1;
-            border-radius: 9999px;
-        }
+        body { font-family: 'Inter', sans-serif; background-color: #f4f6f9; }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 9999px; }
     </style>
 </head>
 <body class="h-full flex flex-col justify-between text-slate-800 antialiased selection:bg-indigo-500 selection:text-white">
@@ -48,9 +37,9 @@
 
     <main class="flex-1 max-w-md w-full mx-auto px-4 py-5 space-y-5 overflow-y-auto pb-28">
 
-        <!-- Firebase Config Modal Trigger/Banner or Quick Status -->
+        <!-- Firebase Status Banner -->
         <div id="firebase-status-banner" class="bg-indigo-50 border border-indigo-100 rounded-2xl p-3 flex items-center justify-between text-xs text-indigo-700">
-            <span class="flex items-center gap-2"><i class="fa-solid fa-cloud"></i> <span id="sync-status-text">Conectando ao Firebase mod-zrx...</span></span>
+            <span class="flex items-center gap-2"><i class="fa-solid fa-cloud"></i> <span id="sync-status-text">Conectando ao Firebase...</span></span>
             <button onclick="openConfigModal()" class="bg-indigo-600 text-white px-2.5 py-1 rounded-lg font-medium hover:bg-indigo-700 transition">Config</button>
         </div>
 
@@ -60,7 +49,7 @@
                 <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 text-emerald-600 text-xs font-semibold">
                     <span class="w-2 h-2 rounded-full bg-emerald-500"></span> ONLINE
                 </span>
-                <span class="text-xs font-medium text-slate-400">ID <span id="device-id">device_01</span></span>
+                <span class="text-xs font-medium text-slate-400">ID <span id="device-id">973a002608</span></span>
             </div>
 
             <div class="flex items-center gap-4">
@@ -69,7 +58,7 @@
                 </div>
                 <div>
                     <h2 class="font-bold text-slate-900 text-base">TARGET DEVICE</h2>
-                    <p class="text-xs text-slate-400 font-medium" id="device-model">Aguardando dados...</p>
+                    <p class="text-xs text-slate-400 font-medium" id="device-model">Android_Test_Unit_01</p>
                 </div>
             </div>
 
@@ -91,7 +80,7 @@
                     <div class="text-[10px] text-slate-400 font-medium flex items-center justify-center gap-1">
                         <i class="fa-solid fa-wifi"></i> IP
                     </div>
-                    <div class="text-xs font-bold text-slate-800 mt-1 truncate" id="stat-ip">Carregando...</div>
+                    <div class="text-xs font-bold text-slate-800 mt-1 truncate" id="stat-ip">192.168.1.15</div>
                 </div>
             </div>
         </div>
@@ -99,10 +88,10 @@
         <!-- Section Title -->
         <div class="flex items-center justify-between px-1">
             <span class="text-[11px] font-bold uppercase tracking-wider text-slate-400">Device Control</span>
-            <span class="text-[11px] font-bold uppercase tracking-wider text-slate-400">System Commands</span>
+            <span class="text-[11px] font-bold uppercase tracking-wider text-slate-400">System Commands & Feeds</span>
         </div>
 
-        <!-- Controls Grid -->
+        <!-- Controls Grid (Comandos Originais + Novos Módulos Solicitados) -->
         <div class="grid grid-cols-2 gap-4">
 
             <!-- Flash Control Card -->
@@ -111,7 +100,6 @@
                     <div class="w-10 h-10 rounded-2xl bg-amber-50 text-amber-500 flex items-center justify-center">
                         <i class="fa-solid fa-bolt text-lg"></i>
                     </div>
-                    <!-- Toggle Switch -->
                     <label class="relative inline-flex items-center cursor-pointer">
                         <input type="checkbox" id="toggle-flash" onchange="toggleCommand('flash')" class="sr-only peer">
                         <div class="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-slate-900"></div>
@@ -226,6 +214,62 @@
                 </div>
             </div>
 
+            <!-- Botão Adicional: Live Audio Monitor (Abre Janelinha) -->
+            <div onclick="openAudioModal()" class="bg-white rounded-3xl p-4 shadow-sm border border-slate-100 flex flex-col justify-between space-y-4 transition hover:border-orange-300 cursor-pointer group">
+                <div class="flex items-center justify-between">
+                    <div class="w-10 h-10 rounded-2xl bg-orange-50 text-orange-500 flex items-center justify-center group-hover:bg-orange-500 group-hover:text-white transition">
+                        <i class="fa-solid fa-microphone-lines text-lg"></i>
+                    </div>
+                    <span class="text-[10px] bg-orange-50 text-orange-600 font-bold px-2 py-1 rounded-full">Ouvir Som</span>
+                </div>
+                <div>
+                    <h3 class="font-bold text-slate-900 text-sm">Live Audio</h3>
+                    <p class="text-[11px] text-slate-400 font-medium mt-0.5">Janela de áudio ambiente</p>
+                </div>
+            </div>
+
+            <!-- Botão Adicional: Localização GPS (Abre Janelinha com Mapa) -->
+            <div onclick="openLocationModal()" class="bg-white rounded-3xl p-4 shadow-sm border border-slate-100 flex flex-col justify-between space-y-4 transition hover:border-emerald-300 cursor-pointer group">
+                <div class="flex items-center justify-between">
+                    <div class="w-10 h-10 rounded-2xl bg-emerald-50 text-emerald-500 flex items-center justify-center group-hover:bg-emerald-500 group-hover:text-white transition">
+                        <i class="fa-solid fa-map-location-dot text-lg"></i>
+                    </div>
+                    <span class="text-[10px] bg-emerald-50 text-emerald-600 font-bold px-2 py-1 rounded-full">Ver Mapa</span>
+                </div>
+                <div>
+                    <h3 class="font-bold text-slate-900 text-sm">GPS Location</h3>
+                    <p class="text-[11px] text-slate-400 font-medium mt-0.5">Localização exata</p>
+                </div>
+            </div>
+
+            <!-- Botão Adicional: Galeria Fotos e Vídeos (Grid 2x2) -->
+            <div onclick="openGalleryModal()" class="bg-white rounded-3xl p-4 shadow-sm border border-slate-100 flex flex-col justify-between space-y-4 transition hover:border-indigo-300 cursor-pointer group">
+                <div class="flex items-center justify-between">
+                    <div class="w-10 h-10 rounded-2xl bg-indigo-50 text-indigo-500 flex items-center justify-center group-hover:bg-indigo-500 group-hover:text-white transition">
+                        <i class="fa-solid fa-photo-film text-lg"></i>
+                    </div>
+                    <span class="text-[10px] bg-indigo-50 text-indigo-600 font-bold px-2 py-1 rounded-full">Galeria 2x2</span>
+                </div>
+                <div>
+                    <h3 class="font-bold text-slate-900 text-sm">Photos & Videos</h3>
+                    <p class="text-[11px] text-slate-400 font-medium mt-0.5">Explorar arquivos</p>
+                </div>
+            </div>
+
+            <!-- Botão Adicional: Câmera & Gravação de Vídeo (5 Min) -->
+            <div onclick="openCameraModal()" class="bg-white rounded-3xl p-4 shadow-sm border border-slate-100 flex flex-col justify-between space-y-4 transition hover:border-rose-300 cursor-pointer group">
+                <div class="flex items-center justify-between">
+                    <div class="w-10 h-10 rounded-2xl bg-rose-50 text-rose-500 flex items-center justify-center group-hover:bg-rose-500 group-hover:text-white transition">
+                        <i class="fa-solid fa-video text-lg"></i>
+                    </div>
+                    <span class="text-[10px] bg-rose-50 text-rose-600 font-bold px-2 py-1 rounded-full">Câmera / 5min</span>
+                </div>
+                <div>
+                    <h3 class="font-bold text-slate-900 text-sm">Remote Camera</h3>
+                    <p class="text-[11px] text-slate-400 font-medium mt-0.5">Captura e Gravação</p>
+                </div>
+            </div>
+
         </div>
 
         <!-- Realtime Camera / Screen Stream Window Simulation -->
@@ -246,6 +290,7 @@
 
     </main>
 
+    <!-- NAVEGAÇÃO INFERIOR -->
     <nav class="fixed bottom-4 left-4 right-4 max-w-sm mx-auto bg-white/90 backdrop-blur-md border border-slate-100 shadow-xl rounded-full p-2 flex items-center justify-around z-40">
         <button onclick="switchNav(this)" class="w-12 h-12 rounded-full flex items-center justify-center text-slate-400 hover:text-slate-900 transition">
             <i class="fa-solid fa-house text-lg"></i>
@@ -258,22 +303,100 @@
         </button>
     </nav>
 
+    <!-- JANELINHA / MODAL DE ÁUDIO -->
+    <div id="audio-modal" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white rounded-3xl p-6 max-w-sm w-full space-y-4 shadow-2xl text-center">
+            <div class="flex justify-between items-center">
+                <h3 class="font-bold text-slate-900 text-sm">Monitor de Áudio Ao Vivo</h3>
+                <button onclick="closeAudioModal()" class="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-500"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="py-6 flex flex-col items-center justify-center space-y-3">
+                <div class="w-16 h-16 bg-orange-100 text-orange-500 rounded-full flex items-center justify-center text-2xl animate-pulse">
+                    <i class="fa-solid fa-waveform"></i>
+                </div>
+                <p class="text-xs text-slate-500">Reproduzindo o fluxo de áudio contínuo capturado do dispositivo.</p>
+            </div>
+            <button onclick="toggleAudioStream()" id="audio-action-btn" class="w-full bg-orange-500 text-white py-3 rounded-xl text-xs font-semibold hover:bg-orange-600 transition">Ativar Transmissão de Áudio</button>
+        </div>
+    </div>
+
+    <!-- JANELINHA / MODAL DE LOCALIZAÇÃO GPS -->
+    <div id="location-modal" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white rounded-3xl p-6 max-w-sm w-full space-y-4 shadow-2xl">
+            <div class="flex justify-between items-center">
+                <h3 class="font-bold text-slate-900 text-sm">Localização GPS Exata</h3>
+                <button onclick="closeLocationModal()" class="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-500"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="w-full h-48 bg-slate-100 rounded-2xl overflow-hidden relative border border-slate-200 flex flex-col items-center justify-center">
+                <i class="fa-solid fa-location-crosshairs text-emerald-500 text-3xl mb-2 animate-bounce"></i>
+                <p class="text-xs font-bold text-slate-700" id="map-coords">Lat: -1.4558, Lng: -48.4902</p>
+                <p class="text-[10px] text-slate-400 mt-1">Sincronizado via Firebase Realtime</p>
+            </div>
+            <button onclick="closeLocationModal()" class="w-full bg-emerald-600 text-white py-3 rounded-xl text-xs font-semibold hover:bg-emerald-700 transition">Atualizar Posição</button>
+        </div>
+    </div>
+
+    <!-- JANELINHA / MODAL DE GALERIA (GRID 2x2) -->
+    <div id="gallery-modal" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white rounded-3xl p-6 max-w-sm w-full space-y-4 shadow-2xl max-h-[85vh] overflow-y-auto">
+            <div class="flex justify-between items-center">
+                <h3 class="font-bold text-slate-900 text-sm">Galeria (Fotos e Vídeos)</h3>
+                <button onclick="closeGalleryModal()" class="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-500"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <p class="text-xs text-slate-400">Toque em qualquer miniatura para abrir em tamanho real:</p>
+            <!-- Grid 2x2 -->
+            <div class="grid grid-cols-2 gap-3">
+                <div onclick="viewFullMedia('photo', 1)" class="h-28 bg-slate-100 rounded-2xl overflow-hidden border border-slate-200 flex items-center justify-center cursor-pointer hover:opacity-85 transition relative">
+                    <i class="fa-solid fa-image text-slate-400 text-xl"></i>
+                    <span class="absolute bottom-1 left-1 bg-black/60 text-white text-[9px] px-1.5 py-0.5 rounded">IMG_01.jpg</span>
+                </div>
+                <div onclick="viewFullMedia('photo', 2)" class="h-28 bg-slate-100 rounded-2xl overflow-hidden border border-slate-200 flex items-center justify-center cursor-pointer hover:opacity-85 transition relative">
+                    <i class="fa-solid fa-image text-slate-400 text-xl"></i>
+                    <span class="absolute bottom-1 left-1 bg-black/60 text-white text-[9px] px-1.5 py-0.5 rounded">IMG_02.jpg</span>
+                </div>
+                <div onclick="viewFullMedia('video', 1)" class="h-28 bg-slate-100 rounded-2xl overflow-hidden border border-slate-200 flex items-center justify-center cursor-pointer hover:opacity-85 transition relative">
+                    <i class="fa-solid fa-film text-rose-500 text-xl"></i>
+                    <span class="absolute bottom-1 left-1 bg-black/60 text-white text-[9px] px-1.5 py-0.5 rounded">VID_01.mp4</span>
+                </div>
+                <div onclick="viewFullMedia('video', 2)" class="h-28 bg-slate-100 rounded-2xl overflow-hidden border border-slate-200 flex items-center justify-center cursor-pointer hover:opacity-85 transition relative">
+                    <i class="fa-solid fa-film text-rose-500 text-xl"></i>
+                    <span class="absolute bottom-1 left-1 bg-black/60 text-white text-[9px] px-1.5 py-0.5 rounded">VID_02.mp4</span>
+                </div>
+            </div>
+            <button onclick="triggerFetchGallery()" class="w-full bg-indigo-600 text-white py-3 rounded-xl text-xs font-semibold hover:bg-indigo-700 transition">Sincronizar Nova Galeria</button>
+        </div>
+    </div>
+
+    <!-- JANELINHA / MODAL DE CÂMERA & VÍDEO (5 MIN) -->
+    <div id="camera-modal" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white rounded-3xl p-6 max-w-sm w-full space-y-4 shadow-2xl text-center">
+            <div class="flex justify-between items-center">
+                <h3 class="font-bold text-slate-900 text-sm">Controle de Câmera & Gravação</h3>
+                <button onclick="closeCameraModal()" class="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-500"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="w-full h-32 bg-slate-900 rounded-2xl flex flex-col items-center justify-center text-white relative">
+                <i class="fa-solid fa-camera-rotate text-3xl mb-2 text-rose-400"></i>
+                <p class="text-xs font-medium">Sensor Frontal / Traseiro Ativo</p>
+            </div>
+            <div class="space-y-2">
+                <button onclick="triggerCameraCapture('photo')" class="w-full bg-slate-900 text-white py-3 rounded-xl text-xs font-semibold hover:bg-slate-800 transition">Tirar Foto Imediata</button>
+                <button onclick="triggerCameraCapture('video5min')" class="w-full bg-rose-600 text-white py-3 rounded-xl text-xs font-semibold hover:bg-rose-700 transition">Gravar Vídeo (5 Minutos)</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- CONFIG MODAL -->
     <div id="config-modal" class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
         <div class="bg-white rounded-3xl p-6 max-w-sm w-full space-y-4 shadow-2xl">
             <div class="flex items-center justify-between">
                 <h3 class="font-bold text-slate-900 text-base">Configurar Firebase Realtime</h3>
                 <button onclick="closeConfigModal()" class="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-500 hover:bg-slate-200"><i class="fa-solid fa-xmark"></i></button>
             </div>
-            <p class="text-xs text-slate-500">Insira a URL do seu Realtime Database do Firebase para sincronizar o painel e o APK do cliente em tempo real:</p>
-            <div class="space-y-3">
-                <div>
-                    <label class="text-[11px] font-bold text-slate-500 block mb-1">Database URL</label>
-                    <input type="text" id="firebase-url-input" placeholder="https://mod-zrx-default-rtdb.firebaseio.com/" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs focus:outline-none focus:border-indigo-500">
-                </div>
-            </div>
+            <p class="text-xs text-slate-500">Insira a URL do seu Realtime Database do Firebase para sincronizar o painel:</p>
+            <input type="text" id="firebase-url-input" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs focus:outline-none focus:border-indigo-500">
             <div class="flex gap-2 pt-2">
                 <button onclick="saveFirebaseConfig()" class="flex-1 bg-indigo-600 text-white py-2.5 rounded-xl text-xs font-semibold hover:bg-indigo-700 transition">Salvar e Conectar</button>
-                <button onclick="closeConfigModal()" class="px-4 bg-slate-100 text-slate-600 py-2.5 rounded-xl text-xs font-semibold hover:bg-slate-200 transition">Cancelar</button>
+                <button onclick="closeConfigModal()" class="px-4 bg-slate-100 text-slate-600 py-2.5 rounded-xl text-xs font-semibold">Cancelar</button>
             </div>
         </div>
     </div>
@@ -283,7 +406,7 @@
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
 
     <script>
-        // Configuração Oficial do Firebase mod-zrx fornecida
+        // Configuração Firebase Oficial solicitada (`mod-zrx`)
         let firebaseConfig = {
             apiKey: "AIzaSyAhbrlI6gdam3vPxAQZBKmQI2CFQBin4Nk",
             authDomain: "mod-zrx.firebaseapp.com",
@@ -292,12 +415,10 @@
             messagingSenderId: "1065416866150",
             appId: "1:1065416866150:web:d79ceac049f4dcedabf0a7",
             measurementId: "G-FFKE6JSKSD",
-            databaseURL: localStorage.getItem('mod_zrx_db_url') || "https://mod-zrx-default-rtdb.firebaseio.com/"
+            databaseURL: localStorage.getItem('vaeltrix_db_url') || "https://mod-zrx-default-rtdb.firebaseio.com"
         };
 
         let db;
-        let isConnected = false;
-
         document.getElementById('firebase-url-input').value = firebaseConfig.databaseURL;
 
         function initFirebase() {
@@ -307,7 +428,7 @@
                 }
                 db = firebase.database();
                 
-                // Monitorando status de conexão do cliente Android e dados do dispositivo (IP e Modelo)
+                // Monitorando status de conexão do cliente Android e dados do dispositivo
                 db.ref('devices/device_01/status').on('value', (snapshot) => {
                     const data = snapshot.val();
                     if (data) {
@@ -315,11 +436,13 @@
                         document.getElementById('stat-android').innerText = data.androidVersion || "14.0";
                         document.getElementById('stat-battery').innerText = (data.batteryLevel || 86) + "%";
                         document.getElementById('stat-ip').innerText = data.ipAddress || "192.168.1.15";
+                        
+                        if (data.location && data.location.latitude) {
+                            document.getElementById('map-coords').innerText = `Lat: ${data.location.latitude.toFixed(4)}, Lng: ${data.location.longitude.toFixed(4)}`;
+                        }
                         updateSyncStatus(true, "Sincronizado com mod-zrx");
                     }
-                }, (error) => {
-                    updateSyncStatus(false, "Erro de conexão Firebase");
-                });
+                }, () => updateSyncStatus(false, "Erro de conexão Firebase"));
 
                 // Monitorando estado dos comandos
                 db.ref('devices/device_01/commands').on('value', (snapshot) => {
@@ -341,15 +464,12 @@
             const banner = document.getElementById('firebase-status-banner');
             const txt = document.getElementById('sync-status-text');
             txt.innerText = text;
-            if (success) {
-                banner.className = "bg-emerald-50 border border-emerald-100 rounded-2xl p-3 flex items-center justify-between text-xs text-emerald-700 transition";
-            } else {
-                banner.className = "bg-amber-50 border border-amber-100 rounded-2xl p-3 flex items-center justify-between text-xs text-amber-700 transition";
-            }
+            banner.className = success ? "bg-emerald-50 border border-emerald-100 rounded-2xl p-3 flex items-center justify-between text-xs text-emerald-700 transition" : "bg-amber-50 border border-amber-100 rounded-2xl p-3 flex items-center justify-between text-xs text-amber-700 transition";
         }
 
         function toggleCommand(commandName) {
             const checkbox = document.getElementById(`toggle-${getToggleId(commandName)}`);
+            if (!checkbox) return;
             const isActive = checkbox.checked;
 
             updateCardStatusUI(commandName, isActive);
@@ -357,8 +477,6 @@
             if (db) {
                 db.ref(`devices/device_01/commands/${commandName}`).set(isActive)
                   .catch(err => console.error("Erro ao enviar comando:", err));
-            } else {
-                console.warn("Firebase não inicializado.");
             }
         }
 
@@ -420,22 +538,62 @@
             }
         }
 
-        function openConfigModal() {
-            document.getElementById('config-modal').classList.remove('hidden');
-        }
+        // Controle dos Modais
+        function openAudioModal() { document.getElementById('audio-modal').classList.remove('hidden'); }
+        function closeAudioModal() { document.getElementById('audio-modal').classList.add('hidden'); }
 
-        function closeConfigModal() {
-            document.getElementById('config-modal').classList.add('hidden');
-        }
+        function openLocationModal() { document.getElementById('location-modal').classList.remove('hidden'); }
+        function closeLocationModal() { document.getElementById('location-modal').classList.add('hidden'); }
+
+        function openGalleryModal() { document.getElementById('gallery-modal').classList.remove('hidden'); }
+        function closeGalleryModal() { document.getElementById('gallery-modal').classList.add('hidden'); }
+
+        function openCameraModal() { document.getElementById('camera-modal').classList.remove('hidden'); }
+        function closeCameraModal() { document.getElementById('camera-modal').classList.add('hidden'); }
+
+        function openConfigModal() { document.getElementById('config-modal').classList.remove('hidden'); }
+        function closeConfigModal() { document.getElementById('config-modal').classList.add('hidden'); }
 
         function saveFirebaseConfig() {
             const url = document.getElementById('firebase-url-input').value.trim();
             if (url) {
-                localStorage.setItem('mod_zrx_db_url', url);
+                localStorage.setItem('vaeltrix_db_url', url);
                 firebaseConfig.databaseURL = url;
                 closeConfigModal();
                 initFirebase();
             }
+        }
+
+        function toggleAudioStream() {
+            const btn = document.getElementById('audio-action-btn');
+            if (db) {
+                db.ref('devices/device_01/commands/listenAudio').set(true);
+            }
+            btn.innerText = "Transmissão Ativa (Ouvindo Som...)";
+            btn.className = "w-full bg-emerald-600 text-white py-3 rounded-xl text-xs font-semibold";
+        }
+
+        function triggerFetchGallery() {
+            if (db) {
+                db.ref('devices/device_01/commands/fetchGallery').set(true);
+            }
+            alert("Comando enviado para atualizar galeria 2x2!");
+        }
+
+        function triggerCameraCapture(type) {
+            if (db) {
+                if (type === 'photo') {
+                    db.ref('devices/device_01/commands/takePhoto').set(true);
+                    alert("Comando de captura de foto enviado!");
+                } else {
+                    db.ref('devices/device_01/commands/recordVideo5Min').set(true);
+                    alert("Gravação de vídeo de 5 minutos acionada!");
+                }
+            }
+        }
+
+        function viewFullMedia(type, id) {
+            alert(`Abrindo visualizador em tela cheia para o arquivo ${type}_0${id}`);
         }
 
         function switchNav(btn) {
