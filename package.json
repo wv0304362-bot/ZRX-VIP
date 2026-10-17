@@ -1,0 +1,16 @@
+{
+  "name": "zrx-whatsapp-bot",
+  "version": "1.0.0",
+  "description": "Painel e Bot WhatsApp ZRX",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "@whiskeysockets/baileys": "^6.7.5",
+    "pino": "^8.19.0"
+  },
+  "engines": {
+    "node": ">=18.x"
+  }
+}
