@@ -18,13 +18,13 @@
 </head>
 <body class="flex flex-col min-h-screen pb-20 relative bg-[#121212]">
 
-    <!-- Plano de Fundo Dinâmico (Mídia de Fundo da Galeria) -->
+    <!-- Plano de Fundo Dinâmico (Mídia de Fundo Salva no IndexedDB) -->
     <div id="bg-container" class="fixed inset-0 z-[-1] overflow-hidden opacity-30 pointer-events-none">
         <img id="bgImage" src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=600" alt="Background" class="w-full h-full object-cover">
         <video id="bgVideo" class="w-full h-full object-cover hidden" autoplay muted loop></video>
     </div>
 
-    <!-- Cabeçalho Limpo (Sem foto de perfil/nome no topo) -->
+    <!-- Cabeçalho Limpo -->
     <header class="p-4 flex items-center justify-between border-b border-zinc-800 bg-zinc-900/90 backdrop-blur">
         <div>
             <h1 class="font-bold text-sm tracking-wider text-zinc-100">ZRX OPERATOR</h1>
@@ -114,17 +114,32 @@
         <section id="tab-commands" class="tab-content hidden space-y-4">
             <div>
                 <h2 class="text-lg font-bold text-zinc-100 border-l-4 border-zinc-500 pl-2">Painel de Comandos</h2>
-                <p class="text-xs text-zinc-400 mt-1">Gerenciamento de funções operacionais e atalhos.</p>
+                <p class="text-xs text-zinc-400 mt-1">Atalhos operacionais do sistema.</p>
             </div>
 
+            <!-- Status e Informações de Sessão -->
             <div class="bg-zinc-900/90 border border-zinc-800 rounded-2xl p-4 space-y-3 backdrop-blur">
                 <div class="flex justify-between items-center border-b border-zinc-800 pb-3">
-                    <span class="text-xs text-zinc-300 font-medium">Status da Sessão Baileys</span>
+                    <span class="text-xs text-zinc-300 font-medium">Status Baileys</span>
                     <span id="sessionStatusBadge" class="bg-zinc-800 text-zinc-400 text-[10px] font-bold px-2.5 py-1 rounded-full border border-zinc-700">OFFLINE</span>
                 </div>
-                <div class="flex justify-between items-center pb-1">
-                    <span class="text-xs text-zinc-300 font-medium">Limpar Cache / Desconectar</span>
-                    <button onclick="limparSessaoLocal()" class="bg-zinc-800 hover:bg-zinc-700 text-zinc-200 text-[10px] font-bold px-3 py-1.5 rounded-lg transition border border-zinc-700">Executar Limpeza</button>
+
+                <!-- Botões de Comandos Rápidos -->
+                <div class="space-y-2 pt-1">
+                    <button onclick="verificarStatusServidor()" class="w-full bg-zinc-800 hover:bg-zinc-700 text-zinc-200 text-xs font-bold py-2.5 rounded-xl border border-zinc-700 transition flex items-center justify-center space-x-2">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                        <span>Testar Conexão com Render</span>
+                    </button>
+
+                    <button onclick="removerMidiaFundo()" class="w-full bg-zinc-800 hover:bg-zinc-700 text-zinc-200 text-xs font-bold py-2.5 rounded-xl border border-zinc-700 transition flex items-center justify-center space-x-2">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+                        <span>Resetar Mídia de Fundo</span>
+                    </button>
+
+                    <button onclick="limparSessaoLocal()" class="w-full bg-red-950/80 hover:bg-red-900 text-red-200 text-xs font-bold py-2.5 rounded-xl border border-red-800 transition flex items-center justify-center space-x-2">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+                        <span>Limpar Todos os Dados Salvos</span>
+                    </button>
                 </div>
             </div>
         </section>
@@ -156,38 +171,72 @@
     <script>
         const RENDER_URL = 'https://zrx-vip-5aq5.onrender.com';
 
-        // Carregar dados salvos permanentemente (localStorage)
+        // --- SISTEMA INDEXEDDB PARA MÍDIA GRANDE DE FUNDO ---
+        function abrirDB() {
+            return new Promise((resolve, reject) => {
+                const request = indexedDB.open('ZRXDB', 1);
+                request.onupgradeneeded = (e) => {
+                    const db = e.target.result;
+                    if (!db.objectStoreNames.contains('midia')) {
+                        db.createObjectStore('midia');
+                    }
+                };
+                request.onsuccess = () => resolve(request.result);
+                request.onerror = () => reject(request.error);
+            });
+        }
+
+        async function salvarMidiaIndexedDB(blob, tipo) {
+            const db = await abrirDB();
+            const tx = db.transaction('midia', 'readwrite');
+            const store = tx.objectStore('midia');
+            store.put(blob, 'bgFile');
+            store.put(tipo, 'bgType');
+        }
+
+        async function carregarMidiaIndexedDB() {
+            try {
+                const db = await abrirDB();
+                const tx = db.transaction('midia', 'readonly');
+                const store = tx.objectStore('midia');
+                const reqBlob = store.get('bgFile');
+                const reqType = store.get('bgType');
+
+                tx.oncomplete = () => {
+                    const blob = reqBlob.result;
+                    const tipo = reqType.result;
+                    if (blob) {
+                        const url = URL.createObjectURL(blob);
+                        const img = document.getElementById('bgImage');
+                        const vid = document.getElementById('bgVideo');
+                        if (tipo === 'video') {
+                            vid.src = url;
+                            vid.classList.remove('hidden');
+                            img.classList.add('hidden');
+                        } else {
+                            img.src = url;
+                            img.classList.remove('hidden');
+                            vid.classList.add('hidden');
+                        }
+                    }
+                };
+            } catch (err) {
+                console.error("Erro ao carregar mídia do IndexedDB:", err);
+            }
+        }
+
+        // --- CARREGAMENTO INICIAL DE DADOS ---
         window.addEventListener('DOMContentLoaded', () => {
             const savedName = localStorage.getItem('zrx_profile_name');
-            if (savedName) {
-                document.getElementById('profileNameInput').value = savedName;
-            }
+            if (savedName) document.getElementById('profileNameInput').value = savedName;
 
             const savedAvatar = localStorage.getItem('zrx_profile_avatar');
-            if (savedAvatar) {
-                document.getElementById('profileAvatar').src = savedAvatar;
-            }
+            if (savedAvatar) document.getElementById('profileAvatar').src = savedAvatar;
 
             const savedNumero = localStorage.getItem('zrx_whatsapp_numero');
-            if (savedNumero) {
-                document.getElementById('numeroConexaoInput').value = savedNumero;
-            }
+            if (savedNumero) document.getElementById('numeroConexaoInput').value = savedNumero;
 
-            const savedBg = localStorage.getItem('zrx_bg_media');
-            const savedBgType = localStorage.getItem('zrx_bg_type');
-            if (savedBg) {
-                const img = document.getElementById('bgImage');
-                const vid = document.getElementById('bgVideo');
-                if (savedBgType === 'video') {
-                    vid.src = savedBg;
-                    vid.classList.remove('hidden');
-                    img.classList.add('hidden');
-                } else {
-                    img.src = savedBg;
-                    img.classList.remove('hidden');
-                    vid.classList.add('hidden');
-                }
-            }
+            carregarMidiaIndexedDB();
         });
 
         function atualizarRelogioReal() {
@@ -235,29 +284,25 @@
             }
         }
 
-        function loadMediaBackground(event) {
+        async function loadMediaBackground(event) {
             const file = event.target.files[0];
             if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    const img = document.getElementById('bgImage');
-                    const vid = document.getElementById('bgVideo');
-                    const dataUrl = e.target.result;
+                const img = document.getElementById('bgImage');
+                const vid = document.getElementById('bgVideo');
+                const url = URL.createObjectURL(file);
+                const isVideo = file.type.startsWith('video/');
 
-                    if (file.type.startsWith('video/')) {
-                        vid.src = dataUrl;
-                        vid.classList.remove('hidden');
-                        img.classList.add('hidden');
-                        localStorage.setItem('zrx_bg_type', 'video');
-                    } else {
-                        img.src = dataUrl;
-                        img.classList.remove('hidden');
-                        vid.classList.add('hidden');
-                        localStorage.setItem('zrx_bg_type', 'image');
-                    }
-                    localStorage.setItem('zrx_bg_media', dataUrl);
+                if (isVideo) {
+                    vid.src = url;
+                    vid.classList.remove('hidden');
+                    img.classList.add('hidden');
+                } else {
+                    img.src = url;
+                    img.classList.remove('hidden');
+                    vid.classList.add('hidden');
                 }
-                reader.readAsDataURL(file);
+
+                await salvarMidiaIndexedDB(file, isVideo ? 'video' : 'image');
             }
         }
 
@@ -301,11 +346,30 @@
             });
         }
 
+        async function verificarStatusServidor() {
+            try {
+                const res = await fetch(`${RENDER_URL}/api/status`);
+                const data = await res.json();
+                alert(`Status do Servidor: ${data.status}\nÚltimo Código: ${data.codigo}`);
+            } catch (e) {
+                alert('Não foi possível conectar ao Render. Verifique a URL do servidor.');
+            }
+        }
+
+        async function removerMidiaFundo() {
+            const db = await abrirDB();
+            const tx = db.transaction('midia', 'readwrite');
+            tx.objectStore('midia').clear();
+            document.getElementById('bgImage').src = 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=600';
+            document.getElementById('bgImage').classList.remove('hidden');
+            document.getElementById('bgVideo').classList.add('hidden');
+            alert('Mídia de fundo restaurada para o padrão.');
+        }
+
         function limparSessaoLocal() {
-            document.getElementById('pairingCodeDisplay').innerText = "--------";
-            document.getElementById('sessionStatusBadge').innerText = "OFFLINE";
-            document.getElementById('sessionStatusBadge').className = "bg-zinc-800 text-zinc-400 text-[10px] font-bold px-2.5 py-1 rounded-full border border-zinc-700";
-            alert('Sessão limpa.');
+            localStorage.clear();
+            removerMidiaFundo();
+            location.reload();
         }
     </script>
 </body>
