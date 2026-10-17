@@ -7,7 +7,7 @@ const http = require('http');
 let waSock = null;
 let statusConexaoAtual = "OFFLINE";
 let ultimoCodigoGerado = "--------";
-let modosBrincadeira = {}; // Armazena grupos com brincadeira ativa
+let modosBrincadeira = {};
 
 const XAI_API_KEY = process.env.XAI_API_KEY || "xai-It1hSBKgDociGem1UrHCDQuAAEBU6uLNpd12ORpiRMf1VobVtBqSPnYU31s120O7ehCNvGDVIXMou6xW";
 const PORT = process.env.PORT || 3000;
@@ -56,9 +56,8 @@ async function iniciarWhatsApp(numeroTelefone = null) {
 
         waSock.ev.on('creds.update', saveCreds);
 
-        // Caso seja solicitada a geracao do código de pareamento
         if (numeroTelefone && !waSock.authState.creds.registered) {
-            await delay(3000);
+            await delay(4000);
             const numeroLimpo = numeroTelefone.replace(/[^0-9]/g, '');
             const code = await waSock.requestPairingCode(numeroLimpo);
             ultimoCodigoGerado = code;
@@ -88,7 +87,7 @@ async function iniciarWhatsApp(numeroTelefone = null) {
     }
 }
 
-// Escutador de mensagens do WhatsApp para responder comandos
+// Escutador de mensagens do WhatsApp para comandos
 function escutarMensagensWhatsApp() {
     if (!waSock) return;
 
@@ -104,7 +103,6 @@ function escutarMensagensWhatsApp() {
 
             if (!isGroup) continue;
 
-            // Comando /br para exibir o menu de brincadeiras
             if (textoMsg.toLowerCase().trim() === '/br') {
                 if (!modosBrincadeira[from]) {
                     await waSock.sendMessage(from, { text: "⚠️ O Modo Brincadeiras está desativado neste grupo. Ative-o pelo painel ZRX Operator!" });
@@ -122,7 +120,6 @@ function escutarMensagensWhatsApp() {
                 await waSock.sendMessage(from, { text: menuText });
             }
 
-            // Comando /comecar para disparar a brincadeira
             if (textoMsg.toLowerCase().startsWith('/comecar')) {
                 if (!modosBrincadeira[from]) {
                     await waSock.sendMessage(from, { text: "⚠️ O Modo Brincadeiras está desativado neste grupo. Ative pelo painel primeiro!" });
@@ -168,13 +165,19 @@ const server = http.createServer(async (req, res) => {
 
     const urlObj = new URL(req.url, `http://${req.headers.host}`);
 
-    // Conectar WhatsApp via código de pareamento
     if (urlObj.pathname === '/api/conectar' && req.method === 'POST') {
         let body = '';
         req.on('data', chunk => body += chunk);
         req.on('end', async () => {
             try {
                 const { numero } = JSON.parse(body);
+                // Reseta a sessão anterior antes de pedir um novo código
+                const authPath = path.join(__dirname, 'auth_info_baileys');
+                if (fs.existsSync(authPath)) {
+                    fs.rmSync(authPath, { recursive: true, force: true });
+                }
+                if (waSock) waSock.end();
+
                 await iniciarWhatsApp(numero);
                 res.writeHead(200, { 'Content-Type': 'application/json' });
                 res.end(JSON.stringify({ sucesso: true, codigo: ultimoCodigoGerado }));
@@ -186,7 +189,6 @@ const server = http.createServer(async (req, res) => {
         return;
     }
 
-    // Execução de Comandos do Painel
     if (urlObj.pathname === '/api/comando' && req.method === 'POST') {
         let body = '';
         req.on('data', chunk => body += chunk);
@@ -215,7 +217,6 @@ const server = http.createServer(async (req, res) => {
         return;
     }
 
-    // Buscar Grupos
     if (urlObj.pathname === '/api/grupos' && req.method === 'GET') {
         try {
             if (!waSock) throw new Error("WhatsApp não está conectado.");
@@ -235,14 +236,12 @@ const server = http.createServer(async (req, res) => {
         return;
     }
 
-    // Status
     if (urlObj.pathname === '/api/status' && req.method === 'GET') {
         res.writeHead(200, { 'Content-Type': 'application/json' });
         res.end(JSON.stringify({ status: statusConexaoAtual, codigo: ultimoCodigoGerado }));
         return;
     }
 
-    // Limpar Sessão
     if (urlObj.pathname === '/api/limpar' && req.method === 'POST') {
         try {
             const authPath = path.join(__dirname, 'auth_info_baileys');
@@ -251,6 +250,7 @@ const server = http.createServer(async (req, res) => {
             }
             if (waSock) waSock.end();
             statusConexaoAtual = "OFFLINE";
+            ultimoCodigoGerado = "--------";
             res.writeHead(200, { 'Content-Type': 'application/json' });
             res.end(JSON.stringify({ sucesso: true }));
         } catch (e) {
@@ -266,6 +266,4 @@ const server = http.createServer(async (req, res) => {
 
 server.listen(PORT, () => {
     console.log(`Servidor rodando na porta ${PORT}`);
-    // Tenta iniciar a sessão existente ao subir o servidor
-    iniciarWhatsApp();
 });
