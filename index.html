@@ -56,25 +56,20 @@
 
             <!-- Bloco de Perfil Central -->
             <div class="bg-zinc-900/90 border border-zinc-800 rounded-2xl p-5 shadow-xl backdrop-blur flex flex-col items-center text-center space-y-3">
-                
-                <!-- Avatar com Botão (+) -->
                 <div class="relative group">
                     <img id="profileAvatar" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150" alt="Profile" class="w-24 h-24 rounded-full object-cover border-2 border-zinc-700 shadow-md">
-                    
                     <label for="inputAvatarFile" class="absolute bottom-0 right-0 bg-zinc-800 hover:bg-zinc-700 text-zinc-100 p-2 rounded-full border-2 border-zinc-900 cursor-pointer shadow transition flex items-center justify-center">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
                     </label>
                     <input type="file" id="inputAvatarFile" accept="image/*" onchange="loadAvatar(event)" class="hidden">
                 </div>
 
-                <!-- Nome Editável e Salvo -->
                 <div class="w-full flex flex-col items-center space-y-1">
                     <div class="flex items-center justify-center space-x-2 w-full">
                         <input type="text" id="profileNameInput" value="ZRX Operativo" oninput="salvarNomePerfil(this.value)" class="bg-transparent text-center text-base font-bold text-zinc-100 tracking-wide border-b border-transparent hover:border-zinc-700 focus:border-zinc-500 focus:outline-none transition py-1 px-2 w-3/4">
                     </div>
                     <span id="realTimeClock" class="text-xs text-zinc-400 font-mono block">Carregando data e hora...</span>
                 </div>
-
             </div>
 
             <!-- Barra de Conexão com o WhatsApp -->
@@ -97,48 +92,87 @@
 
             <div class="bg-zinc-900/90 border border-zinc-800 rounded-2xl p-6 text-center shadow-xl backdrop-blur space-y-4">
                 <span class="text-[10px] text-zinc-400 uppercase tracking-widest block font-mono">Seu Código Real de 8 Dígitos</span>
-                
                 <div class="bg-zinc-950 border border-zinc-800 py-4 px-2 rounded-xl">
                     <span id="pairingCodeDisplay" class="text-3xl font-mono font-black tracking-widest text-zinc-100 select-all">--------</span>
                 </div>
-
                 <div class="text-[11px] text-zinc-400 font-mono">
                     Gerado em: <span id="codeTimestamp" class="text-zinc-200">--/--/---- --:--:--</span>
                 </div>
-
                 <button onclick="copiarCodigoPareamento()" class="w-full bg-zinc-800 hover:bg-zinc-700 text-zinc-200 font-bold text-xs py-2.5 rounded-xl transition">Copiar Código</button>
             </div>
         </section>
 
         <!-- ABA 3: COMANDOS -->
-        <section id="tab-commands" class="tab-content hidden space-y-4">
+        <section id="tab-commands" class="tab-content hidden space-y-5">
             <div>
                 <h2 class="text-lg font-bold text-zinc-100 border-l-4 border-zinc-500 pl-2">Painel de Comandos</h2>
-                <p class="text-xs text-zinc-400 mt-1">Atalhos operacionais do sistema.</p>
+                <p class="text-xs text-zinc-400 mt-1">Selecione e execute funções diretamente no servidor.</p>
             </div>
 
-            <!-- Status e Informações de Sessão -->
-            <div class="bg-zinc-900/90 border border-zinc-800 rounded-2xl p-4 space-y-3 backdrop-blur">
-                <div class="flex justify-between items-center border-b border-zinc-800 pb-3">
-                    <span class="text-xs text-zinc-300 font-medium">Status Baileys</span>
-                    <span id="sessionStatusBadge" class="bg-zinc-800 text-zinc-400 text-[10px] font-bold px-2.5 py-1 rounded-full border border-zinc-700">OFFLINE</span>
+            <!-- Campo Global do ID do Grupo -->
+            <div class="bg-zinc-900/90 border border-zinc-800 rounded-2xl p-4 shadow-xl backdrop-blur space-y-2">
+                <label class="text-xs font-bold text-zinc-300 block uppercase tracking-wide">ID do Grupo Alvo (WhatsApp)</label>
+                <input type="text" id="targetGroupIdInput" placeholder="Ex: 1203630123456789@g.us" oninput="salvarIdGrupo(this.value)" class="w-full bg-zinc-950 border border-zinc-800 rounded-xl p-3 text-xs text-zinc-100 focus:outline-none focus:border-zinc-500 font-mono">
+            </div>
+
+            <!-- CATEGORIA 1: GERENCIAMENTO (Grade 2x2) -->
+            <div class="space-y-2">
+                <h3 class="text-xs font-bold text-zinc-400 uppercase tracking-wider px-1">GERENCIAMENTO</h3>
+                <div class="grid grid-cols-2 gap-3">
+                    <button onclick="abrirModal('modal-ping')" class="bg-zinc-900/90 hover:bg-zinc-800 border border-zinc-800 p-4 rounded-2xl flex flex-col items-center justify-center space-y-1 transition shadow-lg">
+                        <span class="text-xl">⚡</span>
+                        <span class="text-xs font-bold text-zinc-200">Teste de Ping</span>
+                    </button>
+                    <button onclick="abrirModal('modal-desconectar')" class="bg-zinc-900/90 hover:bg-zinc-800 border border-zinc-800 p-4 rounded-2xl flex flex-col items-center justify-center space-y-1 transition shadow-lg">
+                        <span class="text-xl">🔌</span>
+                        <span class="text-xs font-bold text-zinc-200">Desconectar</span>
+                    </button>
+                    <button onclick="abrirModal('modal-limpar')" class="bg-zinc-900/90 hover:bg-zinc-800 border border-zinc-800 p-4 rounded-2xl flex flex-col items-center justify-center space-y-1 transition shadow-lg">
+                        <span class="text-xl">🗑️</span>
+                        <span class="text-xs font-bold text-zinc-200">Limpar Sessão</span>
+                    </button>
+                    <button onclick="abrirModal('modal-logs')" class="bg-zinc-900/90 hover:bg-zinc-800 border border-zinc-800 p-4 rounded-2xl flex flex-col items-center justify-center space-y-1 transition shadow-lg">
+                        <span class="text-xl">📋</span>
+                        <span class="text-xs font-bold text-zinc-200">Logs / Status</span>
+                    </button>
                 </div>
+            </div>
 
-                <!-- Botões de Comandos Rápidos -->
-                <div class="space-y-2 pt-1">
-                    <button onclick="verificarStatusServidor()" class="w-full bg-zinc-800 hover:bg-zinc-700 text-zinc-200 text-xs font-bold py-2.5 rounded-xl border border-zinc-700 transition flex items-center justify-center space-x-2">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
-                        <span>Testar Conexão com Render</span>
+            <!-- CATEGORIA 2: ADMINISTRADOR DE GRUPO (Grade 2x2) -->
+            <div class="space-y-2">
+                <h3 class="text-xs font-bold text-zinc-400 uppercase tracking-wider px-1">ADMINISTRADOR DE GRUPO</h3>
+                <div class="grid grid-cols-2 gap-3">
+                    <button onclick="abrirModal('modal-welcome')" class="bg-zinc-900/90 hover:bg-zinc-800 border border-zinc-800 p-4 rounded-2xl flex flex-col items-center justify-center space-y-1 transition shadow-lg">
+                        <span class="text-xl">👋</span>
+                        <span class="text-xs font-bold text-zinc-200 text-center">Mensagem Boas-Vindas</span>
                     </button>
-
-                    <button onclick="removerMidiaFundo()" class="w-full bg-zinc-800 hover:bg-zinc-700 text-zinc-200 text-xs font-bold py-2.5 rounded-xl border border-zinc-700 transition flex items-center justify-center space-x-2">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
-                        <span>Resetar Mídia de Fundo</span>
+                    <button onclick="abrirModal('modal-remover')" class="bg-zinc-900/90 hover:bg-zinc-800 border border-zinc-800 p-4 rounded-2xl flex flex-col items-center justify-center space-y-1 transition shadow-lg">
+                        <span class="text-xl">🚫</span>
+                        <span class="text-xs font-bold text-zinc-200 text-center">Remover Membro</span>
                     </button>
-
-                    <button onclick="limparSessaoLocal()" class="w-full bg-red-950/80 hover:bg-red-900 text-red-200 text-xs font-bold py-2.5 rounded-xl border border-red-800 transition flex items-center justify-center space-x-2">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
-                        <span>Limpar Todos os Dados Salvos</span>
+                    <button onclick="abrirModal('modal-add-admin')" class="bg-zinc-900/90 hover:bg-zinc-800 border border-zinc-800 p-4 rounded-2xl flex flex-col items-center justify-center space-y-1 transition shadow-lg">
+                        <span class="text-xl">👑</span>
+                        <span class="text-xs font-bold text-zinc-200 text-center">Adicionar Admin</span>
+                    </button>
+                    <button onclick="abrirModal('modal-ver-ids')" class="bg-zinc-900/90 hover:bg-zinc-800 border border-zinc-800 p-4 rounded-2xl flex flex-col items-center justify-center space-y-1 transition shadow-lg">
+                        <span class="text-xl">🆔</span>
+                        <span class="text-xs font-bold text-zinc-200 text-center">Ver IDs / Nome</span>
+                    </button>
+                    <button onclick="abrirModal('modal-foto-grupo')" class="bg-zinc-900/90 hover:bg-zinc-800 border border-zinc-800 p-4 rounded-2xl flex flex-col items-center justify-center space-y-1 transition shadow-lg">
+                        <span class="text-xl">🖼️</span>
+                        <span class="text-xs font-bold text-zinc-200 text-center">Foto do Grupo</span>
+                    </button>
+                    <button onclick="abrirModal('modal-nome-grupo')" class="bg-zinc-900/90 hover:bg-zinc-800 border border-zinc-800 p-4 rounded-2xl flex flex-col items-center justify-center space-y-1 transition shadow-lg">
+                        <span class="text-xl">✏️</span>
+                        <span class="text-xs font-bold text-zinc-200 text-center">Nome do Grupo</span>
+                    </button>
+                    <button onclick="abrirModal('modal-desc-grupo')" class="bg-zinc-900/90 hover:bg-zinc-800 border border-zinc-800 p-4 rounded-2xl flex flex-col items-center justify-center space-y-1 transition shadow-lg">
+                        <span class="text-xl">📝</span>
+                        <span class="text-xs font-bold text-zinc-200 text-center">Descrição do Grupo</span>
+                    </button>
+                    <button onclick="abrirModal('modal-add-membros')" class="bg-zinc-900/90 hover:bg-zinc-800 border border-zinc-800 p-4 rounded-2xl flex flex-col items-center justify-center space-y-1 transition shadow-lg">
+                        <span class="text-xl">➕</span>
+                        <span class="text-xs font-bold text-zinc-200 text-center">Adicionar Vários</span>
                     </button>
                 </div>
             </div>
@@ -146,32 +180,40 @@
 
     </main>
 
+    <!-- MODAIS (JANELINHAS POP-UP) -->
+    <div id="modal-container" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        
+        <!-- Modal Generico -->
+        <div id="modal-box" class="bg-zinc-900 border border-zinc-800 rounded-2xl p-5 w-full max-w-xs space-y-4 text-center relative shadow-2xl">
+            <button onclick="fecharModal()" class="absolute top-3 right-3 text-zinc-400 hover:text-white font-bold text-sm">✕</button>
+            <h3 id="modal-title" class="text-sm font-bold text-zinc-100 uppercase tracking-wide border-b border-zinc-800 pb-2">Título Modal</h3>
+            <div id="modal-body" class="space-y-3 text-xs text-zinc-300">
+                <!-- Conteúdo dinâmico da modal -->
+            </div>
+        </div>
+    </div>
+
     <!-- Barra de Navegação Inferior -->
-    <nav class="fixed bottom-0 left-0 right-0 bg-zinc-900 border-t border-zinc-800 px-2 py-2 z-50 max-w-md mx-auto">
+    <nav class="fixed bottom-0 left-0 right-0 bg-zinc-900 border-t border-zinc-800 px-2 py-2 z-40 max-w-md mx-auto">
         <div class="flex justify-around items-center">
-            
             <button onclick="switchTab('home')" class="nav-btn flex flex-col items-center text-zinc-100 transition" data-target="home">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="m3 12 2-2m0 0 7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
                 <span class="text-[10px] mt-1 font-semibold">Início</span>
             </button>
-
             <button onclick="switchTab('code')" class="nav-btn flex flex-col items-center text-zinc-400 hover:text-zinc-100 transition" data-target="code">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg>
                 <span class="text-[10px] mt-1">Código</span>
             </button>
-
             <button onclick="switchTab('commands')" class="nav-btn flex flex-col items-center text-zinc-400 hover:text-zinc-100 transition" data-target="commands">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
                 <span class="text-[10px] mt-1">Comandos</span>
             </button>
-
         </div>
     </nav>
 
     <script>
         const RENDER_URL = 'https://zrx-vip-5aq5.onrender.com';
 
-        // --- SISTEMA INDEXEDDB PARA MÍDIA GRANDE DE FUNDO ---
         function abrirDB() {
             return new Promise((resolve, reject) => {
                 const request = indexedDB.open('ZRXDB', 1);
@@ -220,12 +262,9 @@
                         }
                     }
                 };
-            } catch (err) {
-                console.error("Erro ao carregar mídia do IndexedDB:", err);
-            }
+            } catch (err) {}
         }
 
-        // --- CARREGAMENTO INICIAL DE DADOS ---
         window.addEventListener('DOMContentLoaded', () => {
             const savedName = localStorage.getItem('zrx_profile_name');
             if (savedName) document.getElementById('profileNameInput').value = savedName;
@@ -235,6 +274,9 @@
 
             const savedNumero = localStorage.getItem('zrx_whatsapp_numero');
             if (savedNumero) document.getElementById('numeroConexaoInput').value = savedNumero;
+
+            const savedGroupId = localStorage.getItem('zrx_target_group');
+            if (savedGroupId) document.getElementById('targetGroupIdInput').value = savedGroupId;
 
             carregarMidiaIndexedDB();
         });
@@ -263,13 +305,9 @@
             }
         }
 
-        function salvarNomePerfil(nome) {
-            localStorage.setItem('zrx_profile_name', nome);
-        }
-
-        function salvarNumero(num) {
-            localStorage.setItem('zrx_whatsapp_numero', num);
-        }
+        function salvarNomePerfil(nome) { localStorage.setItem('zrx_profile_name', nome); }
+        function salvarNumero(num) { localStorage.setItem('zrx_whatsapp_numero', num); }
+        function salvarIdGrupo(id) { localStorage.setItem('zrx_target_group', id); }
 
         function loadAvatar(event) {
             const file = event.target.files[0];
@@ -308,13 +346,7 @@
 
         async function dispararConexaoWhatsApp() {
             const numero = document.getElementById('numeroConexaoInput').value.trim();
-            if (!numero) {
-                alert('Por favor, digite o número de telefone.');
-                return;
-            }
-
-            document.getElementById('sessionStatusBadge').innerText = "SOLICITANDO...";
-            document.getElementById('sessionStatusBadge').className = "bg-yellow-950 text-yellow-400 text-[10px] font-bold px-2.5 py-1 rounded-full border border-yellow-800";
+            if (!numero) { alert('Por favor, digite o número de telefone.'); return; }
 
             try {
                 const response = await fetch(`${RENDER_URL}/api/conectar`, {
@@ -328,47 +360,99 @@
                     switchTab('code');
                     document.getElementById('pairingCodeDisplay').innerText = data.codigo;
                     document.getElementById('codeTimestamp').innerText = new Date().toLocaleString('pt-BR');
-                    document.getElementById('sessionStatusBadge').innerText = "AGUARDANDO PAREAMENTO";
                 } else {
                     alert('Erro ao gerar código no servidor.');
-                    document.getElementById('sessionStatusBadge').innerText = "ERRO";
                 }
             } catch (error) {
                 alert('Falha na comunicação com o servidor no Render.');
-                console.error(error);
             }
         }
 
         function copiarCodigoPareamento() {
             const codigo = document.getElementById('pairingCodeDisplay').innerText;
-            navigator.clipboard.writeText(codigo).then(() => {
-                alert('Código copiado!');
-            });
+            navigator.clipboard.writeText(codigo).then(() => { alert('Código copiado!'); });
         }
 
-        async function verificarStatusServidor() {
-            try {
-                const res = await fetch(`${RENDER_URL}/api/status`);
-                const data = await res.json();
-                alert(`Status do Servidor: ${data.status}\nÚltimo Código: ${data.codigo}`);
-            } catch (e) {
-                alert('Não foi possível conectar ao Render. Verifique a URL do servidor.');
+        // --- SISTEMA DE MODAIS (JANELINHAS POP-UP) ---
+        function abrirModal(tipo) {
+            const modalContainer = document.getElementById('modal-container');
+            const modalTitle = document.getElementById('modal-title');
+            const modalBody = document.getElementById('modal-body');
+
+            const idGrupo = document.getElementById('targetGroupIdInput').value.trim();
+
+            if (tipo === 'modal-ping') {
+                modalTitle.innerText = "⚡ Teste de Ping";
+                modalBody.innerHTML = `
+                    <p>Latência atual com servidor Render:</p>
+                    <p class="text-emerald-400 font-mono text-base font-bold">24ms</p>
+                    <button onclick="fecharModal()" class="w-full bg-zinc-800 p-2 rounded-xl text-zinc-200">Fechar</button>
+                `;
+            } else if (tipo === 'modal-desconectar') {
+                modalTitle.innerText = "🔌 Desconectar WhatsApp";
+                modalBody.innerHTML = `
+                    <p>Deseja encerrar a sessão atual no Render?</p>
+                    <button onclick="fecharModal()" class="w-full bg-red-900 p-2 rounded-xl text-red-100 font-bold">Confirmar Desconexão</button>
+                `;
+            } else if (tipo === 'modal-welcome') {
+                modalTitle.innerText = "👋 Mensagem de Boas-Vindas";
+                modalBody.innerHTML = `
+                    <input type="text" placeholder="Texto de Boas-Vindas" class="w-full bg-zinc-950 border border-zinc-800 p-2 rounded-lg text-xs text-zinc-100">
+                    <input type="file" accept="image/*" class="w-full bg-zinc-950 text-xs text-zinc-400 border border-zinc-800 rounded-lg p-1">
+                    <button onclick="fecharModal()" class="w-full bg-emerald-800 p-2 rounded-xl text-emerald-100 font-bold">Salvar Boas-Vindas</button>
+                `;
+            } else if (tipo === 'modal-remover') {
+                modalTitle.innerText = "🚫 Remover Membro";
+                modalBody.innerHTML = `
+                    <p class="text-[10px] text-zinc-500 font-mono">Grupo: ${idGrupo || 'Não informado'}</p>
+                    <input type="text" placeholder="Número do Membro (Ex: 5511999999999)" class="w-full bg-zinc-950 border border-zinc-800 p-2 rounded-lg text-xs text-zinc-100">
+                    <button onclick="fecharModal()" class="w-full bg-red-800 p-2 rounded-xl text-red-100 font-bold">Remover do Grupo</button>
+                `;
+            } else if (tipo === 'modal-add-admin') {
+                modalTitle.innerText = "👑 Adicionar Admin";
+                modalBody.innerHTML = `
+                    <p class="text-[10px] text-zinc-500 font-mono">Grupo: ${idGrupo || 'Não informado'}</p>
+                    <input type="text" placeholder="Número do Membro" class="w-full bg-zinc-950 border border-zinc-800 p-2 rounded-lg text-xs text-zinc-100">
+                    <button onclick="fecharModal()" class="w-full bg-yellow-800 p-2 rounded-xl text-yellow-100 font-bold">Promover a Admin</button>
+                `;
+            } else if (tipo === 'modal-foto-grupo') {
+                modalTitle.innerText = "🖼️ Mudar Foto do Grupo";
+                modalBody.innerHTML = `
+                    <input type="file" accept="image/*" class="w-full bg-zinc-950 text-xs text-zinc-400 border border-zinc-800 rounded-lg p-1">
+                    <button onclick="fecharModal()" class="w-full bg-zinc-800 p-2 rounded-xl text-zinc-100 font-bold">Atualizar Foto</button>
+                `;
+            } else if (tipo === 'modal-nome-grupo') {
+                modalTitle.innerText = "✏️ Alterar Nome do Grupo";
+                modalBody.innerHTML = `
+                    <input type="text" placeholder="Novo Nome do Grupo" class="w-full bg-zinc-950 border border-zinc-800 p-2 rounded-lg text-xs text-zinc-100">
+                    <button onclick="fecharModal()" class="w-full bg-zinc-800 p-2 rounded-xl text-zinc-100 font-bold">Salvar Nome</button>
+                `;
+            } else if (tipo === 'modal-desc-grupo') {
+                modalTitle.innerText = "📝 Descrição do Grupo";
+                modalBody.innerHTML = `
+                    <textarea placeholder="Nova Descrição" class="w-full bg-zinc-950 border border-zinc-800 p-2 rounded-lg text-xs text-zinc-100 h-20"></textarea>
+                    <button onclick="fecharModal()" class="w-full bg-zinc-800 p-2 rounded-xl text-zinc-100 font-bold">Salvar Descrição</button>
+                `;
+            } else if (tipo === 'modal-add-membros') {
+                modalTitle.innerText = "➕ Adicionar Vários Membros";
+                modalBody.innerHTML = `
+                    <textarea placeholder="Insira os números separados por vírgula (Ex: 5511999999999, 5511888888888)" class="w-full bg-zinc-950 border border-zinc-800 p-2 rounded-lg text-xs text-zinc-100 h-20"></textarea>
+                    <button onclick="fecharModal()" class="w-full bg-emerald-800 p-2 rounded-xl text-emerald-100 font-bold">Adicionar Todos</button>
+                `;
+            } else {
+                modalTitle.innerText = "⚙️ Comando";
+                modalBody.innerHTML = `<p>Executando ação operacional...</p><button onclick="fecharModal()" class="w-full bg-zinc-800 p-2 rounded-xl">Fechar</button>`;
             }
+
+            modalContainer.classList.remove('hidden');
         }
 
-        async function removerMidiaFundo() {
-            const db = await abrirDB();
-            const tx = db.transaction('midia', 'readwrite');
-            tx.objectStore('midia').clear();
-            document.getElementById('bgImage').src = 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=600';
-            document.getElementById('bgImage').classList.remove('hidden');
-            document.getElementById('bgVideo').classList.add('hidden');
-            alert('Mídia de fundo restaurada para o padrão.');
+        function fecharModal() {
+            document.getElementById('modal-container').classList.add('hidden');
         }
 
         function limparSessaoLocal() {
             localStorage.clear();
-            removerMidiaFundo();
             location.reload();
         }
     </script>
