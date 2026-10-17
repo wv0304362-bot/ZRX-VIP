@@ -26,7 +26,7 @@
                 <span class="absolute bottom-0 right-0 w-3 h-3 bg-emerald-500 border-2 border-zinc-900 rounded-full"></span>
             </div>
             <div>
-                <h1 id="userName" class="font-bold text-sm tracking-wider text-zinc-100">ZRX Operator</h1>
+                <h1 id="headerName" class="font-bold text-sm tracking-wider text-zinc-100">ZRX Operator</h1>
                 <span class="text-[10px] text-zinc-400 block font-mono">STATUS: <strong id="headerStatusText" class="text-emerald-400">ONLINE</strong></span>
             </div>
         </div>
@@ -36,42 +36,40 @@
     </header>
 
     <!-- Conteúdo Principal (Abas) -->
-    <main class="flex-1 p-4 max-w-md mx-auto w-full z-10">
+    <main class="flex-1 p-4 max-w-md mx-auto w-full z-10 space-y-5">
 
         <!-- ABA 1: MENU INICIAL -->
         <section id="tab-home" class="tab-content space-y-5">
             
-            <!-- Banner / Mídia em Cima (Foto ou Vídeo da Galeria) -->
-            <div class="bg-zinc-900 border border-zinc-800 rounded-2xl p-4 shadow-lg space-y-3">
-                <div id="mediaBannerContainer" class="w-full h-48 rounded-xl overflow-hidden bg-zinc-950 border border-zinc-800 flex items-center justify-center relative">
-                    <img id="bannerImage" src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=600" alt="Banner" class="w-full h-full object-cover">
-                    <video id="bannerVideo" class="w-full h-full object-cover hidden" autoplay muted loop></video>
-                </div>
-                <div>
-                    <label class="text-xs font-bold text-zinc-300 block uppercase tracking-wide mb-1">Selecione Foto ou Vídeo (Galeria)</label>
-                    <input type="file" id="inputBgFile" accept="image/*,video/*" onchange="loadMediaBanner(event)" class="w-full bg-zinc-950 border border-zinc-800 rounded-xl p-2 text-xs text-zinc-300 file:mr-3 file:py-1 file:px-3 file:rounded-lg file:border-0 file:text-[10px] file:font-bold file:bg-zinc-800 file:text-zinc-200 hover:file:bg-zinc-700 cursor-pointer">
-                </div>
-            </div>
-
-            <!-- Bloco de Perfil Central -->
+            <!-- Bloco de Perfil Central com Nome Editável e Botão de Mídia (+) -->
             <div class="bg-zinc-900 border border-zinc-800 rounded-2xl p-5 shadow-xl flex flex-col items-center text-center space-y-3">
+                
+                <!-- Avatar com Botão de Mais (+) para Mídia/Foto -->
                 <div class="relative group">
-                    <img id="profileAvatar" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150" alt="Profile" class="w-20 h-20 rounded-full object-cover border-2 border-zinc-700 shadow-md">
-                    <label for="inputAvatarFile" class="absolute inset-0 bg-black/60 rounded-full flex items-center justify-center text-white text-[10px] opacity-0 group-hover:opacity-100 transition cursor-pointer font-bold">Alterar</label>
+                    <img id="profileAvatar" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150" alt="Profile" class="w-24 h-24 rounded-full object-cover border-2 border-zinc-700 shadow-md">
+                    
+                    <!-- Símbolo de Mais (+) para alterar foto do perfil -->
+                    <label for="inputAvatarFile" class="absolute bottom-0 right-0 bg-zinc-800 hover:bg-zinc-700 text-zinc-100 p-2 rounded-full border-2 border-zinc-900 cursor-pointer shadow transition flex items-center justify-center">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
+                    </label>
                     <input type="file" id="inputAvatarFile" accept="image/*" onchange="loadAvatar(event)" class="hidden">
                 </div>
 
-                <div>
-                    <h2 id="profileName" class="text-base font-bold text-zinc-100 tracking-wide">ZRX Operativo</h2>
-                    <span id="realTimeClock" class="text-xs text-zinc-400 font-mono mt-1 block">Carregando data e hora...</span>
+                <!-- Nome Editável -->
+                <div class="w-full flex flex-col items-center space-y-1">
+                    <div class="flex items-center justify-center space-x-2 w-full">
+                        <input type="text" id="profileNameInput" value="ZRX Operativo" oninput="salvarNomePerfil(this.value)" class="bg-transparent text-center text-base font-bold text-zinc-100 tracking-wide border-b border-transparent hover:border-zinc-700 focus:border-zinc-500 focus:outline-none transition py-1 px-2 w-3/4">
+                    </div>
+                    <span id="realTimeClock" class="text-xs text-zinc-400 font-mono block">Carregando data e hora...</span>
                 </div>
+
             </div>
 
             <!-- Barra para Colocar o Número e Conectar -->
             <div class="bg-zinc-900 border border-zinc-800 rounded-2xl p-5 shadow-xl space-y-3">
                 <h3 class="text-xs font-bold text-zinc-300 uppercase tracking-wide">Conexão WhatsApp (Baileys)</h3>
                 <div class="space-y-2">
-                    <input type="text" id="numeroConexaoInput" placeholder="Seu Número (Ex: 5511999999999)" class="w-full bg-zinc-950 border border-zinc-800 rounded-xl p-3 text-xs text-zinc-100 focus:outline-none focus:border-zinc-500 font-mono">
+                    <input type="text" id="numeroConexaoInput" placeholder="Seu Número (Ex: 5511999999999)" oninput="salvarNumero(this.value)" class="w-full bg-zinc-950 border border-zinc-800 rounded-xl p-3 text-xs text-zinc-100 focus:outline-none focus:border-zinc-500 font-mono">
                     <button onclick="dispararConexaoWhatsApp()" class="w-full bg-zinc-200 hover:bg-white text-zinc-950 font-bold text-xs py-3 rounded-xl transition shadow-md uppercase tracking-wider">Gerar Código de Pareamento</button>
                 </div>
             </div>
@@ -144,8 +142,27 @@
     </nav>
 
     <script>
-        // URL do seu servidor no Render configurada diretamente
         const RENDER_URL = 'https://zrx-vip-5aq5.onrender.com';
+
+        // Carregar dados salvos ao iniciar a página (localStorage)
+        window.addEventListener('DOMContentLoaded', () => {
+            const savedName = localStorage.getItem('zrx_profile_name');
+            if (savedName) {
+                document.getElementById('profileNameInput').value = savedName;
+                document.getElementById('headerName').innerText = savedName;
+            }
+
+            const savedAvatar = localStorage.getItem('zrx_profile_avatar');
+            if (savedAvatar) {
+                document.getElementById('profileAvatar').src = savedAvatar;
+                document.getElementById('userAvatar').src = savedAvatar;
+            }
+
+            const savedNumero = localStorage.getItem('zrx_whatsapp_numero');
+            if (savedNumero) {
+                document.getElementById('numeroConexaoInput').value = savedNumero;
+            }
+        });
 
         function atualizarRelogioReal() {
             const agora = new Date();
@@ -171,25 +188,13 @@
             }
         }
 
-        function loadMediaBanner(event) {
-            const file = event.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    const img = document.getElementById('bannerImage');
-                    const vid = document.getElementById('bannerVideo');
-                    if (file.type.startsWith('video/')) {
-                        vid.src = e.target.result;
-                        vid.classList.remove('hidden');
-                        img.classList.add('hidden');
-                    } else {
-                        img.src = e.target.result;
-                        img.classList.remove('hidden');
-                        vid.classList.add('hidden');
-                    }
-                }
-                reader.readAsDataURL(file);
-            }
+        function salvarNomePerfil(nome) {
+            localStorage.setItem('zrx_profile_name', nome);
+            document.getElementById('headerName').innerText = nome || 'ZRX Operator';
+        }
+
+        function salvarNumero(num) {
+            localStorage.setItem('zrx_whatsapp_numero', num);
         }
 
         function loadAvatar(event) {
@@ -197,8 +202,10 @@
             if (file) {
                 const reader = new FileReader();
                 reader.onload = function(e) {
-                    document.getElementById('profileAvatar').src = e.target.result;
-                    document.getElementById('userAvatar').src = e.target.result;
+                    const base64Image = e.target.result;
+                    document.getElementById('profileAvatar').src = base64Image;
+                    document.getElementById('userAvatar').src = base64Image;
+                    localStorage.setItem('zrx_profile_avatar', base64Image);
                 }
                 reader.readAsDataURL(file);
             }
