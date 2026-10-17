@@ -7,12 +7,12 @@ const http = require('http');
 let waSock = null;
 let statusConexaoAtual = "OFFLINE";
 let ultimoCodigoGerado = "--------";
-let modosBrincadeira = {};
+let modosBrincadeira = {}; // Armazena grupos com brincadeira ativa
 
-const XAI_API_KEY = process.env.XAI_API_KEY || "xai-It1hSBKgDociGem1UrHCDQuAAEBU6uLNpd12ORpiRMf1VobVtBqSPnYU31s120O7ehCNvGDVIXMou6xW";
+const XAI_API_KEY = "xai-It1hSBKgDociGem1UrHCDQuAAEBU6uLNpd12ORpiRMf1VobVtBqSPnYU31s120O7ehCNvGDVIXMou6xW";
 const PORT = process.env.PORT || 3000;
 
-// Função para consultar a IA do Grok
+// Função para consultar o Grok
 async function consultarGrok(prompt, systemPrompt = "Você é um mestre de jogos e brincadeiras interativas para grupos no WhatsApp. Seja divertido, direto e dinâmico.") {
     try {
         const response = await fetch("https://api.x.ai/v1/responses", {
@@ -40,55 +40,61 @@ async function consultarGrok(prompt, systemPrompt = "Você é um mestre de jogos
     }
 }
 
-// Inicia a conexão do WhatsApp via Baileys
-async function iniciarWhatsApp(numeroTelefone = null) {
-    try {
-        statusConexaoAtual = "CONECTANDO";
-        const authPath = path.join(__dirname, 'auth_info_baileys');
-        const { state, saveCreds } = await useMultiFileAuthState(authPath);
+const server = http.createServer(async (req, res) => {
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'OPTIONS, GET, POST');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
-        waSock = makeWASocket({
-            logger: pino({ level: 'silent' }),
-            printQRInTerminal: false,
-            auth: state,
-            browser: ["ZRX Operator", "Chrome", "1.0.0"]
-        });
+    if (req.method === 'OPTIONS') {
+        res.writeHead(204); res.end(); return;
+    }
 
-        waSock.ev.on('creds.update', saveCreds);
+    const urlObj = new URL(req.url, `http://${req.headers.host}`);
 
-        if (numeroTelefone && !waSock.authState.creds.registered) {
-            await delay(4000);
-            const numeroLimpo = numeroTelefone.replace(/[^0-9]/g, '');
-            const code = await waSock.requestPairingCode(numeroLimpo);
-            ultimoCodigoGerado = code;
-            console.log(`[BAILEYS] Código de Pareamento Gerado: ${code}`);
-        }
+    // Execução de Comandos
+    if (urlObj.pathname === '/api/comando' && req.method === 'POST') {
+        let body = '';
+        req.on('data', chunk => body += chunk);
+        req.on('end', async () => {
+            try {
+                const { acao, grupoId, param } = JSON.parse(body);
 
-        waSock.ev.on('connection.update', async (update) => {
-            const { connection, lastDisconnect } = update;
-
-            if (connection === 'close') {
-                const shouldReconnect = (lastDisconnect?.error?.output?.statusCode !== DisconnectReason.loggedOut);
-                statusConexaoAtual = "OFFLINE";
-                console.log('[BAILEYS] Conexão fechada. Reconectando:', shouldReconnect);
-                if (shouldReconnect) {
-                    setTimeout(() => iniciarWhatsApp(), 5000);
+                if (acao === 'toggle_brincadeira' && grupoId) {
+                    modosBrincadeira[grupoId] = (param === 'on');
+                    const statusText = modosBrincadeira[grupoId] ? "ATIVADO" : "DESATIVADO";
+                    if (waSock) {
+                        await waSock.sendMessage(grupoId, { text: `🎮 *Modo Brincadeiras com IA foi ${statusText}!*\nUse o comando */br* para ver as opções.` });
+                    }
+                    res.writeHead(200, { 'Content-Type': 'application/json' });
+                    res.end(JSON.stringify({ sucesso: true, mensagem: `Modo Brincadeiras ${statusText}` }));
+                    return;
                 }
-            } else if (connection === 'open') {
-                statusConexaoAtual = "ONLINE";
-                console.log('[BAILEYS] WhatsApp conectado com sucesso!');
-                escutarMensagensWhatsApp();
+
+                res.writeHead(200, { 'Content-Type': 'application/json' });
+                res.end(JSON.stringify({ sucesso: true, mensagem: "Comando processado." }));
+            } catch (e) {
+                res.writeHead(500, { 'Content-Type': 'application/json' });
+                res.end(JSON.stringify({ erro: e.message }));
             }
         });
-
-    } catch (err) {
-        console.error("[BAILEYS] Erro na inicialização:", err);
-        statusConexaoAtual = "OFFLINE";
+        return;
     }
-}
+
+    // Status
+    if (urlObj.pathname === '/api/status' && req.method === 'GET') {
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ status: statusConexaoAtual, codigo: ultimoCodigoGerado }));
+        return;
+    }
+
+    res.writeHead(200, { 'Content-Type': 'text/plain; charset=utf-8' });
+    res.end('Servidor ZRX com IA Grok Rodando!\n');
+});
+
+server.listen(PORT, () => console.log(`Servidor rodando na porta ${PORT}`));
 
 // Escutador de mensagens do WhatsApp para comandos
-function escutarMensagensWhatsApp() {
+function escutarMensagens WhatsApp() {
     if (!waSock) return;
 
     waSock.ev.on('messages.upsert', async ({ messages, type }) => {
@@ -103,9 +109,10 @@ function escutarMensagensWhatsApp() {
 
             if (!isGroup) continue;
 
-            if (textoMsg.toLowerCase().trim() === '/br') {
+            // Verificar se o modo brincadeira está ativo no grupo
+            if (textoMsg.toLowerCase() === '/br') {
                 if (!modosBrincadeira[from]) {
-                    await waSock.sendMessage(from, { text: "⚠️ O Modo Brincadeiras está desativado neste grupo. Ative-o pelo painel ZRX Operator!" });
+                    await waSock.sendMessage(from, { text: "⚠️ O Modo Brincadeiras está desativado neste grupo. Ative-o pelo painel ZRX Operator." });
                     continue;
                 }
 
@@ -122,12 +129,13 @@ function escutarMensagensWhatsApp() {
 
             if (textoMsg.toLowerCase().startsWith('/comecar')) {
                 if (!modosBrincadeira[from]) {
-                    await waSock.sendMessage(from, { text: "⚠️ O Modo Brincadeiras está desativado neste grupo. Ative pelo painel primeiro!" });
+                    await waSock.sendMessage(from, { text: "⚠️ O Modo Brincadeiras está desativado neste grupo." });
                     continue;
                 }
 
                 const senderName = msg.pushName || "Participante";
-                const arg = textoMsg.replace(/\/comecar/i, '').trim();
+                const mentions = msg.message.extendedTextMessage?.contextInfo?.mentionedJid || [];
+                const arg = textoMsg.replace('/comecar', '').trim();
 
                 let promptGrok = "";
                 if (arg.includes("1") || arg.toLowerCase().includes("pergunta")) {
@@ -152,118 +160,3 @@ function escutarMensagensWhatsApp() {
         }
     });
 }
-
-// Servidor HTTP de Integração com o Painel
-const server = http.createServer(async (req, res) => {
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Allow-Methods', 'OPTIONS, GET, POST');
-    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
-
-    if (req.method === 'OPTIONS') {
-        res.writeHead(204); res.end(); return;
-    }
-
-    const urlObj = new URL(req.url, `http://${req.headers.host}`);
-
-    if (urlObj.pathname === '/api/conectar' && req.method === 'POST') {
-        let body = '';
-        req.on('data', chunk => body += chunk);
-        req.on('end', async () => {
-            try {
-                const { numero } = JSON.parse(body);
-                // Reseta a sessão anterior antes de pedir um novo código
-                const authPath = path.join(__dirname, 'auth_info_baileys');
-                if (fs.existsSync(authPath)) {
-                    fs.rmSync(authPath, { recursive: true, force: true });
-                }
-                if (waSock) waSock.end();
-
-                await iniciarWhatsApp(numero);
-                res.writeHead(200, { 'Content-Type': 'application/json' });
-                res.end(JSON.stringify({ sucesso: true, codigo: ultimoCodigoGerado }));
-            } catch (e) {
-                res.writeHead(500, { 'Content-Type': 'application/json' });
-                res.end(JSON.stringify({ erro: e.message }));
-            }
-        });
-        return;
-    }
-
-    if (urlObj.pathname === '/api/comando' && req.method === 'POST') {
-        let body = '';
-        req.on('data', chunk => body += chunk);
-        req.on('end', async () => {
-            try {
-                const { acao, grupoId, param } = JSON.parse(body);
-
-                if (acao === 'toggle_brincadeira' && grupoId) {
-                    modosBrincadeira[grupoId] = (param === 'on');
-                    const statusText = modosBrincadeira[grupoId] ? "ATIVADO" : "DESATIVADO";
-                    if (waSock) {
-                        await waSock.sendMessage(grupoId, { text: `🎮 *Modo Brincadeiras com IA foi ${statusText}!*\nUse o comando */br* no grupo para ver o menu de jogos.` });
-                    }
-                    res.writeHead(200, { 'Content-Type': 'application/json' });
-                    res.end(JSON.stringify({ sucesso: true, mensagem: `Modo Brincadeiras ${statusText}` }));
-                    return;
-                }
-
-                res.writeHead(200, { 'Content-Type': 'application/json' });
-                res.end(JSON.stringify({ sucesso: true, mensagem: "Comando processado." }));
-            } catch (e) {
-                res.writeHead(500, { 'Content-Type': 'application/json' });
-                res.end(JSON.stringify({ erro: e.message }));
-            }
-        });
-        return;
-    }
-
-    if (urlObj.pathname === '/api/grupos' && req.method === 'GET') {
-        try {
-            if (!waSock) throw new Error("WhatsApp não está conectado.");
-            const chats = await waSock.groupFetchAllParticipating();
-            const listaGrupos = Object.values(chats).map(g => ({
-                id: g.id,
-                subject: g.subject,
-                participantsCount: g.participants?.length || 0
-            }));
-
-            res.writeHead(200, { 'Content-Type': 'application/json' });
-            res.end(JSON.stringify({ sucesso: true, grupos: listaGrupos }));
-        } catch (e) {
-            res.writeHead(500, { 'Content-Type': 'application/json' });
-            res.end(JSON.stringify({ erro: e.message }));
-        }
-        return;
-    }
-
-    if (urlObj.pathname === '/api/status' && req.method === 'GET') {
-        res.writeHead(200, { 'Content-Type': 'application/json' });
-        res.end(JSON.stringify({ status: statusConexaoAtual, codigo: ultimoCodigoGerado }));
-        return;
-    }
-
-    if (urlObj.pathname === '/api/limpar' && req.method === 'POST') {
-        try {
-            const authPath = path.join(__dirname, 'auth_info_baileys');
-            if (fs.existsSync(authPath)) {
-                fs.rmSync(authPath, { recursive: true, force: true });
-            }
-            if (waSock) waSock.end();
-            statusConexaoAtual = "OFFLINE";
-            ultimoCodigoGerado = "--------";
-            res.writeHead(200, { 'Content-Type': 'application/json' });
-            res.end(JSON.stringify({ sucesso: true }));
-        } catch (e) {
-            res.writeHead(500, { 'Content-Type': 'application/json' });
-            res.end(JSON.stringify({ erro: e.message }));
-        }
-        return;
-    }
-
-    res.writeHead(200, { 'Content-Type': 'text/plain; charset=utf-8' });
-    res.end('Servidor ZRX com IA Grok Rodando!\n');
-});
-
-server.listen(PORT, () => {
-    console.log(`Servidor rodando na porta ${PORT}`);
-});
