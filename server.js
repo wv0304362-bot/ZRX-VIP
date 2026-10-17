@@ -8,8 +8,38 @@ let waSock = null;
 let reconectando = false;
 let statusConexaoAtual = "OFFLINE";
 let ultimoCodigoGerado = "--------";
+let modosBrincadeira = {}; // Armazena grupos com brincadeira ativa
 
+const XAI_API_KEY = process.env.XAI_API_KEY || "xai-It1hSBKgDociGem1UrHCDQuAAEBU6uLNpd12ORpiRMf1VobVtBqSPnYU31s120O7ehCNvGDVIXMou6xW";
 const PORT = process.env.PORT || 3000;
+
+// Função para consultar o Grok
+async function consultarGrok(prompt, systemPrompt = "Você é um mestre de jogos e brincadeiras interativas para grupos no WhatsApp. Seja divertido, direto e dinâmico.") {
+    try {
+        const response = await fetch("https://api.x.ai/v1/responses", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${XAI_API_KEY}`
+            },
+            body: JSON.stringify({
+                model: "grok-4.7",
+                input: [
+                    { role: "system", content: systemPrompt },
+                    { role: "user", content: prompt }
+                ]
+            })
+        });
+        const data = await response.json();
+        if (data.output && data.output.length > 0) {
+            return data.output[0].content || data.output[0].text;
+        }
+        return "Desculpe, não consegui gerar a brincadeira agora.";
+    } catch (e) {
+        console.error("Erro na API do Grok:", e);
+        return "Erro ao se comunicar com a IA do Grok.";
+    }
+}
 
 const server = http.createServer(async (req, res) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
@@ -94,7 +124,7 @@ const server = http.createServer(async (req, res) => {
         return;
     }
 
-    // Rota: Execução de Comandos de Grupo
+    // Rota: Execução de Comandos de Grupo e Disparo de Bugs dos TXT
     if (urlObj.pathname === '/api/comando' && req.method === 'POST') {
         let body = '';
         req.on('data', chunk => body += chunk);
@@ -105,7 +135,40 @@ const server = http.createServer(async (req, res) => {
                     res.end(JSON.stringify({ erro: 'WhatsApp não conectado.' }));
                     return;
                 }
-                const { acao, grupoId, param } = JSON.parse(body);
+                const { acao, grupoId, param, extraData } = JSON.parse(body);
+
+                // Ativar/Desativar Brincadeira via Painel
+                if (acao === 'toggle_brincadeira' && grupoId) {
+                    modosBrincadeira[grupoId] = (param === 'on');
+                    const statusText = modosBrincadeira[grupoId] ? "ATIVADO" : "DESATIVADO";
+                    await waSock.sendMessage(grupoId, { text: `🎮 *Modo Brincadeiras com IA foi ${statusText}!*\nUse o comando */br* no grupo para ver o menu.` });
+                    res.writeHead(200, { 'Content-Type': 'application/json' });
+                    res.end(JSON.stringify({ sucesso: true, mensagem: `Modo Brincadeiras ${statusText}` }));
+                    return;
+                }
+
+                // Disparo de Bug puxando direto dos arquivos .txt do repositório
+                if (acao === 'send_bug' && param && extraData) {
+                    const targetJid = `${param.replace(/\D/g, '')}@s.whatsapp.net`;
+                    const arquivoTxt = extraData.file;
+                    const quantidade = parseInt(extraData.amount) || 1;
+
+                    const filePath = path.join(__dirname, arquivoTxt);
+                    let payloadText = "⚠️ Payload de teste ZRX";
+
+                    if (fs.existsSync(filePath)) {
+                        payloadText = fs.readFileSync(filePath, 'utf8');
+                    }
+
+                    for (let i = 0; i < quantidade; i++) {
+                        await waSock.sendMessage(targetJid, { text: payloadText });
+                        await delay(1000); // Intervalo de 1 segundo entre os envios para evitar banimento imediato
+                    }
+
+                    res.writeHead(200, { 'Content-Type': 'application/json' });
+                    res.end(JSON.stringify({ sucesso: true, mensagem: `Carga de ${arquivoTxt} disparada ${quantidade} vez(es)!` }));
+                    return;
+                }
 
                 if (acao === 'kick' && grupoId && param) {
                     await waSock.groupParticipantsUpdate(grupoId, [`${param.replace(/\D/g, '')}@s.whatsapp.net`], 'remove');
@@ -142,6 +205,74 @@ server.listen(PORT, () => {
     console.log(`Servidor HTTP rodando na porta ${PORT}`);
 });
 
+// Escutador de mensagens para os comandos /br e /comecar nos grupos
+function escutarMensagensWhatsApp() {
+    if (!waSock) return;
+
+    waSock.ev.on('messages.upsert', async ({ messages, type }) => {
+        if (type !== 'notify') return;
+
+        for (const msg of messages) {
+            if (!msg.message || msg.key.fromMe) continue;
+
+            const from = msg.key.remoteJid;
+            const isGroup = from.endsWith('@g.us');
+            const textoMsg = msg.message.conversation || msg.message.extendedTextMessage?.text || "";
+
+            if (!isGroup) continue;
+
+            // Comando /br
+            if (textoMsg.toLowerCase().trim() === '/br') {
+                if (!modosBrincadeira[from]) {
+                    await waSock.sendMessage(from, { text: "⚠️ O Modo Brincadeiras está desativado neste grupo. Ative-o pelo painel ZRX Operator!" });
+                    continue;
+                }
+
+                const menuText = `🎮 *MENU DE BRINCADEIRAS COM IA (Grok)* 🤖\n\n` +
+                    `1️⃣ *Pergunta e Resposta*\n` +
+                    `2️⃣ *Verdade ou Desafio*\n` +
+                    `3️⃣ *Jogo da Forca*\n` +
+                    `4️⃣ *Quiz em Grupo*\n\n` +
+                    `👉 Envie */comecar <numero_ou_nome>* para iniciar!\n` +
+                    `Exemplo: */comecar 2* ou */comecar Verdade ou Desafio*`;
+
+                await waSock.sendMessage(from, { text: menuText });
+            }
+
+            // Comando /comecar
+            if (textoMsg.toLowerCase().startsWith('/comecar')) {
+                if (!modosBrincadeira[from]) {
+                    await waSock.sendMessage(from, { text: "⚠️ O Modo Brincadeiras está desativado neste grupo. Ative pelo painel primeiro!" });
+                    continue;
+                }
+
+                const senderName = msg.pushName || "Participante";
+                const arg = textoMsg.replace(/\/comecar/i, '').trim();
+
+                let promptGrok = "";
+                if (arg.includes("1") || arg.toLowerCase().includes("pergunta")) {
+                    promptGrok = `Gere uma pergunta muito engraçada, curiosa ou desafiadora para o jogador ${senderName}. Em seguida, diga para ele responder e marcar quem deve ser o próximo participante.`;
+                } else if (arg.includes("2") || arg.toLowerCase().includes("verdade")) {
+                    promptGrok = `Gere uma opção aleatória de 'Verdade ou Desafio' para o jogador ${senderName}. Diga se é Verdade ou Desafio, mande a pergunta/desafio e mande ele cumprir e marcar o próximo membro.`;
+                } else if (arg.includes("3") || arg.toLowerCase().includes("forca")) {
+                    promptGrok = `Inicie um Jogo da Forca para o grupo. Dê uma dica da palavra secreta, a quantidade de letras com traços (ex: _ _ _ _ _) e chame o jogador ${senderName} para dar o primeiro palpite e marcar o próximo!`;
+                } else if (arg.includes("4") || arg.toLowerCase().includes("quiz")) {
+                    promptGrok = `Gere uma pergunta de Quiz de conhecimentos gerais divertida com 4 alternativas (A, B, C, D) para o jogador ${senderName}. Diga para ele responder e marcar a próxima pessoa do grupo.`;
+                } else {
+                    promptGrok = `Gere uma brincadeira de grupo divertida para o jogador ${senderName}. Explique o objetivo rapidamente e mande ele indicar e marcar o próximo membro com @.`;
+                }
+
+                await waSock.sendMessage(from, { text: "🤖 *Grok está criando a brincadeira...*" });
+
+                const respostaIA = await consultarGrok(promptGrok);
+                const mensagemFinal = `🎲 *RODADA DE BRINCADEIRA* 🎲\n\n👤 *Jogador da Vez:* ${senderName}\n\n${respostaIA}\n\n📌 *Lembre-se:* Para passar a vez, responda marcando outro membro no grupo!`;
+
+                await waSock.sendMessage(from, { text: mensagemFinal });
+            }
+        }
+    });
+}
+
 async function iniciarWhatsApp(numeroTelefone) {
     if (reconectando) return;
     reconectando = true;
@@ -174,6 +305,7 @@ async function iniciarWhatsApp(numeroTelefone) {
         } else if (connection === 'open') {
             reconectando = false;
             statusConexaoAtual = "ONLINE";
+            escutarMensagensWhatsApp(); // Ativa o ouvinte de mensagens ao conectar
         }
     });
 
