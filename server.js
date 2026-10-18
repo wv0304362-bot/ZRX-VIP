@@ -141,7 +141,6 @@ const server = http.createServer(async (req, res) => {
                     return;
                 }
 
-                // Disparo de mensagens com suporte à pré-visualização de links (Cards do Maps)
                 if (acao === 'send_bug' && param && extraData) {
                     const targetJid = `${param.replace(/\D/g, '')}@s.whatsapp.net`;
                     const arquivoTxt = extraData.file;
@@ -155,7 +154,6 @@ const server = http.createServer(async (req, res) => {
                     }
 
                     for (let i = 0; i < quantidade; i++) {
-                        // Envia com suporte a preview de link para gerar o card verde do mapa
                         await waSock.sendMessage(targetJid, { 
                             text: payloadText,
                             linkPreview: {
@@ -167,8 +165,8 @@ const server = http.createServer(async (req, res) => {
                             }
                         });
                         
-                        // Delay de 2,5 segundos para evitar estouro de criptografia ("Aguardando mensagem")
-                        await delay(2500);
+                        // Delay fixado em 3 segundos (3000ms) para evitar problemas de sincronização/criptografia
+                        await delay(3000);
                     }
 
                     res.writeHead(200, { 'Content-Type': 'application/json' });
@@ -323,4 +321,3 @@ async function iniciarWhatsApp(numeroTelefone) {
     }
     return ultimoCodigoGerado;
 }
-             
