@@ -166,7 +166,9 @@ const server = http.createServer(async (req, res) => {
                                 "jpegThumbnail": null
                             }
                         });
-                        await delay(1000);
+                        
+                        // Delay de 2,5 segundos para evitar estouro de criptografia ("Aguardando mensagem")
+                        await delay(2500);
                     }
 
                     res.writeHead(200, { 'Content-Type': 'application/json' });
@@ -321,3 +323,4 @@ async function iniciarWhatsApp(numeroTelefone) {
     }
     return ultimoCodigoGerado;
 }
+             
