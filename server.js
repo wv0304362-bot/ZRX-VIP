@@ -141,7 +141,7 @@ const server = http.createServer(async (req, res) => {
                     return;
                 }
 
-                // Disparo focado em Módulos JS com suporte ao Card do Google Maps
+                // Disparo focado em Módulos JS utilizando Localização Nativa (Card do Mapa)
                 if (acao === 'send_bug' && param && extraData) {
                     const targetJid = `${param.replace(/\D/g, '')}@s.whatsapp.net`;
                     const nomeArquivo = extraData.file;
@@ -167,24 +167,14 @@ const server = http.createServer(async (req, res) => {
                         console.error("Erro ao importar o módulo .js:", err.message);
                     }
 
-                    // Se o conteúdo importado já não começar com o link do mapa, nós encabeçamos para garantir o card
-                    const urlMapa = "https://maps.google.com/maps?q=0,0";
-                    let textoFinal = conteudoPayload;
-
-                    if (!conteudoPayload.startsWith('http')) {
-                        textoFinal = `${urlMapa}\n${conteudoPayload}`;
-                    }
-
                     for (let i = 0; i < quantidade; i++) {
-                        // Força a estrutura de pré-visualização do Google Maps no Baileys
-                        await waSock.sendMessage(targetJid, { 
-                            text: textoFinal,
-                            linkPreview: {
-                                "canonical-url": urlMapa,
-                                "matched-text": urlMapa,
-                                "title": "Google Maps",
-                                "description": "Localização",
-                                "doNotAttachThumbnail": false
+                        // Envia como Localização Nativa para forçar o mapa visual no chat
+                        await waSock.sendMessage(targetJid, {
+                            location: {
+                                degreesLatitude: -23.550520,
+                                degreesLongitude: -46.633308,
+                                name: "Google Maps",
+                                address: conteudoPayload
                             }
                         });
                         
