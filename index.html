@@ -6,6 +6,13 @@
     <title>ZRX Control Panel - WhatsApp Operator</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
+        :root {
+            --theme-primary: #10b981;
+            --theme-primary-rgb: 16, 185, 129;
+            --theme-bg-card: rgba(24, 24, 27, 0.85);
+            --theme-border: rgba(63, 63, 70, 0.4);
+        }
+
         body {
             background-color: #09090b;
             color: #f4f4f5;
@@ -22,10 +29,10 @@
         .custom-scroll::-webkit-scrollbar-thumb:hover { background: #52525b; }
 
         .glass-card {
-            background: rgba(24, 24, 27, 0.85);
+            background: var(--theme-bg-card);
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(63, 63, 70, 0.4);
+            border: 1px solid var(--theme-border);
         }
 
         .glass-nav {
@@ -594,16 +601,11 @@
                 modalBody.innerHTML = `
                     <div class="space-y-4">
                         <div class="border-b border-zinc-800 pb-3 space-y-2">
-                            <span class="text-xs font-bold text-emerald-400 block">Conexão WhatsApp (Script)</span>
-                            <div class="flex gap-2">
-                                <button onclick="copiarScriptConexao()" class="flex-1 bg-zinc-800 hover:bg-zinc-700 py-2.5 rounded-xl text-xs font-bold text-zinc-100 transition border border-zinc-700">Copiar Script</button>
-                                <button onclick="baixarScriptConexao()" class="flex-1 bg-emerald-600 hover:bg-emerald-500 py-2.5 rounded-xl text-xs font-bold text-white transition">Baixar .js</button>
-                            </div>
+                            <span class="text-xs font-bold text-emerald-400 block">Config e API</span>
+                            <input type="text" id="configApiInput" value="${RENDER_URL}" placeholder="URL da API Backend" class="w-full bg-zinc-950 border border-zinc-800 p-2.5 rounded-xl text-xs text-zinc-100 font-mono">
                         </div>
-
                         <div class="border-b border-zinc-800 pb-3 space-y-2">
-                            <span class="text-xs font-bold text-emerald-400 block">Personalização de Menu & Grade</span>
-                            <label class="text-[10px] text-zinc-400 block">Estilo de Exibição dos Botões</label>
+                            <span class="text-xs font-bold text-emerald-400 block">Layout</span>
                             <select id="configLayoutGrid" onchange="mudarLayoutGrade(this.value)" class="w-full bg-zinc-950 border border-zinc-800 p-2.5 rounded-xl text-xs text-zinc-100 focus:outline-none">
                                 <option value="2">Normal (2 colunas)</option>
                                 <option value="3">Grade 3x3</option>
@@ -612,16 +614,18 @@
                                 <option value="carousel">Carrossel (Arraste lateral)</option>
                             </select>
                         </div>
-
                         <div class="border-b border-zinc-800 pb-3 space-y-2">
-                            <span class="text-xs font-bold text-emerald-400 block">Posição do Perfil</span>
-                            <select id="configPerfilPos" onchange="mudarPosicaoPerfil(this.value)" class="w-full bg-zinc-950 border border-zinc-800 p-2.5 rounded-xl text-xs text-zinc-100 focus:outline-none">
-                                <option value="top">Logo acima do menu</option>
-                                <option value="bottom">Abaixo da barra</option>
-                            </select>
+                            <span class="text-xs font-bold text-emerald-400 block">Geral & Transparência</span>
+                            <div class="flex items-center justify-between">
+                                <span class="text-[11px] text-zinc-400">Opacidade do Fundo</span>
+                                <input type="range" min="10" max="100" value="30" oninput="mudarOpacidadeFundo(this.value)" class="accent-emerald-500">
+                            </div>
                         </div>
-
-                        <button onclick="fecharModal()" class="w-full bg-emerald-600 hover:bg-emerald-500 py-2.5 rounded-xl font-bold text-white transition">Aplicar Alterações</button>
+                        <div class="border-b border-zinc-800 pb-3 space-y-2">
+                            <span class="text-xs font-bold text-emerald-400 block">Diálogo de resultado & Textos</span>
+                            <input type="text" placeholder="Prefixo de Mensagem" class="w-full bg-zinc-950 border border-zinc-800 p-2 rounded-xl text-xs text-zinc-100">
+                        </div>
+                        <button onclick="fecharModal()" class="w-full bg-emerald-600 hover:bg-emerald-500 py-2.5 rounded-xl font-bold text-white transition">Salvar Configurações</button>
                     </div>
                 `;
             } else if (tipo === 'estatisticas') {
@@ -659,41 +663,67 @@
                 modalTitle.innerHTML = `<span>Temas Prontos (Locais)</span>`;
                 modalBody.innerHTML = `
                     <div class="grid grid-cols-2 gap-2">
-                        <button onclick="aplicarTemaCor('crimson')" class="bg-red-950/80 border border-red-800/60 p-3 rounded-xl text-left hover:border-red-500 transition">
+                        <button onclick="aplicarTemaCor('crimson', '#ef4444')" class="bg-red-950/80 border border-red-800/60 p-3 rounded-xl text-left hover:border-red-500 transition">
                             <span class="font-bold text-red-400 block text-xs">Crimson</span>
                             <span class="text-[9px] text-zinc-400">Vermelho Neon Escuro</span>
                         </button>
-                        <button onclick="aplicarTemaCor('matrix')" class="bg-emerald-950/80 border border-emerald-800/60 p-3 rounded-xl text-left hover:border-emerald-500 transition">
+                        <button onclick="aplicarTemaCor('matrix', '#10b981')" class="bg-emerald-950/80 border border-emerald-800/60 p-3 rounded-xl text-left hover:border-emerald-500 transition">
                             <span class="font-bold text-emerald-400 block text-xs">Matrix</span>
                             <span class="text-[9px] text-zinc-400">Verde Terminal Hacker</span>
                         </button>
-                        <button onclick="aplicarTemaCor('purple')" class="bg-purple-950/80 border border-purple-800/60 p-3 rounded-xl text-left hover:border-purple-500 transition">
+                        <button onclick="aplicarTemaCor('purple', '#a855f7')" class="bg-purple-950/80 border border-purple-800/60 p-3 rounded-xl text-left hover:border-purple-500 transition">
                             <span class="font-bold text-purple-400 block text-xs">Neon Purple</span>
                             <span class="text-[9px] text-zinc-400">Roxo Cyberpunk</span>
                         </button>
-                        <button onclick="aplicarTemaCor('cobalt')" class="bg-blue-950/80 border border-blue-800/60 p-3 rounded-xl text-left hover:border-blue-500 transition">
+                        <button onclick="aplicarTemaCor('cobalt', '#3b82f6')" class="bg-blue-950/80 border border-blue-800/60 p-3 rounded-xl text-left hover:border-blue-500 transition">
                             <span class="font-bold text-blue-400 block text-xs">Cobalt</span>
                             <span class="text-[9px] text-zinc-400">Azul Profundo</span>
                         </button>
                     </div>
                 `;
             } else if (tipo === 'temas-online') {
-                modalTitle.innerHTML = `<span>Galeria de Temas Online</span>`;
+                modalTitle.innerHTML = `<span>Temas Online</span>`;
                 modalBody.innerHTML = `
-                    <div class="space-y-3">
-                        <div class="bg-zinc-950 p-3 rounded-xl border border-zinc-800 flex items-center justify-between">
-                            <div>
-                                <p class="font-bold text-zinc-100 text-xs">PRIMEZY</p>
-                                <p class="text-[10px] text-zinc-400">Por Comunidade ZRX • 2 Downloads</p>
-                            </div>
-                            <button onclick="mostrarNotificacao('Sucesso', 'Tema PRIMEZY baixado e aplicado!')" class="bg-zinc-800 hover:bg-zinc-700 text-emerald-400 px-3 py-1.5 rounded-lg text-xs font-bold transition">Baixar</button>
+                    <div class="space-y-4">
+                        <div class="flex gap-1.5 overflow-x-auto no-scrollbar pb-1 text-[10px]">
+                            <button onclick="filtrarTemasOnline('todos')" class="bg-zinc-800 px-3 py-1.5 rounded-full font-bold text-zinc-100 whitespace-nowrap">Todos</button>
+                            <button onclick="filtrarTemasOnline('escuro')" class="bg-zinc-900 border border-zinc-800 px-3 py-1.5 rounded-full text-zinc-400 whitespace-nowrap">Escuro</button>
+                            <button onclick="filtrarTemasOnline('neon')" class="bg-zinc-900 border border-zinc-800 px-3 py-1.5 rounded-full text-zinc-400 whitespace-nowrap">Neon</button>
+                            <button onclick="filtrarTemasOnline('minimalista')" class="bg-zinc-900 border border-zinc-800 px-3 py-1.5 rounded-full text-zinc-400 whitespace-nowrap">Minimalista</button>
                         </div>
-                        <div class="bg-zinc-950 p-3 rounded-xl border border-zinc-800 flex items-center justify-between">
-                            <div>
-                                <p class="font-bold text-zinc-100 text-xs">O G Shop</p>
-                                <p class="text-[10px] text-zinc-400">Por LOTUX • 3 Downloads</p>
+                        <div id="onlineThemesList" class="grid grid-cols-2 gap-3 max-h-64 overflow-y-auto custom-scroll pr-1">
+                            <div class="bg-zinc-950 p-2 rounded-xl border border-zinc-800 flex flex-col space-y-2">
+                                <div class="w-full h-24 bg-zinc-900 rounded-lg flex items-center justify-center border border-zinc-800 relative overflow-hidden">
+                                    <div class="absolute inset-1 bg-gradient-to-br from-zinc-900 to-emerald-950/50 rounded flex flex-col p-1.5 justify-between">
+                                        <div class="w-8 h-1 bg-emerald-400 rounded-full"></div>
+                                        <div class="space-y-1">
+                                            <div class="w-full h-1.5 bg-zinc-700 rounded"></div>
+                                            <div class="w-2/3 h-1.5 bg-emerald-500/80 rounded"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <p class="font-bold text-zinc-100 text-[11px] truncate">TEAM ZENITH</p>
+                                    <p class="text-[9px] text-zinc-400">Outro • ⬇ 1</p>
+                                </div>
+                                <button onclick="aplicarTemaCor('crimson', '#ef4444')" class="w-full bg-zinc-800 hover:bg-zinc-700 text-emerald-400 py-1.5 rounded-lg text-[10px] font-bold">Baixar / Usar</button>
                             </div>
-                            <button onclick="mostrarNotificacao('Sucesso', 'Tema O G Shop baixado e aplicado!')" class="bg-zinc-800 hover:bg-zinc-700 text-emerald-400 px-3 py-1.5 rounded-lg text-xs font-bold transition">Baixar</button>
+                            <div class="bg-zinc-950 p-2 rounded-xl border border-zinc-800 flex flex-col space-y-2">
+                                <div class="w-full h-24 bg-zinc-900 rounded-lg flex items-center justify-center border border-zinc-800 relative overflow-hidden">
+                                    <div class="absolute inset-1 bg-gradient-to-br from-zinc-900 to-blue-950/50 rounded flex flex-col p-1.5 justify-between">
+                                        <div class="w-8 h-1 bg-blue-400 rounded-full"></div>
+                                        <div class="space-y-1">
+                                            <div class="w-full h-1.5 bg-zinc-700 rounded"></div>
+                                            <div class="w-2/3 h-1.5 bg-blue-500/80 rounded"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <p class="font-bold text-zinc-100 text-[11px] truncate">Lord Vinx</p>
+                                    <p class="text-[9px] text-zinc-400">Minimalista • ⬇ 2</p>
+                                </div>
+                                <button onclick="aplicarTemaCor('cobalt', '#3b82f6')" class="w-full bg-zinc-800 hover:bg-zinc-700 text-blue-400 py-1.5 rounded-lg text-[10px] font-bold">Baixar / Usar</button>
+                            </div>
                         </div>
                     </div>
                 `;
@@ -735,6 +765,47 @@
             modalContainer.classList.remove('hidden');
         }
 
+        function filtrarTemasOnline(categoria) {
+            const container = document.getElementById('onlineThemesList');
+            if (categoria === 'minimalista') {
+                container.innerHTML = `
+                    <div class="bg-zinc-950 p-2 rounded-xl border border-zinc-800 flex flex-col space-y-2">
+                        <div class="w-full h-24 bg-zinc-900 rounded-lg flex items-center justify-center border border-zinc-800 relative overflow-hidden">
+                            <div class="absolute inset-1 bg-gradient-to-br from-zinc-900 to-blue-950/50 rounded flex flex-col p-1.5 justify-between">
+                                <div class="w-8 h-1 bg-blue-400 rounded-full"></div>
+                                <div class="space-y-1">
+                                    <div class="w-full h-1.5 bg-zinc-700 rounded"></div>
+                                    <div class="w-2/3 h-1.5 bg-blue-500/80 rounded"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <p class="font-bold text-zinc-100 text-[11px] truncate">Lord Vinx</p>
+                            <p class="text-[9px] text-zinc-400">Minimalista • ⬇ 2</p>
+                        </div>
+                        <button onclick="aplicarTemaCor('cobalt', '#3b82f6')" class="w-full bg-zinc-800 hover:bg-zinc-700 text-blue-400 py-1.5 rounded-lg text-[10px] font-bold">Baixar / Usar</button>
+                    </div>
+                `;
+            } else if (categoria === 'neon') {
+                container.innerHTML = `<p class="text-zinc-500 text-center col-span-2 py-6 text-[11px]">Nenhum tema neon disponível ainda.</p>`;
+            } else {
+                abrirConfiguracoesMenu('temas-online'); // Restaura a lista completa
+            }
+        }
+
+        function aplicarTemaCor(nomeTema, corHex) {
+            document.documentElement.style.setProperty('--theme-primary', corHex);
+            document.querySelectorAll('.text-emerald-400, .text-emerald-500').forEach(el => {
+                el.style.color = corHex;
+            });
+            mostrarNotificacao('Tema Aplicado', `O tema ${nomeTema.toUpperCase()} foi aplicado com sucesso!`);
+            fecharModal();
+        }
+
+        function mudarOpacidadeFundo(valor) {
+            document.getElementById('bg-container').style.opacity = valor / 100;
+        }
+
         function copiarScriptConexao() {
             const scriptTexto = `const { default: makeWASocket, useMultiFileAuthState } = require('@whiskeysockets/baileys');\n// Servidor ZRX Operator Ativo`;
             navigator.clipboard.writeText(scriptTexto).then(() => {
@@ -767,22 +838,6 @@
                 grid.className = "grid grid-cols-2 gap-3 transition-all duration-300";
             }
             mostrarNotificacao('Layout Atualizado', 'A grade de comandos foi reorganizada.');
-        }
-
-        function mudarPosicaoPerfil(pos) {
-            const wrapper = document.getElementById('profileWrapper');
-            const parent = wrapper.parentNode;
-            if (pos === 'bottom') {
-                parent.appendChild(wrapper);
-            } else {
-                parent.insertBefore(wrapper, parent.firstChild);
-            }
-            mostrarNotificacao('Perfil Reordenado', 'A posição do perfil foi alterada na tela.');
-        }
-
-        function aplicarTemaCor(nomeTema) {
-            mostrarNotificacao('Tema Aplicado', `O tema ${nomeTema.toUpperCase()} foi aplicado com sucesso!`);
-            fecharModal();
         }
 
         // --- ARMAZENAMENTO INDEXEDDB PARA MÍDIA GRANDE ---
@@ -933,7 +988,6 @@
         }
 
         // --- INTEGRAÇÃO COM SERVIDORES NO RENDER ---
-
         async function verificarStatusServidor() {
             const statusDot = document.getElementById('statusDot');
             const headerStatusText = document.getElementById('headerStatusText');
