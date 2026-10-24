@@ -184,7 +184,7 @@
             <div class="glass-card rounded-2xl p-5 shadow-xl space-y-3">
                 <div class="flex items-center justify-between">
                     <h3 class="text-xs font-bold text-zinc-300 uppercase tracking-wider">Conexão WhatsApp (Baileys)</h3>
-                    <span class="text-[9px] bg-zinc-800 border border-zinc-700 px-2 py-0.5 rounded text-zinc-400 font-mono">v1.2.v5</span>
+                    <span class="text-[9px] bg-zinc-800 border border-zinc-700 px-2 py-0.5 rounded text-zinc-400 font-mono">v2.6.0</span>
                 </div>
                 <div class="space-y-2.5">
                     <div class="relative">
@@ -252,41 +252,277 @@
                 </div>
             </div>
 
-            <!-- Grade Dinâmica de Comandos -->
-            <div id="commandsGridContainer" class="grid grid-cols-2 gap-3 transition-all duration-300">
-                
-                <!-- Botão 1: Brincadeiras com IA -->
-                <button onclick="abrirModal('modal-brincadeiras-ia')" class="glass-card hover:bg-zinc-800/80 active:scale-95 p-4 rounded-2xl flex flex-col items-center justify-center space-y-2 transition shadow-lg group border-amber-900/30">
-                    <div class="p-2.5 rounded-xl bg-amber-950/60 group-hover:bg-amber-900/80 transition">
-                        <svg class="w-6 h-6 text-amber-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M11 4a2 2 0 114 0v1a2 2 0 01-2 2 2 2 0 01-2-2V4zm-6 8a2 2 0 100-4 2 2 0 000 4zm12 0a2 2 0 100-4 2 2 0 000 4zM5 20v-1a7 7 0 0114 0v1H5z"/></svg>
-                    </div>
-                    <span id="label-cmd-1" class="text-xs font-bold text-zinc-200 text-center">Modo Brincadeira IA</span>
-                </button>
+            <!-- CATEGORIA: BRINCADEIRAS COM IA (GROK) -->
+            <div class="space-y-2.5">
+                <h3 class="text-xs font-bold text-amber-400 uppercase tracking-wider px-1 flex items-center space-x-1.5">
+                    <svg class="w-4 h-4 text-amber-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                    <span>BRINCADEIRAS COM IA (GROK)</span>
+                </h3>
+                <div class="grid grid-cols-2 gap-3">
+                    <button onclick="abrirModal('modal-brincadeiras-ia')" class="glass-card hover:bg-zinc-800/80 active:scale-95 p-4 rounded-2xl flex flex-col items-center justify-center space-y-2 transition shadow-lg group border-amber-900/30 col-span-2">
+                        <div class="p-2.5 rounded-xl bg-amber-950/60 group-hover:bg-amber-900/80 transition">
+                            <svg class="w-6 h-6 text-amber-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M11 4a2 2 0 114 0v1a2 2 0 01-2 2 2 2 0 01-2-2V4zm-6 8a2 2 0 100-4 2 2 0 000 4zm12 0a2 2 0 100-4 2 2 0 000 4zM5 20v-1a7 7 0 0114 0v1H5z"/>
+                            </svg>
+                        </div>
+                        <span class="text-xs font-bold text-zinc-200 text-center">Ativar / Desativar Brincadeiras no Grupo</span>
+                    </button>
+                </div>
+            </div>
 
-                <!-- Botão 2: Bug Sp4 -->
-                <button onclick="abrirModalBug('Sp4.txt')" class="glass-card hover:bg-zinc-800/80 active:scale-95 p-4 rounded-2xl flex flex-col items-center justify-center space-y-2 transition shadow-lg group border-rose-900/30">
-                    <div class="p-2.5 rounded-xl bg-rose-950/60 group-hover:bg-rose-900/80 transition">
-                        <svg class="w-5 h-5 text-rose-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
-                    </div>
-                    <span id="label-cmd-2" class="text-xs font-bold text-zinc-200">Sp4.txt</span>
-                </button>
+            <!-- CATEGORIA: BUG WHATSAPP (TESTE DE CARGA) -->
+            <div class="space-y-2.5">
+                <h3 class="text-xs font-bold text-rose-400 uppercase tracking-wider px-1 flex items-center space-x-1.5">
+                    <svg class="w-4 h-4 text-rose-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+                    </svg>
+                    <span>BUG WHATSAPP</span>
+                </h3>
+                <div id="commandsGridContainer" class="grid grid-cols-2 gap-3 transition-all duration-300">
+                    
+                    <button onclick="abrirModalBug('Sp4.txt')" class="glass-card hover:bg-zinc-800/80 active:scale-95 p-4 rounded-2xl flex flex-col items-center justify-center space-y-2 transition shadow-lg group border-rose-900/30">
+                        <div class="p-2.5 rounded-xl bg-rose-950/60 group-hover:bg-rose-900/80 transition">
+                            <svg class="w-5 h-5 text-rose-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                            </svg>
+                        </div>
+                        <span class="text-xs font-bold text-zinc-200">Sp4.txt</span>
+                    </button>
 
-                <!-- Botão 3: Marcar Todos -->
-                <button onclick="abrirModal('modal-tagall')" class="glass-card hover:bg-zinc-800/80 active:scale-95 p-4 rounded-2xl flex flex-col items-center justify-center space-y-2 transition shadow-lg group">
-                    <div class="p-2.5 rounded-xl bg-zinc-800/80 group-hover:bg-zinc-700 transition">
-                        <svg class="w-5 h-5 text-purple-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M7 20l4-16m2 16l4-16M6 9h14M4 15h14"/></svg>
-                    </div>
-                    <span id="label-cmd-3" class="text-xs font-bold text-zinc-200 text-center">Marcar Todos</span>
-                </button>
+                    <button onclick="abrirModalBug('IOSbug.txt')" class="glass-card hover:bg-zinc-800/80 active:scale-95 p-4 rounded-2xl flex flex-col items-center justify-center space-y-2 transition shadow-lg group border-rose-900/30">
+                        <div class="p-2.5 rounded-xl bg-rose-950/60 group-hover:bg-rose-900/80 transition">
+                            <svg class="w-5 h-5 text-rose-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+                            </svg>
+                        </div>
+                        <span class="text-xs font-bold text-zinc-200">IOSbug.txt</span>
+                    </button>
 
-                <!-- Botão 4: Transmissão -->
-                <button onclick="abrirModal('modal-transmissao')" class="glass-card hover:bg-zinc-800/80 active:scale-95 p-4 rounded-2xl flex flex-col items-center justify-center space-y-2 transition shadow-lg group">
-                    <div class="p-2.5 rounded-xl bg-zinc-800/80 group-hover:bg-zinc-700 transition">
-                        <svg class="w-5 h-5 text-purple-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A2.5 2.5 0 013 11.2V8.8a2.5 2.5 0 012.436-2.483l5.064-.265v7.882l-5.064-.251z"/></svg>
-                    </div>
-                    <span id="label-cmd-4" class="text-xs font-bold text-zinc-200 text-center">Transmissão Geral</span>
-                </button>
+                    <button onclick="abrirModalBug('Androidbug.txt')" class="glass-card hover:bg-zinc-800/80 active:scale-95 p-4 rounded-2xl flex flex-col items-center justify-center space-y-2 transition shadow-lg group border-rose-900/30">
+                        <div class="p-2.5 rounded-xl bg-rose-950/60 group-hover:bg-rose-900/80 transition">
+                            <svg class="w-5 h-5 text-rose-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 1.5H13.5M10.5 22.5H13.5M6 6H18V18H6V6Z"/>
+                            </svg>
+                        </div>
+                        <span class="text-xs font-bold text-zinc-200">Androidbug.txt</span>
+                    </button>
 
+                    <button onclick="abrirModalBug('Crechbug.txt')" class="glass-card hover:bg-zinc-800/80 active:scale-95 p-4 rounded-2xl flex flex-col items-center justify-center space-y-2 transition shadow-lg group border-rose-900/30">
+                        <div class="p-2.5 rounded-xl bg-rose-950/60 group-hover:bg-rose-900/80 transition">
+                            <svg class="w-5 h-5 text-rose-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                            </svg>
+                        </div>
+                        <span class="text-xs font-bold text-zinc-200">Crechbug.txt</span>
+                    </button>
+
+                    <button onclick="abrirModalBug('5p4n.txt')" class="glass-card hover:bg-zinc-800/80 active:scale-95 p-4 rounded-2xl flex flex-col items-center justify-center space-y-2 transition shadow-lg group border-rose-900/30">
+                        <div class="p-2.5 rounded-xl bg-rose-950/60 group-hover:bg-rose-900/80 transition">
+                            <svg class="w-5 h-5 text-rose-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>
+                            </svg>
+                        </div>
+                        <span class="text-xs font-bold text-zinc-200">5p4n.txt</span>
+                    </button>
+
+                    <button onclick="abrirModalBug('Bug_vcard.txt')" class="glass-card hover:bg-zinc-800/80 active:scale-95 p-4 rounded-2xl flex flex-col items-center justify-center space-y-2 transition shadow-lg group border-rose-900/30">
+                        <div class="p-2.5 rounded-xl bg-rose-950/60 group-hover:bg-rose-900/80 transition">
+                            <svg class="w-5 h-5 text-rose-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M10 6H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V8a2 2 0 00-2-2h-5m-4 0V5a2 2 0 012-2h2a2 2 0 012 2v1m-4 0h4"/>
+                            </svg>
+                        </div>
+                        <span class="text-xs font-bold text-zinc-200">Bug_vcard.txt</span>
+                    </button>
+
+                </div>
+            </div>
+
+            <!-- CATEGORIA: DIVULGAÇÃO & TRANSMISSÃO -->
+            <div class="space-y-2.5">
+                <h3 class="text-xs font-bold text-purple-400 uppercase tracking-wider px-1">DIVULGAÇÃO & TRANSMISSÃO</h3>
+                <div class="grid grid-cols-2 gap-3">
+                    
+                    <button onclick="abrirModal('modal-tagall')" class="glass-card hover:bg-zinc-800/80 active:scale-95 p-4 rounded-2xl flex flex-col items-center justify-center space-y-2 transition shadow-lg group">
+                        <div class="p-2.5 rounded-xl bg-zinc-800/80 group-hover:bg-zinc-700 transition">
+                            <svg class="w-5 h-5 text-purple-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M7 20l4-16m2 16l4-16M6 9h14M4 15h14"/>
+                            </svg>
+                        </div>
+                        <span class="text-xs font-bold text-zinc-200 text-center">Marcar Todos</span>
+                    </button>
+
+                    <button onclick="abrirModal('modal-transmissao')" class="glass-card hover:bg-zinc-800/80 active:scale-95 p-4 rounded-2xl flex flex-col items-center justify-center space-y-2 transition shadow-lg group">
+                        <div class="p-2.5 rounded-xl bg-zinc-800/80 group-hover:bg-zinc-700 transition">
+                            <svg class="w-5 h-5 text-purple-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A2.5 2.5 0 013 11.2V8.8a2.5 2.5 0 012.436-2.483l5.064-.265v7.882l-5.064-.251z"/>
+                            </svg>
+                        </div>
+                        <span class="text-xs font-bold text-zinc-200 text-center">Transmissão Geral</span>
+                    </button>
+
+                </div>
+            </div>
+
+            <!-- CATEGORIA: GERENCIAMENTO DE SESSÃO -->
+            <div class="space-y-2.5">
+                <h3 class="text-xs font-bold text-zinc-400 uppercase tracking-wider px-1">GERENCIAMENTO</h3>
+                <div class="grid grid-cols-2 gap-3">
+                    
+                    <button onclick="abrirModal('modal-ping')" class="glass-card hover:bg-zinc-800/80 active:scale-95 p-4 rounded-2xl flex flex-col items-center justify-center space-y-2 transition shadow-lg group">
+                        <div class="p-2.5 rounded-xl bg-zinc-800/80 group-hover:bg-zinc-700 transition">
+                            <svg class="w-5 h-5 text-amber-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                            </svg>
+                        </div>
+                        <span class="text-xs font-bold text-zinc-200">Teste de Ping</span>
+                    </button>
+
+                    <button onclick="abrirModal('modal-desconectar')" class="glass-card hover:bg-zinc-800/80 active:scale-95 p-4 rounded-2xl flex flex-col items-center justify-center space-y-2 transition shadow-lg group">
+                        <div class="p-2.5 rounded-xl bg-zinc-800/80 group-hover:bg-zinc-700 transition">
+                            <svg class="w-5 h-5 text-red-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636"/>
+                            </svg>
+                        </div>
+                        <span class="text-xs font-bold text-zinc-200">Desconectar</span>
+                    </button>
+
+                    <button onclick="abrirModal('modal-limpar')" class="glass-card hover:bg-zinc-800/80 active:scale-95 p-4 rounded-2xl flex flex-col items-center justify-center space-y-2 transition shadow-lg group">
+                        <div class="p-2.5 rounded-xl bg-zinc-800/80 group-hover:bg-zinc-700 transition">
+                            <svg class="w-5 h-5 text-orange-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                            </svg>
+                        </div>
+                        <span class="text-xs font-bold text-zinc-200">Limpar Sessão</span>
+                    </button>
+
+                    <button onclick="abrirModal('modal-logs')" class="glass-card hover:bg-zinc-800/80 active:scale-95 p-4 rounded-2xl flex flex-col items-center justify-center space-y-2 transition shadow-lg group">
+                        <div class="p-2.5 rounded-xl bg-zinc-800/80 group-hover:bg-zinc-700 transition">
+                            <svg class="w-5 h-5 text-cyan-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                            </svg>
+                        </div>
+                        <span class="text-xs font-bold text-zinc-200">Logs / Status</span>
+                    </button>
+
+                </div>
+            </div>
+
+            <!-- CATEGORIA: ADMINISTRADOR DE GRUPO -->
+            <div class="space-y-2.5">
+                <h3 class="text-xs font-bold text-zinc-400 uppercase tracking-wider px-1">ADMINISTRADOR DE GRUPO</h3>
+                <div class="grid grid-cols-2 gap-3">
+                    
+                    <button onclick="abrirModal('modal-welcome')" class="glass-card hover:bg-zinc-800/80 active:scale-95 p-4 rounded-2xl flex flex-col items-center justify-center space-y-2 transition shadow-lg group">
+                        <div class="p-2.5 rounded-xl bg-zinc-800/80 group-hover:bg-zinc-700 transition">
+                            <svg class="w-5 h-5 text-emerald-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                            </svg>
+                        </div>
+                        <span class="text-xs font-bold text-zinc-200 text-center">Boas-Vindas + Foto</span>
+                    </button>
+
+                    <button onclick="abrirModal('modal-foto-grupo')" class="glass-card hover:bg-zinc-800/80 active:scale-95 p-4 rounded-2xl flex flex-col items-center justify-center space-y-2 transition shadow-lg group">
+                        <div class="p-2.5 rounded-xl bg-zinc-800/80 group-hover:bg-zinc-700 transition">
+                            <svg class="w-5 h-5 text-purple-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                            </svg>
+                        </div>
+                        <span class="text-xs font-bold text-zinc-200 text-center">Foto do Grupo</span>
+                    </button>
+
+                    <button onclick="abrirModal('modal-nome-grupo')" class="glass-card hover:bg-zinc-800/80 active:scale-95 p-4 rounded-2xl flex flex-col items-center justify-center space-y-2 transition shadow-lg group">
+                        <div class="p-2.5 rounded-xl bg-zinc-800/80 group-hover:bg-zinc-700 transition">
+                            <svg class="w-5 h-5 text-teal-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                            </svg>
+                        </div>
+                        <span class="text-xs font-bold text-zinc-200 text-center">Nome do Grupo</span>
+                    </button>
+
+                    <button onclick="abrirModal('modal-desc-grupo')" class="glass-card hover:bg-zinc-800/80 active:scale-95 p-4 rounded-2xl flex flex-col items-center justify-center space-y-2 transition shadow-lg group">
+                        <div class="p-2.5 rounded-xl bg-zinc-800/80 group-hover:bg-zinc-700 transition">
+                            <svg class="w-5 h-5 text-sky-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h7"/>
+                            </svg>
+                        </div>
+                        <span class="text-xs font-bold text-zinc-200 text-center">Descrição</span>
+                    </button>
+
+                    <button onclick="abrirModal('modal-multa')" class="glass-card hover:bg-zinc-800/80 active:scale-95 p-4 rounded-2xl flex flex-col items-center justify-center space-y-2 transition shadow-lg group">
+                        <div class="p-2.5 rounded-xl bg-zinc-800/80 group-hover:bg-zinc-700 transition">
+                            <svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+                            </svg>
+                        </div>
+                        <span class="text-xs font-bold text-zinc-200 text-center">Multa / Alerta</span>
+                    </button>
+
+                    <button onclick="abrirModal('modal-travar')" class="glass-card hover:bg-zinc-800/80 active:scale-95 p-4 rounded-2xl flex flex-col items-center justify-center space-y-2 transition shadow-lg group">
+                        <div class="p-2.5 rounded-xl bg-zinc-800/80 group-hover:bg-zinc-700 transition">
+                            <svg class="w-5 h-5 text-rose-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+                            </svg>
+                        </div>
+                        <span class="text-xs font-bold text-zinc-200 text-center">Abrir / Fechar Chat</span>
+                    </button>
+
+                    <button onclick="abrirModal('modal-antispam')" class="glass-card hover:bg-zinc-800/80 active:scale-95 p-4 rounded-2xl flex flex-col items-center justify-center space-y-2 transition shadow-lg group">
+                        <div class="p-2.5 rounded-xl bg-zinc-800/80 group-hover:bg-zinc-700 transition">
+                            <svg class="w-5 h-5 text-red-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636"/>
+                            </svg>
+                        </div>
+                        <span class="text-xs font-bold text-zinc-200 text-center">Anti-Spam Texto</span>
+                    </button>
+
+                    <button onclick="abrirModal('modal-remover')" class="glass-card hover:bg-zinc-800/80 active:scale-95 p-4 rounded-2xl flex flex-col items-center justify-center space-y-2 transition shadow-lg group">
+                        <div class="p-2.5 rounded-xl bg-zinc-800/80 group-hover:bg-zinc-700 transition">
+                            <svg class="w-5 h-5 text-rose-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M13 7a4 4 0 11-8 0 4 4 0 018 0zM9 14a6 6 0 00-6 6h12a6 6 0 00-6-6zM21 12h-6"/>
+                            </svg>
+                        </div>
+                        <span class="text-xs font-bold text-zinc-200 text-center">Remover Membro</span>
+                    </button>
+
+                    <button onclick="abrirModal('modal-add-admin')" class="glass-card hover:bg-zinc-800/80 active:scale-95 p-4 rounded-2xl flex flex-col items-center justify-center space-y-2 transition shadow-lg group">
+                        <div class="p-2.5 rounded-xl bg-zinc-800/80 group-hover:bg-zinc-700 transition">
+                            <svg class="w-5 h-5 text-yellow-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+                            </svg>
+                        </div>
+                        <span class="text-xs font-bold text-zinc-200 text-center">Promover Admin</span>
+                    </button>
+
+                    <button onclick="abrirModal('modal-demote-admin')" class="glass-card hover:bg-zinc-800/80 active:scale-95 p-4 rounded-2xl flex flex-col items-center justify-center space-y-2 transition shadow-lg group">
+                        <div class="p-2.5 rounded-xl bg-zinc-800/80 group-hover:bg-zinc-700 transition">
+                            <svg class="w-5 h-5 text-orange-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M15 12H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                            </svg>
+                        </div>
+                        <span class="text-xs font-bold text-zinc-200 text-center">Rebaixar Admin</span>
+                    </button>
+
+                    <button onclick="abrirModal('modal-add-membros')" class="glass-card hover:bg-zinc-800/80 active:scale-95 p-4 rounded-2xl flex flex-col items-center justify-center space-y-2 transition shadow-lg group">
+                        <div class="p-2.5 rounded-xl bg-zinc-800/80 group-hover:bg-zinc-700 transition">
+                            <svg class="w-5 h-5 text-emerald-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"/>
+                            </svg>
+                        </div>
+                        <span class="text-xs font-bold text-zinc-200 text-center">Adicionar Vários</span>
+                    </button>
+
+                    <button onclick="abrirModal('modal-ver-ids')" class="glass-card hover:bg-zinc-800/80 active:scale-95 p-4 rounded-2xl flex flex-col items-center justify-center space-y-2 transition shadow-lg group col-span-2">
+                        <div class="p-2.5 rounded-xl bg-zinc-800/80 group-hover:bg-zinc-700 transition">
+                            <svg class="w-5 h-5 text-indigo-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2h0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>
+                            </svg>
+                        </div>
+                        <span class="text-xs font-bold text-zinc-200 text-center">Ver Todos os Grupos / IDs Ativos</span>
+                    </button>
+
+                </div>
             </div>
         </section>
 
@@ -331,6 +567,8 @@
     <!-- SCRIPTS E LÓGICA DO PAINEL -->
     <script>
         const RENDER_URL = 'https://zrx-vip-5aq5.onrender.com';
+        let welcomeImageBase64 = null;
+        let groupIconBase64 = null;
 
         function toggleDrawer(open) {
             const drawer = document.getElementById('drawerMenu');
@@ -383,11 +621,6 @@
                             </select>
                         </div>
 
-                        <div class="border-b border-zinc-800 pb-3 space-y-2">
-                            <span class="text-xs font-bold text-emerald-400 block">Renomear Balão / Comando 1</span>
-                            <input type="text" id="renameCmd1" value="Modo Brincadeira IA" oninput="mudarNomeBotao(1, this.value)" class="w-full bg-zinc-950 border border-zinc-800 p-2.5 rounded-xl text-xs text-zinc-100 focus:outline-none">
-                        </div>
-
                         <button onclick="fecharModal()" class="w-full bg-emerald-600 hover:bg-emerald-500 py-2.5 rounded-xl font-bold text-white transition">Aplicar Alterações</button>
                     </div>
                 `;
@@ -426,19 +659,19 @@
                 modalTitle.innerHTML = `<span>Temas Prontos (Locais)</span>`;
                 modalBody.innerHTML = `
                     <div class="grid grid-cols-2 gap-2">
-                        <button onclick="aplicarTemaCor('crimson', '#991b1b', '#ef4444')" class="bg-red-950/80 border border-red-800/60 p-3 rounded-xl text-left hover:border-red-500 transition">
+                        <button onclick="aplicarTemaCor('crimson')" class="bg-red-950/80 border border-red-800/60 p-3 rounded-xl text-left hover:border-red-500 transition">
                             <span class="font-bold text-red-400 block text-xs">Crimson</span>
                             <span class="text-[9px] text-zinc-400">Vermelho Neon Escuro</span>
                         </button>
-                        <button onclick="aplicarTemaCor('matrix', '#064e3b', '#10b981')" class="bg-emerald-950/80 border border-emerald-800/60 p-3 rounded-xl text-left hover:border-emerald-500 transition">
+                        <button onclick="aplicarTemaCor('matrix')" class="bg-emerald-950/80 border border-emerald-800/60 p-3 rounded-xl text-left hover:border-emerald-500 transition">
                             <span class="font-bold text-emerald-400 block text-xs">Matrix</span>
                             <span class="text-[9px] text-zinc-400">Verde Terminal Hacker</span>
                         </button>
-                        <button onclick="aplicarTemaCor('purple', '#4c1d95', '#a855f7')" class="bg-purple-950/80 border border-purple-800/60 p-3 rounded-xl text-left hover:border-purple-500 transition">
+                        <button onclick="aplicarTemaCor('purple')" class="bg-purple-950/80 border border-purple-800/60 p-3 rounded-xl text-left hover:border-purple-500 transition">
                             <span class="font-bold text-purple-400 block text-xs">Neon Purple</span>
                             <span class="text-[9px] text-zinc-400">Roxo Cyberpunk</span>
                         </button>
-                        <button onclick="aplicarTemaCor('cobalt', '#1e3a8a', '#3b82f6')" class="bg-blue-950/80 border border-blue-800/60 p-3 rounded-xl text-left hover:border-blue-500 transition">
+                        <button onclick="aplicarTemaCor('cobalt')" class="bg-blue-950/80 border border-blue-800/60 p-3 rounded-xl text-left hover:border-blue-500 transition">
                             <span class="font-bold text-blue-400 block text-xs">Cobalt</span>
                             <span class="text-[9px] text-zinc-400">Azul Profundo</span>
                         </button>
@@ -547,14 +780,67 @@
             mostrarNotificacao('Perfil Reordenado', 'A posição do perfil foi alterada na tela.');
         }
 
-        function mudarNomeBotao(id, novoTexto) {
-            const label = document.getElementById(`label-cmd-${id}`);
-            if (label) label.innerText = novoTexto;
-        }
-
-        function aplicarTemaCor(nomeTema, corFundo, corDestaque) {
+        function aplicarTemaCor(nomeTema) {
             mostrarNotificacao('Tema Aplicado', `O tema ${nomeTema.toUpperCase()} foi aplicado com sucesso!`);
             fecharModal();
+        }
+
+        // --- ARMAZENAMENTO INDEXEDDB PARA MÍDIA GRANDE ---
+        function abrirDB() {
+            return new Promise((resolve, reject) => {
+                const request = indexedDB.open('ZRXDB', 1);
+                request.onupgradeneeded = (e) => {
+                    const db = e.target.result;
+                    if (!db.objectStoreNames.contains('midia')) {
+                        db.createObjectStore('midia');
+                    }
+                };
+                request.onsuccess = () => resolve(request.result);
+                request.onerror = () => reject(request.error);
+            });
+        }
+
+        async function salvarMidiaIndexedDB(blob, tipo) {
+            try {
+                const db = await abrirDB();
+                const tx = db.transaction('midia', 'readwrite');
+                const store = tx.objectStore('midia');
+                store.put(blob, 'bgFile');
+                store.put(tipo, 'bgType');
+            } catch (e) {
+                console.error("Erro ao salvar mídia no IndexedDB:", e);
+            }
+        }
+
+        async function carregarMidiaIndexedDB() {
+            try {
+                const db = await abrirDB();
+                const tx = db.transaction('midia', 'readonly');
+                const store = tx.objectStore('midia');
+                const reqBlob = store.get('bgFile');
+                const reqType = store.get('bgType');
+
+                tx.oncomplete = () => {
+                    const blob = reqBlob.result;
+                    const tipo = reqType.result;
+                    if (blob) {
+                        const url = URL.createObjectURL(blob);
+                        const img = document.getElementById('bgImage');
+                        const vid = document.getElementById('bgVideo');
+                        if (tipo === 'video') {
+                            vid.src = url;
+                            vid.classList.remove('hidden');
+                            img.classList.add('hidden');
+                        } else {
+                            img.src = url;
+                            img.classList.remove('hidden');
+                            vid.classList.add('hidden');
+                        }
+                    }
+                };
+            } catch (err) {
+                console.log("Nenhuma mídia salva no IndexedDB");
+            }
         }
 
         // --- INICIALIZAÇÃO DA PÁGINA ---
@@ -582,8 +868,7 @@
             const dataFormatada = agora.toLocaleDateString('pt-BR');
             const horaFormatada = agora.toLocaleTimeString('pt-BR');
 
-            const relogioEl = document.getElementById('realTimeClock');
-            if (relogioEl) relogioEl.innerText = `${dataFormatada} - ${horaFormatada}`;
+            document.getElementById('realTimeClock').innerText = `${dataFormatada} - ${horaFormatada}`;
             document.getElementById('realTimeHeader').innerText = horaFormatada;
             document.getElementById('realTimeDateHeader').innerText = dataFormatada;
         }
@@ -625,58 +910,6 @@
             }
         }
 
-        // --- INDEXEDDB PARA FUNDO (IMAGEM OU VÍDEO) ---
-        function abrirDB() {
-            return new Promise((resolve, reject) => {
-                const request = indexedDB.open('ZRXDB', 1);
-                request.onupgradeneeded = (e) => {
-                    const db = e.target.result;
-                    if (!db.objectStoreNames.contains('midia')) db.createObjectStore('midia');
-                };
-                request.onsuccess = () => resolve(request.result);
-                request.onerror = () => reject(request.error);
-            });
-        }
-
-        async function salvarMidiaIndexedDB(blob, tipo) {
-            try {
-                const db = await abrirDB();
-                const tx = db.transaction('midia', 'readwrite');
-                const store = tx.objectStore('midia');
-                store.put(blob, 'bgFile');
-                store.put(tipo, 'bgType');
-            } catch (e) { console.error(e); }
-        }
-
-        async function carregarMidiaIndexedDB() {
-            try {
-                const db = await abrirDB();
-                const tx = db.transaction('midia', 'readonly');
-                const store = tx.objectStore('midia');
-                const reqBlob = store.get('bgFile');
-                const reqType = store.get('bgType');
-
-                tx.oncomplete = () => {
-                    const blob = reqBlob.result;
-                    const tipo = reqType.result;
-                    if (blob) {
-                        const url = URL.createObjectURL(blob);
-                        const img = document.getElementById('bgImage');
-                        const vid = document.getElementById('bgVideo');
-                        if (tipo === 'video') {
-                            vid.src = url;
-                            vid.classList.remove('hidden');
-                            img.classList.add('hidden');
-                        } else {
-                            img.src = url;
-                            img.classList.remove('hidden');
-                            vid.classList.add('hidden');
-                        }
-                    }
-                };
-            } catch (err) { console.log(err); }
-        }
-
         async function loadMediaBackground(event) {
             const file = event.target.files[0];
             if (file) {
@@ -694,11 +927,13 @@
                     img.classList.remove('hidden');
                     vid.classList.add('hidden');
                 }
+
                 await salvarMidiaIndexedDB(file, isVideo ? 'video' : 'image');
             }
         }
 
-        // --- INTEGRAÇÃO COM SERVIDOR NO RENDER ---
+        // --- INTEGRAÇÃO COM SERVIDORES NO RENDER ---
+
         async function verificarStatusServidor() {
             const statusDot = document.getElementById('statusDot');
             const headerStatusText = document.getElementById('headerStatusText');
@@ -716,7 +951,9 @@
                         headerStatusText.className = "text-amber-400 font-bold";
                         headerStatusText.innerText = data.status || "CONECTANDO";
                     }
-                } else { throw new Error(); }
+                } else {
+                    throw new Error();
+                }
             } catch (e) {
                 statusDot.className = "w-2.5 h-2.5 rounded-full bg-red-500 pulse-offline";
                 headerStatusText.className = "text-red-400 font-bold";
@@ -754,12 +991,18 @@
         function copiarCodigoPareamento() {
             const codigo = document.getElementById('pairingCodeDisplay').innerText;
             if (codigo === '--------') return;
+            
             navigator.clipboard.writeText(codigo).then(() => { 
                 mostrarNotificacao('Sucesso', 'Código copiado para a área de transferência!'); 
             });
         }
 
         async function executarComandoAPIRender(acao, grupoId, param, extraData = null) {
+            if (!grupoId && acao !== 'ping' && acao !== 'limpar' && acao !== 'send_bug' && acao !== 'transmissao') {
+                mostrarNotificacao('Atenção', 'Defina o ID do Grupo Alvo antes de executar o comando.');
+                return;
+            }
+
             try {
                 const payload = { acao, grupoId, param, extraData };
                 const response = await fetch(`${RENDER_URL}/api/comando`, {
@@ -780,82 +1023,47 @@
             }
         }
 
-        // --- MODAL ESPECÍFICO PARA BUG WHATSAPP ---
-        function abrirModalBug(nomeArquivo) {
-            const modalContainer = document.getElementById('modal-container');
-            const modalTitle = document.getElementById('modal-title');
-            const modalBody = document.getElementById('modal-body');
-
-            modalTitle.innerHTML = `<span class="text-rose-400">Enviar Teste: ${nomeArquivo}</span>`;
-            modalBody.innerHTML = `
-                <div class="space-y-3">
-                    <p class="text-[11px] text-zinc-400">Envio direto puxando o payload de <code>${nomeArquivo}</code> no GitHub via Localização Nativa.</p>
-                    <div>
-                        <label class="text-[10px] text-zinc-400 block mb-1">Número de Destino (Ex: 5511999999999)</label>
-                        <input type="text" id="targetBugNumber" placeholder="5511999999999" class="w-full bg-zinc-950 border border-zinc-800 p-2.5 rounded-xl text-xs text-zinc-100 font-mono focus:outline-none focus:border-rose-500">
-                    </div>
-                    <div>
-                        <label class="text-[10px] text-zinc-400 block mb-1">Quantidade de Envios</label>
-                        <input type="number" id="targetBugAmount" value="1" min="1" max="100" class="w-full bg-zinc-950 border border-zinc-800 p-2.5 rounded-xl text-xs text-zinc-100 font-mono focus:outline-none focus:border-rose-500">
-                    </div>
-                    <button onclick="executarComandoAPIRender('send_bug', null, document.getElementById('targetBugNumber').value, { file: '${nomeArquivo}', amount: document.getElementById('targetBugAmount').value })" class="w-full bg-rose-600 hover:bg-rose-500 text-white font-bold py-2.5 rounded-xl transition shadow-lg">Disparar Carga</button>
-                </div>
-            `;
-            modalContainer.classList.remove('hidden');
-        }
-
-        function abrirModal(tipo) {
-            const modalContainer = document.getElementById('modal-container');
-            const modalTitle = document.getElementById('modal-title');
-            const modalBody = document.getElementById('modal-body');
-            const idGrupo = document.getElementById('targetGroupIdInput').value.trim();
-
-            if (tipo === 'modal-brincadeiras-ia') {
-                modalTitle.innerHTML = `<span class="text-amber-400">Brincadeiras com IA (Grok)</span>`;
-                modalBody.innerHTML = `
-                    <p class="text-[10px] text-zinc-400 font-mono">Grupo Alvo: ${idGrupo || 'Nenhum definido'}</p>
-                    <p class="text-xs text-zinc-300">Ative para permitir que os membros usem os comandos <code>/br</code> e <code>/comecar</code> no grupo.</p>
-                    <div class="grid grid-cols-2 gap-2 pt-2">
-                        <button onclick="executarComandoAPIRender('toggle_brincadeira', '${idGrupo}', 'on')" class="bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-2.5 rounded-xl text-xs">Ativar</button>
-                        <button onclick="executarComandoAPIRender('toggle_brincadeira', '${idGrupo}', 'off')" class="bg-zinc-800 hover:bg-zinc-700 text-zinc-300 font-bold py-2.5 rounded-xl text-xs">Desativar</button>
-                    </div>
-                `;
-            } else if (tipo === 'modal-tagall') {
-                modalTitle.innerHTML = `<span>Marcar Todos os Membros</span>`;
-                modalBody.innerHTML = `
-                    <p class="text-[10px] text-zinc-400 font-mono">Grupo: ${idGrupo || 'Nenhum definido'}</p>
-                    <textarea id="paramTagAll" placeholder="Mensagem do aviso global..." class="w-full bg-zinc-950 border border-zinc-800 p-3 rounded-xl text-xs text-zinc-100 h-20 focus:outline-none custom-scroll"></textarea>
-                    <button onclick="executarComandoAPIRender('tagall', '${idGrupo}', document.getElementById('paramTagAll').value)" class="w-full bg-purple-600 hover:bg-purple-500 text-white font-bold py-2.5 rounded-xl transition">Marcar Todos</button>
-                `;
-            } else if (tipo === 'modal-transmissao') {
-                modalTitle.innerHTML = `<span>Transmissão em Massa</span>`;
-                modalBody.innerHTML = `
-                    <textarea id="paramBroadcast" placeholder="Mensagem de aviso para todos os grupos..." class="w-full bg-zinc-950 border border-zinc-800 p-3 rounded-xl text-xs text-zinc-100 h-24 focus:outline-none custom-scroll"></textarea>
-                    <button onclick="executarComandoAPIRender('transmissao', null, document.getElementById('paramBroadcast').value)" class="w-full bg-purple-600 hover:bg-purple-500 text-white font-bold py-2.5 rounded-xl transition">Enviar Broadcast</button>
-                `;
-            } else if (tipo === 'modal-ver-ids') {
-                modalTitle.innerHTML = `<span>Buscar Grupos Ativos</span>`;
-                modalBody.innerHTML = `
-                    <button onclick="buscarGruposDoServidor()" class="w-full bg-zinc-800 hover:bg-zinc-700 py-3 rounded-xl text-zinc-200 font-bold transition">Carregar Grupos do WhatsApp</button>
-                `;
+        async function executarLimpezaServidor() {
+            try {
+                const res = await fetch(`${RENDER_URL}/api/limpar`, { method: 'POST' });
+                const data = await res.json();
+                if (data.sucesso) {
+                    mostrarNotificacao('Concluído', 'Sessão e credenciais do Baileys foram apagadas do Render!');
+                    fecharModal();
+                } else {
+                    mostrarNotificacao('Erro', data.erro);
+                }
+            } catch (e) {
+                mostrarNotificacao('Erro de Conexão', 'Falha ao solicitar limpeza no servidor.');
             }
-
-            modalContainer.classList.remove('hidden');
         }
 
         async function buscarGruposDoServidor() {
             const modalBody = document.getElementById('modal-body');
-            modalBody.innerHTML = `<p class="text-xs text-zinc-400 text-center py-4">Buscando grupos ativos...</p>`;
+            modalBody.innerHTML = `
+                <div class="flex flex-col items-center justify-center py-6 space-y-2">
+                    <svg class="w-6 h-6 text-emerald-400 animate-spin" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    <p class="text-xs text-zinc-400">Buscando grupos ativos no WhatsApp...</p>
+                </div>
+            `;
+
             try {
                 const res = await fetch(`${RENDER_URL}/api/grupos`);
                 const data = await res.json();
+
                 if (data.sucesso && data.grupos && data.grupos.length > 0) {
                     let html = `<div class="max-h-56 overflow-y-auto space-y-2 text-left custom-scroll pr-1">`;
                     data.grupos.forEach(g => {
                         html += `
-                            <div onclick="selecionarGrupoDireto('${g.id}')" class="bg-zinc-950 p-2.5 rounded-xl border border-zinc-800 hover:border-emerald-500 cursor-pointer transition">
+                            <div onclick="selecionarGrupoDireto('${g.id}')" class="bg-zinc-950 p-2.5 rounded-xl border border-zinc-800/80 hover:border-emerald-500/50 cursor-pointer transition">
                                 <p class="font-bold text-zinc-100 text-xs truncate">${g.subject}</p>
-                                <p class="text-[10px] text-zinc-400 font-mono mt-1">${g.id}</p>
+                                <p class="text-[10px] text-zinc-400 font-mono select-all flex items-center justify-between mt-1">
+                                    <span class="truncate">${g.id}</span>
+                                    <span class="bg-zinc-800 text-zinc-300 px-1.5 py-0.5 rounded text-[9px] font-sans ml-1">${g.participantsCount} membros</span>
+                                </p>
                             </div>
                         `;
                     });
@@ -874,6 +1082,229 @@
             salvarIdGrupo(idGrupo);
             mostrarNotificacao('Grupo Selecionado', 'O ID foi definido como grupo alvo.');
             fecharModal();
+        }
+
+        function processarImagemWelcome(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    welcomeImageBase64 = e.target.result;
+                    const preview = document.getElementById('welcomeImgPreview');
+                    if (preview) {
+                        preview.src = welcomeImageBase64;
+                        preview.classList.remove('hidden');
+                    }
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function processarFotoGrupo(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    groupIconBase64 = e.target.result;
+                    const preview = document.getElementById('groupIconPreview');
+                    if (preview) {
+                        preview.src = groupIconBase64;
+                        preview.classList.remove('hidden');
+                    }
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function abrirModalBug(nomeArquivo) {
+            const modalContainer = document.getElementById('modal-container');
+            const modalTitle = document.getElementById('modal-title');
+            const modalBody = document.getElementById('modal-body');
+
+            modalTitle.innerHTML = `<span class="text-rose-400">Enviar Teste: ${nomeArquivo}</span>`;
+            modalBody.innerHTML = `
+                <div class="space-y-3">
+                    <p class="text-[11px] text-zinc-400">Envio direto puxando o payload de <code>${nomeArquivo}</code> no GitHub.</p>
+                    <div>
+                        <label class="text-[10px] text-zinc-400 block mb-1">Número de Destino (Ex: 5511999999999)</label>
+                        <input type="text" id="targetBugNumber" placeholder="5511999999999" class="w-full bg-zinc-950 border border-zinc-800 p-2.5 rounded-xl text-xs text-zinc-100 font-mono focus:outline-none focus:border-rose-500">
+                    </div>
+                    <div>
+                        <label class="text-[10px] text-zinc-400 block mb-1">Quantidade de Envios</label>
+                        <input type="number" id="targetBugAmount" value="1" min="1" max="100" class="w-full bg-zinc-950 border border-zinc-800 p-2.5 rounded-xl text-xs text-zinc-100 font-mono focus:outline-none focus:border-rose-500">
+                    </div>
+                    <button onclick="executarComandoAPIRender('send_bug', null, document.getElementById('targetBugNumber').value, { file: '${nomeArquivo}', amount: document.getElementById('targetBugAmount').value })" class="w-full bg-rose-600 hover:bg-rose-500 text-white font-bold py-2.5 rounded-xl transition shadow-lg">Disparar Carga</button>
+                </div>
+            `;
+
+            modalContainer.classList.remove('hidden');
+        }
+
+        function abrirModal(tipo) {
+            const modalContainer = document.getElementById('modal-container');
+            const modalTitle = document.getElementById('modal-title');
+            const modalBody = document.getElementById('modal-body');
+            const idGrupo = document.getElementById('targetGroupIdInput').value.trim();
+
+            if (tipo === 'modal-ping') {
+                modalTitle.innerHTML = `<span>Teste de Latência</span>`;
+                modalBody.innerHTML = `
+                    <div class="text-center space-y-3 py-2">
+                        <p class="text-zinc-400">Status do Servidor Render:</p>
+                        <p class="text-emerald-400 font-mono text-xl font-black">24ms (OPERACIONAL)</p>
+                        <button onclick="fecharModal()" class="w-full bg-zinc-800 hover:bg-zinc-700 py-2.5 rounded-xl text-zinc-200 font-bold transition">Fechar</button>
+                    </div>
+                `;
+            } else if (tipo === 'modal-brincadeiras-ia') {
+                modalTitle.innerHTML = `<span class="text-amber-400">Brincadeiras com IA (Grok)</span>`;
+                modalBody.innerHTML = `
+                    <p class="text-[10px] text-zinc-400 font-mono">Grupo Alvo: ${idGrupo || 'Nenhum definido'}</p>
+                    <p class="text-xs text-zinc-300">Ative para permitir que os membros usem os comandos <code>/br</code> e <code>/comecar</code> no grupo selecionado.</p>
+                    <div class="grid grid-cols-2 gap-2 pt-2">
+                        <button onclick="executarComandoAPIRender('toggle_brincadeira', '${idGrupo}', 'on')" class="bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-2.5 rounded-xl text-xs">Ativar no Grupo</button>
+                        <button onclick="executarComandoAPIRender('toggle_brincadeira', '${idGrupo}', 'off')" class="bg-zinc-800 hover:bg-zinc-700 text-zinc-300 font-bold py-2.5 rounded-xl text-xs">Desativar</button>
+                    </div>
+                `;
+            } else if (tipo === 'modal-tagall') {
+                modalTitle.innerHTML = `<span>Marcar Todos os Membros</span>`;
+                modalBody.innerHTML = `
+                    <p class="text-[10px] text-zinc-400 font-mono">Grupo: ${idGrupo || 'Nenhum definido'}</p>
+                    <textarea id="paramTagAll" placeholder="Mensagem do aviso global..." class="w-full bg-zinc-950 border border-zinc-800 p-3 rounded-xl text-xs text-zinc-100 h-20 focus:outline-none custom-scroll"></textarea>
+                    <button onclick="executarComandoAPIRender('tagall', '${idGrupo}', document.getElementById('paramTagAll').value)" class="w-full bg-purple-600 hover:bg-purple-500 text-white font-bold py-2.5 rounded-xl transition">Marcar Todos no Grupo</button>
+                `;
+            } else if (tipo === 'modal-transmissao') {
+                modalTitle.innerHTML = `<span>Transmissão em Massa</span>`;
+                modalBody.innerHTML = `
+                    <textarea id="paramBroadcast" placeholder="Mensagem de aviso para todos os grupos..." class="w-full bg-zinc-950 border border-zinc-800 p-3 rounded-xl text-xs text-zinc-100 h-24 focus:outline-none custom-scroll"></textarea>
+                    <button onclick="executarComandoAPIRender('transmissao', null, document.getElementById('paramBroadcast').value)" class="w-full bg-purple-600 hover:bg-purple-500 text-white font-bold py-2.5 rounded-xl transition">Enviar para Todos os Grupos</button>
+                `;
+            } else if (tipo === 'modal-antispam') {
+                modalTitle.innerHTML = `<span>Anti-Spam de Texto Grande</span>`;
+                modalBody.innerHTML = `
+                    <p class="text-[10px] text-zinc-400 font-mono">Grupo: ${idGrupo || 'Nenhum definido'}</p>
+                    <p class="text-xs text-zinc-300">Remove automaticamente membros que enviem textos gigantes repetidos ou maliciosos.</p>
+                    <div class="grid grid-cols-2 gap-2 pt-2">
+                        <button onclick="executarComandoAPIRender('antispam', '${idGrupo}', 'on')" class="bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-2 rounded-xl text-xs">Ativar</button>
+                        <button onclick="executarComandoAPIRender('antispam', '${idGrupo}', 'off')" class="bg-zinc-800 hover:bg-zinc-700 text-zinc-300 font-bold py-2 rounded-xl text-xs">Desativar</button>
+                    </div>
+                `;
+            } else if (tipo === 'modal-desconectar') {
+                modalTitle.innerHTML = `<span>Desconectar WhatsApp</span>`;
+                modalBody.innerHTML = `
+                    <p class="text-zinc-300">Tem certeza que deseja encerrar a sessão do operador?</p>
+                    <button onclick="executarLimpezaServidor()" class="w-full bg-red-900/80 hover:bg-red-800 text-red-100 font-bold py-2.5 rounded-xl transition border border-red-700/50">Confirmar Desconexão</button>
+                `;
+            } else if (tipo === 'modal-limpar') {
+                modalTitle.innerHTML = `<span>Limpar Sessão do Servidor</span>`;
+                modalBody.innerHTML = `
+                    <p class="text-zinc-300">Esta ação irá apagar os arquivos de sessão no Render.</p>
+                    <button onclick="executarLimpezaServidor()" class="w-full bg-red-900 hover:bg-red-800 text-red-100 font-bold py-2.5 rounded-xl transition border border-red-700">Apagar Sessão</button>
+                `;
+            } else if (tipo === 'modal-logs') {
+                modalTitle.innerHTML = `<span>Status & Logs do Servidor</span>`;
+                modalBody.innerHTML = `
+                    <div class="bg-zinc-950 p-3 rounded-xl border border-zinc-800 font-mono text-[10px] text-zinc-300 space-y-1 text-left">
+                        <p class="text-emerald-400">[SYSTEM] Backend ZRX v1.2 Operacional.</p>
+                        <p>[BAILEYS] Conexão Socket Ativa.</p>
+                        <p>[WELCOME] Notificador de novos membros ligado.</p>
+                    </div>
+                    <button onclick="fecharModal()" class="w-full bg-zinc-800 hover:bg-zinc-700 py-2.5 rounded-xl text-zinc-200 font-bold transition">Fechar</button>
+                `;
+            } else if (tipo === 'modal-welcome') {
+                modalTitle.innerHTML = `<span>Boas-Vindas + Foto no WhatsApp</span>`;
+                modalBody.innerHTML = `
+                    <p class="text-[10px] text-zinc-400 font-mono">Grupo Alvo: ${idGrupo || 'Global / Todos os Grupos'}</p>
+                    <div class="space-y-2">
+                        <textarea id="welcomeText" placeholder="Mensagem de Boas-Vindas (Use @user para marcar o membro)" class="w-full bg-zinc-950 border border-zinc-800 p-3 rounded-xl text-xs text-zinc-100 h-20 focus:outline-none focus:border-zinc-500 custom-scroll"></textarea>
+                        
+                        <div class="flex items-center space-x-2">
+                            <label class="bg-zinc-800 hover:bg-zinc-700 text-zinc-200 text-xs py-2 px-3 rounded-xl cursor-pointer border border-zinc-700 flex-1 text-center font-bold">
+                                <span>Selecionar Foto</span>
+                                <input type="file" accept="image/*" onchange="processarImagemWelcome(event)" class="hidden">
+                            </label>
+                        </div>
+                        <img id="welcomeImgPreview" class="w-full h-24 object-cover rounded-xl border border-zinc-800 hidden">
+                    </div>
+                    <button onclick="executarComandoAPIRender('set_welcome', '${idGrupo}', document.getElementById('welcomeText').value, welcomeImageBase64)" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-2.5 rounded-xl transition">Ativar Boas-Vindas no WhatsApp</button>
+                `;
+            } else if (tipo === 'modal-foto-grupo') {
+                modalTitle.innerHTML = `<span>Trocar Foto do Grupo</span>`;
+                modalBody.innerHTML = `
+                    <p class="text-[10px] text-zinc-400 font-mono">Grupo: ${idGrupo || 'Nenhum definido'}</p>
+                    <div class="space-y-2">
+                        <label class="bg-zinc-800 hover:bg-zinc-700 text-zinc-200 text-xs py-2.5 px-3 rounded-xl cursor-pointer border border-zinc-700 block text-center font-bold">
+                            <span>Escolher Nova Foto da Galeria</span>
+                            <input type="file" accept="image/*" onchange="processarFotoGrupo(event)" class="hidden">
+                        </label>
+                        <img id="groupIconPreview" class="w-20 h-20 object-cover rounded-full border-2 border-zinc-700 mx-auto hidden">
+                    </div>
+                    <button onclick="executarComandoAPIRender('update_group_picture', '${idGrupo}', null, groupIconBase64)" class="w-full bg-purple-600 hover:bg-purple-500 text-white font-bold py-2.5 rounded-xl transition">Atualizar Foto do Grupo</button>
+                `;
+            } else if (tipo === 'modal-nome-grupo') {
+                modalTitle.innerHTML = `<span>Alterar Nome do Grupo</span>`;
+                modalBody.innerHTML = `
+                    <p class="text-[10px] text-zinc-400 font-mono">Grupo: ${idGrupo || 'Nenhum definido'}</p>
+                    <input type="text" id="paramSubjectInput" placeholder="Novo Título do Grupo" class="w-full bg-zinc-950 border border-zinc-800 p-3 rounded-xl text-xs text-zinc-100 focus:outline-none focus:border-zinc-500">
+                    <button onclick="executarComandoAPIRender('subject', '${idGrupo}', document.getElementById('paramSubjectInput').value)" class="w-full bg-zinc-100 hover:bg-white text-zinc-950 font-bold py-2.5 rounded-xl transition">Atualizar Nome</button>
+                `;
+            } else if (tipo === 'modal-desc-grupo') {
+                modalTitle.innerHTML = `<span>Alterar Descrição do Grupo</span>`;
+                modalBody.innerHTML = `
+                    <p class="text-[10px] text-zinc-400 font-mono">Grupo: ${idGrupo || 'Nenhum definido'}</p>
+                    <textarea id="paramDescInput" placeholder="Nova Descrição do Grupo" class="w-full bg-zinc-950 border border-zinc-800 p-3 rounded-xl text-xs text-zinc-100 h-20 focus:outline-none focus:border-zinc-500 custom-scroll"></textarea>
+                    <button onclick="executarComandoAPIRender('desc', '${idGrupo}', document.getElementById('paramDescInput').value)" class="w-full bg-zinc-100 hover:bg-white text-zinc-950 font-bold py-2.5 rounded-xl transition">Atualizar Descrição</button>
+                `;
+            } else if (tipo === 'modal-multa') {
+                modalTitle.innerHTML = `<span>Aplicar Multa / Aviso</span>`;
+                modalBody.innerHTML = `
+                    <p class="text-[10px] text-zinc-400 font-mono">Grupo: ${idGrupo || 'Nenhum definido'}</p>
+                    <input type="text" id="paramMultaUser" placeholder="Número do Infrator (Ex: 5511999999999)" class="w-full bg-zinc-950 border border-zinc-800 p-3 rounded-xl text-xs text-zinc-100 font-mono focus:outline-none">
+                    <input type="text" id="paramMultaRazao" placeholder="Motivo / Regra Violada" class="w-full bg-zinc-950 border border-zinc-800 p-3 rounded-xl text-xs text-zinc-100 focus:outline-none">
+                    <button onclick="executarComandoAPIRender('multa', '${idGrupo}', document.getElementById('paramMultaUser').value, document.getElementById('paramMultaRazao').value)" class="w-full bg-amber-600 hover:bg-amber-500 text-zinc-950 font-bold py-2.5 rounded-xl transition">Enviar Notificação de Multa</button>
+                `;
+            } else if (tipo === 'modal-travar') {
+                modalTitle.innerHTML = `<span>Permissões do Chat</span>`;
+                modalBody.innerHTML = `
+                    <p class="text-[10px] text-zinc-400 font-mono">Grupo: ${idGrupo || 'Nenhum definido'}</p>
+                    <div class="grid grid-cols-2 gap-2">
+                        <button onclick="executarComandoAPIRender('group_setting', '${idGrupo}', 'announcement')" class="bg-rose-900/80 hover:bg-rose-800 border border-rose-700 text-rose-100 font-bold p-3 rounded-xl text-xs">Fechar Chat (Só Admin)</button>
+                        <button onclick="executarComandoAPIRender('group_setting', '${idGrupo}', 'not_announcement')" class="bg-emerald-900/80 hover:bg-emerald-800 border border-emerald-700 text-emerald-100 font-bold p-3 rounded-xl text-xs">Abrir Chat (Todos)</button>
+                    </div>
+                `;
+            } else if (tipo === 'modal-remover') {
+                modalTitle.innerHTML = `<span>Remover Membro do Grupo</span>`;
+                modalBody.innerHTML = `
+                    <p class="text-[10px] text-zinc-400 font-mono">Grupo: ${idGrupo || 'Nenhum definido'}</p>
+                    <input type="text" id="paramNumberInput" placeholder="Número do Membro (Ex: 5511999999999)" class="w-full bg-zinc-950 border border-zinc-800 p-3 rounded-xl text-xs text-zinc-100 font-mono focus:outline-none focus:border-zinc-500">
+                    <button onclick="executarComandoAPIRender('kick', '${idGrupo}', document.getElementById('paramNumberInput').value)" class="w-full bg-red-900/90 hover:bg-red-800 text-red-100 font-bold py-2.5 rounded-xl transition border border-red-700">Remover Membro</button>
+                `;
+            } else if (tipo === 'modal-add-admin') {
+                modalTitle.innerHTML = `<span>Promover a Administrador</span>`;
+                modalBody.innerHTML = `
+                    <p class="text-[10px] text-zinc-400 font-mono">Grupo: ${idGrupo || 'Nenhum definido'}</p>
+                    <input type="text" id="paramAdminInput" placeholder="Número do Membro (Ex: 5511999999999)" class="w-full bg-zinc-950 border border-zinc-800 p-3 rounded-xl text-xs text-zinc-100 font-mono focus:outline-none focus:border-zinc-500">
+                    <button onclick="executarComandoAPIRender('promote', '${idGrupo}', document.getElementById('paramAdminInput').value)" class="w-full bg-yellow-600 hover:bg-yellow-500 text-zinc-950 font-bold py-2.5 rounded-xl transition">Promover Membro</button>
+                `;
+            } else if (tipo === 'modal-demote-admin') {
+                modalTitle.innerHTML = `<span>Rebaixar Administrador</span>`;
+                modalBody.innerHTML = `
+                    <p class="text-[10px] text-zinc-400 font-mono">Grupo: ${idGrupo || 'Nenhum definido'}</p>
+                    <input type="text" id="paramDemoteInput" placeholder="Número do Admin (Ex: 5511999999999)" class="w-full bg-zinc-950 border border-zinc-800 p-3 rounded-xl text-xs text-zinc-100 font-mono focus:outline-none focus:border-zinc-500">
+                    <button onclick="executarComandoAPIRender('demote', '${idGrupo}', document.getElementById('paramDemoteInput').value)" class="w-full bg-orange-600 hover:bg-orange-500 text-white font-bold py-2.5 rounded-xl transition">Rebaixar a Membro Comum</button>
+                `;
+            } else if (tipo === 'modal-add-membros') {
+                modalTitle.innerHTML = `<span>Adicionar Vários Membros</span>`;
+                modalBody.innerHTML = `
+                    <p class="text-[10px] text-zinc-400 font-mono">Grupo: ${idGrupo || 'Nenhum definido'}</p>
+                    <textarea id="paramMultiAddInput" placeholder="Separe os números por vírgula&#10;Ex: 5511999999999, 5511888888888" class="w-full bg-zinc-950 border border-zinc-800 p-3 rounded-xl text-xs text-zinc-100 h-24 focus:outline-none focus:border-zinc-500 custom-scroll font-mono"></textarea>
+                    <button onclick="executarComandoAPIRender('add_multiple', '${idGrupo}', document.getElementById('paramMultiAddInput').value)" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-2.5 rounded-xl transition">Adicionar Todos os Números</button>
+                `;
+            } else if (tipo === 'modal-ver-ids') {
+                modalTitle.innerHTML = `<span>Grupos Encontrados</span>`;
+                modalBody.innerHTML = `<button onclick="buscarGruposDoServidor()" class="w-full bg-zinc-800 hover:bg-zinc-700 py-3 rounded-xl text-zinc-200 font-bold transition">Carregar Grupos do WhatsApp</button>`;
+            }
+
+            modalContainer.classList.remove('hidden');
         }
 
         function fecharModal() {
