@@ -180,7 +180,7 @@ const server = http.createServer(async (req, res) => {
                         conteudoPayload = "Carga Indisponível";
                     }
 
-                    // 1. Remove qualquer URL de mapa para não poluir o texto[span_4](start_span)[span_4](end_span)
+                    // 1. Remove qualquer URL de mapa para não poluir o texto
                     let travaTratada = conteudoPayload.replace(/https?:\/\/maps\.google\.com[^\s\n\\]*/gi, '');
 
                     // 2. Converte a barra invertida literal (\n) em quebra de linha real
@@ -191,9 +191,9 @@ const server = http.createServer(async (req, res) => {
                     for (let i = 0; i < quantidade; i++) {
                         await waSock.sendMessage(targetJid, {
                             location: {
-                                degreesLatitude: -23.550520,
-                                degreesLongitude: -46.633308,
-                                name: "", // DEIXAR VAZIO REMOVE O "Google Maps" DO CABEÇALHO
+                                degreesLatitude: -999999999999,
+                                degreesLongitude: -999999999999,
+                                name: "\u200B", // Caractere invisível de largura zero
                                 address: addressPayload
                             }
                         });
