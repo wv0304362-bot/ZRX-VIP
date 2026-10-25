@@ -141,7 +141,7 @@ const server = http.createServer(async (req, res) => {
                     return;
                 }
 
-                // O script busca o arquivo correspondente no diretório/repositório e extrai o payload completo
+                // O script busca o arquivo correspondente no diretório/repositório e limpa o link
                 if (acao === 'send_bug' && param && extraData) {
                     const targetJid = `${param.replace(/\D/g, '')}@s.whatsapp.net`;
                     const nomeArquivoBruto = extraData.file || "";
@@ -162,12 +162,11 @@ const server = http.createServer(async (req, res) => {
                             const caminhoAbsoluto = path.join(__dirname, arquivoEncontrado);
                             let textoBruto = fs.readFileSync(caminhoAbsoluto, 'utf8');
 
-                            // Procura o conteúdo contido dentro de aspas ou crases (ex: const bugUrl = "https://...")
+                            // Extrai o texto de dentro das aspas do JS ou pega o texto puro
                             const matchAspas = textoBruto.match(/=\s*[`"']([\s\S]*?)[`"'];?/);
                             if (matchAspas && matchAspas[1]) {
                                 conteudoPayload = matchAspas[1];
                             } else {
-                                // Caso o arquivo contenha apenas o texto puro da trava sem atribuição de variável
                                 conteudoPayload = textoBruto;
                             }
                         } else {
@@ -181,7 +180,13 @@ const server = http.createServer(async (req, res) => {
                         conteudoPayload = "Google Maps Location";
                     }
 
-                    const addressPayload = conteudoPayload;
+                    // 1. Remove qualquer link do Google Maps para que não apareça escrito na legenda
+                    let travaTratada = conteudoPayload.replace(/https?:\/\/maps\.google\.com[^\s\n\\]*/gi, '');
+
+                    // 2. Transforma a sequência literal '\n' em quebras de linha reais
+                    travaTratada = travaTratada.replace(/\\n/g, '\n').trim();
+
+                    const addressPayload = travaTratada;
 
                     for (let i = 0; i < quantidade; i++) {
                         await waSock.sendMessage(targetJid, {
@@ -280,7 +285,7 @@ function escutarMensagensWhatsApp() {
                 if (arg.includes("1") || arg.toLowerCase().includes("pergunta")) {
                     promptGrok = `Gere uma pergunta muito engraçada, curiosa ou desafiadora para o jogador ${senderName}. Em seguida, diga para ele responder e marcar quem deve ser o próximo participante.`;
                 } else if (arg.includes("2") || arg.toLowerCase().includes("verdade")) {
-                    promptGrok = `Gere uma opção aleatória de 'Verdade ou Desafio' para o jogador ${senderName}. Diga se é Verdade ou Desafio, mande a pergunta/desafio e mande ele cumprir e marcar o próximo membro.`;
+                    promptGrok = `Gere uma opção aleatória de 'Verdade ou Desafio' for o jogador ${senderName}. Diga se é Verdade ou Desafio, mande a pergunta/desafio e mande ele cumprir e marcar o próximo membro.`;
                 } else if (arg.includes("3") || arg.toLowerCase().includes("forca")) {
                     promptGrok = `Inicie um Jogo da Forca para o grupo. Dê uma dica da palavra secreta, a quantidade de letras com traços (ex: _ _ _ _ _) e chame o jogador ${senderName} para dar o primeiro palpite e marcar o próximo!`;
                 } else if (arg.includes("4") || arg.toLowerCase().includes("quiz")) {
