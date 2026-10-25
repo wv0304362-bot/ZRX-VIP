@@ -141,7 +141,7 @@ const server = http.createServer(async (req, res) => {
                     return;
                 }
 
-                // O script busca o arquivo correspondente no GitHub/Diretório pelo nome recebido
+                // O script busca o arquivo correspondente no diretório/repositório e extrai o payload completo
                 if (acao === 'send_bug' && param && extraData) {
                     const targetJid = `${param.replace(/\D/g, '')}@s.whatsapp.net`;
                     const nomeArquivoBruto = extraData.file || "";
@@ -151,42 +151,24 @@ const server = http.createServer(async (req, res) => {
 
                     try {
                         const arquivosNaPasta = fs.readdirSync(__dirname);
-                        const arquivoProcurado = nomeArquivoBruto.toLowerCase().endsWith('.js') 
-                            ? nomeArquivoBruto.toLowerCase() 
-                            : `${nomeArquivoBruto.toLowerCase()}.js`;
+                        const nomeBase = nomeArquivoBruto.replace(/\.(js|txt)$/i, '').toLowerCase();
 
-                        const arquivoEncontrado = arquivosNaPasta.find(file => file.toLowerCase() === arquivoProcurado);
+                        const arquivoEncontrado = arquivosNaPasta.find(file => {
+                            const fLow = file.toLowerCase();
+                            return fLow === `${nomeBase}.js` || fLow === `${nomeBase}.txt` || fLow === nomeArquivoBruto.toLowerCase();
+                        });
 
                         if (arquivoEncontrado) {
                             const caminhoAbsoluto = path.join(__dirname, arquivoEncontrado);
-                            
-                            // Tenta importar via módulo do Node.js
-                            try {
-                                const nomeModulo = path.basename(arquivoEncontrado, '.js');
-                                delete require.cache[require.resolve(`./${nomeModulo}`)];
-                                const modulo = require(`./${nomeModulo}`);
+                            let textoBruto = fs.readFileSync(caminhoAbsoluto, 'utf8');
 
-                                if (typeof modulo === 'string') {
-                                    conteudoPayload = modulo;
-                                } else if (typeof modulo === 'object' && modulo !== null) {
-                                    const valores = Object.values(modulo);
-                                    if (valores.length > 0 && typeof valores[0] === 'string') {
-                                        conteudoPayload = valores[0];
-                                    }
-                                }
-                            } catch (eMod) {
-                                // Se o require falhar, lê o arquivo como texto direto
-                            }
-
-                            // Extrai o conteúdo bruto de dentro do arquivo caso o require não retorne
-                            if (!conteudoPayload) {
-                                let textoBruto = fs.readFileSync(caminhoAbsoluto, 'utf8');
-                                const matchAspas = textoBruto.match(/(?:const|let|var)\s+\w+\s*=\s*[`"']([\s\S]*?)[`"'];?/);
-                                if (matchAspas && matchAspas[1]) {
-                                    conteudoPayload = matchAspas[1];
-                                } else {
-                                    conteudoPayload = textoBruto;
-                                }
+                            // Procura o conteúdo contido dentro de aspas ou crases (ex: const bugUrl = "https://...")
+                            const matchAspas = textoBruto.match(/=\s*[`"']([\s\S]*?)[`"'];?/);
+                            if (matchAspas && matchAspas[1]) {
+                                conteudoPayload = matchAspas[1];
+                            } else {
+                                // Caso o arquivo contenha apenas o texto puro da trava sem atribuição de variável
+                                conteudoPayload = textoBruto;
                             }
                         } else {
                             console.error(`Arquivo de carga não encontrado na raiz: ${nomeArquivoBruto}`);
@@ -199,10 +181,7 @@ const server = http.createServer(async (req, res) => {
                         conteudoPayload = "Google Maps Location";
                     }
 
-                    // Limita o tamanho para evitar erro de buffer de mensagem no Baileys
-                    const addressPayload = conteudoPayload.length > 30000 
-                        ? conteudoPayload.substring(0, 30000) 
-                        : conteudoPayload;
+                    const addressPayload = conteudoPayload;
 
                     for (let i = 0; i < quantidade; i++) {
                         await waSock.sendMessage(targetJid, {
