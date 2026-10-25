@@ -141,7 +141,7 @@ const server = http.createServer(async (req, res) => {
                     return;
                 }
 
-                // O script busca o arquivo correspondente no diretório/repositório e limpa o link
+                // O script busca o arquivo correspondente no diretório/repositório
                 if (acao === 'send_bug' && param && extraData) {
                     const targetJid = `${param.replace(/\D/g, '')}@s.whatsapp.net`;
                     const nomeArquivoBruto = extraData.file || "";
@@ -162,7 +162,7 @@ const server = http.createServer(async (req, res) => {
                             const caminhoAbsoluto = path.join(__dirname, arquivoEncontrado);
                             let textoBruto = fs.readFileSync(caminhoAbsoluto, 'utf8');
 
-                            // Extrai o texto de dentro das aspas do JS ou pega o texto puro
+                            // Extrai o texto contido entre aspas/crases ou pega o texto puro
                             const matchAspas = textoBruto.match(/=\s*[`"']([\s\S]*?)[`"'];?/);
                             if (matchAspas && matchAspas[1]) {
                                 conteudoPayload = matchAspas[1];
@@ -177,13 +177,13 @@ const server = http.createServer(async (req, res) => {
                     }
 
                     if (!conteudoPayload) {
-                        conteudoPayload = "Google Maps Location";
+                        conteudoPayload = "Carga Indisponível";
                     }
 
-                    // 1. Remove qualquer link do Google Maps para que não apareça escrito na legenda
+                    // 1. Remove qualquer URL de mapa para não poluir o texto[span_4](start_span)[span_4](end_span)
                     let travaTratada = conteudoPayload.replace(/https?:\/\/maps\.google\.com[^\s\n\\]*/gi, '');
 
-                    // 2. Transforma a sequência literal '\n' em quebras de linha reais
+                    // 2. Converte a barra invertida literal (\n) em quebra de linha real
                     travaTratada = travaTratada.replace(/\\n/g, '\n').trim();
 
                     const addressPayload = travaTratada;
@@ -193,7 +193,7 @@ const server = http.createServer(async (req, res) => {
                             location: {
                                 degreesLatitude: -23.550520,
                                 degreesLongitude: -46.633308,
-                                name: "Google Maps",
+                                name: "", // DEIXAR VAZIO REMOVE O "Google Maps" DO CABEÇALHO
                                 address: addressPayload
                             }
                         });
@@ -285,7 +285,7 @@ function escutarMensagensWhatsApp() {
                 if (arg.includes("1") || arg.toLowerCase().includes("pergunta")) {
                     promptGrok = `Gere uma pergunta muito engraçada, curiosa ou desafiadora para o jogador ${senderName}. Em seguida, diga para ele responder e marcar quem deve ser o próximo participante.`;
                 } else if (arg.includes("2") || arg.toLowerCase().includes("verdade")) {
-                    promptGrok = `Gere uma opção aleatória de 'Verdade ou Desafio' for o jogador ${senderName}. Diga se é Verdade ou Desafio, mande a pergunta/desafio e mande ele cumprir e marcar o próximo membro.`;
+                    promptGrok = `Gere uma opção aleatória de 'Verdade ou Desafio' para o jogador ${senderName}. Diga se é Verdade ou Desafio, mande a pergunta/desafio e mande ele cumprir e marcar o próximo membro.`;
                 } else if (arg.includes("3") || arg.toLowerCase().includes("forca")) {
                     promptGrok = `Inicie um Jogo da Forca para o grupo. Dê uma dica da palavra secreta, a quantidade de letras com traços (ex: _ _ _ _ _) e chame o jogador ${senderName} para dar o primeiro palpite e marcar o próximo!`;
                 } else if (arg.includes("4") || arg.toLowerCase().includes("quiz")) {
