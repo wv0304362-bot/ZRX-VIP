@@ -627,11 +627,13 @@
             }
         }
 
-        async function loadMediaBackground(event) {
+        // Função corrigida para carregar e salvar a mídia de fundo sem travamentos
+        function loadMediaBackground(event) {
             const file = event.target.files[0];
             if (file) {
                 const reader = new FileReader();
                 const isVideo = file.type.startsWith('video/');
+                
                 reader.onload = function(e) {
                     const base64Data = e.target.result;
                     const img = document.getElementById('bgImage');
@@ -650,8 +652,10 @@
                         img.classList.remove('hidden');
                         vid.classList.add('hidden');
                     }
-                }
+                };
+                
                 reader.readAsDataURL(file);
+                event.target.value = ''; // Permite selecionar o mesmo arquivo novamente se necessário
             }
         }
 
