@@ -547,23 +547,6 @@
             const savedNumero = localStorage.getItem('zrx_whatsapp_numero');
             if (savedNumero) document.getElementById('numeroConexaoInput').value = savedNumero;
 
-            // Restaura a mídia de fundo salva (Imagem ou Vídeo)
-            const savedBgType = localStorage.getItem('zrx_bg_type');
-            const savedBgData = localStorage.getItem('zrx_bg_data');
-            if (savedBgData) {
-                const img = document.getElementById('bgImage');
-                const vid = document.getElementById('bgVideo');
-                if (savedBgType === 'video') {
-                    vid.src = savedBgData;
-                    vid.classList.remove('hidden');
-                    img.classList.add('hidden');
-                } else {
-                    img.src = savedBgData;
-                    img.classList.remove('hidden');
-                    vid.classList.add('hidden');
-                }
-            }
-
             verificarStatusServidor();
             setInterval(verificarStatusServidor, 4000);
         });
@@ -627,35 +610,26 @@
             }
         }
 
-        // Função corrigida para carregar e salvar a mídia de fundo sem travamentos
+        // Função otimizada com Blob URL (Sem limite de tamanho, sem travar o navegador)
         function loadMediaBackground(event) {
             const file = event.target.files[0];
             if (file) {
-                const reader = new FileReader();
                 const isVideo = file.type.startsWith('video/');
-                
-                reader.onload = function(e) {
-                    const base64Data = e.target.result;
-                    const img = document.getElementById('bgImage');
-                    const vid = document.getElementById('bgVideo');
+                const mediaUrl = URL.createObjectURL(file);
+                const img = document.getElementById('bgImage');
+                const vid = document.getElementById('bgVideo');
 
-                    // Salva no localStorage para persistir após atualizar a página
-                    localStorage.setItem('zrx_bg_type', isVideo ? 'video' : 'image');
-                    localStorage.setItem('zrx_bg_data', base64Data);
-
-                    if (isVideo) {
-                        vid.src = base64Data;
-                        vid.classList.remove('hidden');
-                        img.classList.add('hidden');
-                    } else {
-                        img.src = base64Data;
-                        img.classList.remove('hidden');
-                        vid.classList.add('hidden');
-                    }
-                };
+                if (isVideo) {
+                    vid.src = mediaUrl;
+                    vid.classList.remove('hidden');
+                    img.classList.add('hidden');
+                } else {
+                    img.src = mediaUrl;
+                    img.classList.remove('hidden');
+                    vid.classList.add('hidden');
+                }
                 
-                reader.readAsDataURL(file);
-                event.target.value = ''; // Permite selecionar o mesmo arquivo novamente se necessário
+                event.target.value = ''; // Permite escolher o mesmo arquivo de novo se quiser
             }
         }
 
