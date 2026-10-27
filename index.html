@@ -52,10 +52,21 @@
             animation: pulse-red 2s infinite;
         }
 
+        .pulse-connecting {
+            box-shadow: 0 0 0 0 rgba(234, 179, 8, 0.7);
+            animation: pulse-yellow 2s infinite;
+        }
+
         @keyframes pulse-green {
             0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
             70% { transform: scale(1); box-shadow: 0 0 0 6px rgba(16, 185, 129, 0); }
             100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+        }
+
+        @keyframes pulse-yellow {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(234, 179, 8, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 6px rgba(234, 179, 8, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(234, 179, 8, 0); }
         }
 
         @keyframes pulse-red {
@@ -81,11 +92,11 @@
                     <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/>
                 </svg>
             </button>
-            <div id="statusDot" class="w-2.5 h-2.5 rounded-full bg-emerald-500 pulse-online"></div>
+            <div id="statusDot" class="w-2.5 h-2.5 rounded-full bg-red-500 pulse-offline"></div>
             <div>
                 <h1 class="font-bold text-xs tracking-widest text-zinc-100 uppercase">ZRX OPERATOR</h1>
                 <span class="text-[10px] text-zinc-400 block font-mono">
-                    STATUS: <strong id="headerStatusText" class="text-emerald-400 font-bold">ONLINE</strong>
+                    STATUS: <strong id="headerStatusText" class="text-red-400 font-bold">OFFLINE</strong>
                 </span>
             </div>
         </div>
@@ -95,7 +106,7 @@
         </div>
     </header>
 
-    <!-- DRAWER / MENU LATERAL (TRÊS BARRINHAS) -->
+    <!-- DRAWER / MENU LATERAL -->
     <div id="drawerOverlay" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 hidden transition-opacity duration-300" onclick="toggleDrawer(false)"></div>
     <div id="drawerMenu" class="fixed top-0 left-0 bottom-0 w-72 bg-zinc-900 border-r border-zinc-800 z-50 transform -translate-x-full transition-transform duration-300 flex flex-col shadow-2xl">
         <div class="p-5 border-b border-zinc-800 flex items-center justify-between">
@@ -119,18 +130,10 @@
                 <svg class="w-4 h-4 text-cyan-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
                 <span>Estatísticas</span>
             </button>
-            <button onclick="abrirConfiguracoesMenu('temas')" class="w-full flex items-center space-x-3 p-3 rounded-xl hover:bg-zinc-800/80 text-zinc-200 transition text-xs font-semibold">
-                <svg class="w-4 h-4 text-purple-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 73.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01"/></svg>
-                <span>Temas</span>
-            </button>
             <button onclick="abrirConfiguracoesMenu('creditos')" class="w-full flex items-center space-x-3 p-3 rounded-xl hover:bg-zinc-800/80 text-zinc-200 transition text-xs font-semibold">
                 <svg class="w-4 h-4 text-rose-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
                 <span>Créditos (By LOTUX)</span>
             </button>
-        </div>
-
-        <div class="p-4 border-t border-zinc-800 text-center">
-            <span class="text-[10px] text-zinc-500 font-mono">Desenvolvido por <strong class="text-zinc-300">LOTUX</strong></span>
         </div>
     </div>
 
@@ -279,7 +282,7 @@
                 </div>
             </div>
 
-            <!-- CATEGORIA: BUG WHATSAPP (TESTE DE CARGA - RENOMEADO) -->
+            <!-- CATEGORIA: BUG WHATSAPP (TESTE DE CARGA) -->
             <div class="space-y-2.5">
                 <h3 class="text-xs font-bold text-rose-400 uppercase tracking-wider px-1 flex items-center space-x-1.5">
                     <svg class="w-4 h-4 text-rose-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
@@ -288,92 +291,47 @@
                     <span>CARGAS & TRAVAS DE LOCALIZAÇÃO</span>
                 </h3>
                 <div class="grid grid-cols-2 gap-3">
-                    
                     <button onclick="abrirModalBug('Sp4.txt')" class="glass-card hover:bg-zinc-800/80 active:scale-95 p-4 rounded-2xl flex flex-col items-center justify-center space-y-2 transition shadow-lg group border-rose-900/30">
-                        <div class="p-2.5 rounded-xl bg-rose-950/60 group-hover:bg-rose-900/80 transition">
-                            <svg class="w-5 h-5 text-rose-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
-                        </div>
                         <span class="text-xs font-bold text-zinc-200">Trava Sp4</span>
                     </button>
-
                     <button onclick="abrirModalBug('IOSbug.txt')" class="glass-card hover:bg-zinc-800/80 active:scale-95 p-4 rounded-2xl flex flex-col items-center justify-center space-y-2 transition shadow-lg group border-rose-900/30">
-                        <div class="p-2.5 rounded-xl bg-rose-950/60 group-hover:bg-rose-900/80 transition">
-                            <svg class="w-5 h-5 text-rose-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
-                        </div>
                         <span class="text-xs font-bold text-zinc-200">Trava iOS</span>
                     </button>
-
                     <button onclick="abrirModalBug('Androidbug.txt')" class="glass-card hover:bg-zinc-800/80 active:scale-95 p-4 rounded-2xl flex flex-col items-center justify-center space-y-2 transition shadow-lg group border-rose-900/30">
-                        <div class="p-2.5 rounded-xl bg-rose-950/60 group-hover:bg-rose-900/80 transition">
-                            <svg class="w-5 h-5 text-rose-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10.5 1.5H13.5M10.5 22.5H13.5M6 6H18V18H6V6Z"/></svg>
-                        </div>
                         <span class="text-xs font-bold text-zinc-200">Trava Android</span>
                     </button>
-
-                    <button onclick="abrirModalBug('Crechbug.txt')" class="glass-card hover:bg-zinc-800/80 active:scale-95 p-4 rounded-2xl flex flex-col items-center justify-center space-y-2 transition shadow-lg group border-rose-900/30">
-                        <div class="p-2.5 rounded-xl bg-rose-950/60 group-hover:bg-rose-900/80 transition">
-                            <svg class="w-5 h-5 text-rose-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                        </div>
-                        <span class="text-xs font-bold text-zinc-200">Crash Map</span>
-                    </button>
-
                     <button onclick="abrirModalBug('5p4n.txt')" class="glass-card hover:bg-zinc-800/80 active:scale-95 p-4 rounded-2xl flex flex-col items-center justify-center space-y-2 transition shadow-lg group border-rose-900/30">
-                        <div class="p-2.5 rounded-xl bg-rose-950/60 group-hover:bg-rose-900/80 transition">
-                            <svg class="w-5 h-5 text-rose-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>
-                        </div>
                         <span class="text-xs font-bold text-zinc-200">Spam Payload</span>
                     </button>
-
-                    <button onclick="abrirModalBug('Bug_vcard.txt')" class="glass-card hover:bg-zinc-800/80 active:scale-95 p-4 rounded-2xl flex flex-col items-center justify-center space-y-2 transition shadow-lg group border-rose-900/30">
-                        <div class="p-2.5 rounded-xl bg-rose-950/60 group-hover:bg-rose-900/80 transition">
-                            <svg class="w-5 h-5 text-rose-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10 6H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V8a2 2 0 00-2-2h-5m-4 0V5a2 2 0 012-2h2a2 2 0 012 2v1m-4 0h4"/></svg>
-                        </div>
-                        <span class="text-xs font-bold text-zinc-200">VCard Crash</span>
-                    </button>
-
                 </div>
             </div>
 
-            <!-- CATEGORIA: GERENCIAMENTO DE SESSÃO -->
+            <!-- CATEGORIA: GERENCIAMENTO -->
             <div class="space-y-2.5">
                 <h3 class="text-xs font-bold text-zinc-400 uppercase tracking-wider px-1">GERENCIAMENTO</h3>
                 <div class="grid grid-cols-2 gap-3">
-                    
                     <button onclick="abrirModal('modal-ping')" class="glass-card hover:bg-zinc-800/80 active:scale-95 p-4 rounded-2xl flex flex-col items-center justify-center space-y-2 transition shadow-lg group">
-                        <div class="p-2.5 rounded-xl bg-zinc-800/80 group-hover:bg-zinc-700 transition">
-                            <svg class="w-5 h-5 text-amber-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
-                        </div>
                         <span class="text-xs font-bold text-zinc-200">Teste de Ping</span>
                     </button>
-
                     <button onclick="abrirModal('modal-desconectar')" class="glass-card hover:bg-zinc-800/80 active:scale-95 p-4 rounded-2xl flex flex-col items-center justify-center space-y-2 transition shadow-lg group">
-                        <div class="p-2.5 rounded-xl bg-zinc-800/80 group-hover:bg-zinc-700 transition">
-                            <svg class="w-5 h-5 text-red-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636"/></svg>
-                        </div>
                         <span class="text-xs font-bold text-zinc-200">Desconectar</span>
                     </button>
-
                 </div>
             </div>
         </section>
 
     </main>
 
-    <!-- CONTAINER DE MODAIS INTERATIVOS & CONFIGURAÇÕES -->
+    <!-- CONTAINER DE MODAIS -->
     <div id="modal-container" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 hidden flex items-center justify-center p-4 transition-all duration-300">
         <div id="modal-box" class="glass-card rounded-2xl p-5 w-full max-w-sm space-y-4 relative shadow-2xl border border-zinc-700/80 transform transition-all scale-100 max-h-[90vh] overflow-y-auto custom-scroll">
-            
             <button onclick="fecharModal()" class="absolute top-3.5 right-3.5 text-zinc-400 hover:text-white p-1 rounded-lg hover:bg-zinc-800 transition">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
             </button>
-
             <h3 id="modal-title" class="text-xs font-bold text-zinc-100 uppercase tracking-wider border-b border-zinc-800 pb-3 flex items-center space-x-2">
                 <span>Título Modal</span>
             </h3>
-
-            <div id="modal-body" class="space-y-3 text-xs text-zinc-300">
-                <!-- Conteúdo Dinâmico -->
-            </div>
+            <div id="modal-body" class="space-y-3 text-xs text-zinc-300"></div>
         </div>
     </div>
 
@@ -381,15 +339,12 @@
     <nav class="fixed bottom-0 left-0 right-0 glass-nav px-4 py-2.5 z-40 max-w-md mx-auto rounded-t-2xl">
         <div class="flex justify-around items-center">
             <button onclick="switchTab('home')" class="nav-btn flex flex-col items-center text-emerald-400 transition" data-target="home">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="m3 12 2-2m0 0 7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
                 <span class="text-[10px] mt-1 font-semibold">Início</span>
             </button>
             <button onclick="switchTab('code')" class="nav-btn flex flex-col items-center text-zinc-500 hover:text-zinc-200 transition" data-target="code">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg>
                 <span class="text-[10px] mt-1 font-medium">Código</span>
             </button>
             <button onclick="switchTab('commands')" class="nav-btn flex flex-col items-center text-zinc-500 hover:text-zinc-200 transition" data-target="commands">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
                 <span class="text-[10px] mt-1 font-medium">Ofensivo</span>
             </button>
         </div>
@@ -433,25 +388,9 @@
                 modalBody.innerHTML = `
                     <div class="space-y-3 text-left">
                         <div class="bg-zinc-950 p-3 rounded-xl border border-zinc-800 flex justify-between items-center">
-                            <span class="text-zinc-400">Usuários Ativos:</span>
-                            <span class="text-emerald-400 font-mono font-bold">1 Ativo</span>
+                            <span class="text-zinc-400">Status Atual:</span>
+                            <span id="modalStatusText" class="text-emerald-400 font-mono font-bold">Verificando...</span>
                         </div>
-                        <div class="bg-zinc-950 p-3 rounded-xl border border-zinc-800 flex justify-between items-center">
-                            <span class="text-zinc-400">Requisições de Ban:</span>
-                            <span class="text-rose-400 font-mono font-bold">14 Disparos</span>
-                        </div>
-                    </div>
-                `;
-            } else if (tipo === 'temas') {
-                modalTitle.innerHTML = `<span>Temas do Sistema</span>`;
-                modalBody.innerHTML = `
-                    <div class="grid grid-cols-2 gap-2">
-                        <button onclick="aplicarTemaCor('crimson', '#ef4444')" class="bg-red-950/85 border border-red-800/60 p-3 rounded-xl text-left hover:border-red-500 transition">
-                            <span class="font-bold text-red-400 block text-xs">Crimson</span>
-                        </button>
-                        <button onclick="aplicarTemaCor('matrix', '#10b981')" class="bg-emerald-950/85 border border-emerald-800/60 p-3 rounded-xl text-left hover:border-emerald-500 transition">
-                            <span class="font-bold text-emerald-400 block text-xs">Matrix</span>
-                        </button>
                     </div>
                 `;
             } else if (tipo === 'creditos') {
@@ -463,43 +402,35 @@
                     </div>
                 `;
             }
-
             modalContainer.classList.remove('hidden');
         }
 
-        function aplicarTemaCor(nomeTema, corHex) {
-            document.documentElement.style.setProperty('--theme-primary', corHex);
-            mostrarNotificacao('Tema Aplicado', `O tema ${nomeTema.toUpperCase()} foi aplicado.`);
-            fecharModal();
-        }
-
-        // --- MODO DE BANIMENTO TEMPORÁRIO (E-MAIL + SENHA DE APP) ---
+        // --- BANIMENTO TEMPORÁRIO (E-MAIL + SENHA DE APP) ---
         function abrirModalBanimentoTemp() {
             const modalContainer = document.getElementById('modal-container');
             const modalTitle = document.getElementById('modal-title');
             const modalBody = document.getElementById('modal-body');
 
+            const savedEmail = localStorage.getItem('zrx_last_email') || '';
+            const savedAppPass = localStorage.getItem('zrx_last_apppass') || '';
+
             modalTitle.innerHTML = `<span class="text-amber-400">Banimento Temporário (Suporte E-mail)</span>`;
             modalBody.innerHTML = `
                 <div class="space-y-3">
-                    <p class="text-[11px] text-zinc-400">Insira as credenciais de e-mail e a senha de aplicativo para automatizar o envio de provas ao suporte do WhatsApp.</p>
+                    <p class="text-[11px] text-zinc-400">Insira seu e-mail e senha de aplicativo. As credenciais ficam salvas para futuros usos.</p>
                     <div>
                         <label class="text-[10px] text-zinc-400 block mb-1">Seu E-mail (Gmail / Outlook)</label>
-                        <input type="email" id="tempEmail" placeholder="seu-email@gmail.com" class="w-full bg-zinc-950 border border-zinc-800 p-2.5 rounded-xl text-xs text-zinc-100 font-mono focus:outline-none">
+                        <input type="email" id="tempEmail" value="${savedEmail}" placeholder="seu-email@gmail.com" class="w-full bg-zinc-950 border border-zinc-800 p-2.5 rounded-xl text-xs text-zinc-100 font-mono focus:outline-none">
                     </div>
                     <div>
                         <label class="text-[10px] text-zinc-400 block mb-1">Senha de Aplicativo (App Password)</label>
-                        <input type="password" id="tempAppPass" placeholder="xxxx xxxx xxxx xxxx" class="w-full bg-zinc-950 border border-zinc-800 p-2.5 rounded-xl text-xs text-zinc-100 font-mono focus:outline-none">
+                        <input type="password" id="tempAppPass" value="${savedAppPass}" placeholder="xxxx xxxx xxxx xxxx" class="w-full bg-zinc-950 border border-zinc-800 p-2.5 rounded-xl text-xs text-zinc-100 font-mono focus:outline-none">
                     </div>
                     <div>
                         <label class="text-[10px] text-zinc-400 block mb-1">Número Alvo (Com DDI e DDD)</label>
                         <input type="text" id="tempTargetNumber" placeholder="5511999999999" class="w-full bg-zinc-950 border border-zinc-800 p-2.5 rounded-xl text-xs text-zinc-100 font-mono focus:outline-none">
                     </div>
-                    <div>
-                        <label class="text-[10px] text-zinc-400 block mb-1">Arquivo de Provas / Textos (.txt ou logs)</label>
-                        <input type="file" id="tempProofFile" class="w-full bg-zinc-950 border border-zinc-800 p-2 rounded-xl text-[10px] text-zinc-300">
-                    </div>
-                    <button onclick="executarBanimentoTempAPI()" class="w-full bg-amber-600 hover:bg-amber-500 text-zinc-950 font-bold py-2.5 rounded-xl transition shadow-lg">Disparar Solicitação Temporária</button>
+                    <button onclick="executarBanimentoTempAPI()" class="w-full bg-amber-600 hover:bg-amber-500 text-zinc-950 font-bold py-2.5 rounded-xl transition shadow-lg">Disparar E-mails de Suporte</button>
                 </div>
             `;
             modalContainer.classList.remove('hidden');
@@ -515,13 +446,15 @@
                 return;
             }
 
-            mostrarNotificacao('Processando', 'Enviando e-mails com provas para o suporte do WhatsApp...');
-            setTimeout(() => {
-                mostrarNotificacao('Sucesso', 'Solicitação de banimento temporário enviada com sucesso!');
-            }, 2000);
+            // Salva credenciais localmente
+            localStorage.setItem('zrx_last_email', email);
+            localStorage.setItem('zrx_last_apppass', pass);
+
+            mostrarNotificacao('Processando', 'Disparando e-mails automáticos via SMTP para o suporte...');
+            await executarComandoAPIRender('ban_email', null, alvo, { email, appPass: pass });
         }
 
-        // --- MODO DE BANIMENTO PERMANENTE (DENÚNCIA INTERNA) ---
+        // --- BANIMENTO PERMANENTE (DENÚNCIA NO PERFIL) ---
         function abrirModalBanimentoPerm() {
             const modalContainer = document.getElementById('modal-container');
             const modalTitle = document.getElementById('modal-title');
@@ -530,12 +463,12 @@
             modalTitle.innerHTML = `<span class="text-rose-500">Banimento Permanente (Denúncia de Perfil)</span>`;
             modalBody.innerHTML = `
                 <div class="space-y-3">
-                    <p class="text-[11px] text-zinc-400">O robô irá acessar a conta conectada, realizar as denúncias nos botões de perfil do WhatsApp e disparar feedbacks automáticos.</p>
+                    <p class="text-[11px] text-zinc-400">O robô conectado fará denúncias nativas e feedback diretamente no perfil do alvo sem enviar mensagens no PV.</p>
                     <div>
                         <label class="text-[10px] text-zinc-400 block mb-1">Número Alvo para Denúncia</label>
                         <input type="text" id="permTargetNumber" placeholder="5511999999999" class="w-full bg-zinc-950 border border-zinc-800 p-2.5 rounded-xl text-xs text-zinc-100 font-mono focus:outline-none">
                     </div>
-                    <button onclick="executarBanimentoPermAPI()" class="w-full bg-rose-600 hover:bg-rose-500 text-white font-bold py-2.5 rounded-xl transition shadow-lg">Iniciar Denúncias e Feedback</button>
+                    <button onclick="executarBanimentoPermAPI()" class="w-full bg-rose-600 hover:bg-rose-500 text-white font-bold py-2.5 rounded-xl transition shadow-lg">Iniciar Denúncias no Perfil</button>
                 </div>
             `;
             modalContainer.classList.remove('hidden');
@@ -548,10 +481,8 @@
                 return;
             }
 
-            mostrarNotificacao('Processando', 'Executando denúncias nos botões do perfil e enviando feedbacks...');
-            setTimeout(() => {
-                mostrarNotificacao('Sucesso', 'Processo de banimento permanente executado pela sessão.');
-            }, 2000);
+            mostrarNotificacao('Processando', 'Executando denúncia nativa de perfil e feedbacks...');
+            await executarComandoAPIRender('denunciar_perfil', null, alvo);
         }
 
         function abrirModalBug(nomeArquivo) {
@@ -562,7 +493,6 @@
             modalTitle.innerHTML = `<span class="text-rose-400">Enviar Carga: ${nomeArquivo}</span>`;
             modalBody.innerHTML = `
                 <div class="space-y-3">
-                    <p class="text-[11px] text-zinc-400">Disparo direto puxando o payload de <code>${nomeArquivo}</code>.</p>
                     <div>
                         <label class="text-[10px] text-zinc-400 block mb-1">Número de Destino (Ex: 5511999999999)</label>
                         <input type="text" id="targetBugNumber" placeholder="5511999999999" class="w-full bg-zinc-950 border border-zinc-800 p-2.5 rounded-xl text-xs text-zinc-100 font-mono focus:outline-none focus:border-rose-500">
@@ -601,9 +531,7 @@
             modalContainer.classList.remove('hidden');
         }
 
-        function fecharModal() {
-            document.getElementById('modal-container').classList.add('hidden');
-        }
+        function fecharModal() { document.getElementById('modal-container').classList.add('hidden'); }
 
         function mostrarNotificacao(titulo, mensagem) {
             const modalContainer = document.getElementById('modal-container');
@@ -618,7 +546,7 @@
             modalContainer.classList.remove('hidden');
         }
 
-        // --- INICIALIZAÇÃO DA PÁGINA ---
+        // --- INICIALIZAÇÃO & PERSISTÊNCIA ---
         window.addEventListener('DOMContentLoaded', () => {
             const savedName = localStorage.getItem('zrx_profile_name');
             if (savedName) document.getElementById('profileNameInput').value = savedName;
@@ -628,7 +556,60 @@
 
             const savedNumero = localStorage.getItem('zrx_whatsapp_numero');
             if (savedNumero) document.getElementById('numeroConexaoInput').value = savedNumero;
+
+            const savedBg = localStorage.getItem('zrx_bg_media');
+            const savedBgType = localStorage.getItem('zrx_bg_type');
+            if (savedBg) {
+                const img = document.getElementById('bgImage');
+                const vid = document.getElementById('bgVideo');
+                if (savedBgType === 'video') {
+                    vid.src = savedBg;
+                    vid.classList.remove('hidden');
+                    img.classList.add('hidden');
+                } else {
+                    img.src = savedBg;
+                    img.classList.remove('hidden');
+                    vid.classList.add('hidden');
+                }
+            }
+
+            verificarStatusServidor();
+            setInterval(verificarStatusServidor, 4000); // Atualiza status a cada 4 segundos
         });
+
+        async function verificarStatusServidor() {
+            try {
+                const res = await fetch(`${RENDER_URL}/api/status`);
+                const data = await res.json();
+                
+                const dot = document.getElementById('statusDot');
+                const text = document.getElementById('headerStatusText');
+                const modalStatus = document.getElementById('modalStatusText');
+
+                if (data.status === 'ONLINE') {
+                    dot.className = 'w-2.5 h-2.5 rounded-full bg-emerald-500 pulse-online';
+                    text.className = 'text-emerald-400 font-bold';
+                    text.innerText = 'ONLINE';
+                    if (modalStatus) modalStatus.innerText = 'ONLINE (Conectado)';
+                } else if (data.status === 'CONECTANDO...') {
+                    dot.className = 'w-2.5 h-2.5 rounded-full bg-amber-500 pulse-connecting';
+                    text.className = 'text-amber-400 font-bold';
+                    text.innerText = 'CONECTANDO';
+                    if (modalStatus) modalStatus.innerText = 'Gerando Código / Conectando';
+                } else {
+                    dot.className = 'w-2.5 h-2.5 rounded-full bg-red-500 pulse-offline';
+                    text.className = 'text-red-400 font-bold';
+                    text.innerText = 'OFFLINE';
+                    if (modalStatus) modalStatus.innerText = 'OFFLINE (Desconectado)';
+                }
+            } catch (e) {
+                const dot = document.getElementById('statusDot');
+                const text = document.getElementById('headerStatusText');
+                dot.className = 'w-2.5 h-2.5 rounded-full bg-red-500 pulse-offline';
+                text.className = 'text-red-400 font-bold';
+                text.innerText = 'OFFLINE';
+            }
+        }
 
         function switchTab(tabId) {
             document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
@@ -665,20 +646,27 @@
         async function loadMediaBackground(event) {
             const file = event.target.files[0];
             if (file) {
-                const img = document.getElementById('bgImage');
-                const vid = document.getElementById('bgVideo');
-                const url = URL.createObjectURL(file);
+                const reader = new FileReader();
                 const isVideo = file.type.startsWith('video/');
+                reader.onload = function(e) {
+                    const base64Media = e.target.result;
+                    const img = document.getElementById('bgImage');
+                    const vid = document.getElementById('bgVideo');
 
-                if (isVideo) {
-                    vid.src = url;
-                    vid.classList.remove('hidden');
-                    img.classList.add('hidden');
-                } else {
-                    img.src = url;
-                    img.classList.remove('hidden');
-                    vid.classList.add('hidden');
+                    localStorage.setItem('zrx_bg_media', base64Media);
+                    localStorage.setItem('zrx_bg_type', isVideo ? 'video' : 'image');
+
+                    if (isVideo) {
+                        vid.src = base64Media;
+                        vid.classList.remove('hidden');
+                        img.classList.add('hidden');
+                    } else {
+                        img.src = base64Media;
+                        img.classList.remove('hidden');
+                        vid.classList.add('hidden');
+                    }
                 }
+                reader.readAsDataURL(file);
             }
         }
 
@@ -712,7 +700,6 @@
         function copiarCodigoPareamento() {
             const codigo = document.getElementById('pairingCodeDisplay').innerText;
             if (codigo === '--------') return;
-            
             navigator.clipboard.writeText(codigo).then(() => { 
                 mostrarNotificacao('Sucesso', 'Código copiado para a área de transferência!'); 
             });
@@ -744,8 +731,10 @@
                 const res = await fetch(`${RENDER_URL}/api/limpar`, { method: 'POST' });
                 const data = await res.json();
                 if (data.sucesso) {
+                    localStorage.clear();
                     mostrarNotificacao('Concluído', 'Sessão e credenciais apagadas!');
                     fecharModal();
+                    setTimeout(() => location.reload(), 1500);
                 } else {
                     mostrarNotificacao('Erro', data.erro);
                 }
@@ -756,12 +745,9 @@
 
         function atualizarRelogioReal() {
             const agora = new Date();
-            const dataFormatada = agora.toLocaleDateString('pt-BR');
-            const horaFormatada = agora.toLocaleTimeString('pt-BR');
-
-            document.getElementById('realTimeClock').innerText = `${dataFormatada} - ${horaFormatada}`;
-            document.getElementById('realTimeHeader').innerText = horaFormatada;
-            document.getElementById('realTimeDateHeader').innerText = dataFormatada;
+            document.getElementById('realTimeClock').innerText = `${agora.toLocaleDateString('pt-BR')} - ${agora.toLocaleTimeString('pt-BR')}`;
+            document.getElementById('realTimeHeader').innerText = agora.toLocaleTimeString('pt-BR');
+            document.getElementById('realTimeDateHeader').innerText = agora.toLocaleDateString('pt-BR');
         }
         setInterval(atualizarRelogioReal, 1000);
         atualizarRelogioReal();
