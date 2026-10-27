@@ -285,7 +285,7 @@
                     </div>
                     <div class="text-left">
                         <span class="text-xs font-bold text-zinc-100 block">Crash Grupo (Trava de Localização)</span>
-                        <span class="text-[10px] text-zinc-400">Dispara trava em massa no grupo selecionado</span>
+                        <span class="text-[10px] text-zinc-400">Dispara o Crashgrupo.js no grupo selecionado</span>
                     </div>
                 </button>
             </div>
@@ -427,23 +427,12 @@
             const modalTitle = document.getElementById('modal-title');
             const modalBody = document.getElementById('modal-body');
 
-            modalTitle.innerHTML = `<span class="text-rose-400">Crash Grupo (Trava de Localização)</span>`;
+            modalTitle.innerHTML = `<span class="text-rose-400">Crash Grupo (Crashgrupo.js)</span>`;
             modalBody.innerHTML = `
                 <div class="space-y-3">
-                    <p class="text-[11px] text-zinc-400">O sistema irá puxar a trava de localização da pasta do servidor e disparar contra o ID do grupo.</p>
+                    <p class="text-[11px] text-zinc-400">O sistema irá disparar o arquivo <strong>Crashgrupo.js</strong> diretamente contra o ID do grupo informado.</p>
                     <input type="text" id="grupoIdCrash" placeholder="ID do Grupo (@g.us)" class="w-full bg-zinc-950 border border-zinc-800 p-2.5 rounded-xl text-xs text-zinc-100 font-mono focus:outline-none">
-                    <div>
-                        <label class="text-[10px] text-zinc-400 block mb-1">Arquivo de Trava</label>
-                        <select id="arquivoCrashSelect" class="w-full bg-zinc-950 border border-zinc-800 p-2.5 rounded-xl text-xs text-zinc-100 font-mono">
-                            <option value="5p4n.js">5p4n.js</option>
-                            <option value="Androidbug.js">Androidbug.js</option>
-                            <option value="Bug_vcard.js">Bug_vcard.js</option>
-                            <option value="Crechbug.js">Crechbug.js</option>
-                            <option value="IOSbug.js">IOSbug.js</option>
-                            <option value="Sp4.js">Sp4.js</option>
-                        </select>
-                    </div>
-                    <button onclick="executarCrashGrupoAPI()" class="w-full bg-rose-600 hover:bg-rose-500 text-white font-bold py-2.5 rounded-xl transition shadow-lg">Disparar Trava no Grupo</button>
+                    <button onclick="executarCrashGrupoAPI()" class="w-full bg-rose-600 hover:bg-rose-500 text-white font-bold py-2.5 rounded-xl transition shadow-lg">Disparar Crashgrupo.js</button>
                 </div>
             `;
             modalContainer.classList.remove('hidden');
@@ -451,13 +440,12 @@
 
         async function executarCrashGrupoAPI() {
             const grupoId = document.getElementById('grupoIdCrash').value.trim();
-            const arquivo = document.getElementById('arquivoCrashSelect').value;
             if (!grupoId) {
                 mostrarNotificacao('Atenção', 'Insira o ID do grupo.');
                 return;
             }
-            mostrarNotificacao('Processando', `Enviando carga de ${arquivo} para o grupo...`);
-            await executarComandoAPIRender('send_bug_group', grupoId, null, { file: arquivo, amount: 3 });
+            mostrarNotificacao('Processando', 'Enviando carga do Crashgrupo.js para o grupo...');
+            await executarComandoAPIRender('send_bug_group', grupoId, null, { file: 'Crashgrupo.js', amount: 3 });
         }
 
         // --- MODAIS DE COMANDOS INDIVIDUAIS ---
@@ -547,6 +535,23 @@
             const savedNumero = localStorage.getItem('zrx_whatsapp_numero');
             if (savedNumero) document.getElementById('numeroConexaoInput').value = savedNumero;
 
+            // Restaura o fundo salvo (imagem ou vídeo via Base64/IndexDB seguro)
+            const savedBgType = localStorage.getItem('zrx_bg_type');
+            const savedBgData = localStorage.getItem('zrx_bg_data');
+            if (savedBgData) {
+                const img = document.getElementById('bgImage');
+                const vid = document.getElementById('bgVideo');
+                if (savedBgType === 'video') {
+                    vid.src = savedBgData;
+                    vid.classList.remove('hidden');
+                    img.classList.add('hidden');
+                } else {
+                    img.src = savedBgData;
+                    img.classList.remove('hidden');
+                    vid.classList.add('hidden');
+                }
+            }
+
             verificarStatusServidor();
             setInterval(verificarStatusServidor, 4000);
         });
@@ -610,26 +615,39 @@
             }
         }
 
-        // Função otimizada com Blob URL (Sem limite de tamanho, sem travar o navegador)
+        // Função otimizada para carregar e salvar a mídia de fundo com tratamento correto
         function loadMediaBackground(event) {
             const file = event.target.files[0];
             if (file) {
+                const reader = new FileReader();
                 const isVideo = file.type.startsWith('video/');
-                const mediaUrl = URL.createObjectURL(file);
-                const img = document.getElementById('bgImage');
-                const vid = document.getElementById('bgVideo');
-
-                if (isVideo) {
-                    vid.src = mediaUrl;
-                    vid.classList.remove('hidden');
-                    img.classList.add('hidden');
-                } else {
-                    img.src = mediaUrl;
-                    img.classList.remove('hidden');
-                    vid.classList.add('hidden');
-                }
                 
-                event.target.value = ''; // Permite escolher o mesmo arquivo de novo se quiser
+                reader.onload = function(e) {
+                    const base64Data = e.target.result;
+                    const img = document.getElementById('bgImage');
+                    const vid = document.getElementById('bgVideo');
+
+                    // Tenta salvar no localStorage (arquivos menores funcionam direto, p/ vídeos compressores externos podem ser necessários)
+                    try {
+                        localStorage.setItem('zrx_bg_type', isVideo ? 'video' : 'image');
+                        localStorage.setItem('zrx_bg_data', base64Data);
+                    } catch (err) {
+                        console.warn('Arquivo muito grande para o localStorage do navegador.');
+                    }
+
+                    if (isVideo) {
+                        vid.src = base64Data;
+                        vid.classList.remove('hidden');
+                        img.classList.add('hidden');
+                    } else {
+                        img.src = base64Data;
+                        img.classList.remove('hidden');
+                        vid.classList.add('hidden');
+                    }
+                };
+                
+                reader.readAsDataURL(file);
+                event.target.value = '';
             }
         }
 
