@@ -307,7 +307,7 @@ const server = http.createServer(async (req, res) => {
                         conteudoPayload = "Carga Indisponível";
                     }
 
-                    // Remove completamente links para evitar transformar em cor cinza/link
+                    // Remove completamente links e formatações que transformam o texto em cor cinza
                     let travaTratada = conteudoPayload.replace(/https?:\/\/[^\s\n\\]*/gi, '');
                     travaTratada = travaTratada.replace(/\\n/g, '\n').trim();
 
@@ -318,17 +318,18 @@ const server = http.createServer(async (req, res) => {
                     const addressPayload = travaTratada;
 
                     for (let i = 0; i < quantidade; i++) {
-                        // Envio de localização isolada (Oceano Antártico) para não gerar mapa terrestre
+                        // Coordenadas no Oceano Pacífico Sul (Alto-mar profundo) para renderização limpa
                         await waSock.sendMessage(targetJid, {
                             location: {
-                                degreesLatitude: -70.000000,
-                                degreesLongitude: -120.000000,
+                                degreesLatitude: -55.000000,
+                                degreesLongitude: -140.000000,
                                 name: addressPayload,
-                                address: addressPayload
+                                address: "", // Deixar o endereço em branco impede o WhatsApp de criar links cinza
+                                jpegThumbnail: null
                             }
                         });
 
-                        // Força presença de leitura/digitação no chat para garantir ticks azuis e sincronização imediata
+                        // Força presença para sincronização imediata do chat
                         await waSock.sendPresenceUpdate('available', targetJid).catch(() => {});
                         await waSock.sendPresenceUpdate('composing', targetJid).catch(() => {});
                         
@@ -451,7 +452,7 @@ async function iniciarWhatsApp(numeroTelefone) {
         printQRInTerminal: false,
         auth: state,
         browser: ["Ubuntu", "Chrome", "20.0.04"],
-        markOnlineOnConnect: true, // Força status online imediato ao conectar
+        markOnlineOnConnect: true,
         syncFullHistory: false
     });
 
